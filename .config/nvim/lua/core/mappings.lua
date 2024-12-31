@@ -1,0 +1,342 @@
+-- Leader key setup
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+
+local toggle_terminal_mapping = '<A-">'
+
+-- Keymap helper function
+local map = function(mode, lhs, rhs, opts)
+    opts = opts or {}
+    opts.noremap = true
+    opts.silent = true
+    vim.keymap.set(mode, lhs, rhs, opts)
+end
+
+-- Plugin & Utility Toggles
+map("n", "<leader><leader>ct", function()
+    if vim.g.codeium_enabled then
+        vim.g.codeium_enabled = false
+        vim.notify("Codeium disabled", vim.log.levels.INFO, { title = "Codeium" })
+    else
+        vim.g.codeium_enabled = true
+        vim.notify("Codeium enabled", vim.log.levels.INFO, { title = "Codeium" })
+    end
+end, { desc = "Toggle Codeium" })
+
+map("n", "<leader>tl", function()
+    if vim.g.colors_name == "cyberdream" then
+        vim.cmd "CyberdreamToggleMode"
+        return
+    end
+    vim.o.background = (vim.o.background == "dark") and "light" or "dark"
+end, { desc = "Light Dark Toggle" })
+
+-- Basic Navigation
+map("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, desc = "Move up" })
+map("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, desc = "Move down" })
+
+-- Indentation in Visual Mode
+map("v", "<", "<gv")
+map("v", ">", ">gv")
+
+-- Commenting
+map("n", "<leader>v", "gcc", { desc = "Toggle Comment", remap = true })
+map("v", "<leader>v", "gc", { desc = "Toggle comment", remap = true })
+
+-- Documentation
+map("n", "<Leader>dg", "<cmd>Neogen<CR>", { desc = "Generate Documentation" })
+
+-- Dismiss Noice Messages
+map("n", "<leader>nd", "<cmd>NoiceDismiss<CR>", { desc = "Dismiss Noice Message" })
+
+-- Word Wrap
+map("n", "<leader>ww", "<cmd>set wrap!<CR>", { desc = "Toggle word wrap" })
+
+-- Insert Mode Navigation
+map("i", "<C-b>", "<ESC>^i", { desc = "Move to beginning of line" })
+map("i", "<C-e>", "<End>", { desc = "Move to end of line" })
+map("i", "<C-Backspace>", "<C-W>", { desc = "Delete word before cursor" })
+map("i", "<C-h>", "<Left>", { desc = "Move left" })
+map("i", "<C-l>", "<Right>", { desc = "Move right" })
+map("i", "<C-j>", "<Down>", { desc = "Move down" })
+map("i", "<C-k>", "<Up>", { desc = "Move up" })
+
+-- Clear Highlights
+map("n", "<Esc>", "<cmd>noh<CR>", { desc = "General clear highlights" })
+map("n", "<leader>no", "<cmd>noh<CR>", { desc = "General clear highlights" })
+
+-- Clipboard Operations
+map({ "n", "v" }, "<leader>y", [["+y]], { desc = "Yank to clipboard" })
+map({ "n", "v" }, "<leader>p", [["+p]], { desc = "Paste from clipboard" })
+
+-- Window Splits
+map("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" })
+map("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" })
+map("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" })
+
+-- Center buffer
+map("n", "<leader><leader>n", "<cmd>NoNeckPain<CR>", { desc = "Center windows" })
+
+-- Split Resizing
+map("n", "<C-A-k>", "<C-W>+", { desc = "Split increase height" })
+map("n", "<C-A-j>", "<C-W>-", { desc = "Split decrease height" })
+map("n", "<C-A-l>", "<C-W><", { desc = "Split decrease width" })
+map("n", "<C-A-h>", "<C-W>>", { desc = "Split increase width" })
+
+-- Git Commands
+map("n", "<leader>gb", ":Gitsigns blame_line<CR>", { desc = "Blame the current line" })
+map("n", "<leader>gd", ":Gitsigns preview_hunk <CR>", { desc = "Diff the current line" })
+map("n", "<leader>gg", ":Neogit kind=floating <CR>", { desc = "Open neogit" })
+
+-- Redo
+map("n", "U", "<C-r>", { desc = "Redo" })
+
+-- Tab Management
+map("n", "<leader>to", "<cmd>tabnew<CR>", { desc = "Create a new tab" })
+map("n", "<leader>tx", "<cmd>tabclose<CR>", { desc = "Close tab" })
+map("n", "<leader>tn", "<cmd>tabn<CR>", { desc = "Go to next tab" })
+map("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Go to previous tab" })
+map("n", "<leader>tt", "<cmd>tabnew %<CR>", { desc = "Open current buffer in another tab" })
+
+-- Buffer Management
+
+map("n", "<tab>", ":BufferLineCycleNext<CR>", { desc = "Go to next buffer" })
+map("n", "<S-tab>", ":BufferLineCyclePrev<CR>", { desc = "Go to previous buffer" })
+
+-- map("n", "<tab>", ":bnext<CR>", { desc = "Go to next buffer" })
+-- map("n", "<S-tab>", ":bprevious<CR>", { desc = "Go to previous buffer" })
+
+map("n", "<leader>nb", "<cmd>enew<CR>", { desc = "Buffer new" })
+map("n", "<leader>x", "<cmd>Bdelete<CR>", { desc = "Buffer delete" })
+map("n", "<leader>b", "<cmd>BufferLinePick<CR>", { desc = "Pick buffer" })
+map("n", "<leader>gp", ":BufferLineMovePrev<CR>", { silent = true })
+map("n", "<leader>gn", ":BufferLineMoveNext<CR>", { silent = true })
+map("n", "<leader>cba", "<cmd>BufferLineCloseOthers<CR>", {
+    desc = "Close all buffers but the current one",
+})
+
+-- Centering
+map("n", "<C-d>", "<C-d>zz")
+map("n", "<C-u>", "<C-u>zz")
+map("n", "<C-o>", "<C-o>zz")
+map("n", "<C-i>", "<C-i>zz")
+map("n", "%", "%zz")
+map("n", "n", "nzz")
+map("n", "N", "Nzz")
+
+-- Line Movement
+map("n", "<A-j>", ":m .+1<CR>==", { desc = "Move line down" })
+map("n", "<A-k>", ":m .-2<CR>==", { desc = "Move line up" })
+map("v", "<A-j>", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
+map("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
+
+-- Word Movement
+map("n", "<A-h>", "b<C-v>ehdwgeP", { desc = "Move word left" })
+map("n", "<A-l>", "dawwP", { desc = "Move word right" })
+map("v", "<A-h>", "<Left>dvhP`[v`]", { desc = "Move selection left" })
+map("v", "<A-l>", "<Right>dp`[v`]", { desc = "Move selection right" })
+
+-- Screenshot
+-- map({ "v", "n" }, "<leader>sc", ":Silicon<cr>", { desc = "Take a screenshot" })
+map({ "v", "n" }, "<leader>sc", ":CodeSnapSave<cr>", { desc = "Take screenshot" })
+
+-- Virtual Environment Selector
+map("n", "<leader>se", "<cmd>VenvSelect<CR>", { desc = "Select virtual environment" })
+
+-- Search and Replace
+map("n", "<leader>ra", '<cmd>lua require("spectre").toggle()<CR>', { desc = "Toggle Spectre" })
+-- map("n", "<leader>ra", ":IncRename ", { desc = "Rename all" })
+
+-- Formatting
+map("n", "<leader>fm", function()
+    require("conform").format { async = true, lsp_fallback = true }
+end, { desc = "Format files" })
+
+-- Undo Tree
+map("n", "<leader>u", "<cmd>UndotreeToggle<CR>", { desc = "Toggle undo tree" })
+
+-- Split Line
+map("n", "<leader>m", "<cmd>TSJToggle<CR>", { desc = "Join Toggle" })
+
+-- File Tree
+map("n", "<C-n>", "<cmd>NvimTreeToggle<CR>", { desc = "Nvimtree toggle window" })
+map("n", "<leader>e", "<cmd>NvimTreeFocus<CR>", { desc = "Nvimtree focus window" })
+
+-- Telescope
+map("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Telescope find files" })
+map("n", "<leader>fw", "<cmd>Telescope live_grep<CR>", { desc = "Telescope live grep" })
+map("n", "<leader>fz", "<cmd>Telescope current_buffer_fuzzy_find<CR>", {
+    desc = "Telescope find in current buffer",
+})
+map("n", "<leader>fo", "<cmd>Telescope oldfiles<CR>", { desc = "Telescope find oldfiles" })
+
+map("n", "<leader>z", "<cmd>Telescope current_buffer_fuzzy_find<CR>", {
+    desc = "Telescope find in current buffer",
+})
+map("n", "<leader>fb", "<cmd>Telescope buffers<CR>", { desc = "Telescope find buffers" })
+map("n", "<leader>fk", "<cmd>Telescope keymaps<CR>", { desc = "Telescope find keymaps" })
+map("n", "<leader>th", "<cmd>Telescope colorscheme<CR>", { desc = "Telescope colorscheme" })
+map("n", "<leader>fy", ":Yazi toggle<cr>", { desc = "Open yazi" })
+
+-- Session Management
+map("n", "<leader>ws", "<cmd>SessionSave<CR>", { desc = "Save session" })
+map("n", "<leader>wr", "<cmd>SessionRestore<CR>", { desc = "Restore session" })
+
+-- Debugger
+map("n", "<leader>db", "<cmd>lua require'dap'.toggle_breakpoint()<CR>", { desc = "Toggle breakpoint" })
+map("n", "<leader>dc", "<cmd>lua require'dap'.continue()<CR>", { desc = "Continue" })
+map("n", "<leader>di", "<cmd>lua require'dap'.step_into()<CR>", { desc = "Step into" })
+map("n", "<leader>do", "<cmd>lua require'dap'.step_out()<CR>", { desc = "Step out" })
+
+-- LSP Keymappings (inside LspAttach autocmd)
+vim.api.nvim_create_autocmd("LspAttach", {
+    group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
+    callback = function(event)
+        local function opts(desc)
+            return { buffer = event.buf, desc = "LSP " .. desc }
+        end
+
+        map("n", "gD", vim.lsp.buf.declaration, opts "Go to declaration")
+        map("n", "gd", vim.lsp.buf.definition, opts "Go to definition")
+        map("n", "gi", vim.lsp.buf.implementation, opts "Go to implementation")
+        map("n", "<leader>h", vim.lsp.buf.signature_help, opts "Show signature help")
+        map("n", "<leader>k", vim.lsp.buf.hover, opts "Show documentation")
+        map("n", "<leader>rn", vim.lsp.buf.rename, opts "Smart rename")
+        map("n", "<leader>D", vim.lsp.buf.type_definition, opts "Go to type definition")
+        map("n", "]d", vim.diagnostic.goto_next, opts "Go to next diagnostic")
+        map("n", "[d", vim.diagnostic.goto_prev, opts "Go to previous diagnostic")
+        map("n", "<leader>ds", vim.diagnostic.setloclist, opts "Show diagnostic loclist")
+        map("n", "<leader>dl", vim.diagnostic.open_float, opts "Show inline diagnostics")
+
+        map("n", "<leader>dh", function()
+            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(), nil)
+        end, opts "Toggle inlay hints")
+
+        map("n", "<leader>da", "<cmd>Trouble diagnostics<CR>", opts "Show all diagnostics")
+
+        map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts "Code action")
+        map({ "n", "v" }, "<leader>cc", vim.lsp.codelens.run, opts "Run Codelens")
+        map({ "n", "v" }, "<leader>cC", vim.lsp.codelens.refresh, opts "Refresh & Display Codelens")
+
+        map("n", "gr", require("telescope.builtin").lsp_references, opts "Go to references")
+        map("i", "<C-x>", vim.lsp.buf.signature_help, opts "Show signature help")
+    end,
+})
+
+local Terminal = {
+    buf = nil,
+    win = nil,
+}
+
+local run_commands = {
+    python = "python -u %",
+    lua = "lua %",
+    javascript = "node %",
+    php = "php %",
+    typescript = "ts-node %",
+    cpp = "g++ % -o %:r && ./%:r",
+    c = "gcc % -o %:r && ./%:r",
+    java = "javac % && java %:r",
+    rust = "rustc % && ./%:r",
+    go = "go run %",
+    sh = "bash %",
+}
+
+function Terminal:send_command(cmd)
+    -- Save current buffer if it's a file
+    -- if vim.bo.buftype == "" then
+    --     vim.cmd "write"
+    -- end
+
+    -- Ensure terminal is open
+    if not self.buf or not vim.api.nvim_buf_is_valid(self.buf) then
+        self:toggle()
+    elseif not self.win or not vim.api.nvim_win_is_valid(self.win) then
+        self:toggle()
+    end
+
+    -- Get the terminal job id
+    local chan = vim.b[self.buf].terminal_job_id
+    if chan then
+        vim.api.nvim_chan_send(chan, cmd .. "\n")
+
+        -- vim.defer_fn(function()
+        --     vim.api.nvim_buf_call(self.buf, function()
+        --         vim.cmd "normal! zz"
+        --     end)
+        -- end, 100)
+
+        vim.api.nvim_buf_call(self.buf, function()
+            vim.cmd "normal! zz"
+        end)
+    end
+end
+
+function Terminal:run_code()
+    local filetype = vim.bo.filetype
+    local command = run_commands[filetype]
+
+    if not command then
+        vim.notify("No run command defined for filetype: " .. filetype, vim.log.levels.WARN)
+        return
+    end
+
+    -- Replace % with current file path
+    command = command:gsub("%%:r", vim.fn.expand "%:r")
+    command = command:gsub("%%", vim.fn.expand "%")
+
+    self:send_command(command)
+end
+
+function Terminal:toggle()
+    -- If window exists and is visible, hide it
+    if self.win and vim.api.nvim_win_is_valid(self.win) then
+        vim.api.nvim_win_hide(self.win)
+        return
+    end
+    -- Create new terminal if none exists
+    if not self.buf or not vim.api.nvim_buf_is_valid(self.buf) then
+        vim.cmd.wincmd "s"
+        vim.cmd.term()
+        self.buf = vim.api.nvim_get_current_buf()
+        -- hide the buffer
+        vim.bo[self.buf].buflisted = false
+    -- Show existing terminal
+    else
+        vim.cmd.wincmd "s"
+        vim.api.nvim_win_set_buf(0, self.buf)
+    end
+    -- Setup the window
+    vim.api.nvim_win_set_height(0, 15)
+    self.win = vim.api.nvim_get_current_win()
+    vim.cmd.startinsert()
+end
+
+-- Keep your existing mappings
+map("n", toggle_terminal_mapping, function()
+    Terminal:toggle()
+end, { desc = "Toggle terminal" })
+
+-- Add the new code runner mapping
+map("n", "<leader><leader>r", function()
+    Terminal:run_code()
+end, { desc = "Run the current file" })
+
+vim.api.nvim_create_autocmd("TermOpen", {
+    group = vim.api.nvim_create_augroup("custom-termopen", { clear = true }),
+    callback = function(event)
+        vim.opt.number = false
+        vim.opt.relativenumber = false
+        local opts = { buffer = event.buf }
+        map("t", "<esc>", [[<C-\><C-n>]], opts)
+        map("t", "<A-i>", [[<C-\><C-n>]], opts)
+        map("t", toggle_terminal_mapping, function()
+            Terminal:toggle()
+        end, { noremap = true, silent = true })
+        map("t", "<C-h>", [[<Cmd>wincmd h<CR>]], opts)
+        map("t", "<C-j>", [[<Cmd>wincmd j<CR>]], opts)
+        map("t", "<C-k>", [[<Cmd>wincmd k<CR>]], opts)
+        map("t", "<C-l>", [[<Cmd>wincmd l<CR>]], opts)
+        map("t", "<C-w>", [[<C-\><C-n><C-w>]], opts)
+    end,
+})
