@@ -1,0 +1,63 @@
+@import "themes.css";
+
+* {
+  border: none;
+  border-radius: 0px;
+  font-family: "JetBrains Mono Nerd Font";
+  font-weight: bold;
+  font-size: 18px;
+  min-height: 10px;
+}
+
+window#waybar {
+  background-color: rgba(0, 0, 0, 0);
+  border-radius: 7px;
+  border: 2px solid rgba(0, 0, 0, 0);
+  margin: 0;
+  padding: 0;
+}
+
+#custom-right,
+#taskbar,
+#custom-left {
+  color: @main-fg;
+  background: @main-bg;
+  margin: 4px 0px;
+  opacity: 1;
+  /* border: 0px solid #181825; */
+}
+
+#custom-right {
+  margin-right: 9px;
+  padding-right: 3px;
+  border-radius: 0px 22px 22px 0px;
+}
+
+#custom-left {
+  margin-left: 9px;
+  padding-left: 3px;
+  border-radius: 22px 0px 0px 22px;
+}
+
+#taskbar button {
+  box-shadow: none;
+  text-shadow: none;
+  padding: 0px 3px;
+  border-radius: 9px;
+  margin: 3px 0;
+  color: @main-fg;
+}
+
+#taskbar button.active {
+  background: @wb-act-bg;
+  color: @wb-act-fg;
+  margin: 3px;
+  padding: 0 12px;
+  transition: all 0.4s cubic-bezier(0.55, -0.68, 0.48, 1.682);
+}
+
+#taskbar button:hover {
+  background: @wb-hvr-bg;
+  color: @wb-hvr-fg;
+  transition: all 0.3s cubic-bezier(0.55, -0.68, 0.48, 1.682);
+}

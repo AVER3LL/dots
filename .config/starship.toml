@@ -1,0 +1,40 @@
+command_timeout = 2000
+
+[time]
+disabled = true
+format = '[$time]($style) '
+time_format = '%H:%M'
+
+[character]
+success_symbol = "[0 ❯](bold green)"
+#error_symbol = "[➜](bold red)"
+
+[directory]
+truncation_symbol = '.../'
+
+[git_branch]
+truncation_length = 20
+
+[git_commit]
+tag_disabled = false
+commit_hash_length = 7
+disabled = true
+
+# ~/.config/starship.toml
+
+[git_state]
+disabled = true
+
+[memory_usage]
+format = 'using [$ram_pct RAM]($style) '
+disabled = false
+
+[package]
+disabled = true
+
+[status]
+format = '[$status]($style) '
+disabled = false
+
+[aws]
+disabled = true
