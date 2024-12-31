@@ -1,0 +1,21 @@
+# Font
+font-family = "JetBrainsMono NF"
+# font-family = "FiraCode Nerd Font"
+# font-family = "FantasqueSansM Nerd Font"
+font-size = 15
+
+# Mouse
+mouse-hide-while-typing = true
+mouse-scroll-multiplier = 2
+cursor-style = block
+
+# Colors
+theme = GruvboxDarkHard
+background = 1C2021
+
+window-padding-balance = true
+window-decoration = false
+
+adjust-cell-height = 20%
+shell-integration-features = no-cursor,sudo,no-title
+keybind = ctrl+enter=unbind
