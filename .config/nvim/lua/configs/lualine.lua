@@ -10,11 +10,13 @@ bt = "single"
 
 local sec_sep = {
     rounded = { left = "", right = "" }, -- other separators : "", "", "", "",
-    single = { left = "", right = "" },
+    -- single = { left = "", right = "" },
+    single = { left = "", right = "" },
 }
 local comp_sep = {
     rounded = { left = "", right = "" },
-    single = { left = "", right = "" },
+    -- single = { left = "", right = "" },
+    single = { left = "│", right = "│" },
 }
 
 local function setup_lualine()
@@ -158,7 +160,7 @@ local function setup_lualine()
             lualine_y = {},
             lualine_z = { "location" },
         },
-        extensions = { "nvim-tree", "fzf", "toggleterm", "mason", "lazy" },
+        extensions = { "nvim-tree", "fzf", "toggleterm", "mason", "lazy", "neo-tree" },
     }
 end
 

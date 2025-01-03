@@ -7,12 +7,16 @@ end
 local function setup_tree()
     tree.setup {
         close_if_last_window = true,
+        hide_root_node = true, -- Hide the root node.
+        retain_hidden_root_indent = true, -- IF the root node is hidden, keep the indentation anyhow.
         filesystem = {
             filtered_items = {
                 visible = true,
                 hide_dotfiles = false,
                 hide_by_name = {
                     ".git",
+                    "node_modules",
+                    ".mypy_cache",
                 },
                 hide_gitignored = false,
                 always_show = {
