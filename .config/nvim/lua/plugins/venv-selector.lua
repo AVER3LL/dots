@@ -4,9 +4,9 @@ return {
     ft = "python",
     dependencies = {
         "neovim/nvim-lspconfig",
-        { "mfussenegger/nvim-dap", lazy = true },
-        { "mfussenegger/nvim-dap-python", lazy = true }, --optional
-        { "nvim-telescope/telescope.nvim", branch = "0.1.x", dependencies = { "nvim-lua/plenary.nvim" } },
+        { "mfussenegger/nvim-dap" },
+        { "mfussenegger/nvim-dap-python" }, --optional
+        { "nvim-telescope/telescope.nvim" },
     },
     branch = "regexp", -- This is the regexp branch, use this for the new version
     config = function()

@@ -52,10 +52,27 @@ return {
     -- File explorer
     {
         "nvim-tree/nvim-tree.lua",
+        enabled = false,
         cmd = { "NvimTreeToggle", "NvimTreeFocus" },
         dependencies = "nvim-tree/nvim-web-devicons",
         config = function()
             return require "configs.nvim-tree"
+        end,
+    },
+
+    -- File explorer
+    -- (switched because nvim-tree decided to hide .env files)
+    {
+        "nvim-neo-tree/neo-tree.nvim",
+        branch = "v3.x",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+            "MunifTanjim/nui.nvim",
+            -- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
+        },
+        config = function()
+            return require "configs.neo-tree"
         end,
     },
 
@@ -123,6 +140,7 @@ return {
     -- css colors highlighting
     {
         "brenoprata10/nvim-highlight-colors",
+        event = "VeryLazy",
         config = function()
             require("nvim-highlight-colors").setup {
                 -- render = "virtual",
@@ -162,22 +180,6 @@ return {
                 reloadOnColorSchemeChange = true,
             },
         },
-    },
-
-    {
-        "Wansmer/symbol-usage.nvim",
-        enabled = false,
-        event = "LspAttach", -- need run before LspAttach if you use nvim 0.9. On 0.10 use 'LspAttach'
-        config = function()
-            return require "configs.symbol-usage"
-        end,
-    },
-
-    {
-        "VidocqH/lsp-lens.nvim",
-        enabled = false,
-        event = "LspAttach", -- need run before LspAttach if you use nvim 0.9. On 0.10 use 'LspAttach'
-        opts = {},
     },
 
     {

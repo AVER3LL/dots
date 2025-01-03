@@ -15,12 +15,19 @@ local function config_ts()
             use_languagetree = true,
             -- disable = { "latex" },
         },
-        ignore_install = {},
+        ignore_install = {
+            "dart",
+        },
         modules = {},
         auto_install = true,
         sync_install = false,
         -- enable indentation
-        indent = { enable = true },
+        indent = {
+            enable = true,
+            disable = {
+                "dart",
+            },
+        },
         -- ensure these language parsers are installed
         ensure_installed = {
             "regex",

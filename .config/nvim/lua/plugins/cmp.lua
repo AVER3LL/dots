@@ -56,7 +56,7 @@ return {
             "hrsh7th/cmp-buffer", -- source for text in buffer
             "hrsh7th/cmp-path", -- source for file system paths
             "hrsh7th/cmp-nvim-lsp", -- source for lsp
-            "hrsh7th/cmp-emoji", -- 😄
+            -- "hrsh7th/cmp-emoji", -- 😄
             "saadparwaiz1/cmp_luasnip", -- for autocompletion
             "rafamadriz/friendly-snippets", -- useful snippets
 
@@ -197,7 +197,7 @@ return {
                     { name = "luasnip", priority = 850 }, -- snippets
                     { name = "buffer", priority = 750 }, -- text within current buffer
                     { name = "path", priority = 500 }, -- file system paths
-                    { name = "emoji", priority = 100 },
+                    -- { name = "emoji", priority = 100 },
                 },
 
                 -- configure lspkind for vs-code like pictograms in completion menu

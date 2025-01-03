@@ -1,3 +1,4 @@
+---@diagnostic disable: unused-local
 local alpha_installed, alpha = pcall(require, "alpha")
 
 if not alpha_installed then
@@ -159,7 +160,11 @@ local function setup_alpha()
     -- Set menu
     dashboard.section.buttons.val = {
         dashboard.button("e", "   New File", "<cmd>ene<CR>"),
-        dashboard.button("SPC e", "   File Explorer", "<cmd>NvimTreeToggle<CR>"),
+        dashboard.button(
+            "SPC e",
+            "   File Explorer",
+            "<cmd>Neotree source=filesystem reveal=true position=left<CR>"
+        ),
         dashboard.button("SPC f f", "󰱼   Find File", "<cmd>Telescope find_files<CR>"),
         dashboard.button("SPC f w", "   Find Word", "<cmd>Telescope live_grep<CR>"),
         dashboard.button("SPC w r", "󰁯   Restore Session", "<cmd>SessionRestore<CR>"),

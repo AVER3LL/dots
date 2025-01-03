@@ -20,12 +20,7 @@ local function setup_buffeline()
             always_show_bufferline = false,
             offsets = {
                 {
-                    filetype = "NvimTree",
-                    text = "",
-                    highlight = "NvimTreeNormal",
-                    text_align = "right",
-                    -- separator = " ",
-                    separator = "",
+                    filetype = "neo-tree",
                 },
             },
         },

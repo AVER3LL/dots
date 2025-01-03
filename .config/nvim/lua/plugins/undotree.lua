@@ -1,5 +1,5 @@
 return {
     "mbbill/undotree",
-    event = { "BufReadPre", "BufNewFile" },
+    -- event = { "BufReadPre", "BufNewFile" },
     cmd = "UndotreeToggle",
 }

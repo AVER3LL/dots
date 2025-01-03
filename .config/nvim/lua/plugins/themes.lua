@@ -8,6 +8,7 @@ return {
 
     {
         "bettervim/yugen.nvim",
+        enabled = false,
         config = function()
             -- vim.cmd.colorscheme "yugen"
         end,
@@ -155,7 +156,7 @@ return {
         name = "everforest",
         priority = 1000,
         config = function()
-            vim.g.everforest_better_performance = 1
+            -- vim.g.everforest_better_performance = 1
             vim.g.everforest_transparent_background = 0
         end,
     },
@@ -175,44 +176,6 @@ return {
         name = "catppuccin",
         lazy = false,
         priority = 1000,
-        -- config = function()
-        --     -- local colors = require("catppuccin.palettes").get_palette()
-        --     require("catppuccin").setup {
-        --         transparent_background = false,
-        --
-        --         background = { -- :h background
-        --             light = "latte",
-        --             dark = "mocha",
-        --         },
-        --
-        --         default_integrations = true,
-        --         integrations = {
-        --             cmp = true,
-        --             fidget = true,
-        --             gitsigns = true,
-        --             -- harpoon = true,
-        --             indent_blankline = {
-        --                 enabled = true,
-        --                 scope_color = "sapphire",
-        --                 colored_indent_levels = false,
-        --             },
-        --             mason = true,
-        --             native_lsp = { enabled = true },
-        --             noice = true,
-        --             notify = true,
-        --             ufo = true,
-        --             symbols_outline = true,
-        --             treesitter = true,
-        --             treesitter_context = true,
-        --             which_key = true,
-        --             telescope = {
-        --                 enabled = true,
-        --                 style = "nvchad",
-        --             },
-        --         },
-        --     }
-        -- end,
-
         config = function()
             require("catppuccin").setup {
                 background = {
@@ -704,7 +667,7 @@ return {
 
     { --cyberdream
         "scottmckendry/cyberdream.nvim",
-        -- enabled = false,
+        enabled = false,
         priority = 1000,
         lazy = false,
         opts = function(_, opts)

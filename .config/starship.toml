@@ -20,8 +20,6 @@ tag_disabled = false
 commit_hash_length = 7
 disabled = true
 
-# ~/.config/starship.toml
-
 [git_state]
 disabled = true
 

@@ -4,13 +4,14 @@ return {
         "numToStr/Comment.nvim",
         -- enabled = false,
         event = { "BufReadPre", "BufNewFile" },
-        ft = { "javascript", "typescript" },
+        ft = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
         dependencies = {
             "JoosepAlviste/nvim-ts-context-commentstring",
         },
         config = function()
             local comment = require "Comment"
             local ts_context_commentstring = require "ts_context_commentstring.integrations.comment_nvim"
+            ---@diagnostic disable-next-line: missing-fields
             comment.setup {
                 pre_hook = ts_context_commentstring.create_pre_hook(),
             }
@@ -40,8 +41,9 @@ return {
     -- Automatically closes html tags
     {
         "windwp/nvim-ts-autotag",
-        ft = { "html", "js", "javascriptreact", "typescript", "tsx", "blade" },
+        ft = { "html", "js", "javascriptreact", "typescript", "typescriptreact", "blade" },
         config = function()
+            ---@diagnostic disable-next-line: missing-fields
             require("nvim-ts-autotag").setup {
                 opts = {
                     enable_close = true, -- Auto close tags
@@ -129,13 +131,14 @@ return {
     -- Helps manage keymaps
     {
         "folke/which-key.nvim",
-        -- keys = { "<leader>", "<c-r>", "<c-w>", '"', "'", "`", "c", "v", "g" },
-        -- cmd = "WhichKey",
+        event = "VeryLazy",
         init = function()
             vim.o.timeout = true
-            vim.o.timeoutlen = 500
         end,
-        opts = {},
+        opts = {
+            -- classic, modern, helix
+            preset = "helix",
+        },
     },
 
     -- Syntax highlighting
@@ -178,51 +181,17 @@ return {
                 -- your config
             }
         end,
-        -- or if you don't want to change defaults
-        -- config = true
     },
 
     {
         "echasnovski/mini.nvim",
         config = function()
-            local ai = require "mini.ai"
-            ai.setup {
-                mappings = {
-                    around = "a",
-                    inside = "i",
-
-                    around_next = "an",
-                    inside_next = "in",
-                    around_last = "al",
-                    inside_last = "il",
-
-                    goto_left = "[",
-                    goto_right = "]",
-                },
-                custom_textobjects = {
-                    f = ai.gen_spec.treesitter { a = "@function.outer", i = "@function.inner" },
-                    a = ai.gen_spec.treesitter { a = "@parameter.outer", i = "@parameter.inner" },
-                    i = ai.gen_spec.treesitter { a = "@conditional.outer", i = "@conditional.inner" },
-                    -- l = ai.gen_spec.treesitter { a = "@loop.outer", i = "@loop.inner" },
-                    c = ai.gen_spec.treesitter { a = "@class.outer", i = "@class.inner" },
-                    -- The tag specification might need adjustment
-                    t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" },
-                    d = { "%f[%d]%d+" }, -- digits
-                    e = { -- Word with case
-                        {
-                            "%u[%l%d]+%f[^%l%d]",
-                            "%f[%S][%l%d]+%f[^%l%d]",
-                            "%f[%P][%l%d]+%f[^%l%d]",
-                            "^[%l%d]+%f[^%l%d]",
-                        },
-                        "^().*()$",
-                    },
-                    u = ai.gen_spec.function_call(), -- u for "Usage"
-                },
-                n_lines = 500,
-                silent = true,
-            }
+            require("configs.mini-ai").setup()
             require("mini.surround").setup()
+            require("mini.trailspace").setup()
+            -- if not vim.g.neovide then
+            --     require("mini.animate").setup {}
+            -- end
         end,
     },
 

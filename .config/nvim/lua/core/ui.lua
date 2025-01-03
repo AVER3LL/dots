@@ -1,11 +1,7 @@
 local ok, border = pcall(require, "config.looks")
 local borderType = ok and border.border_type() or "rounded"
 
--- local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
--- for type, icon in pairs(signs) do
---     local hl = "DiagnosticSign" .. type
---     vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
--- end
+local icons = false
 
 local float = {
     style = "minimal",
@@ -44,23 +40,20 @@ local sign = function(opts)
     })
 end
 
-sign { name = "DiagnosticSignError", text = "", numhl = "LspDiagnosticsLineNrError" }
-sign { name = "DiagnosticSignWarn", text = "", numhl = "LspDiagnosticsLineNrWarning" }
-sign { name = "DiagnosticSignHint", text = "", numhl = "LspDiagnosticsLineNrHint" }
-sign { name = "DiagnosticSignInfo", text = "", numhl = "LspDiagnosticsLineNrInfo" }
-
--- sign { name = "DiagnosticSignError", text = " ", numhl = "LspDiagnosticsLineNrError" }
--- sign { name = "DiagnosticSignWarn", text = " ", numhl = "LspDiagnosticsLineNrWarning" }
--- sign { name = "DiagnosticSignHint", text = " ", numhl = "LspDiagnosticsLineNrHint" }
--- sign { name = "DiagnosticSignInfo", text = " ", numhl = "LspDiagnosticsLineNrInfo" }
+sign { name = "DiagnosticSignError", text = (icons and " ") or "", numhl = "LspDiagnosticsLineNrError" }
+sign { name = "DiagnosticSignWarn", text = (icons and " ") or "", numhl = "LspDiagnosticsLineNrWarning" }
+sign { name = "DiagnosticSignHint", text = (icons and " ") or "", numhl = "LspDiagnosticsLineNrHint" }
+sign { name = "DiagnosticSignInfo", text = (icons and " ") or "", numhl = "LspDiagnosticsLineNrInfo" }
 
 vim.api.nvim_create_autocmd("ColorScheme", {
     callback = function()
+        -- Highlight line numbers with diagnostics
         vim.api.nvim_set_hl(0, "LspDiagnosticsLineNrError", { link = "DiagnosticSignError" })
         vim.api.nvim_set_hl(0, "LspDiagnosticsLineNrWarning", { link = "DiagnosticSignWarn" })
         vim.api.nvim_set_hl(0, "LspDiagnosticsLineNrInformation", { link = "DiagnosticSignInfo" })
         vim.api.nvim_set_hl(0, "LspDiagnosticsLineNrHint", { link = "DiagnosticSignHint" })
 
+        -- Modern looking floating windows
         local normal_bg = vim.api.nvim_get_hl(0, { name = "Normal" }).bg
         local normal_fg = vim.api.nvim_get_hl(0, { name = "Comment" }).fg
         vim.api.nvim_set_hl(0, "NormalFloat", { bg = normal_bg })

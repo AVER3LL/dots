@@ -51,6 +51,7 @@ export EDITOR="$VISUAL"
 alias ls='lsd'
 alias cls='clear'
 alias l='ls'
+alias la='ls -a'
 alias ll='ls -alFh'
 alias v='nvim'
 alias nv='neovide'

@@ -1,4 +1,6 @@
-local bt = require("config.looks").border_type()
+local looks_found, looks = pcall(require, "config.looks")
+local bt = looks_found and looks.border_type() or "single"
+
 return {
     "akinsho/toggleterm.nvim",
     enabled = false,

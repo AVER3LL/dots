@@ -8,8 +8,6 @@ local function setup_tree()
     tree.setup {
         filters = {
             dotfiles = false,
-            git_clean = false,
-            no_buffer = false,
             custom = { "node_modules", "\\.cache", ".mypy_cache", "__pycache__" },
             exclude = {},
         },

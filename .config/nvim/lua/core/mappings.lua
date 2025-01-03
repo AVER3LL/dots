@@ -35,6 +35,11 @@ end, { desc = "Light Dark Toggle" })
 map("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, desc = "Move up" })
 map("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, desc = "Move down" })
 
+map("n", "<C-h>", "<C-w>h", { desc = "Move to left split" })
+map("n", "<C-j>", "<C-w>j", { desc = "Move to bottom split" })
+map("n", "<C-k>", "<C-w>k", { desc = "Move to top split" })
+map("n", "<C-l>", "<C-w>l", { desc = "Move to right split" })
+
 -- Indentation in Visual Mode
 map("v", "<", "<gv")
 map("v", ">", ">gv")
@@ -159,8 +164,12 @@ map("n", "<leader>u", "<cmd>UndotreeToggle<CR>", { desc = "Toggle undo tree" })
 map("n", "<leader>m", "<cmd>TSJToggle<CR>", { desc = "Join Toggle" })
 
 -- File Tree
-map("n", "<C-n>", "<cmd>NvimTreeToggle<CR>", { desc = "Nvimtree toggle window" })
-map("n", "<leader>e", "<cmd>NvimTreeFocus<CR>", { desc = "Nvimtree focus window" })
+-- map("n", "<C-n>", "<cmd>NvimTreeToggle<CR>", { desc = "Nvimtree toggle window" })
+-- map("n", "<leader>e", "<cmd>NvimTreeFocus<CR>", { desc = "Nvimtree focus window" })
+
+map("n", "<leader>e", "<cmd>Neotree source=filesystem reveal=true position=left<CR>", { desc = "Neotree toggle window" })
+map("n", "<C-n>", "<cmd>Neotree source=filesystem reveal=true position=left toggle=true<CR>", { desc = "Neotree focus window" })
+
 
 -- Telescope
 map("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Telescope find files" })
@@ -202,7 +211,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         map("n", "<leader>h", vim.lsp.buf.signature_help, opts "Show signature help")
         map("n", "<leader>k", vim.lsp.buf.hover, opts "Show documentation")
         map("n", "<leader>rn", vim.lsp.buf.rename, opts "Smart rename")
-        map("n", "<leader>D", vim.lsp.buf.type_definition, opts "Go to type definition")
+        -- map("n", "<leader>D", vim.lsp.buf.type_definition, opts "Go to type definition")
         map("n", "]d", vim.diagnostic.goto_next, opts "Go to next diagnostic")
         map("n", "[d", vim.diagnostic.goto_prev, opts "Go to previous diagnostic")
         map("n", "<leader>ds", vim.diagnostic.setloclist, opts "Show diagnostic loclist")
@@ -240,6 +249,7 @@ local run_commands = {
     rust = "rustc % && ./%:r",
     go = "go run %",
     sh = "bash %",
+    dart = "dart %",
 }
 
 function Terminal:send_command(cmd)

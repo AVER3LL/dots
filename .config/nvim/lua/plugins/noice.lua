@@ -70,7 +70,7 @@ return {
         opts = {
             stages = "static", -- Disables the animations
             timeout = 1500,
-            -- render = "wrapped-compact",
+            render = "wrapped-compact",
         },
     },
 
