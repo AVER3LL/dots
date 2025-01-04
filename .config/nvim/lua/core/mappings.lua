@@ -35,10 +35,10 @@ end, { desc = "Light Dark Toggle" })
 map("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, desc = "Move up" })
 map("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, desc = "Move down" })
 
-map("n", "<C-h>", "<C-w>h", { desc = "Move to left split" })
-map("n", "<C-j>", "<C-w>j", { desc = "Move to bottom split" })
-map("n", "<C-k>", "<C-w>k", { desc = "Move to top split" })
-map("n", "<C-l>", "<C-w>l", { desc = "Move to right split" })
+map("n", "<C-h>", "<cmd>TmuxNavigateLeft<cr>", { desc = "Move to left split" })
+map("n", "<C-j>", "<cmd>TmuxNavigateDown<cr>", { desc = "Move to bottom split" })
+map("n", "<C-k>", "<cmd>TmuxNavigateUp<cr>", { desc = "Move to top split" })
+map("n", "<C-l>", "<cmd>TmuxNavigateRight<cr>", { desc = "Move to right split" })
 
 -- Indentation in Visual Mode
 map("v", "<", "<gv")

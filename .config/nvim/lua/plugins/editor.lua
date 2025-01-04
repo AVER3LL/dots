@@ -66,17 +66,6 @@ return {
         opts = {
             check_ts = true,
             ts_config = { java = false },
-            fast_wrap = {
-                map = "<M-e>",
-                chars = { "{", "[", "(", '"', "'" },
-                pattern = string.gsub([[ [%'%"%)%>%]%)%}%,] ]], "%s+", ""),
-                offset = 0,
-                end_key = "$",
-                keys = "qwertyuiopzxcvbnmasdfghjkl",
-                check_comma = true,
-                highlight = "PmenuSel",
-                highlight_grey = "LineNr",
-            },
             disable_filetype = { "TelescopePrompt", "vim" },
         },
         config = function(_, opts)
@@ -131,13 +120,14 @@ return {
     -- Helps manage keymaps
     {
         "folke/which-key.nvim",
+        enabled = false,
         event = "VeryLazy",
         init = function()
             vim.o.timeout = true
         end,
         opts = {
             -- classic, modern, helix
-            preset = "helix",
+            preset = "classic",
         },
     },
 

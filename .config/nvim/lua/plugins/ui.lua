@@ -104,8 +104,8 @@ return {
     -- Lsp percentages and shit
     {
         "j-hui/fidget.nvim",
+        enabled = false,
         event = "LspAttach",
-        enabled = true,
         opts = {
             -- options
         },
@@ -149,7 +149,7 @@ return {
                 virtual_symbol_prefix = " ",
                 virtual_symbol_suffix = "",
                 exclude_buftypes = {},
-                exclude_filetypes = { "NvimTree", "TelescopePrompt", "TelescopeResults", "lazy", "mason" },
+                exclude_filetypes = { "NvimTree", "TelescopePrompt", "TelescopeResults", "lazy", "mason", "neo-tree" },
             }
         end,
     },

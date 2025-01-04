@@ -112,7 +112,12 @@ local servers = {
         },
     },
 
-    lua_ls = true,
+    -- lua_ls = true,
+    lua_ls = {
+        server_capabilities = {
+            semanticTokensProvider = vim.NIL,
+        },
+    },
 
     -- lua_ls = {
     --     settings = {
@@ -138,7 +143,6 @@ local servers = {
     --         },
     --     },
     -- },
-
 }
 
 return {
@@ -147,14 +151,12 @@ return {
     dependencies = {
         cmp_plugin,
         { "antosha417/nvim-lsp-file-operations", config = true },
+        { "Bilal2453/luvit-meta", lazy = true },
         {
             "folke/lazydev.nvim",
-            -- enabled = false,
             ft = "lua", -- only load on lua files
             opts = {
                 library = {
-                    -- See the configuration section for more details
-                    -- Load luvit types when the `vim.uv` word is found
                     { path = "${3rd}/luv/library", words = { "vim%.uv" } },
                 },
             },
@@ -162,10 +164,8 @@ return {
     },
     config = function()
         local on_init = require("config.lsp-requirements").on_init
-
-        local lspconfig = require "lspconfig"
-
         local capabilities = require("config.lsp-requirements").capabilities
+        local lspconfig = require "lspconfig"
 
         if vim.g.use_blink then
             capabilities = vim.tbl_deep_extend("force", capabilities, require("blink.cmp").get_lsp_capabilities())

@@ -66,6 +66,16 @@ return {
     },
 
     {
+        "christoomey/vim-tmux-navigator",
+        cmd = {
+            "TmuxNavigateLeft",
+            "TmuxNavigateDown",
+            "TmuxNavigateUp",
+            "TmuxNavigateRight",
+        },
+    },
+
+    {
         "m4xshen/hardtime.nvim",
         enabled = false,
         dependencies = { "MunifTanjim/nui.nvim" },

@@ -6,6 +6,7 @@ return {
         dependencies = {
             "nvim-lua/plenary.nvim",
             { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+            "nvim-telescope/telescope-ui-select.nvim",
             "nvim-tree/nvim-web-devicons",
         },
         config = function()
@@ -42,10 +43,9 @@ return {
                     set_env = { ["COLORTERM"] = "truecolor" },
                 },
                 extensions = {
-                    fzf = {
-                        fuzzy = true, -- Enable fuzzy searching
-                        override_generic_sorter = true, -- Use FZF for generic sorters
-                        override_file_sorter = true, -- Use FZF for file sorters
+                    fzf = {},
+                    ["ui-select"] = {
+                        require("telescope.themes").get_dropdown {},
                     },
                 },
                 pickers = {
@@ -68,11 +68,13 @@ return {
 
             -- telescope.load_extension "flutter"
             telescope.load_extension "fzf"
+            telescope.load_extension "ui-select"
         end,
     },
 
     {
         "ibhagwan/fzf-lua",
+        enabled = false,
         -- optional for icon support
         dependencies = { "nvim-tree/nvim-web-devicons" },
         config = function()

@@ -70,7 +70,10 @@ local function config_ts()
     }
 
     local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+    ---@diagnostic disable-next-line: inject-field
     parser_config.blade = {
+        tier = 0,
+
         install_info = {
             url = "https://github.com/EmranMR/tree-sitter-blade",
             files = { "src/parser.c" },

@@ -18,7 +18,7 @@ if signature then
 end
 
 -- don't auto comment new line
--- autocmd("BufEnter", { command = [[set formatoptions-=cro]] })
+autocmd("BufEnter", { command = [[set formatoptions-=cro]] })
 
 --Highlight when yanking (copying) text
 autocmd("TextYankPost", {
@@ -31,7 +31,54 @@ autocmd("TextYankPost", {
     end,
 })
 
--- vim.api.nvim_create_autocmd("ColorScheme", {
+autocmd("ColorScheme", {
+    callback = function()
+        -- Highlight line numbers with diagnostics
+        vim.api.nvim_set_hl(0, "LspDiagnosticsLineNrError", { link = "DiagnosticSignError" })
+        vim.api.nvim_set_hl(0, "LspDiagnosticsLineNrWarning", { link = "DiagnosticSignWarn" })
+        vim.api.nvim_set_hl(0, "LspDiagnosticsLineNrInformation", { link = "DiagnosticSignInfo" })
+        vim.api.nvim_set_hl(0, "LspDiagnosticsLineNrHint", { link = "DiagnosticSignHint" })
+
+        -- Modern looking floating windows
+        local normal_bg = vim.api.nvim_get_hl(0, { name = "Normal" }).bg
+        local normal_fg = vim.api.nvim_get_hl(0, { name = "Comment" }).fg
+        vim.api.nvim_set_hl(0, "LspInfoBorder", { bg = normal_bg })
+        vim.api.nvim_set_hl(0, "NormalFloat", { bg = normal_bg })
+        vim.api.nvim_set_hl(0, "FloatBorder", { fg = normal_fg, bg = normal_bg })
+
+        -- vim.api.nvim_set_hl(0, "FloatBorder", { link = "Normal" })
+        -- vim.api.nvim_set_hl(0, "LspInfoBorder", { link = "Normal" })
+        -- vim.api.nvim_set_hl(0, "NormalFloat", { link = "Normal" })
+
+        vim.cmd "highlight Winbar guibg=none"
+    end,
+})
+
+-- close some filetypes with <q>
+autocmd("FileType", {
+    group = vim.api.nvim_create_augroup("close_with_q", { clear = true }),
+    pattern = {
+        "PlenaryTestPopup",
+        "help",
+        "lspinfo",
+        "man",
+        "notify",
+        "qf",
+        "spectre_panel",
+        "startuptime",
+        "tsplayground",
+        "neotest-output",
+        "checkhealth",
+        "neotest-summary",
+        "neotest-output-panel",
+    },
+    callback = function(event)
+        vim.bo[event.buf].buflisted = false
+        vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
+    end,
+})
+
+-- autocmd("ColorScheme", {
 --     callback = function()
 --         vim.api.nvim_set_hl(0, "RainbowDelimiterRed", { fg = "#E29B1F" })
 --         vim.api.nvim_set_hl(0, "RainbowDelimiterYellow", { fg = "#D46EC6" })

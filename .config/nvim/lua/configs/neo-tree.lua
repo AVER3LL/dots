@@ -9,6 +9,32 @@ local function setup_tree()
         close_if_last_window = true,
         hide_root_node = true, -- Hide the root node.
         retain_hidden_root_indent = true, -- IF the root node is hidden, keep the indentation anyhow.
+        sort_case_insensitive = true,
+        default_component_configs = {
+            indent = {
+                with_markers = true,
+                with_expanders = true,
+            },
+            modified = {
+                symbol = " ",
+                highlight = "NeoTreeModified",
+            },
+            git_status = {
+                symbols = {
+                    -- Change type
+                    added = "",
+                    deleted = "",
+                    modified = "",
+                    renamed = "",
+                    -- Status type
+                    untracked = "",
+                    ignored = "",
+                    unstaged = "",
+                    staged = "",
+                    conflict = "",
+                },
+            },
+        },
         filesystem = {
             filtered_items = {
                 visible = true,

@@ -1,26 +1,5 @@
 return {
 
-    { -- base-16
-        "RRethy/base16-nvim",
-        priority = 1000,
-        enabled = false,
-    },
-
-    {
-        "bettervim/yugen.nvim",
-        enabled = false,
-        config = function()
-            -- vim.cmd.colorscheme "yugen"
-        end,
-    },
-
-    { -- neofusion
-        "diegoulloao/neofusion.nvim",
-        enabled = false,
-        priority = 1000,
-        config = true,
-    },
-
     { -- eldritch
         "eldritch-theme/eldritch.nvim",
         -- enabled = false,
@@ -29,10 +8,9 @@ return {
         opts = {},
     },
 
-    { -- gruvbox-minor
-        "ricardoraposo/gruvbox-minor.nvim",
+    {
+        "navarasu/onedark.nvim",
         enabled = false,
-        lazy = false,
         priority = 1000,
         opts = {},
     },
@@ -43,8 +21,8 @@ return {
         priority = 1000,
         opts = {},
         config = function()
-            local colors = require "ayu.colors"
-            colors.generate(true)
+            -- local colors = require "ayu.colors"
+            -- colors.generate(true)
             require("ayu").setup {
                 mirage = true,
                 terminal = false,
@@ -52,25 +30,6 @@ return {
                     CursorLineNr = { bg = "None" },
                 },
             }
-        end,
-    },
-
-    { -- tokyodark
-        "tiagovla/tokyodark.nvim",
-        enabled = false,
-        opts = {
-            transparent_background = false, -- set background to transparent
-            styles = {
-                comments = { italic = true }, -- style for comments
-                keywords = { italic = true }, -- style for keywords
-                identifiers = { italic = true }, -- style for identifiers
-                functions = {}, -- style for functions
-                variables = {}, -- style for variables
-            },
-        },
-        priority = 1000,
-        config = function(_, opts)
-            require("tokyodark").setup(opts) -- calling setup is optional
         end,
     },
 
@@ -158,16 +117,6 @@ return {
         config = function()
             -- vim.g.everforest_better_performance = 1
             vim.g.everforest_transparent_background = 0
-        end,
-    },
-
-    { --edge
-        "sainnhe/edge",
-        enabled = false,
-        priority = 1000,
-        config = function()
-            vim.g.edge_inlay_hints_background = "dimmed"
-            vim.g.edge_style = "neon"
         end,
     },
 
@@ -614,7 +563,6 @@ return {
         name = "vscode-theme",
         priority = 1000,
         config = function()
-            local c = require("vscode.colors").get_colors()
             require("vscode").setup {
                 disable_nvimtree_bg = true,
                 transparent = false,

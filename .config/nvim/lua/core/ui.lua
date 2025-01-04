@@ -45,34 +45,23 @@ sign { name = "DiagnosticSignWarn", text = (icons and " ") or "", numhl = "Ls
 sign { name = "DiagnosticSignHint", text = (icons and " ") or "", numhl = "LspDiagnosticsLineNrHint" }
 sign { name = "DiagnosticSignInfo", text = (icons and " ") or "", numhl = "LspDiagnosticsLineNrInfo" }
 
-vim.api.nvim_create_autocmd("ColorScheme", {
-    callback = function()
-        -- Highlight line numbers with diagnostics
-        vim.api.nvim_set_hl(0, "LspDiagnosticsLineNrError", { link = "DiagnosticSignError" })
-        vim.api.nvim_set_hl(0, "LspDiagnosticsLineNrWarning", { link = "DiagnosticSignWarn" })
-        vim.api.nvim_set_hl(0, "LspDiagnosticsLineNrInformation", { link = "DiagnosticSignInfo" })
-        vim.api.nvim_set_hl(0, "LspDiagnosticsLineNrHint", { link = "DiagnosticSignHint" })
-
-        -- Modern looking floating windows
-        local normal_bg = vim.api.nvim_get_hl(0, { name = "Normal" }).bg
-        local normal_fg = vim.api.nvim_get_hl(0, { name = "Comment" }).fg
-        vim.api.nvim_set_hl(0, "NormalFloat", { bg = normal_bg })
-        vim.api.nvim_set_hl(0, "FloatBorder", { fg = normal_fg, bg = normal_bg })
-    end,
-})
-
 -- effects of lsp diagnostic texts
 vim.diagnostic.config {
-    virtual_text = {
-        prefix = "",
-        spacing = 4,
-    },
+    -- virtual_text = {
+    --     prefix = "",
+    --     spacing = 4,
+    -- },
     -- virtual_text = false,
+    title = false,
+    virtual_text = true,
+    signs = true,
+    update_in_insert = false,
     severity_sort = true,
     underline = true,
     float = {
         border = borderType,
         source = "if_many",
+        style = "minimal",
         header = "",
         prefix = "",
     },

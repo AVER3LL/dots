@@ -56,7 +56,6 @@ return {
             "hrsh7th/cmp-buffer", -- source for text in buffer
             "hrsh7th/cmp-path", -- source for file system paths
             "hrsh7th/cmp-nvim-lsp", -- source for lsp
-            -- "hrsh7th/cmp-emoji", -- 😄
             "saadparwaiz1/cmp_luasnip", -- for autocompletion
             "rafamadriz/friendly-snippets", -- useful snippets
 
@@ -73,57 +72,26 @@ return {
                 end,
             },
 
-            {
-                "onsails/lspkind.nvim",
-                config = function()
-                    require("lspkind").init {
-                        preset = "codicons",
-                        symbol_map = symbol_map,
-                    }
-                end,
-            }, -- vs-code like pictograms
+            -- {
+            --     "onsails/lspkind.nvim",
+            --     config = function()
+            --         require("lspkind").init {
+            --             preset = "codicons",
+            --             symbol_map = symbol_map,
+            --         }
+            --     end,
+            -- }, -- vs-code like pictograms
 
             {
                 "L3MON4D3/LuaSnip",
                 dependencies = "rafamadriz/friendly-snippets",
                 opts = { history = true, updateevents = "TextChanged,TextChangedI" },
-                -- follow latest release.
-                version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
-                -- install jsregexp (optional!).
-                build = "make install_jsregexp",
-                config = function(_, opts)
-                    require("luasnip").config.set_config(opts)
-                    -- vscode format
-                    require("luasnip.loaders.from_vscode").lazy_load { exclude = vim.g.vscode_snippets_exclude or {} }
-                    require("luasnip.loaders.from_vscode").lazy_load { paths = vim.g.vscode_snippets_path or "" }
-
-                    -- snipmate format
-                    require("luasnip.loaders.from_snipmate").load()
-                    require("luasnip.loaders.from_snipmate").lazy_load { paths = vim.g.snipmate_snippets_path or "" }
-
-                    -- lua format
-                    require("luasnip.loaders.from_lua").load()
-                    require("luasnip.loaders.from_lua").lazy_load { paths = vim.g.lua_snippets_path or "" }
-
-                    vim.api.nvim_create_autocmd("InsertLeave", {
-                        callback = function()
-                            if
-                                require("luasnip").session.current_nodes[vim.api.nvim_get_current_buf()]
-                                and not require("luasnip").session.jump_active
-                            then
-                                require("luasnip").unlink_current()
-                            end
-                        end,
-                    })
-                end,
             },
         },
         config = function()
             local cmp = require "cmp"
-
             local luasnip = require "luasnip"
-
-            local lspkind = require "lspkind"
+            -- local lspkind = require "lspkind"
 
             -- loads vscode style snippets from installed plugins (e.g. friendly-snippets)
             require("luasnip.loaders.from_vscode").lazy_load()
@@ -152,13 +120,16 @@ return {
                 },
 
                 mapping = cmp.mapping.preset.insert {
-                    ["<C-k>"] = cmp.mapping(function(fallback)
-                        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Up>", true, true, true), "i", true)
-                    end, { "i", "s" }),
+                    -- ["<C-k>"] = cmp.mapping(function(fallback)
+                    --     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Up>", true, true, true), "i", true)
+                    -- end, { "i", "s" }),
 
-                    ["<C-j>"] = cmp.mapping(function(fallback)
-                        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Down>", true, true, true), "i", true)
-                    end, { "i", "s" }),
+                    ["<C-j>"] = cmp.mapping.select_next_item(),
+                    ["<C-k>"] = cmp.mapping.select_prev_item(),
+
+                    -- ["<C-j>"] = cmp.mapping(function(fallback)
+                    --     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Down>", true, true, true), "i", true)
+                    -- end, { "i", "s" }),
 
                     ["<C-b>"] = cmp.mapping.scroll_docs(-4),
                     ["<C-f>"] = cmp.mapping.scroll_docs(4),
@@ -193,6 +164,11 @@ return {
 
                 -- sources for autocompletion
                 sources = cmp.config.sources {
+                    {
+                        name = "lazydev",
+                        -- set group index to 0 to skip loading LuaLS completions as lazydev recommends it
+                        group_index = 0,
+                    },
                     { name = "nvim_lsp", priority = 1000 }, -- lsp
                     { name = "luasnip", priority = 850 }, -- snippets
                     { name = "buffer", priority = 750 }, -- text within current buffer
@@ -225,16 +201,15 @@ return {
                         item.menu = ""
 
                         -- Combine icon with source name
-                        --
-                        -- local source = entry.source.name
-                        -- item.menu = string.format("%s %s", menu_icon[source] or "", source)
-                        --
-                        -- if source == "nvim_lsp" then
-                        --     local client_name = entry.source.source.client.name
-                        --     item.menu = string.format("%s %s", menu_icon[source] or "", client_name)
-                        -- else
-                        --     item.menu = string.format("%s %s", menu_icon[source] or "", source)
-                        -- end
+                        local source = entry.source.name
+                        item.menu = string.format("%s %s", menu_icon[source] or "", source)
+
+                        if source == "nvim_lsp" then
+                            local client_name = entry.source.source.client.name
+                            item.menu = string.format("%s %s", menu_icon[source] or "", client_name)
+                        else
+                            item.menu = string.format("%s %s", menu_icon[source] or "", source)
+                        end
 
                         return item
                     end,
@@ -251,12 +226,6 @@ return {
                     { name = "buffer" },
                 },
             })
-
-            -- cmp.setup.filetype({ "markdown" }, {
-            --     sources = {
-            --         { name = "render-markdown" },
-            --     },
-            -- })
         end,
     },
 

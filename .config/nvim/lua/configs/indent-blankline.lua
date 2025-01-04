@@ -33,10 +33,10 @@ local function setup_ibl()
                 "prompt",
             },
         },
-        -- indent = { char = "│" },
-        -- scope = { char = "│", show_start = false, show_end = false },
-        indent = { char = "┊" },
-        scope = { char = "┊", show_start = false, show_end = false },
+        indent = { char = "│" },
+        scope = { char = "│", show_start = false, show_end = false },
+        -- indent = { char = "┊" },
+        -- scope = { char = "┊", show_start = false, show_end = false },
     }
 end
 
