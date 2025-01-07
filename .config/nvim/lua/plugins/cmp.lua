@@ -124,8 +124,8 @@ return {
                     --     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Up>", true, true, true), "i", true)
                     -- end, { "i", "s" }),
 
-                    ["<C-j>"] = cmp.mapping.select_next_item(),
-                    ["<C-k>"] = cmp.mapping.select_prev_item(),
+                    ["<C-j>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Select },
+                    ["<C-k>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Select },
 
                     -- ["<C-j>"] = cmp.mapping(function(fallback)
                     --     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Down>", true, true, true), "i", true)
@@ -201,15 +201,15 @@ return {
                         item.menu = ""
 
                         -- Combine icon with source name
-                        local source = entry.source.name
-                        item.menu = string.format("%s %s", menu_icon[source] or "", source)
-
-                        if source == "nvim_lsp" then
-                            local client_name = entry.source.source.client.name
-                            item.menu = string.format("%s %s", menu_icon[source] or "", client_name)
-                        else
-                            item.menu = string.format("%s %s", menu_icon[source] or "", source)
-                        end
+                        -- local source = entry.source.name
+                        -- item.menu = string.format("%s %s", menu_icon[source] or "", source)
+                        --
+                        -- if source == "nvim_lsp" then
+                        --     local client_name = entry.source.source.client.name
+                        --     item.menu = string.format("%s %s", menu_icon[source] or "", client_name)
+                        -- else
+                        --     item.menu = string.format("%s %s", menu_icon[source] or "", source)
+                        -- end
 
                         return item
                     end,
@@ -269,21 +269,39 @@ return {
             appearance = {
                 use_nvim_cmp_as_default = true,
                 nerd_font_variant = "mono",
+                kind_icons = symbol_map,
+            },
+
+            signature = {
+                enabled = false,
             },
 
             completion = {
                 menu = {
                     border = bt,
                     winhighlight = "Normal:CmpPmenu,Search:None,FloatBorder:CmpBorder",
+                    scrollbar = false,
+                    winblend = vim.o.pumblend,
                 },
                 documentation = {
-                    window = { border = bt, winhighlight = "Normal:CmpDoc,FloatBorder:CmpDocBorder" },
+                    auto_show = true,
+                    auto_show_delay_ms = 50,
+                    window = {
+                        border = bt,
+                        scrollbar = false,
+                        max_width = 100,
+                        winhighlight = "Normal:CmpDoc,FloatBorder:CmpDocBorder",
+                        winblend = vim.o.pumblend,
+                    },
                 },
             },
 
             sources = {
                 default = { "lsp", "path", "snippets", "buffer" },
                 cmdline = {},
+                per_filetype = {
+                    -- sql = { "vim-dadbod-completion", "buffer" },
+                },
             },
         },
         opts_extend = { "sources.default" },

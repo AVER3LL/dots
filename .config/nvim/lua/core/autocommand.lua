@@ -1,3 +1,12 @@
+require("config.autoclose").setup {
+    ignore_filetypes = {
+        "TelescopePrompt",
+        "vim",
+        "NvimTree",
+        "markdown",
+    },
+}
+
 local autocmd = vim.api.nvim_create_autocmd
 
 local signature = true
@@ -46,11 +55,14 @@ autocmd("ColorScheme", {
         vim.api.nvim_set_hl(0, "NormalFloat", { bg = normal_bg })
         vim.api.nvim_set_hl(0, "FloatBorder", { fg = normal_fg, bg = normal_bg })
 
+        -- Remove CursorLineNr bg
+        vim.api.nvim_set_hl(0, "CursorLineNr", { bg = normal_bg })
+
         -- vim.api.nvim_set_hl(0, "FloatBorder", { link = "Normal" })
         -- vim.api.nvim_set_hl(0, "LspInfoBorder", { link = "Normal" })
         -- vim.api.nvim_set_hl(0, "NormalFloat", { link = "Normal" })
 
-        vim.cmd "highlight Winbar guibg=none"
+        -- vim.cmd "highlight Winbar guibg=none"
     end,
 })
 

@@ -167,7 +167,8 @@ local function setup_alpha()
         ),
         dashboard.button("SPC f f", "󰱼   Find File", "<cmd>Telescope find_files<CR>"),
         dashboard.button("SPC f w", "   Find Word", "<cmd>Telescope live_grep<CR>"),
-        dashboard.button("SPC w r", "󰁯   Restore Session", "<cmd>SessionRestore<CR>"),
+        -- dashboard.button("SPC w r", "󰁯   Restore Session", "<cmd>SessionRestore<CR>"),
+        dashboard.button("SPC w r", "󰁯   Restore Session", "<cmd>lua require('persistence').load() <CR>"),
         dashboard.button("c", "  Configuration", ":cd ~/.config/nvim | NvimTreeToggle<CR>"),
         dashboard.button("q", "   Quit NVIM", "<cmd>qa<CR>"),
     }

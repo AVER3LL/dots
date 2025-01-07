@@ -9,10 +9,33 @@ return {
     },
 
     {
-        "navarasu/onedark.nvim",
+        "RRethy/base16-nvim",
         enabled = false,
+        lazy = false,
+        priority = 1000,
+    },
+
+    { -- everblush
+        "Everblush/nvim",
+        name = "everblush",
+        priority = 1000,
+        opts = {
+            transparent_background = false,
+        },
+    },
+
+    { -- palenightfall
+        "JoosepAlviste/palenightfall.nvim",
         priority = 1000,
         opts = {},
+    },
+
+    { -- solarized-osaka
+        "craftzdog/solarized-osaka.nvim",
+        priority = 1000,
+        opts = {
+            transparent = false,
+        },
     },
 
     { -- ayu
@@ -56,9 +79,6 @@ return {
             overrides = function(colors)
                 local theme = colors.theme
                 return {
-                    -- CursorLine = { bg = bit_lighter_than_bg },
-                    -- ColorColumn = { bg = bit_lighter_than_bg },
-                    -- CursorLineNr = { fg = theme.ui.float.fg },
 
                     NormalFloat = { bg = "none" },
                     FloatBorder = { bg = "none" },

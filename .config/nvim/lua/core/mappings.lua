@@ -122,7 +122,7 @@ map("n", "<leader>cba", "<cmd>BufferLineCloseOthers<CR>", {
 
 map("n", "&", "<cmd>BufferLineGoToBuffer 1<cr>")
 map("n", "é", "<cmd>BufferLineGoToBuffer 2<cr>")
-map("n", "\"", "<cmd>BufferLineGoToBuffer 3<cr>")
+map("n", '"', "<cmd>BufferLineGoToBuffer 3<cr>")
 -- map("n", "'", "<cmd>BufferLineGoToBuffer 4<cr>")
 -- map("n", "(", "<cmd>BufferLineGoToBuffer 5<cr>")
 -- map("n", "-", "<cmd>BufferLineGoToBuffer 6<cr>")
@@ -207,8 +207,8 @@ map("n", "<leader>th", "<cmd>Telescope colorscheme<CR>", { desc = "Telescope col
 map("n", "<leader>fy", ":Yazi toggle<cr>", { desc = "Open yazi" })
 
 -- Session Management
-map("n", "<leader>ws", "<cmd>SessionSave<CR>", { desc = "Save session" })
-map("n", "<leader>wr", "<cmd>SessionRestore<CR>", { desc = "Restore session" })
+-- map("n", "<leader>ws", "<cmd>SessionSave<CR>", { desc = "Save session" })
+-- map("n", "<leader>wr", "<cmd>SessionRestore<CR>", { desc = "Restore session" })
 
 -- Debugger
 map("n", "<leader>db", "<cmd>lua require'dap'.toggle_breakpoint()<CR>", { desc = "Toggle breakpoint" })

@@ -59,9 +59,16 @@ return {
         end,
     },
 
+    -- {
+    --     "m4xshen/autoclose.nvim",
+    --     event = "InsertEnter",
+    --     opts = {},
+    -- },
+
     -- Automatically closes brackets
     {
         "windwp/nvim-autopairs",
+        enabled = false,
         event = "InsertEnter",
         opts = {
             check_ts = true,
@@ -120,7 +127,6 @@ return {
     -- Helps manage keymaps
     {
         "folke/which-key.nvim",
-        enabled = false,
         event = "VeryLazy",
         init = function()
             vim.o.timeout = true

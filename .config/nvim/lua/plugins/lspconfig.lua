@@ -48,28 +48,29 @@ local servers = {
     -- ts_ls = true,
 
     ts_ls = {
-        javascript = {
-            inlayHints = {
-                includeInlayEnumMemberValueHints = true,
-                includeInlayFunctionLikeReturnTypeHints = true,
-                includeInlayPropertyDeclarationTypeHints = true,
-                includeInlayVariableTypeHintsWhenTypeMatchesName = true,
-                includeInlayVariableTypeHints = true,
-                includeInlayFunctionParameterTypeHints = true,
-                includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-                includeInlayParameterNameHints = "all",
+        single_file_support = true,
+        settings = {
+            typescript = {
+                inlayHints = {
+                    includeInlayParameterNameHints = "literal",
+                    includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                    includeInlayFunctionParameterTypeHints = true,
+                    includeInlayVariableTypeHints = false,
+                    includeInlayPropertyDeclarationTypeHints = true,
+                    includeInlayFunctionLikeReturnTypeHints = true,
+                    includeInlayEnumMemberValueHints = true,
+                },
             },
-        },
-        typescript = {
-            inlayHints = {
-                includeInlayEnumMemberValueHints = true,
-                includeInlayFunctionLikeReturnTypeHints = true,
-                includeInlayPropertyDeclarationTypeHints = true,
-                includeInlayVariableTypeHintsWhenTypeMatchesName = true,
-                includeInlayVariableTypeHints = true,
-                includeInlayFunctionParameterTypeHints = true,
-                includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-                includeInlayParameterNameHints = "all",
+            javascript = {
+                inlayHints = {
+                    includeInlayParameterNameHints = "all",
+                    includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                    includeInlayFunctionParameterTypeHints = true,
+                    includeInlayVariableTypeHints = true,
+                    includeInlayPropertyDeclarationTypeHints = true,
+                    includeInlayFunctionLikeReturnTypeHints = true,
+                    includeInlayEnumMemberValueHints = true,
+                },
             },
         },
     },
@@ -112,12 +113,7 @@ local servers = {
         },
     },
 
-    -- lua_ls = true,
-    lua_ls = {
-        server_capabilities = {
-            semanticTokensProvider = vim.NIL,
-        },
-    },
+    lua_ls = true,
 
     -- lua_ls = {
     --     settings = {
@@ -157,7 +153,8 @@ return {
             ft = "lua", -- only load on lua files
             opts = {
                 library = {
-                    { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+                    -- { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+                    { path = "luvit-meta/library", words = { "vim%.uv" } },
                 },
             },
         },

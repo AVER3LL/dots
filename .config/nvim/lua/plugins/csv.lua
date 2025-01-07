@@ -1,5 +1,6 @@
 return {
     "theKnightsOfRohan/csvlens.nvim",
+    enabled = false,
     ft = { "cvs" },
     cmd = { "Csvlens" },
     dependencies = {
