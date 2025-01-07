@@ -3,8 +3,9 @@ decorations = "none"
 opacity = 1
 
 [font]
-normal = { family = "JetBrainsMono Nerd Font" }
+normal = { family = "JetBrainsMono NF" }
 size = 15
+offset.y = 5
 
 [general]
 import = [

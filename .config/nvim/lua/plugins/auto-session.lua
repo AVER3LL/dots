@@ -1,7 +1,6 @@
 return {
     {
         "rmagatti/auto-session",
-        enabled = false,
         -- event = "VeryLazy",
         config = function()
             local auto_session = require "auto-session"
@@ -14,6 +13,7 @@ return {
     },
     {
         "folke/persistence.nvim",
+        enabled = false,
         event = "BufReadPre", -- this will only start session saving when an actual file was opened
         config = function()
             require("persistence").setup()
