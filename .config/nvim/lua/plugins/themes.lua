@@ -15,6 +15,12 @@ return {
         priority = 1000,
     },
 
+    {
+        "dasupradyumna/midnight.nvim",
+        lazy = false,
+        priority = 1000,
+    },
+
     { -- everblush
         "Everblush/nvim",
         name = "everblush",
@@ -635,7 +641,7 @@ return {
 
     { --cyberdream
         "scottmckendry/cyberdream.nvim",
-        enabled = false,
+        -- enabled = false,
         priority = 1000,
         lazy = false,
         opts = function(_, opts)

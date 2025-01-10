@@ -327,10 +327,10 @@
 
   "hyprland/window": {
     // "icon": true, // Not so needed now that I have the taskbar
-    // "format": "{initialTitle}",
     "format": "{class}",
     "max-length": 20,
     "rewrite": {
+      "com.mitchellh.ghostty": "Ghostty",
       "kitty": "Terminal",
       "^feh (.*)": "Image viewer",
       "Spotify Free": "Spotify",

@@ -41,11 +41,44 @@ return {
     -- indentation marks
     {
         "lukas-reineke/indent-blankline.nvim",
-        -- enabled = false,
+        enabled = false,
         event = { "BufReadPre", "BufNewFile" },
         main = "ibl",
         config = function()
             return require "configs.indent-blankline"
+        end,
+    },
+
+    {
+        "shellRaining/hlchunk.nvim",
+        -- enabled = false,
+        event = { "BufReadPre", "BufNewFile" },
+        config = function()
+            local squared_chars = {
+                horizontal_line = "─",
+                vertical_line = "│",
+                left_top = "┌",
+                left_bottom = "└",
+                right_arrow = "─",
+            }
+            local rounded_chars = {
+                horizontal_line = "─",
+                vertical_line = "│",
+                left_top = "╭",
+                left_bottom = "╰",
+                right_arrow = ">",
+            }
+            require("hlchunk").setup {
+                chunk = {
+                    enable = true,
+                    delay = 0,
+                    error_sign = false,
+                    -- chars = require("config.looks").border_type() == "rounded" and rounded_chars or squared_chars,
+                },
+                indent = { enable = true },
+                line_num = { enable = false },
+                blank = { enable = false },
+            }
         end,
     },
 

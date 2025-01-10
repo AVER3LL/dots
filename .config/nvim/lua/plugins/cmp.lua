@@ -143,7 +143,8 @@ return {
 
                     ["<Tab>"] = cmp.mapping(function(fallback)
                         if cmp.visible() then
-                            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Down>", true, true, true), "i", true)
+                            -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Down>", true, true, true), "i", true)
+                            cmp.select_next_item { behavior = cmp.SelectBehavior.Select }
                         elseif luasnip.locally_jumpable(1) then
                             luasnip.jump(1)
                         else
@@ -153,7 +154,8 @@ return {
 
                     ["<S-Tab>"] = cmp.mapping(function(fallback)
                         if cmp.visible() then
-                            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Up>", true, true, true), "i", true)
+                            -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Up>", true, true, true), "i", true)
+                            cmp.select_prev_item { behavior = cmp.SelectBehavior.Select }
                         elseif luasnip.locally_jumpable(-1) then
                             luasnip.jump(-1)
                         else
