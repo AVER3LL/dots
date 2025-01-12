@@ -87,20 +87,20 @@ youtube() {
     (nohup xdg-open "https://www.youtube.com/results?search_query=$search_query" >/dev/null 2>&1 &)
 }
 
-open() {
-    if [ $# -eq 0 ]; then
-        echo "Usage: open [filename/directory]"
-        return 1
-    fi
-
-    for file in "$@"; do
-        if [ ! -e "$file" ]; then
-            echo "Error: '$file' does not exist"
-            continue
-        fi
-        (nohup xdg-open "$file" >/dev/null 2>&1 &)
-    done
-}
+# open() {
+#     if [ $# -eq 0 ]; then
+#         echo "Usage: open [filename/directory]"
+#         return 1
+#     fi
+#
+#     for file in "$@"; do
+#         if [ ! -e "$file" ]; then
+#             echo "Error: '$file' does not exist"
+#             continue
+#         fi
+#         (nohup xdg-open "$file" >/dev/null 2>&1 &)
+#     done
+# }
 
 # # ex = EXtractor for all kinds of archives
 # # usage: ex <file>
@@ -205,6 +205,9 @@ zi() {
         zle reset-prompt
     fi
 }
+
+if [ "$TMUX" = "" ]; then tmux; fi
+
 zle -N zi
 bindkey "^f" zi
 eval "$(starship init zsh)"

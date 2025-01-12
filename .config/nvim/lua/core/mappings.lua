@@ -83,10 +83,10 @@ map("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" })
 map("n", "<leader><leader>n", "<cmd>NoNeckPain<CR>", { desc = "Center windows" })
 
 -- Split Resizing
-map("n", "<C-A-k>", "<C-W>+", { desc = "Split increase height" })
-map("n", "<C-A-j>", "<C-W>-", { desc = "Split decrease height" })
-map("n", "<C-A-l>", "<C-W><", { desc = "Split decrease width" })
-map("n", "<C-A-h>", "<C-W>>", { desc = "Split increase width" })
+map("n", "<C-Up>", "<C-W>+", { desc = "Split increase height" })
+map("n", "<C-Down>", "<C-W>-", { desc = "Split decrease height" })
+map("n", "<C-Right>", "<C-W><", { desc = "Split decrease width" })
+map("n", "<C-Left>", "<C-W>>", { desc = "Split increase width" })
 
 -- Git Commands
 map("n", "<leader>gb", ":Gitsigns blame_line<CR>", { desc = "Blame the current line" })
