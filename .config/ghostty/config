@@ -1,5 +1,6 @@
 # Font
 font-family = "JetBrainsMono NF"
+# font-family = "DankMono Nerd Font"
 # font-family = "FiraCode Nerd Font"
 # font-family = "FantasqueSansM Nerd Font"
 font-size = 15
@@ -14,13 +15,14 @@ adw-toolbar-style = flat
 window-theme = ghostty
 
 # Colors
-theme = GruvboxDarkHard
-background = 1C2021
+# theme = GruvboxDarkHard
+# background = 1C2021
+theme = tokyonight_night
 
 window-padding-balance = true
 window-decoration = false
 
-adjust-cell-height = 35%
+adjust-cell-height = 20%
 shell-integration-features = no-cursor,sudo,no-title
 confirm-close-surface = false
 

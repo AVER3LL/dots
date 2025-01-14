@@ -54,6 +54,7 @@ local function setup_tree()
         },
         window = {
             position = "left",
+            auto_expand_width = false,
             width = 30,
             mappings = {
                 ["l"] = "open",
