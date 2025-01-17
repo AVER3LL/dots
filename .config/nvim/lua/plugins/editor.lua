@@ -59,16 +59,10 @@ return {
         end,
     },
 
-    -- {
-    --     "m4xshen/autoclose.nvim",
-    --     event = "InsertEnter",
-    --     opts = {},
-    -- },
-
     -- Automatically closes brackets
     {
         "windwp/nvim-autopairs",
-        -- enabled = false,
+        enabled = false,
         event = "InsertEnter",
         opts = {
             check_ts = true,
@@ -185,6 +179,7 @@ return {
             require("configs.mini-ai").setup()
             require("mini.surround").setup()
             require("mini.trailspace").setup()
+            require("mini.pairs").setup()
             -- if not vim.g.neovide then
             --     require("mini.animate").setup {}
             -- end

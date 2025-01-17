@@ -18,7 +18,7 @@ if signature then
 end
 
 -- don't auto comment new line
-autocmd("BufEnter", { command = [[set formatoptions-=cro]] })
+-- autocmd("BufEnter", { command = [[set formatoptions-=cro]] })
 
 --Highlight when yanking (copying) text
 autocmd("TextYankPost", {

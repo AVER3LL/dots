@@ -7,7 +7,7 @@ return {
             require("nvim-treesitter.configs").setup {
                 textobjects = {
                     select = {
-                        enable = true,
+                        enable = false,
 
                         lookahead = true,
 
@@ -17,7 +17,7 @@ return {
                         },
                     },
                     move = {
-                        enable = true,
+                        enable = false,
                         set_jumps = true,
                         goto_next_start = {
                             ["]f"] = { query = "@function.outer", desc = "Next function start" },

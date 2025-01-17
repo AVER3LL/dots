@@ -2,6 +2,7 @@ return {
 
     {
         "karb94/neoscroll.nvim",
+        enabled = not vim.g.neovide,
         keys = { "<C-d>", "<C-u>", "<C-e>", "<C-y>", "zz" },
         config = function()
             require("neoscroll").setup {

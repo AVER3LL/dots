@@ -22,7 +22,7 @@ function M.setup()
             f = ai.gen_spec.treesitter { a = "@function.outer", i = "@function.inner" },
             a = ai.gen_spec.treesitter { a = "@parameter.outer", i = "@parameter.inner" },
             i = ai.gen_spec.treesitter { a = "@conditional.outer", i = "@conditional.inner" },
-            -- l = ai.gen_spec.treesitter { a = "@loop.outer", i = "@loop.inner" },
+            l = ai.gen_spec.treesitter { a = "@loop.outer", i = "@loop.inner" },
             c = ai.gen_spec.treesitter { a = "@class.outer", i = "@class.inner" },
             -- The tag specification might need adjustment
             d = { "%f[%d]%d+" }, -- digits

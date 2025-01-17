@@ -2,6 +2,7 @@ return {
 
     {
         "mfussenegger/nvim-dap",
+        lazy = true,
         dependencies = {
             "rcarriga/nvim-dap-ui",
             "theHamsta/nvim-dap-virtual-text",
@@ -10,6 +11,7 @@ return {
         config = function()
             local dap = require "dap"
             local dapui = require "dapui"
+            ---@diagnostic disable-next-line: missing-fields
             require("nvim-dap-virtual-text").setup {
                 -- This just tries to mitigate the chance that I leak tokens here. Probably won't stop it from happening...
                 display_callback = function(variable)

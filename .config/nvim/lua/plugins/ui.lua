@@ -51,7 +51,7 @@ return {
 
     {
         "shellRaining/hlchunk.nvim",
-        -- enabled = false,
+        enabled = vim.g.show_indent,
         event = { "BufReadPre", "BufNewFile" },
         config = function()
             local squared_chars = {
@@ -73,7 +73,7 @@ return {
                     enable = true,
                     delay = 0,
                     error_sign = false,
-                    -- chars = require("config.looks").border_type() == "rounded" and rounded_chars or squared_chars,
+                    chars = require("config.looks").border_type() == "rounded" and rounded_chars or squared_chars,
                 },
                 indent = { enable = true },
                 line_num = { enable = false },

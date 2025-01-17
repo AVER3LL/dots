@@ -8,7 +8,7 @@ return {
     config = function()
         require("flutter-tools").setup {
             widget_guides = {
-                enabled = false,
+                enabled = true,
             },
         }
     end,

@@ -1,3 +1,6 @@
+-- TODO: Create table that can be imported so I can just import the mappings of
+-- some plugins in their setup functions
+
 -- Leader key setup
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
@@ -34,6 +37,9 @@ end, { desc = "Light Dark Toggle" })
 -- Basic Navigation
 map("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, desc = "Move up" })
 map("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, desc = "Move down" })
+
+map("n", "gl", "$", { desc = "Move to end of line" })
+map("n", "gh", "_", { desc = "Move to end of line" })
 
 map("n", "<C-h>", "<cmd>TmuxNavigateLeft<cr>", { desc = "Move to left split" })
 map("n", "<C-j>", "<cmd>TmuxNavigateDown<cr>", { desc = "Move to bottom split" })

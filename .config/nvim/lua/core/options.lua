@@ -2,6 +2,7 @@
 vim.g.codeium_disable_bindings = 1
 vim.g.codeium_enabled = true
 
+vim.g.show_indent = false
 vim.g.use_blink = false
 
 -- Make the cursor a block

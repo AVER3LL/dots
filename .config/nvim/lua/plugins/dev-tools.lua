@@ -6,6 +6,14 @@ return {
     },
 
     {
+        "isak102/ghostty.nvim",
+        ft = "ghostty",
+        config = function()
+            require("ghostty").setup()
+        end,
+    },
+
+    {
         "mikavilpas/yazi.nvim",
         enabled = false,
         cmd = "Yazi",
@@ -28,11 +36,4 @@ return {
             "TmuxNavigateRight",
         },
     },
-
-    -- {
-    --     "m4xshen/hardtime.nvim",
-    --     enabled = false,
-    --     dependencies = { "MunifTanjim/nui.nvim" },
-    --     opts = {},
-    -- },
 }
