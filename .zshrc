@@ -1,10 +1,3 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-# if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-#   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-# fi
-
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.zsh_history
 HISTSIZE=1000
@@ -45,9 +38,6 @@ export WORDCHARS="*?_-.[]~=&;!#$%^(){}<>"
 export VISUAL=nvim
 export EDITOR="$VISUAL"
 
-# export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-# export MANPAGER="less -R --use-color -Dd+r -Du+b"
-
 alias ls='lsd'
 alias cls='clear'
 alias l='ls'
@@ -64,6 +54,8 @@ alias lazy='NVIM_APPNAME=LazyVim nvim'
 alias nvtest='NVIM_APPNAME=NvTest nvim'
 alias clera='clear'
 alias lear='clear'
+alias lera='clear'
+alias lare='clear'
 alias cleare='clear'
 alias cler='clear'
 alias clar='clear'
@@ -87,24 +79,63 @@ youtube() {
     (nohup xdg-open "https://www.youtube.com/results?search_query=$search_query" >/dev/null 2>&1 &)
 }
 
-# open() {
-#     if [ $# -eq 0 ]; then
-#         echo "Usage: open [filename/directory]"
-#         return 1
-#     fi
-#
-#     for file in "$@"; do
-#         if [ ! -e "$file" ]; then
-#             echo "Error: '$file' does not exist"
-#             continue
-#         fi
-#         (nohup xdg-open "$file" >/dev/null 2>&1 &)
-#     done
-# }
+# YouTube downloader function
+download() {
+    if ! command -v yt-dlp &> /dev/null; then
+        echo "yt-dlp is not installed. Please install it first."
+        echo "You can install it using: pip install yt-dlp"
+        return 1
+    fi
+
+    if [ $# -lt 2 ]; then
+        echo "Usage: download [URL] [format]"
+        echo "format: 'video' for video+audio, 'audio' for audio only"
+        return 1
+    fi
+
+    URL=$1
+    FORMAT=$2
+
+    case $FORMAT in
+        "video")
+            echo "Downloading video..."
+            yt-dlp -f "bv*+ba/b" \
+                --merge-output-format mp4 \
+                -o "%(title)s.%(ext)s" \
+                "$URL"
+            ;;
+        "audio")
+            echo "Downloading audio..."
+            yt-dlp -f "ba" \
+                -x --audio-format mp3 \
+                -o "%(title)s.%(ext)s" \
+                "$URL"
+            ;;
+        *)
+            echo "Invalid format. Use 'video' or 'audio'"
+            return 1
+            ;;
+    esac
+}
+
+open() {
+    if [ $# -eq 0 ]; then
+        echo "Usage: open [filename/directory]"
+        return 1
+    fi
+
+    for file in "$@"; do
+        if [ ! -e "$file" ]; then
+            echo "Error: '$file' does not exist"
+            continue
+        fi
+        (nohup xdg-open "$file" >/dev/null 2>&1 &)
+    done
+}
 
 # # ex = EXtractor for all kinds of archives
 # # usage: ex <file>
-unz ()
+extract ()
 {
     if [ $# -eq 0 ]; then
         echo "Usage: extract [file to extract]"
@@ -186,8 +217,8 @@ if [ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]; th
     source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 fi
 
-if [ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
-    source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+if [ -f /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh ]; then
+    source /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 fi
 
 # if [[ -z "$TMUX" ]]; then
@@ -206,21 +237,16 @@ zi() {
     fi
 }
 
-if [ "$TMUX" = "" ]; then tmux; fi
-
 zle -N zi
 bindkey "^f" zi
 eval "$(starship init zsh)"
 eval "$(batman --export-env)"
 
-export PATH="$HOME/.pyenv/bin:$PATH"
-eval "$(pyenv init -)"
+# export PATH="$HOME/.pyenv/bin:$PATH"
+# eval "$(pyenv init -)"
 # eval "$(pyenv virtualenv-init -)"
 
-## [Completion]
-## Completion scripts setup. Remove the following line to uninstall
 [[ -f /home/averell/.dart-cli-completion/zsh-config.zsh ]] && . /home/averell/.dart-cli-completion/zsh-config.zsh || true
-## [/Completion]
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
@@ -229,8 +255,5 @@ export PATH="/home/averell/.config/herd-lite/bin:$PATH"
 export PATH="/home/averell/development/flutter/bin:$PATH"
 export PATH="/home/averell/.local/bin:$PATH"
 export PHP_INI_SCAN_DIR="/home/averell/.config/herd-lite/bin:$PHP_INI_SCAN_DIR"
-# source ~/powerlevel10k/powerlevel10k.zsh-theme
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-# [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 alias rel="xrdb merge ~/.Xresources && kill -USR1 $(pidof st)"
