@@ -1,0 +1,3 @@
+
+set window-title "false"                # Show/hide the file name in the window title
+set smooth-scroll "true"               # Enable/disable smooth scrolling
