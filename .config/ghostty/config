@@ -1,8 +1,5 @@
 # Font
 font-family = "JetBrainsMono NF"
-# font-family = "DankMono Nerd Font"
-# font-family = "FiraCode Nerd Font"
-# font-family = "FantasqueSansM Nerd Font"
 font-size = 15
 
 # Mouse
@@ -26,4 +23,4 @@ adjust-cell-height = 20%
 shell-integration-features = no-cursor,sudo,no-title
 confirm-close-surface = false
 
-# config-file = binding
+config-file = binding

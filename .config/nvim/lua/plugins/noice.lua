@@ -61,6 +61,7 @@ return {
                 vim.cmd [[messages clear]]
             end
             require("noice").setup(opts)
+            require("core.mappings").noice()
         end,
     },
 

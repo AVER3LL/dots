@@ -18,6 +18,7 @@ return {
         "danymat/neogen",
         cmd = "Neogen",
         config = function()
+            require("core.mappings").neogen()
             require("neogen").setup {
                 snippet_engine = "luasnip",
                 languages = {

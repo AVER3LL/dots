@@ -81,15 +81,13 @@ local servers = {
                 analysis = {
                     autoSearchPaths = true,
                     diagnosticMode = "workspace",
-                    -- useLibraryCodeForTypes = true,
-                    -- reportAttributeAccessIssue = false,
-                    -- reportUnusedVariable = false,
-                    -- typeCheckingMode = "off", -- Disable type checking diagnostics
                 },
             },
         },
         single_file_support = true,
     },
+
+    -- pylyzer = true,
 
     jinja_lsp = {
         filetypes = { "jinja", "htmldjango" },

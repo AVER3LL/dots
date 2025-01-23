@@ -3,22 +3,21 @@ keybind = ctrl+enter=unbind
 keybind = ctrl+d=unbind
 keybind = ctrl+shift+q=unbind
 
-keybind = ctrl+alt+l=goto_split:right
-keybind = ctrl+alt+h=goto_split:left
-keybind = ctrl+alt+j=goto_split:bottom
-keybind = ctrl+alt+k=goto_split:top
-
-keybind = ctrl+alt+up=unbind
-keybind = ctrl+alt+left=unbind
-keybind = ctrl+alt+down=unbind
-keybind = ctrl+alt+right=unbind
-
-keybind = ctrl+space>apostrophe=new_split:right
-# keybind = ctrl+space>quote=new_split:bottom
-
-keybind = ctrl+space>t=new_tab
-
-keybind = ctrl+shift+h=previous_tab
-keybind = ctrl+shift+l=next_tab
+# keybind = ctrl+alt+l=goto_split:right
+# keybind = ctrl+alt+h=goto_split:left
+# keybind = ctrl+alt+j=goto_split:bottom
+# keybind = ctrl+alt+k=goto_split:top
+#
+# keybind = ctrl+alt+up=unbind
+# keybind = ctrl+alt+left=unbind
+# keybind = ctrl+alt+down=unbind
+# keybind = ctrl+alt+right=unbind
+#
+# keybind = ctrl+space>apostrophe=new_split:right
+#
+# keybind = ctrl+space>t=new_tab
+#
+# keybind = ctrl+shift+h=previous_tab
+# keybind = ctrl+shift+l=next_tab
 
 # vim:ft=ghostty

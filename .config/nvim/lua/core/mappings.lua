@@ -1,12 +1,3 @@
--- TODO: Create table that can be imported so I can just import the mappings of
--- some plugins in their setup functions
-
--- Leader key setup
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
-
-local toggle_terminal_mapping = '<A-">'
-
 -- Keymap helper function
 local map = function(mode, lhs, rhs, opts)
     opts = opts or {}
@@ -14,6 +5,61 @@ local map = function(mode, lhs, rhs, opts)
     opts.silent = true
     vim.keymap.set(mode, lhs, rhs, opts)
 end
+
+local M = {}
+
+M.bufferline = function()
+    -- Go to next or last buffer
+    map("n", "<tab>", ":BufferLineCycleNext<CR>", { desc = "Go to next buffer" })
+    map("n", "<S-tab>", ":BufferLineCyclePrev<CR>", { desc = "Go to previous buffer" })
+
+    map("n", "<leader>b", "<cmd>BufferLinePick<CR>", { desc = "Pick buffer" })
+
+    -- Re-order to previous/next
+    map("n", "<leader>gp", ":BufferLineMovePrev<CR>", { silent = true })
+    map("n", "<leader>gn", ":BufferLineMoveNext<CR>", { silent = true })
+    map("n", "<leader>cba", "<cmd>BufferLineCloseOthers<CR>", {
+        desc = "Close all buffers but the current one",
+    })
+
+    map("n", "&", "<cmd>BufferLineGoToBuffer 1<cr>")
+    map("n", "é", "<cmd>BufferLineGoToBuffer 2<cr>")
+    map("n", '"', "<cmd>BufferLineGoToBuffer 3<cr>")
+end
+
+M.debugger = function()
+    map("n", "<leader>db", "<cmd>lua require'dap'.toggle_breakpoint()<CR>", { desc = "Toggle breakpoint" })
+    map("n", "<leader>dc", "<cmd>lua require'dap'.continue()<CR>", { desc = "Continue" })
+    map("n", "<leader>di", "<cmd>lua require'dap'.step_into()<CR>", { desc = "Step into" })
+    map("n", "<leader>do", "<cmd>lua require'dap'.step_out()<CR>", { desc = "Step out" })
+end
+
+M.tmux = function()
+    map("n", "<C-h>", "<cmd>TmuxNavigateLeft<cr>", { desc = "Move to left split" })
+    map("n", "<C-j>", "<cmd>TmuxNavigateDown<cr>", { desc = "Move to bottom split" })
+    map("n", "<C-k>", "<cmd>TmuxNavigateUp<cr>", { desc = "Move to top split" })
+    map("n", "<C-l>", "<cmd>TmuxNavigateRight<cr>", { desc = "Move to right split" })
+end
+M.tmux()
+
+M.neogen = function()
+    map("n", "<Leader>dg", "<cmd>Neogen<CR>", { desc = "Generate Documentation" })
+end
+
+M.noice = function()
+    map("n", "<leader>nd", "<cmd>NoiceDismiss<CR>", { desc = "Dismiss Noice Message" })
+end
+
+M.venv = function()
+    -- Virtual Environment Selector
+    map("n", "<leader>se", "<cmd>VenvSelect<CR>", { desc = "Select virtual environment" })
+end
+
+-- Leader key setup
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+
+local toggle_terminal_mapping = '<A-">'
 
 -- Plugin & Utility Toggles
 map("n", "<leader><leader>ct", function()
@@ -41,11 +87,6 @@ map("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, desc = 
 map("n", "gl", "$", { desc = "Move to end of line" })
 map("n", "gh", "_", { desc = "Move to end of line" })
 
-map("n", "<C-h>", "<cmd>TmuxNavigateLeft<cr>", { desc = "Move to left split" })
-map("n", "<C-j>", "<cmd>TmuxNavigateDown<cr>", { desc = "Move to bottom split" })
-map("n", "<C-k>", "<cmd>TmuxNavigateUp<cr>", { desc = "Move to top split" })
-map("n", "<C-l>", "<cmd>TmuxNavigateRight<cr>", { desc = "Move to right split" })
-
 -- Indentation in Visual Mode
 map("v", "<", "<gv")
 map("v", ">", ">gv")
@@ -53,12 +94,6 @@ map("v", ">", ">gv")
 -- Commenting
 map("n", "<leader>v", "gcc", { desc = "Toggle Comment", remap = true })
 map("v", "<leader>v", "gc", { desc = "Toggle comment", remap = true })
-
--- Documentation
-map("n", "<Leader>dg", "<cmd>Neogen<CR>", { desc = "Generate Documentation" })
-
--- Dismiss Noice Messages
-map("n", "<leader>nd", "<cmd>NoiceDismiss<CR>", { desc = "Dismiss Noice Message" })
 
 -- Word Wrap
 map("n", "<leader>ww", "<cmd>set wrap!<CR>", { desc = "Toggle word wrap" })
@@ -110,31 +145,11 @@ map("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Go to previous tab" })
 map("n", "<leader>tt", "<cmd>tabnew %<CR>", { desc = "Open current buffer in another tab" })
 
 -- Buffer Management
-
-map("n", "<tab>", ":BufferLineCycleNext<CR>", { desc = "Go to next buffer" })
-map("n", "<S-tab>", ":BufferLineCyclePrev<CR>", { desc = "Go to previous buffer" })
-
 -- map("n", "<tab>", ":bnext<CR>", { desc = "Go to next buffer" })
 -- map("n", "<S-tab>", ":bprevious<CR>", { desc = "Go to previous buffer" })
 
 map("n", "<leader>nb", "<cmd>enew<CR>", { desc = "Buffer new" })
 map("n", "<leader>x", "<cmd>Bdelete<CR>", { desc = "Buffer delete" })
-map("n", "<leader>b", "<cmd>BufferLinePick<CR>", { desc = "Pick buffer" })
-map("n", "<leader>gp", ":BufferLineMovePrev<CR>", { silent = true })
-map("n", "<leader>gn", ":BufferLineMoveNext<CR>", { silent = true })
-map("n", "<leader>cba", "<cmd>BufferLineCloseOthers<CR>", {
-    desc = "Close all buffers but the current one",
-})
-
-map("n", "&", "<cmd>BufferLineGoToBuffer 1<cr>")
-map("n", "é", "<cmd>BufferLineGoToBuffer 2<cr>")
-map("n", '"', "<cmd>BufferLineGoToBuffer 3<cr>")
--- map("n", "'", "<cmd>BufferLineGoToBuffer 4<cr>")
--- map("n", "(", "<cmd>BufferLineGoToBuffer 5<cr>")
--- map("n", "-", "<cmd>BufferLineGoToBuffer 6<cr>")
--- map("n", "è", "<cmd>BufferLineGoToBuffer 7<cr>")
--- map("n", "_", "<cmd>BufferLineGoToBuffer 8<cr>")
--- map("n", "ç", "<cmd>BufferLineGoToBuffer 9<cr>")
 
 -- Centering
 map("n", "<C-d>", "<C-d>zz")
@@ -160,9 +175,6 @@ map("v", "<A-l>", "<Right>dp`[v`]", { desc = "Move selection right" })
 -- Screenshot
 -- map({ "v", "n" }, "<leader>sc", ":Silicon<cr>", { desc = "Take a screenshot" })
 map({ "v", "n" }, "<leader>sc", ":CodeSnapSave<cr>", { desc = "Take screenshot" })
-
--- Virtual Environment Selector
-map("n", "<leader>se", "<cmd>VenvSelect<CR>", { desc = "Select virtual environment" })
 
 -- Search and Replace
 map("n", "<leader>ra", '<cmd>lua require("spectre").toggle()<CR>', { desc = "Toggle Spectre" })
@@ -215,12 +227,6 @@ map("n", "<leader>fy", ":Yazi toggle<cr>", { desc = "Open yazi" })
 -- Session Management
 map("n", "<leader>ws", "<cmd>SessionSave<CR>", { desc = "Save session" })
 map("n", "<leader>wr", "<cmd>SessionRestore<CR>", { desc = "Restore session" })
-
--- Debugger
-map("n", "<leader>db", "<cmd>lua require'dap'.toggle_breakpoint()<CR>", { desc = "Toggle breakpoint" })
-map("n", "<leader>dc", "<cmd>lua require'dap'.continue()<CR>", { desc = "Continue" })
-map("n", "<leader>di", "<cmd>lua require'dap'.step_into()<CR>", { desc = "Step into" })
-map("n", "<leader>do", "<cmd>lua require'dap'.step_out()<CR>", { desc = "Step out" })
 
 -- LSP Keymappings (inside LspAttach autocmd)
 vim.api.nvim_create_autocmd("LspAttach", {
@@ -281,6 +287,8 @@ vim.api.nvim_create_autocmd("TermOpen", {
         map("t", "<C-j>", [[<Cmd>wincmd j<CR>]], opts)
         map("t", "<C-k>", [[<Cmd>wincmd k<CR>]], opts)
         map("t", "<C-l>", [[<Cmd>wincmd l<CR>]], opts)
-        map("t", "<C-w>", [[<C-\><C-n><C-w>]], opts)
+        -- map("t", "<C-w>", [[<C-\><C-n><C-w>]], opts)
     end,
 })
+
+return M

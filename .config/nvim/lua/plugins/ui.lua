@@ -17,6 +17,7 @@ return {
         event = { "BufReadPost", "BufNewFile" },
         dependencies = "nvim-tree/nvim-web-devicons",
         config = function()
+            require("core.mappings").bufferline()
             return require "configs.bufferline-nvim"
         end,
     },

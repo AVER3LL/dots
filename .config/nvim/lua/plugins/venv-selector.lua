@@ -13,8 +13,6 @@ return {
         require("venv-selector").setup {
             settings = {
                 search = {
-                    -- Keep the default searches
-                    -- Add our custom search
                     custom_search = {
                         command = [[fd '(python|python3)$' . .. ../.. -H --full-path --color never]],
                     },
@@ -25,5 +23,6 @@ return {
                 },
             },
         }
+        require("core.mappings").venv()
     end,
 }
