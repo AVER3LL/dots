@@ -13,6 +13,7 @@ return {
                 sign = false,
                 width = "block",
                 border = "thick",
+                highlight = "NormalFloat",
             },
             heading = {
                 sign = false,

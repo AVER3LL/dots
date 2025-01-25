@@ -20,13 +20,6 @@ return {
         opts = {},
     },
 
-    -- Lua
-    -- {
-    --     "folke/zen-mode.nvim",
-    --     enabled = false,
-    --     opts = {},
-    -- },
-
     {
         "christoomey/vim-tmux-navigator",
         cmd = {

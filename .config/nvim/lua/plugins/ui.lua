@@ -113,6 +113,7 @@ return {
     -- Vertical line
     {
         "lukas-reineke/virt-column.nvim",
+        enabled = false,
         event = { "BufReadPre", "BufNewFile" },
         opts = {
             char = { "┆" },
@@ -191,7 +192,7 @@ return {
     -- Breadcrumbs
     {
         "utilyre/barbecue.nvim",
-        -- enabled = false,
+        enabled = false,
         name = "barbecue",
         version = "*",
         dependencies = {
@@ -218,6 +219,7 @@ return {
 
     {
         "nvchad/showkeys",
+        enabled = false,
         cmd = "ShowkeysToggle",
         opts = {
             timeout = 1,

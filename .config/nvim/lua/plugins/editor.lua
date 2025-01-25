@@ -51,9 +51,11 @@ return {
                     enable_close_on_slash = true, -- Auto close on trailing </
                 },
                 per_filetype = {
-                    -- ["html"] = {
-                    --   enable_close = false,
-                    -- },
+                    ["blade"] = {
+                        enable_close = true,
+                        enable_rename = true,
+                        enable_close_on_slash = true,
+                    },
                 },
             }
         end,

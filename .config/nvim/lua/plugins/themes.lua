@@ -17,6 +17,7 @@ return {
 
     {
         "dasupradyumna/midnight.nvim",
+        enabled = false,
         lazy = false,
         priority = 1000,
     },
@@ -32,6 +33,7 @@ return {
 
     { -- palenightfall
         "JoosepAlviste/palenightfall.nvim",
+        enabled = false,
         priority = 1000,
         opts = {},
     },
@@ -86,9 +88,9 @@ return {
                 local theme = colors.theme
                 return {
 
-                    NormalFloat = { bg = "none" },
-                    FloatBorder = { bg = "none" },
-                    FloatTitle = { bg = "none" },
+                    -- NormalFloat = { bg = "none" },
+                    -- FloatBorder = { bg = "none" },
+                    -- FloatTitle = { bg = "none" },
 
                     -- Save an hlgroup with dark background and dimmed foreground
                     -- so that you can use it where your still want darker windows.
@@ -564,15 +566,6 @@ return {
         lazy = false,
         priority = 1000,
         config = function()
-            -- vim.g.gruvbox_material_enable_italic = true
-            -- vim.g.gruvbox_material_enable_bold = true
-            -- vim.g.gruvbox_material_better_performance = 1
-            -- vim.g.gruvbox_material_transparent_background = 0 -- 1 to enable, 2 to enable for other ui components too
-            -- vim.g.gruvbox_material_diagnostic_virtual_text = "colored"
-            -- vim.g.gruvbox_material_foreground = "original" -- options are "original", "material" and "mix"
-            -- vim.g.gruvbox_material_background = "hard" -- options are "hard", "medium" and "soft"
-            -- vim.g.gruvbox_material_float_style = "dim" -- options are "dim", "bright"
-
             vim.g.gruvbox_material_transparent_background = 0
             vim.g.gruvbox_material_foreground = "mix"
             vim.g.gruvbox_material_background = "hard"
