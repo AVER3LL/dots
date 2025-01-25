@@ -46,12 +46,8 @@ sign { name = "DiagnosticSignHint", text = (icons and " ") or "", numhl = "Ls
 sign { name = "DiagnosticSignInfo", text = (icons and " ") or "", numhl = "LspDiagnosticsLineNrInfo" }
 
 -- effects of lsp diagnostic texts
+
 vim.diagnostic.config {
-    -- virtual_text = {
-    --     prefix = "",
-    --     spacing = 4,
-    -- },
-    -- virtual_text = false,
     title = false,
     virtual_text = true,
     signs = true,

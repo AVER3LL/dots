@@ -290,9 +290,9 @@ return {
                     auto_show_delay_ms = 50,
                     window = {
                         border = bt,
+                        winhighlight = "Normal:CmpDoc,FloatBorder:CmpDocBorder",
                         scrollbar = false,
                         max_width = 100,
-                        winhighlight = "Normal:CmpDoc,FloatBorder:CmpDocBorder",
                         winblend = vim.o.pumblend,
                     },
                 },
@@ -302,7 +302,7 @@ return {
                 default = { "lsp", "path", "snippets", "buffer" },
                 cmdline = {},
                 per_filetype = {
-                    -- sql = { "vim-dadbod-completion", "buffer" },
+                    sql = { "vim-dadbod-completion", "buffer" },
                 },
             },
         },

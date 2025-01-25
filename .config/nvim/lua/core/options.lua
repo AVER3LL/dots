@@ -4,6 +4,9 @@ vim.g.codeium_enabled = true
 
 vim.g.show_indent = false
 vim.g.use_blink = false
+vim.g.markdown_recommended_style = 0
+
+vim.opt.conceallevel = 2
 
 -- Make the cursor a block
 -- vim.opt.guicursor = "n-v-c-i:block"
@@ -14,7 +17,7 @@ vim.o.termguicolors = true
 vim.o.cursorline = true
 vim.o.cursorlineopt = "number"
 vim.o.signcolumn = "yes"
-vim.o.laststatus = 0
+vim.o.laststatus = 3
 vim.o.showmode = false
 vim.opt.colorcolumn = { 81, 121 }
 vim.opt.linespace = 2
@@ -23,6 +26,7 @@ vim.opt.linespace = 2
 vim.o.number = true
 vim.o.relativenumber = true
 vim.o.numberwidth = 2
+vim.opt.ruler = false
 
 -- Special Characters and Formatting
 vim.opt.list = true

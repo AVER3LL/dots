@@ -1,5 +1,9 @@
 local autocmd = vim.api.nvim_create_autocmd
 
+local function augroup(name)
+    return vim.api.nvim_create_augroup(name, { clear = true })
+end
+
 local signature = true
 
 if signature then
@@ -47,11 +51,23 @@ autocmd("ColorScheme", {
         vim.api.nvim_set_hl(0, "FloatBorder", { fg = normal_fg, bg = normal_bg })
         vim.api.nvim_set_hl(0, "CursorLineNr", { bg = normal_bg })
 
-        -- vim.api.nvim_set_hl(0, "FloatBorder", { link = "Normal" })
-        -- vim.api.nvim_set_hl(0, "LspInfoBorder", { link = "Normal" })
-        -- vim.api.nvim_set_hl(0, "NormalFloat", { link = "Normal" })
-
         -- vim.cmd "highlight Winbar guibg=none"
+    end,
+})
+
+-- Auto-resize windows when Vim is resized
+autocmd("VimResized", {
+    callback = function()
+        vim.cmd "tabdo wincmd ="
+    end,
+})
+
+-- Fix conceallevel for json files
+vim.api.nvim_create_autocmd({ "FileType" }, {
+    group = augroup "json_conceal",
+    pattern = { "json", "jsonc", "json5" },
+    callback = function()
+        vim.opt_local.conceallevel = 0
     end,
 })
 

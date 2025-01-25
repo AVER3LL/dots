@@ -13,7 +13,7 @@ local function config_ts()
         highlight = {
             enable = true,
             use_languagetree = true,
-            -- disable = { "latex" },
+            disable = { "latex" },
         },
         ignore_install = {
             "dart",
@@ -56,6 +56,7 @@ local function config_ts()
             "gitignore",
             "hyprlang",
             "query",
+            "bibtex",
             "c",
         },
         incremental_selection = {
