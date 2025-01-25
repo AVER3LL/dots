@@ -60,6 +60,7 @@ alias cleare='clear'
 alias cler='clear'
 alias clar='clear'
 alias sl='ls'
+alias gs='git status'
 
 google() {
     if [ $# -eq 0 ]; then
@@ -242,8 +243,8 @@ bindkey "^f" zi
 eval "$(starship init zsh)"
 eval "$(batman --export-env)"
 
-# export PATH="$HOME/.pyenv/bin:$PATH"
-# eval "$(pyenv init -)"
+export PATH="$HOME/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
 # eval "$(pyenv virtualenv-init -)"
 
 [[ -f /home/averell/.dart-cli-completion/zsh-config.zsh ]] && . /home/averell/.dart-cli-completion/zsh-config.zsh || true
