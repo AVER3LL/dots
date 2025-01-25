@@ -39,6 +39,9 @@ export VISUAL=nvim
 export EDITOR="$VISUAL"
 
 alias ls='lsd'
+alias ga='git add'
+alias gc='git commit'
+alias gp='git push'
 alias cls='clear'
 alias l='ls'
 alias la='ls -a'
