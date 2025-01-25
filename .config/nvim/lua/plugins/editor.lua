@@ -179,7 +179,13 @@ return {
             require("configs.mini-ai").setup()
             require("mini.surround").setup()
             require("mini.trailspace").setup()
-            require("mini.pairs").setup()
+            require("mini.pairs").setup {
+                modes = { insert = true, command = true, terminal = false },
+                skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
+                skip_ts = { "string" },
+                skip_unbalanced = true,
+                markdown = true,
+            }
             -- if not vim.g.neovide then
             --     require("mini.animate").setup {}
             -- end

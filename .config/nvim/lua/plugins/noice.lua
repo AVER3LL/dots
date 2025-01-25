@@ -39,6 +39,10 @@ return {
                     ["cmp.entry.get_documentation"] = false, -- requires hrsh7th/nvim-cmp
                 },
             },
+            presets = {
+                bottom_search = true,
+                long_message_to_split = true,
+            },
             routes = {
                 {
                     view = "notify",

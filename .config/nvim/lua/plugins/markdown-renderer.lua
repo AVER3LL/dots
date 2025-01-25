@@ -1,7 +1,7 @@
 return {
     {
         "MeanderingProgrammer/markdown.nvim",
-        enabled = false,
+        enabled = true,
         dependencies = {
             "nvim-treesitter/nvim-treesitter",
             "nvim-tree/nvim-web-devicons",
@@ -12,7 +12,7 @@ return {
             code = {
                 sign = false,
                 width = "block",
-                right_pad = 1,
+                border = "thick",
             },
             heading = {
                 sign = false,

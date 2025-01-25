@@ -31,6 +31,8 @@ local function config_ts()
         -- ensure these language parsers are installed
         ensure_installed = {
             "regex",
+            "latex",
+            "bibtex",
             "java",
             "php",
             "java",
@@ -56,7 +58,6 @@ local function config_ts()
             "gitignore",
             "hyprlang",
             "query",
-            "bibtex",
             "c",
         },
         incremental_selection = {
