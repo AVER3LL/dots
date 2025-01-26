@@ -18,9 +18,9 @@ M.bufferline = function()
     -- Re-order to previous/next
     map("n", "<leader>gp", ":BufferLineMovePrev<CR>", { silent = true })
     map("n", "<leader>gn", ":BufferLineMoveNext<CR>", { silent = true })
-    map("n", "<leader>cba", "<cmd>BufferLineCloseOthers<CR>", {
-        desc = "Close all buffers but the current one",
-    })
+    -- map("n", "<leader>cba", "<cmd>BufferLineCloseOthers<CR>", {
+    --     desc = "Close all buffers but the current one",
+    -- })
 
     map("n", "&", "<cmd>BufferLineGoToBuffer 1<cr>")
     map("n", "é", "<cmd>BufferLineGoToBuffer 2<cr>")
@@ -149,7 +149,17 @@ map("n", "<leader>tt", "<cmd>tabnew %<CR>", { desc = "Open current buffer in ano
 -- map("n", "<S-tab>", ":bprevious<CR>", { desc = "Go to previous buffer" })
 
 map("n", "<leader>nb", "<cmd>enew<CR>", { desc = "Buffer new" })
-map("n", "<leader>x", "<cmd>Bdelete<CR>", { desc = "Buffer delete" })
+-- map("n", "<leader>x", "<cmd>Bdelete<CR>", { desc = "Buffer delete" })
+
+map("n", "<leader>x", function()
+    Snacks.bufdelete()
+end, { desc = "Buffer delete" })
+
+map("n", "<leader>cba", function()
+    Snacks.bufdelete.other()
+end, {
+    desc = "Close all buffers but the current one",
+})
 
 -- Centering
 map("n", "<C-d>", "<C-d>zz")

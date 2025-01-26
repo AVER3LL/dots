@@ -31,7 +31,6 @@ local function config_ts()
         -- ensure these language parsers are installed
         ensure_installed = {
             "regex",
-            "latex",
             "bibtex",
             "java",
             "php",

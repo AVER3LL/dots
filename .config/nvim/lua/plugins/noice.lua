@@ -1,13 +1,15 @@
 local bt = require("config.looks").border_type()
 return {
 
+    -- Really conflicted about this one because it is making
+    -- the search flicker
     {
         "folke/noice.nvim",
         -- enabled = false,
         event = "VeryLazy",
         dependencies = {
             "MunifTanjim/nui.nvim",
-            "rcarriga/nvim-notify",
+            -- "rcarriga/nvim-notify",
         },
         opts = {
             views = {
@@ -34,14 +36,13 @@ return {
                 progress = { enabled = true },
                 hover = { enabled = false },
                 override = {
-                    ["vim.lsp.util.convert_input_to_markdown_lines"] = false,
-                    ["vim.lsp.util.stylize_markdown"] = false,
-                    ["cmp.entry.get_documentation"] = false, -- requires hrsh7th/nvim-cmp
+                    ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+                    ["vim.lsp.util.stylize_markdown"] = true,
+                    ["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
                 },
             },
             presets = {
                 bottom_search = true,
-                long_message_to_split = true,
             },
             routes = {
                 {
@@ -58,9 +59,6 @@ return {
             },
         },
         config = function(_, opts)
-            -- HACK: noice shows messages from before it was enabled,
-            -- but this is not ideal when Lazy is installing plugins,
-            -- so clear the messages in this case.
             if vim.o.filetype == "lazy" then
                 vim.cmd [[messages clear]]
             end

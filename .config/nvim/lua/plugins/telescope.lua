@@ -54,11 +54,23 @@ return {
                         ignore_builtins = true,
                     },
                     find_files = {
-                        file_ignore_patterns = { "node_modules", ".git", ".venv", ".mypy_cache", "__pycache__" },
+                        file_ignore_patterns = {
+                            "node_modules",
+                            "%.git",
+                            ".venv",
+                            ".mypy_cache",
+                            "__pycache__",
+                        },
                         hidden = true,
                     },
                     live_grep = {
-                        file_ignore_patterns = { "node_modules", ".git", ".venv", ".mypy_cache", "__pycache__" },
+                        file_ignore_patterns = {
+                            "node_modules",
+                            "%.git",
+                            ".venv",
+                            ".mypy_cache",
+                            "__pycache__",
+                        },
                         additional_args = function(_)
                             return { "--hidden" }
                         end,

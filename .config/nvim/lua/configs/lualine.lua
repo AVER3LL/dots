@@ -16,7 +16,7 @@ local sec_sep = {
 local comp_sep = {
     rounded = { left = "", right = "" },
     -- single = { left = "", right = "" },
-    single = { left = "│", right = "│" },
+    single = { left = "▎", right = "▎" },
 }
 
 local function setup_lualine()

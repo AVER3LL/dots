@@ -8,28 +8,25 @@ vim.g.markdown_recommended_style = 0
 
 vim.opt.conceallevel = 2
 
--- Make the cursor a block
--- vim.opt.guicursor = "n-v-c-i:block"
-
 -- Core UI and Appearance
-vim.o.background = "dark"
-vim.o.termguicolors = true
-vim.o.cursorline = true
-vim.o.cursorlineopt = "number"
-vim.o.signcolumn = "yes"
-vim.o.laststatus = 3
-vim.o.showmode = false
+vim.opt.background = "dark"
+vim.opt.termguicolors = true
+vim.opt.cursorline = true
+vim.opt.cursorlineopt = "number"
+vim.opt.signcolumn = "yes"
+vim.opt.laststatus = 3
+vim.opt.showmode = false
 vim.opt.colorcolumn = { 81, 121 }
-vim.opt.linespace = 2
 
 -- Line Numbers
-vim.o.number = true
-vim.o.relativenumber = true
-vim.o.numberwidth = 2
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.numberwidth = 2
 vim.opt.ruler = false
 
 -- Special Characters and Formatting
 vim.opt.list = true
+vim.opt.jumpoptions = "view"
 vim.opt.listchars = {
     nbsp = "⦸",
     tab = "  ",
@@ -44,18 +41,19 @@ vim.opt.fillchars = {
     diff = "╱",
     foldopen = "",
     foldclose = "",
+    foldsep = " ",
 }
 
 -- Indentation and Formatting
-vim.o.tabstop = 4
-vim.o.shiftwidth = 4
-vim.o.softtabstop = 4
-vim.o.expandtab = true
-vim.o.smarttab = true
-vim.o.copyindent = true
-vim.o.smartindent = true
-vim.o.wrap = false
-vim.o.linebreak = true
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.softtabstop = 4
+vim.opt.expandtab = true
+vim.opt.smarttab = true
+vim.opt.copyindent = true
+vim.opt.smartindent = true
+vim.opt.wrap = false
+vim.opt.linebreak = true
 vim.opt.formatoptions = table.concat {
     "2", -- Use the second line's indent vale when indenting (allows indented first line)
     "q", -- Formatting comments with gq
@@ -66,22 +64,23 @@ vim.opt.formatoptions = table.concat {
 }
 
 -- Search
-vim.o.ignorecase = true
-vim.o.smartcase = true
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+vim.opt.inccommand = "nosplit" -- preview incremental substitute
 
 -- Split and Window Behavior
-vim.o.splitright = true
-vim.o.splitbelow = true
-vim.o.scrolloff = 10
-vim.o.sidescrolloff = 8
-vim.o.backspace = "indent,eol,start"
+vim.opt.splitright = true
+vim.opt.splitbelow = true
+vim.opt.scrolloff = 10
+vim.opt.sidescrolloff = 8
+vim.opt.backspace = "indent,eol,start"
 
 -- Performance and Updates
-vim.o.updatetime = 100
-vim.o.timeoutlen = 400
+vim.opt.updatetime = 200
+vim.opt.timeoutlen = 300
 
 -- History and Persistence
-vim.o.undofile = true
+vim.opt.undofile = true
 vim.opt.undolevels = 1000
 vim.opt.undoreload = 10000
 vim.opt.shada = { "!", "'1000", "<50", "s10", "h" }
@@ -97,7 +96,7 @@ vim.opt.foldmethod = "expr"
 vim.opt.foldtext = ""
 
 -- Session Management
-vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+vim.opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 
 -- Netrw Configuration
 vim.cmd "let g:netrw_liststyle = 3"

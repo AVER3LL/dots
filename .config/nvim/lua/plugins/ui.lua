@@ -9,6 +9,24 @@ return {
         end,
     },
 
+    {
+        "folke/snacks.nvim",
+        priority = 1000,
+        lazy = false,
+        opts = {
+            bigfile = { enabled = true },
+            dashboard = { enabled = false },
+            indent = { enabled = false },
+            input = { enabled = true },
+            picker = { enabled = true },
+            notifier = { enabled = true },
+            quickfile = { enabled = true },
+            scroll = { enabled = true },
+            statuscolumn = { enabled = false },
+            words = { enabled = false },
+        },
+    },
+
     -- Tab bar
     {
         "akinsho/bufferline.nvim",
@@ -28,6 +46,16 @@ return {
         -- enabled = false,
         event = "VeryLazy",
         dependencies = { "nvim-tree/nvim-web-devicons" },
+        init = function()
+            vim.g.lualine_laststatus = vim.o.laststatus
+            if vim.fn.argc(-1) > 0 then
+                -- set an empty statusline till lualine loads
+                vim.o.statusline = " "
+            else
+                -- hide the statusline on the starter page
+                vim.o.laststatus = 0
+            end
+        end,
         config = function()
             return require "configs.lualine"
         end,
@@ -36,6 +64,7 @@ return {
     -- Sensible buffer delete options
     {
         "famiu/bufdelete.nvim",
+        enabled = false,
         event = "VeryLazy",
     },
 

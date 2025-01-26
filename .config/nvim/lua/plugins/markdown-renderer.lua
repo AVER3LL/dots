@@ -11,6 +11,11 @@ return {
         opts = {
             code = {
                 sign = false,
+
+                -- Hides the icon and the language used for the codeblock
+                style = "none",
+                language_name = false,
+
                 width = "block",
                 border = "thick",
                 highlight = "NormalFloat",

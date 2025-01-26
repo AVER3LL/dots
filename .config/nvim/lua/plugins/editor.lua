@@ -24,7 +24,7 @@ return {
         event = { "BufReadPre", "BufNewFile" },
         dependencies = { "nvim-lua/plenary.nvim" },
         opts = {
-            signs = false,
+            signs = true,
         },
     },
 
@@ -124,9 +124,6 @@ return {
     {
         "folke/which-key.nvim",
         event = "VeryLazy",
-        init = function()
-            vim.o.timeout = true
-        end,
         opts = {
             -- classic, modern, helix
             preset = "classic",
@@ -195,7 +192,7 @@ return {
     },
 
     {
-        -- "LunarVim/bigfile.nvim",
         "pteroctopus/faster.nvim",
+        enabled = false,
     },
 }
