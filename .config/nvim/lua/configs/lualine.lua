@@ -89,7 +89,8 @@ local function setup_lualine()
         "mode",
         fmt = function(str)
             -- return ' ' .. str:sub(1, 1) -- displays only the first character of the mode
-            return " " .. str
+            -- return " " .. str
+            return " " .. str:sub(1,1):upper() .. str:sub(2):lower()
         end,
     }
 
@@ -129,11 +130,11 @@ local function setup_lualine()
                 recording,
             },
             lualine_x = {
-                -- {
-                --     require("noice").api.status.command.get,
-                --     cond = require("noice").api.status.command.has,
-                --     color = { fg = "#ff9e64" },
-                -- },
+                {
+                    require("noice").api.status.command.get,
+                    cond = require("noice").api.status.command.has,
+                    color = { fg = "#ff9e64" },
+                },
                 {
                     require("lazy.status").updates,
                     cond = require("lazy.status").has_updates,

@@ -16,7 +16,7 @@ local function config_ts()
             disable = { "latex" },
         },
         ignore_install = {
-            "dart",
+            -- "dart",
         },
         modules = {},
         auto_install = true,

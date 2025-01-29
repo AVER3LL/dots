@@ -42,9 +42,6 @@ M.tmux = function()
 end
 M.tmux()
 
-M.neogen = function()
-    map("n", "<Leader>dg", "<cmd>Neogen<CR>", { desc = "Generate Documentation" })
-end
 
 M.noice = function()
     map("n", "<leader>nd", "<cmd>NoiceDismiss<CR>", { desc = "Dismiss Noice Message" })
@@ -217,6 +214,8 @@ map(
     "<cmd>Neotree source=filesystem reveal=true position=left toggle=true<CR>",
     { desc = "Neotree focus window" }
 )
+
+map("n", "<Leader>dg", "<cmd>Neogen<CR>", { desc = "Generate Documentation" })
 
 -- Telescope
 map("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Telescope find files" })
