@@ -65,7 +65,7 @@
   "editor.gotoLocation.multipleImplementations": "goto",
   "editor.gotoLocation.multipleTypeDefinitions": "goto",
 
-  "editor.lineHeight": 23,
+  "editor.lineHeight": 24,
   "code-runner.runInTerminal": true,
   "gitlens.currentLine.pullRequests.enabled": false,
   "gitlens.currentLine.scrollable": false,
@@ -116,12 +116,12 @@
   "workbench.activityBar.location": "hidden",
   "editor.scrollbar.horizontal": "hidden",
   "editor.scrollbar.vertical": "hidden",
-  "workbench.statusBar.visible": false,
   "vscode_custom_css.imports": [
-    "file:///home/averell/resize-quickinput-widget.js"
+    "file:///home/averell/.config/Code/User/resize-quickinput-widget.js"
   ],
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "vim.foldfix": true
+  "vim.foldfix": true,
+  "workbench.statusBar.visible": false
 }
