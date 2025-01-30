@@ -37,7 +37,7 @@ config.color_scheme = "Apple System Colors"
 -- Misceallanious settings
 config.max_fps = 60
 config.prefer_egl = true
--- config.enable_kitty_graphics = true
+config.enable_kitty_graphics = true
 config.enable_kitty_keyboard = true
 
 config.animation_fps = 1
