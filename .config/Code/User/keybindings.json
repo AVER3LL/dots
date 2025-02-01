@@ -261,5 +261,10 @@
     "command": "editor.action.openLink",
     "key": "g f",
     "when": "vim.mode == 'Normal' && editorTextFocus"
+  },
+  {
+    "command": "code-runner.run",
+    "key": "space space r",
+    "when": "vim.mode == 'Normal' && editorTextFocus"
   }
 ]

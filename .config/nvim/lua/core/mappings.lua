@@ -1,4 +1,9 @@
+-- Leader key setup
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+
 -- Keymap helper function
+
 local map = function(mode, lhs, rhs, opts)
     opts = opts or {}
     opts.noremap = true
@@ -42,7 +47,6 @@ M.tmux = function()
 end
 M.tmux()
 
-
 M.noice = function()
     map("n", "<leader>nd", "<cmd>NoiceDismiss<CR>", { desc = "Dismiss Noice Message" })
 end
@@ -51,10 +55,6 @@ M.venv = function()
     -- Virtual Environment Selector
     map("n", "<leader>se", "<cmd>VenvSelect<CR>", { desc = "Select virtual environment" })
 end
-
--- Leader key setup
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
 
 local toggle_terminal_mapping = '<A-">'
 
@@ -256,6 +256,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         map("n", "[d", vim.diagnostic.goto_prev, opts "Go to previous diagnostic")
         map("n", "<leader>ds", vim.diagnostic.setloclist, opts "Show diagnostic loclist")
         map("n", "<leader>dl", vim.diagnostic.open_float, opts "Show inline diagnostics")
+        map("n", "<leader>fs", require("telescope.builtin").lsp_document_symbols, opts "Show document symbols")
 
         map("n", "<leader>dh", function()
             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(), nil)

@@ -1,7 +1,6 @@
 {
   // ! appearences
   "window.zoomLevel": 2,
-  "workbench.colorTheme": "Gruvbox Dark Hard",
   "workbench.iconTheme": "catppuccin-frappe",
   "editor.fontFamily": "'JetBrainsMono NF', 'Droid Sans Mono', 'monospace', monospace",
   "editor.fontLigatures": true,
@@ -123,5 +122,7 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "vim.foldfix": true,
-  "workbench.statusBar.visible": false
+  "errorLens.scrollbarHackEnabled": true,
+  "workbench.colorTheme": "Gruvbox Dark Hard",
+  "redhat.telemetry.enabled": false
 }
