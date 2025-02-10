@@ -62,7 +62,7 @@ return {
                         file_ignore_patterns = {
                             "node_modules",
                             "%.git",
-                            ".venv",
+                            "%.venv",
                             ".mypy_cache",
                             "__pycache__",
                         },
@@ -72,7 +72,7 @@ return {
                         file_ignore_patterns = {
                             "node_modules",
                             "%.git",
-                            ".venv",
+                            "%.venv",
                             ".mypy_cache",
                             "__pycache__",
                         },

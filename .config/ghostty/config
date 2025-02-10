@@ -10,6 +10,7 @@ cursor-style = block
 # Terminal look
 adw-toolbar-style = flat
 window-theme = ghostty
+gtk-titlebar = false
 
 # Colors
 # theme = GruvboxDarkHard
@@ -19,7 +20,7 @@ theme = tokyonight_night
 window-padding-balance = true
 window-decoration = false
 
-adjust-cell-height = 20%
+adjust-cell-height = 35%
 shell-integration-features = no-cursor,sudo,no-title
 confirm-close-surface = false
 

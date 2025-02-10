@@ -224,6 +224,13 @@ map("n", "<leader>fz", "<cmd>Telescope current_buffer_fuzzy_find<CR>", {
     desc = "Telescope find in current buffer",
 })
 map("n", "<leader>fo", "<cmd>Telescope oldfiles<CR>", { desc = "Telescope find oldfiles" })
+map(
+    "n",
+    "<leader>fc",
+    -- "<cmd>lua require('telescope.builtin').find_files { cwd = vim.fn.stdpath 'config' }<cr>",
+    "<cmd>lua require('telescope.builtin').find_files { cwd = '~/dotfiles/.config/nvim' }<cr>",
+    { desc = "Find config file" }
+)
 
 map("n", "<leader>z", "<cmd>Telescope current_buffer_fuzzy_find<CR>", {
     desc = "Telescope find in current buffer",

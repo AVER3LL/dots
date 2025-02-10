@@ -40,7 +40,7 @@ M.border_rounded = function(hl_name)
 end
 
 -- Options are border_square, border_rounded and border_kanagawa
-M.current_border = M.border_square
+M.current_border = M.border_rounded
 
 M.current_border_telescope = function()
     local formatted = {}

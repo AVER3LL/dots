@@ -1,0 +1,88 @@
+" .ideavimrc is a configuration file for IdeaVim plugin. It uses
+"   the same commands as the original .vimrc configuration.
+" You can find a list of commands here: https://jb.gg/h38q75
+" Find more examples here: https://jb.gg/share-ideavimrc
+
+let mapleader = " "
+
+" Insert mode mappings
+imap <C-h> <Left>
+imap <C-l> <Right>
+imap <C-j> <Down>
+imap <C-k> <Up>
+
+set hlsearch
+" Map Tab to go to the next tab
+nmap <Tab> gt
+" Map Shift-Tab to go to the previous tab
+nmap <S-Tab> gT
+
+" Map <leader>k to Shift + K
+nmap <leader>k <S-k>
+
+" Toggle search highlighting off
+nmap <leader>n :nohlsearch<CR>
+nmap <leader>x :action CloseContent<CR>
+nmap <C-n> :action ActivateProjectToolWindow<CR>
+
+nmap <leader>fm :action ReformatCode<CR>
+nmap <leader>rn :action RenameElement<CR>
+nmap gd :action GotoDeclaration<CR>
+" nmap <leader>ff :action SearchEverywhere<CR>
+nmap <leader>ff :action GotoFile<CR>
+nmap <leader>fw :action FindInPath<CR>
+
+
+" Normal mode mapping for redo
+nmap U <C-r>
+
+" Normal mode: Move line down
+nmap <A-j> :m .+1<CR>==
+" Normal mode: Move line up
+nmap <A-k> :m .-2<CR>==
+
+" Visual mode: Move selection down
+vmap <A-j> :m '>+1<CR>gv=gv
+" Visual mode: Move selection up
+vmap <A-k> :m '<-2<CR>gv=gv
+
+" Yank to clipboard in normal and visual mode
+nmap <leader>y "+y
+vmap <leader>y "+y
+
+" Paste from clipboard in normal and visual mode
+nmap <leader>p "+p
+vmap <leader>p "+p
+
+
+
+
+
+"" -- Suggested options --
+" Show a few lines of context around the cursor. Note that this makes the
+" text scroll if you mouse-click near the start or end of the window.
+set scrolloff=10
+
+" Do incremental searching.
+set incsearch
+
+" Don't use Ex mode, use Q for formatting.
+map Q gq
+
+" --- Enable IdeaVim plugins https://jb.gg/ideavim-plugins
+
+" Highlight copied text
+Plug 'machakann/vim-highlightedyank'
+" Commentary plugin
+Plug 'tpope/vim-commentary'
+
+
+"" -- Map IDE actions to IdeaVim -- https://jb.gg/abva4t
+"" Map \r to the Reformat Code action
+"map \r <Action>(ReformatCode)
+
+"" Map <leader>d to start debug
+"map <leader>d <Action>(Debug)
+
+"" Map \b to toggle the breakpoint on the current line
+"map \b <Action>(ToggleLineBreakpoint)

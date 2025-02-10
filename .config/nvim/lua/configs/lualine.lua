@@ -6,10 +6,11 @@ end
 
 local ok, border = pcall(require, "config.looks")
 local bt = ok and border.border_type() or "single"
-bt = "single"
+-- bt = "single"
 
 local sec_sep = {
     rounded = { left = "", right = "" }, -- other separators : "", "", "", "",
+    -- single = { left = "", right = "" }, -- other separators : "", "", "", "",
     -- single = { left = "", right = "" },
     single = { left = "", right = "" },
 }

@@ -6,6 +6,7 @@ local map = function(mode, lhs, rhs, opts)
 end
 
 map("n", "<leader>fe", ":FlutterEmulators<CR>", { desc = "Flutter Emulators" })
+map("n", "<leader>fd", ":FlutterDevices<CR>", { desc = "Flutter Devices" })
 map("n", "<leader>fq", ":FlutterQuit<CR>", { desc = "Flutter Quit" })
 map("n", "<leader>fr", ":FlutterRun<CR>", { desc = "Flutter Run" })
 map("n", "<leader>fl", ":FlutterLogToggle<CR>", { desc = "Flutter Log" })

@@ -12,7 +12,7 @@ vim.opt.conceallevel = 2
 vim.opt.background = "dark"
 vim.opt.termguicolors = true
 vim.opt.cursorline = true
-vim.opt.cursorlineopt = "number"
+vim.opt.cursorlineopt = "both"
 vim.opt.signcolumn = "yes"
 vim.opt.laststatus = 3
 vim.opt.showmode = false
@@ -33,6 +33,7 @@ vim.opt.listchars = {
     extends = "»",
     precedes = "«",
     trail = "·",
+    eol = "↴", -- ⏎, ¬, ↴
 }
 vim.opt.showbreak = "↳ " -- Cool character on line wrap
 vim.opt.fillchars = {
