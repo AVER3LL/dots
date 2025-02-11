@@ -25,6 +25,7 @@ return {
                 java = { "google-java-format" },
                 blade = { "blade-formatter" },
                 latex = { "latexindent" },
+                go = { "goimports-reviser", "gofumpt" },
                 -- dart = { "ast-grep" },
             },
 

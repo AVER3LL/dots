@@ -61,6 +61,18 @@ return {
         end,
     },
 
+    {
+        "rxtsel/template-string.nvim",
+        ft = {
+            "typescript",
+            "javascript",
+            "typescriptreact",
+            "javascriptreact",
+            "vue",
+            "svelte",
+        },
+    },
+
     -- Automatically closes brackets
     {
         "windwp/nvim-autopairs",

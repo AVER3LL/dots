@@ -4,4 +4,4 @@ require "config.lazy"
 
 require "snippets"
 
-vim.cmd.colorscheme "tokyonight-night"
+vim.cmd.colorscheme "catppuccin"

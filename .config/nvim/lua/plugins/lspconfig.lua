@@ -79,8 +79,11 @@ local servers = {
         settings = {
             python = {
                 analysis = {
+                    autoImportCompletions = true,
                     autoSearchPaths = true,
-                    diagnosticMode = "workspace",
+                    diagnosticMode = "workspace", -- openFilesOnly, workspace
+                    typeCheckingMode = "basic", -- off, basic, strict
+                    useLibraryCodeForTypes = true,
                 },
             },
         },
@@ -108,6 +111,21 @@ local servers = {
             "scss",
             "pug",
             "typescriptreact",
+        },
+    },
+
+    gopls = {
+        filetypes = { "go", "gomod", "gowork", "gohtmltmpl", "gotexttmpl", "gotmpl" },
+        settings = {
+            gopls = {
+                analyses = {
+                    fieldalignment = true,
+                    unusedparams = true,
+                },
+                staticcheck = true,
+                completeUnimported = true,
+                usePlaceholders = true,
+            },
         },
     },
 

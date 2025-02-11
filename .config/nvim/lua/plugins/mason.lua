@@ -32,6 +32,10 @@ M.formatters = {
     -- Documentation
     "doctoc",
 
+    -- Go
+    "gofumpt",
+    "goimports-reviser",
+
     -- C/C++
     "clang-format",
 
@@ -68,6 +72,9 @@ M.lsps = {
 
     -- Java
     "jdtls",
+
+    -- Go
+    "gopls",
 
     -- Window Manager
     "hyprls",
