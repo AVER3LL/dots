@@ -88,7 +88,7 @@ vim.opt.shada = { "!", "'1000", "<50", "s10", "h" }
 vim.opt.confirm = true
 
 -- Folding (Treesitter)
-vim.opt.foldcolumn = "0"
+vim.opt.foldcolumn = "1"
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
 vim.opt.foldenable = true

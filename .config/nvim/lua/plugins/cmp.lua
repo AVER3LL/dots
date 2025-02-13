@@ -58,6 +58,7 @@ return {
             "hrsh7th/cmp-nvim-lsp", -- source for lsp
             "saadparwaiz1/cmp_luasnip", -- for autocompletion
             "rafamadriz/friendly-snippets", -- useful snippets
+            -- { "roobert/tailwindcss-colorizer-cmp.nvim", opts = {} },
 
             {
                 "kristijanhusak/vim-dadbod-ui",

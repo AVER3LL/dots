@@ -54,8 +54,8 @@ M.lsps = {
 
     -- Python
     "basedpyright",
-    "pyright",
-    "python-lsp-server",
+    -- "pyright",
+    -- "python-lsp-server",
 
     --LaTeX
     "texlab",
@@ -79,7 +79,7 @@ M.lsps = {
     -- Window Manager
     "hyprls",
 
-    -- C/C++ (disabled by default)
+    -- C/C++ (installed by default)
     -- "clangd",
 }
 

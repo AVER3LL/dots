@@ -40,6 +40,7 @@ local function setup_lualine()
     local function current_lsp()
         local name_mappings = {
             emmet_language_server = "Emmet",
+            jedi_language_server = "Jedi",
         }
 
         local bufnr = vim.api.nvim_get_current_buf()
@@ -91,7 +92,7 @@ local function setup_lualine()
         fmt = function(str)
             -- return ' ' .. str:sub(1, 1) -- displays only the first character of the mode
             -- return " " .. str
-            return " " .. str:sub(1,1):upper() .. str:sub(2):lower()
+            return " " .. str:sub(1, 1):upper() .. str:sub(2):lower()
         end,
     }
 

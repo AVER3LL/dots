@@ -20,7 +20,7 @@ local servers = {
 
     bashls = true, -- bash lsp
 
-    -- tailwindcss = true, -- obvious
+    tailwindcss = true, -- obvious
 
     intelephense = { -- no nonsense lsp for php. No rename tho
         filetypes = {
@@ -75,22 +75,47 @@ local servers = {
         },
     },
 
-    pyright = {
-        settings = {
-            python = {
-                analysis = {
-                    autoImportCompletions = true,
-                    autoSearchPaths = true,
-                    diagnosticMode = "workspace", -- openFilesOnly, workspace
-                    typeCheckingMode = "basic", -- off, basic, strict
-                    useLibraryCodeForTypes = true,
-                },
-            },
-        },
-        single_file_support = true,
-    },
+    -- pyright = {
+    --     settings = {
+    --         python = {
+    --             analysis = {
+    --                 autoImportCompletions = true,
+    --                 autoSearchPaths = true,
+    --                 diagnosticMode = "workspace", -- openFilesOnly, workspace
+    --                 typeCheckingMode = "basic", -- off, basic, strict
+    --                 useLibraryCodeForTypes = true,
+    --             },
+    --         },
+    --     },
+    --     single_file_support = true,
+    -- },
 
-    -- pylyzer = true,
+    -- pylsp = {
+    --     settings = {
+    --         pylsp = {
+    --             plugins = {
+    --                 jedi_completion = { enabled = false },
+    --                 jedi_hover = { enabled = true },
+    --                 jedi_references = { enabled = false },
+    --                 jedi_signature_help = { enabled = false },
+    --                 jedi_symbols = { enabled = false },
+    --                 pyflakes = { enabled = true },
+    --                 pycodestyle = { enabled = false },
+    --                 mccabe = { enabled = false },
+    --                 rope_autoimport = { enabled = false },
+    --                 rope_completion = { enabled = false },
+    --                 yapf = { enabled = false },
+    --                 pylint = { enabled = false },
+    --             },
+    --         },
+    --     },
+    -- },
+
+    -- jedi_language_server = true,
+
+    basedpyright = true,
+
+    -- ruff = true,
 
     jinja_lsp = {
         filetypes = { "jinja", "htmldjango" },
