@@ -24,9 +24,9 @@ local function config_ts()
         -- enable indentation
         indent = {
             enable = true,
-            disable = {
-                "dart",
-            },
+            -- disable = {
+            --     "dart",
+            -- },
         },
         -- ensure these language parsers are installed
         ensure_installed = {

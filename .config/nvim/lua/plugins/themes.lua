@@ -9,15 +9,23 @@ return {
     },
 
     {
-        "RRethy/base16-nvim",
-        enabled = false,
+        "tiagovla/tokyodark.nvim",
+        priority = 1000,
+        opts = {
+            transparent_background = false, -- set background to transparent
+            gamma = 1.00, -- adjust the brightness of the theme
+        },
+    },
+
+    {
+        "bluz71/vim-moonfly-colors",
         lazy = false,
         priority = 1000,
     },
 
     {
         "dasupradyumna/midnight.nvim",
-        enabled = false,
+        enabled = true,
         lazy = false,
         priority = 1000,
     },
@@ -33,7 +41,7 @@ return {
 
     { -- palenightfall
         "JoosepAlviste/palenightfall.nvim",
-        enabled = false,
+        enabled = true,
         priority = 1000,
         opts = {},
     },

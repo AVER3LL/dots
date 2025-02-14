@@ -177,17 +177,6 @@ return {
     },
 
     -- File explorer
-    {
-        "nvim-tree/nvim-tree.lua",
-        enabled = false,
-        cmd = { "NvimTreeToggle", "NvimTreeFocus" },
-        dependencies = "nvim-tree/nvim-web-devicons",
-        config = function()
-            return require "configs.nvim-tree"
-        end,
-    },
-
-    -- File explorer
     -- (switched because nvim-tree decided to hide .env files)
     {
         "nvim-neo-tree/neo-tree.nvim",

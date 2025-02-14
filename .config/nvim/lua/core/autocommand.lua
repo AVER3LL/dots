@@ -49,7 +49,7 @@ autocmd("ColorScheme", {
         vim.api.nvim_set_hl(0, "LspInfoBorder", { bg = normal_bg })
         vim.api.nvim_set_hl(0, "NormalFloat", { bg = normal_bg })
         vim.api.nvim_set_hl(0, "FloatBorder", { fg = normal_fg, bg = normal_bg })
-        vim.api.nvim_set_hl(0, "CursorLineNr", { bg = normal_bg })
+        vim.api.nvim_set_hl(0, "FoldColumn", { bg = "NONE", fg = normal_fg })
 
         -- vim.cmd "highlight Winbar guibg=none"
     end,
