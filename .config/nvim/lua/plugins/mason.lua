@@ -1,116 +1,3 @@
-local M = {}
-
--- Tool categories
-M.formatters = {
-    -- Others
-    "ast-grep",
-
-    -- Web
-    "prettier",
-
-    -- LaTeX
-    "latexindent",
-
-    -- PHP
-    "blade-formatter",
-    "php-cs-fixer",
-    "pint",
-
-    -- Python
-    "autopep8",
-    "ruff",
-    "black",
-    "isort",
-
-    -- Java
-    "google-java-format",
-    "checkstyle",
-
-    -- System
-    "shfmt",
-
-    -- Documentation
-    "doctoc",
-
-    -- Go
-    "gofumpt",
-    "goimports-reviser",
-
-    -- C/C++
-    "clang-format",
-
-    -- Toml
-    "taplo",
-}
-
-M.lsps = {
-    -- Web/Frontend
-    "html-lsp",
-    "css-lsp",
-    "eslint-lsp",
-    "emmet-language-server",
-    "tailwindcss-language-server",
-    "jinja-lsp",
-
-    -- Python
-    "basedpyright",
-    -- "pyright",
-    -- "python-lsp-server",
-
-    --LaTeX
-    "texlab",
-
-    -- PHP
-    "intelephense",
-    "phpactor",
-
-    -- System
-    "bash-language-server",
-
-    -- Lua
-    "lua-language-server",
-
-    -- Java
-    "jdtls",
-
-    -- Go
-    "gopls",
-
-    -- Window Manager
-    "hyprls",
-
-    -- C/C++ (installed by default)
-    -- "clangd",
-}
-
-M.debuggers = {
-    -- Python
-    "debugpy",
-}
-
-M.linters = {
-    -- Python
-    "debugpy",
-    "pylint",
-    "mypy",
-    "flake8",
-
-    -- Lua
-    "stylua",
-    "luacheck",
-
-    -- Web
-    "djlint",
-    "eslint_d",
-
-    -- C/C++
-    "cpplint",
-
-    -- PHP
-    "easy-coding-standard",
-}
-
--- Plugin specification
 return {
     "williamboman/mason.nvim",
     cmd = { "Mason", "MasonInstall", "MasonInstallAll", "MasonUpdate" },
@@ -126,10 +13,10 @@ return {
         max_concurrent_installers = 10,
         ensure_installed = function()
             local tools = {}
-            vim.list_extend(tools, M.formatters)
-            vim.list_extend(tools, M.lsps)
-            vim.list_extend(tools, M.linters)
-            vim.list_extend(tools, M.debuggers)
+            vim.list_extend(tools, require "config.lsp.formatters")
+            vim.list_extend(tools, require("config.lsp.servers").mason)
+            vim.list_extend(tools, require "config.lsp.linters")
+            vim.list_extend(tools, require "config.lsp.debuggers")
             return tools
         end,
     },

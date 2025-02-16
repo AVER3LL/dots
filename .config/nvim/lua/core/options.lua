@@ -1,6 +1,7 @@
 -- Plugin Settings
 vim.g.codeium_disable_bindings = 1
 vim.g.codeium_enabled = true
+vim.g.fold_indicator = true
 
 vim.g.show_indent = false
 vim.g.use_blink = false
@@ -55,6 +56,7 @@ vim.opt.copyindent = true
 vim.opt.smartindent = true
 vim.opt.wrap = false
 vim.opt.linebreak = true
+vim.opt.breakindent = true
 vim.opt.formatoptions = table.concat {
     "2", -- Use the second line's indent vale when indenting (allows indented first line)
     "q", -- Formatting comments with gq
@@ -77,7 +79,7 @@ vim.opt.sidescrolloff = 8
 vim.opt.backspace = "indent,eol,start"
 
 -- Performance and Updates
-vim.opt.updatetime = 200
+vim.opt.updatetime = 250
 vim.opt.timeoutlen = 300
 
 -- History and Persistence
@@ -88,7 +90,7 @@ vim.opt.shada = { "!", "'1000", "<50", "s10", "h" }
 vim.opt.confirm = true
 
 -- Folding (Treesitter)
-vim.opt.foldcolumn = "1"
+vim.opt.foldcolumn = vim.g.fold_indicator and "1" or "0"
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
 vim.opt.foldenable = true

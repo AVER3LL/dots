@@ -1,4 +1,5 @@
 local autocmd = vim.api.nvim_create_autocmd
+local sethl = vim.api.nvim_set_hl
 
 local function augroup(name)
     return vim.api.nvim_create_augroup(name, { clear = true })
@@ -21,7 +22,7 @@ if signature then
     })
 end
 
--- don't auto comment new line
+-- don't auto comment new line when pressing o, O or <CR>
 -- autocmd("BufEnter", { command = [[set formatoptions-=cro]] })
 
 --Highlight when yanking (copying) text
@@ -38,18 +39,22 @@ autocmd("TextYankPost", {
 autocmd("ColorScheme", {
     callback = function()
         -- Highlight line numbers with diagnostics
-        vim.api.nvim_set_hl(0, "LspDiagnosticsLineNrError", { link = "DiagnosticSignError" })
-        vim.api.nvim_set_hl(0, "LspDiagnosticsLineNrWarning", { link = "DiagnosticSignWarn" })
-        vim.api.nvim_set_hl(0, "LspDiagnosticsLineNrInformation", { link = "DiagnosticSignInfo" })
-        vim.api.nvim_set_hl(0, "LspDiagnosticsLineNrHint", { link = "DiagnosticSignHint" })
+        sethl(0, "LspDiagnosticsLineNrError", { link = "DiagnosticSignError" })
+        sethl(0, "LspDiagnosticsLineNrWarning", { link = "DiagnosticSignWarn" })
+        sethl(0, "LspDiagnosticsLineNrInformation", { link = "DiagnosticSignInfo" })
+        sethl(0, "LspDiagnosticsLineNrHint", { link = "DiagnosticSignHint" })
 
         -- Modern looking floating windows
         local normal_bg = vim.api.nvim_get_hl(0, { name = "Normal" }).bg
         local normal_fg = vim.api.nvim_get_hl(0, { name = "Comment" }).fg
-        vim.api.nvim_set_hl(0, "LspInfoBorder", { bg = normal_bg })
-        vim.api.nvim_set_hl(0, "NormalFloat", { bg = normal_bg })
-        vim.api.nvim_set_hl(0, "FloatBorder", { fg = normal_fg, bg = normal_bg })
-        vim.api.nvim_set_hl(0, "FoldColumn", { bg = "NONE", fg = normal_fg })
+        sethl(0, "LspInfoBorder", { bg = normal_bg })
+        sethl(0, "NormalFloat", { bg = normal_bg })
+        sethl(0, "FloatBorder", { fg = normal_fg, bg = normal_bg })
+        sethl(0, "FoldColumn", { bg = "NONE", fg = normal_fg })
+        sethl(0, "MatchParen", { bg = "NONE", fg = "#39ff14" })
+        sethl(0, "CursorLineNr", { bg = "NONE" })
+        sethl(0, "CursorLineSign", { bg = "NONE" })
+        sethl(0, "CursorLineFold", { bg = "NONE" })
 
         -- vim.cmd "highlight Winbar guibg=none"
     end,

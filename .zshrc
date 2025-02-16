@@ -54,6 +54,7 @@ alias nf='neofetch'
 alias ff='fastfetch'
 alias cd='z'
 alias lazy='NVIM_APPNAME=LazyVim nvim'
+alias kvim='NVIM_APPNAME=Kickstart nvim'
 alias nvtest='NVIM_APPNAME=NvTest nvim'
 alias clera='clear'
 alias lear='clear'
@@ -259,5 +260,7 @@ export PATH="/home/averell/.config/herd-lite/bin:$PATH"
 export PATH="/home/averell/development/flutter/bin:$PATH"
 export PATH="/home/averell/.local/bin:$PATH"
 export PHP_INI_SCAN_DIR="/home/averell/.config/herd-lite/bin:$PHP_INI_SCAN_DIR"
+export JAVA_HOME="/home/averell/.sdkman/candidates/java/17.0.0-tem/bin/java"
+export PATH=$JAVA_HOME/bin:$PATH
 
 alias rel="xrdb merge ~/.Xresources && kill -USR1 $(pidof st)"

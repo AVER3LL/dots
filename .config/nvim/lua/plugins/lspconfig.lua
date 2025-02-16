@@ -1,214 +1,64 @@
----@diagnostic disable: unused-local
-
--- vim.o.background = (vim.o.background == "dark") and "light" or "dark"
 local cmp_plugin
 cmp_plugin = vim.g.use_blink and "saghen/blink.cmp" or "hrsh7th/cmp-nvim-lsp"
 
-local servers = {
-
-    hyprls = true, -- Hyprland dots
-
-    html = true,
-
-    texlab = true,
-
-    cssls = true, -- Css lsp
-
-    clangd = true, -- C lsp
-
-    taplo = true, -- markdown. dunno what it does
-
-    bashls = true, -- bash lsp
-
-    tailwindcss = true, -- obvious
-
-    intelephense = { -- no nonsense lsp for php. No rename tho
-        filetypes = {
-            "php",
-            "blade",
-            "php_only",
-        },
-        settings = {
-            intelephense = {
-                filetypes = {
-                    "php",
-                    -- "blade",
-                    "php_only",
-                },
-                files = {
-                    associations = { "*.php", "*.blade.php" }, -- Associating .blade.php files as well
-                    maxSize = 5000000,
-                },
-            },
-        },
-    },
-
-    -- phpactor = true, -- foss lsp for php
-
-    -- ts_ls = true,
-
-    ts_ls = {
-        single_file_support = true,
-        settings = {
-            typescript = {
-                inlayHints = {
-                    includeInlayParameterNameHints = "literal",
-                    includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                    includeInlayFunctionParameterTypeHints = true,
-                    includeInlayVariableTypeHints = false,
-                    includeInlayPropertyDeclarationTypeHints = true,
-                    includeInlayFunctionLikeReturnTypeHints = true,
-                    includeInlayEnumMemberValueHints = true,
-                },
-            },
-            javascript = {
-                inlayHints = {
-                    includeInlayParameterNameHints = "all",
-                    includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                    includeInlayFunctionParameterTypeHints = true,
-                    includeInlayVariableTypeHints = true,
-                    includeInlayPropertyDeclarationTypeHints = true,
-                    includeInlayFunctionLikeReturnTypeHints = true,
-                    includeInlayEnumMemberValueHints = true,
-                },
-            },
-        },
-    },
-
-    -- pyright = {
-    --     settings = {
-    --         python = {
-    --             analysis = {
-    --                 autoImportCompletions = true,
-    --                 autoSearchPaths = true,
-    --                 diagnosticMode = "workspace", -- openFilesOnly, workspace
-    --                 typeCheckingMode = "basic", -- off, basic, strict
-    --                 useLibraryCodeForTypes = true,
-    --             },
-    --         },
-    --     },
-    --     single_file_support = true,
-    -- },
-
-    basedpyright = true,
-
-    jinja_lsp = {
-        filetypes = { "jinja", "htmldjango" },
-    },
-
-    emmet_language_server = {
-        filetypes = {
-            "css",
-            "php",
-            "blade",
-            "eruby",
-            "html",
-            "htmldjango",
-            "javascript",
-            "javascriptreact",
-            "less",
-            "sass",
-            "scss",
-            "pug",
-            "typescriptreact",
-        },
-    },
-
-    gopls = {
-        filetypes = { "go", "gomod", "gowork", "gohtmltmpl", "gotexttmpl", "gotmpl" },
-        settings = {
-            gopls = {
-                analyses = {
-                    fieldalignment = true,
-                    unusedparams = true,
-                },
-                staticcheck = true,
-                completeUnimported = true,
-                usePlaceholders = true,
-            },
-        },
-    },
-
-    lua_ls = true,
-
-    -- lua_ls = {
-    --     settings = {
-    --         Lua = {
-    --             diagnostics = {
-    --                 globals = { "vim" },
-    --             },
-    --             telemetry = {
-    --                 enable = false,
-    --             },
-    --             hint = { enable = true },
-    --             workspace = {
-    --                 library = {
-    --                     vim.fn.expand "$VIMRUNTIME/lua",
-    --                     vim.fn.expand "$VIMRUNTIME/lua/vim/lsp",
-    --                     vim.fn.stdpath "data" .. "/lazy/lazy.nvim/lua/lazy",
-    --                     -- "${3rd}/luv/library",
-    --                     { path = "${3rd}/luv/library", words = { "vim%.uv" } },
-    --                 },
-    --                 maxPreload = 100000,
-    --                 preloadFileSize = 10000,
-    --             },
-    --         },
-    --     },
-    -- },
-}
+local servers = require("config.lsp.servers").lspconfig
 
 return {
-    "neovim/nvim-lspconfig",
-    event = { "BufReadPre", "BufNewFile" },
-    dependencies = {
-        cmp_plugin,
-        { "antosha417/nvim-lsp-file-operations", config = true },
-        { "Bilal2453/luvit-meta", lazy = true },
-        {
-            "folke/lazydev.nvim",
-            ft = "lua", -- only load on lua files
-            opts = {
-                library = {
-                    -- { path = "${3rd}/luv/library", words = { "vim%.uv" } },
-                    { path = "luvit-meta/library", words = { "vim%.uv" } },
-                    { path = "snacks.nvim", words = { "Snacks" } },
-                },
+    {
+        "folke/lazydev.nvim",
+        ft = "lua", -- only load on lua files
+        opts = {
+            library = {
+                -- { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+                { path = "luvit-meta/library", words = { "vim%.uv" } },
+                { path = "snacks.nvim", words = { "Snacks" } },
             },
         },
     },
-    config = function()
-        local on_init = require("config.lsp-requirements").on_init
-        local capabilities = require("config.lsp-requirements").capabilities
-        local lspconfig = require "lspconfig"
 
-        if vim.g.use_blink then
-            capabilities = vim.tbl_deep_extend("force", capabilities, require("blink.cmp").get_lsp_capabilities())
-        else
-            capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
-        end
+    {
+        "neovim/nvim-lspconfig",
+        event = { "BufReadPre", "BufNewFile" },
+        dependencies = {
+            cmp_plugin,
+            { "antosha417/nvim-lsp-file-operations", opts = {} },
+            { "Bilal2453/luvit-meta", lazy = true },
+        },
+        config = function()
+            local on_init = require("config.lsp-requirements").on_init
+            local capabilities = require("config.lsp-requirements").capabilities
+            local lspconfig = require "lspconfig"
 
-        capabilities.textDocument.foldingRange = {
-            dynamicRegistration = false,
-            lineFoldingOnly = true,
-        }
+            local cmp_capabilities = vim.g.use_blink and require("blink.cmp").get_lsp_capabilities()
+                or require("cmp_nvim_lsp").default_capabilities()
 
-        local ok, border = pcall(require, "config.looks")
+            capabilities = vim.tbl_deep_extend("force", capabilities, cmp_capabilities, {
+                textDocument = {
+                    foldingRange = {
+                        dynamicRegistration = false,
+                        lineFoldingOnly = true,
+                    },
+                },
+            })
 
-        if ok then
-            require("lspconfig.ui.windows").default_options.border = border.border_type() -- rounded, single
-        end
+            local ok, border = pcall(require, "config.looks")
 
-        for name, config in pairs(servers) do
-            if config == true then
-                config = {}
+            if ok then
+                require("lspconfig.ui.windows").default_options.border = border.border_type() -- rounded, single
             end
 
-            config = vim.tbl_deep_extend("force", {}, {
-                capabilities = capabilities,
-                on_init = on_init,
-            }, config)
+            for name, config in pairs(servers) do
+                if config == true then
+                    config = {}
+                end
 
-            lspconfig[name].setup(config)
-        end
-    end,
+                config = vim.tbl_deep_extend("force", {}, {
+                    capabilities = capabilities,
+                    on_init = on_init,
+                }, config)
+
+                lspconfig[name].setup(config)
+            end
+        end,
+    },
 }

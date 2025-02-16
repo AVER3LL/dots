@@ -11,6 +11,16 @@ local map = function(mode, lhs, rhs, opts)
     vim.keymap.set(mode, lhs, rhs, opts)
 end
 
+map("n", "<leader><leader>l", function()
+    if vim.wo.number then
+        vim.wo.number = false
+        vim.wo.relativenumber = false
+    else
+        vim.wo.number = true
+        vim.wo.relativenumber = true
+    end
+end, { desc = "Toggle line numbers" })
+
 local M = {}
 
 M.bufferline = function()
@@ -189,7 +199,7 @@ map("n", "<leader>ra", '<cmd>lua require("spectre").toggle()<CR>', { desc = "Tog
 
 -- Formatting
 map("n", "<leader>fm", function()
-    require("conform").format { async = true, lsp_fallback = true }
+    require("conform").format { async = true, lsp_format = "fallback" }
 end, { desc = "Format files" })
 
 -- Undo Tree
@@ -284,6 +294,10 @@ local terminal = require "config.floaterminal"
 map("n", toggle_terminal_mapping, function()
     terminal.toggle()
 end, { desc = "Toggle terminal" })
+
+-- map("n", "<leader><leader>r", function()
+--     require("config.code-runner").run_file()
+-- end, { desc = "Run the current file" })
 
 map("n", "<leader><leader>r", function()
     terminal.run()
