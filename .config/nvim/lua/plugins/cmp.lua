@@ -110,14 +110,15 @@ return {
                 },
 
                 window = {
-                    completion = {
-                        border = current_border "CmpBorder",
-                        winhighlight = "Normal:CmpPmenu,Search:None,FloatBorder:CmpBorder",
+                    completion = cmp.config.window.bordered {
+                        border = bt,
                         scrollbar = false,
+                        -- winhighlight = "Normal:Pmenu,Search:None,FloatBorder:Pmenu",
                     },
-                    documentation = {
-                        border = current_border "CmpDocBorder",
-                        winhighlight = "Normal:CmpDoc,FloatBorder:CmpDocBorder",
+                    documentation = cmp.config.window.bordered {
+                        border = bt,
+                        scrollbar = false,
+                        -- winhighlight = "Normal:Pmenu,FloatBorder:Pmenu",
                     },
                 },
 
