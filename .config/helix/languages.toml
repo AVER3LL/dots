@@ -1,0 +1,12 @@
+[[language]]
+name = "html"
+auto-format = false
+
+[language-server.emmet-lsp]
+command = "emmet-language-server"
+args = ["--stdio"]
+
+[[language]]
+name = "html"
+roots = [".git"]
+language-servers = ["emmet-lsp"]
