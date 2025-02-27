@@ -6,7 +6,7 @@ end
 
 local ok, border = pcall(require, "config.looks")
 local bt = ok and border.border_type() or "single"
--- bt = "single"
+bt = "single"
 
 local sec_sep = {
     rounded = { left = "", right = "" }, -- other separators : "", "", "", "",
@@ -147,7 +147,12 @@ local function setup_lualine()
                 },
             },
             lualine_y = {
-                activated_python_environment,
+                {
+                    activated_python_environment,
+                    on_click = function()
+                        vim.cmd "VenvSelect"
+                    end,
+                },
                 current_lsp,
                 "filetype",
                 "progress",

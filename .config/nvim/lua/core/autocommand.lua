@@ -58,6 +58,8 @@ local function adjust_brightness(color, amount)
 end
 
 autocmd("ColorScheme", {
+    desc = "Tweaks some color to make nvim clean",
+    group = vim.api.nvim_create_augroup("prepare-colors-averell", { clear = true }),
     callback = function()
         -- Highlight line numbers with diagnostics
         sethl(0, "LspDiagnosticsLineNrError", { link = "DiagnosticSignError" })

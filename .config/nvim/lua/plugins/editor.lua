@@ -105,9 +105,7 @@ return {
     {
         "nvim-pack/nvim-spectre",
         cmd = "Spectre",
-        config = function()
-            require("spectre").setup()
-        end,
+        opts = {},
     },
 
     {
@@ -177,11 +175,7 @@ return {
     {
         "NStefan002/visual-surround.nvim",
         event = { "BufReadPre", "BufNewFile" },
-        config = function()
-            require("visual-surround").setup {
-                -- your config
-            }
-        end,
+        opts = {},
     },
 
     {
@@ -197,9 +191,6 @@ return {
                 skip_unbalanced = true,
                 markdown = true,
             }
-            -- if not vim.g.neovide then
-            --     require("mini.animate").setup {}
-            -- end
         end,
     },
 

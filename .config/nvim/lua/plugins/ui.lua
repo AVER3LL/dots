@@ -74,7 +74,7 @@ return {
     -- Tab bar
     {
         "akinsho/bufferline.nvim",
-        -- enabled = false,
+        enabled = false,
         version = "*",
         event = { "BufReadPost", "BufNewFile" },
         dependencies = "nvim-tree/nvim-web-devicons",
@@ -264,6 +264,7 @@ return {
     -- css colors highlighting
     {
         "brenoprata10/nvim-highlight-colors",
+        enabled = false,
         event = "VeryLazy",
         config = function()
             require("nvim-highlight-colors").setup {
@@ -276,6 +277,27 @@ return {
                 exclude_filetypes = { "NvimTree", "TelescopePrompt", "TelescopeResults", "lazy", "mason", "neo-tree" },
             }
         end,
+    },
+
+    {
+        "NvChad/nvim-colorizer.lua",
+        lazy = false,
+        opts = {
+            filetypes = {
+                "*", -- Highlight all files, but customize some others.
+                css = { names = true },
+                html = { names = true },
+                javascriptreact = { names = true },
+                typescriptreact = { names = true },
+            },
+            user_default_options = {
+                names = false,
+                tailwind = true,
+                rgb_fn = true, -- CSS rgb() and rgba() functions
+                hsl_fn = true, -- CSS hsl() and hsla() functions
+                css = true, -- Enable all CSS *features*:
+            },
+        },
     },
 
     -- Breadcrumbs

@@ -27,7 +27,7 @@
   "editor.detectIndentation": true,
   "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true,
-  "workbench.editor.showTabs": "multiple",
+  "workbench.editor.showTabs": "single",
 
   "editor.lineNumbers": "on",
   "vim.smartRelativeLine": true,

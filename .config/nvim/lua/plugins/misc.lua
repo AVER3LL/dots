@@ -4,7 +4,7 @@ return {
         "karb94/neoscroll.nvim",
         -- enabled = not vim.g.neovide,
         enabled = true,
-        keys = { "<C-d>", "<C-u>", "<C-e>", "<C-y>", "zz" },
+        keys = { "<C-d>", "<C-u>", "<C-f>", "<C-b>", "<C-e>", "<C-y>", "zz" },
         config = function()
             require("neoscroll").setup {
                 stop_eof = true,

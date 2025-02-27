@@ -52,7 +52,7 @@ alias vim='nvim'
 # alias cat='bat'
 alias nf='neofetch'
 alias ff='fastfetch'
-alias fpc='php ~/Projects/php/create-flutter-project/main.php'
+alias fpc='php ~/Projects/php/flutter-project-creator/main.php'
 alias cd='z'
 alias lazy='NVIM_APPNAME=LazyVim nvim'
 alias kvim='NVIM_APPNAME=Kickstart nvim'
@@ -227,6 +227,10 @@ if [ -f /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting
     source /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 fi
 
+# if [ -f /usr/share/zsh/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh ]; then
+#     source /usr/share/zsh/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+# fi
+
 # if [[ -z "$TMUX" ]]; then
 #   tmux attach-session -t default || tmux new-session -s default
 # fi
@@ -246,7 +250,7 @@ zi() {
 zle -N zi
 bindkey "^f" zi
 eval "$(starship init zsh)"
-eval "$(batman --export-env)"
+# eval "$(batman --export-env)"
 
 export PATH="$HOME/.pyenv/bin:$PATH"
 eval "$(pyenv init -)"

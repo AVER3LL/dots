@@ -1,6 +1,21 @@
 local M = {}
 
-M.mason = {}
+M.mason = {
+    "basedpyright",
+    "lua-language-server",
+    "hyprls",
+    "intelephense",
+    "texlab",
+    "jdtls",
+    "taplo",
+    "typescript-language-server",
+    "bash-language-server",
+    "tailwindcss-language-server",
+    "emmet-language-server",
+    "css-lsp",
+    "gopls",
+    "jinja-lsp",
+}
 
 M.default = {
     "hyprls", -- Hyprland dots
@@ -28,18 +43,21 @@ M.lspconfig = vim.tbl_extend("force", process_default_lsps(), {
     intelephense = { -- no nonsense lsp for php. No rename tho
         filetypes = {
             "php",
-            "blade",
-            "php_only",
+            -- "blade",
+            -- "php_only",
         },
         settings = {
             intelephense = {
                 filetypes = {
                     "php",
                     -- "blade",
-                    "php_only",
+                    -- "php_only",
                 },
                 files = {
-                    associations = { "*.php", "*.blade.php" }, -- Associating .blade.php files as well
+                    associations = {
+                        "*.php",
+                        -- "*.blade.php",
+                    }, -- Associating .blade.php files as well
                     maxSize = 5000000,
                 },
             },
@@ -88,11 +106,11 @@ M.lspconfig = vim.tbl_extend("force", process_default_lsps(), {
             "htmldjango",
             "javascript",
             "javascriptreact",
+            "typescriptreact",
             "less",
             "sass",
             "scss",
             "pug",
-            "typescriptreact",
         },
     },
 

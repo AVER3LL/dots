@@ -1,6 +1,6 @@
 -- Plugin Settings
 vim.g.codeium_disable_bindings = 1
-vim.g.codeium_enabled = true
+vim.g.codeium_enabled = false
 vim.g.fold_indicator = true
 
 vim.g.show_indent = false
@@ -52,8 +52,11 @@ vim.opt.shiftwidth = 4
 vim.opt.softtabstop = 4
 vim.opt.expandtab = true
 vim.opt.smarttab = true
-vim.opt.copyindent = true
+
+-- vim.opt.copyindent = true
 vim.opt.smartindent = true
+vim.opt.autoindent = true
+
 vim.opt.wrap = false
 vim.opt.linebreak = true
 vim.opt.breakindent = true

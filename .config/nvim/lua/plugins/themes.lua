@@ -2,7 +2,7 @@ return {
 
     { -- eldritch
         "eldritch-theme/eldritch.nvim",
-        -- enabled = false,
+        enabled = false,
         lazy = false,
         priority = 1000,
         opts = {},
@@ -10,6 +10,7 @@ return {
 
     {
         "tiagovla/tokyodark.nvim",
+        enabled = false,
         priority = 1000,
         opts = {
             transparent_background = false, -- set background to transparent
@@ -25,13 +26,14 @@ return {
 
     {
         "dasupradyumna/midnight.nvim",
-        enabled = true,
+        enabled = false,
         lazy = false,
         priority = 1000,
     },
 
     { -- everblush
         "Everblush/nvim",
+        enabled = false,
         name = "everblush",
         priority = 1000,
         opts = {
@@ -41,7 +43,7 @@ return {
 
     { -- palenightfall
         "JoosepAlviste/palenightfall.nvim",
-        enabled = true,
+        enabled = false,
         priority = 1000,
         opts = {},
     },
@@ -521,7 +523,7 @@ return {
 
     { -- rose-pine
         "rose-pine/neovim",
-        -- enabled = false,
+        enabled = false,
         name = "rose-pine",
         priority = 1000,
         config = function()
@@ -570,7 +572,7 @@ return {
 
     { -- gruvbox-material
         "sainnhe/gruvbox-material",
-        -- enabled = false,
+        enabled = false,
         lazy = false,
         priority = 1000,
         config = function()
@@ -642,7 +644,7 @@ return {
 
     { --cyberdream
         "scottmckendry/cyberdream.nvim",
-        -- enabled = false,
+        enabled = false,
         priority = 1000,
         lazy = false,
         opts = function(_, opts)

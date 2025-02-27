@@ -1,6 +1,5 @@
 return {
     "linux-cultist/venv-selector.nvim",
-    -- event = "VeryLazy",
     ft = "python",
     dependencies = {
         "neovim/nvim-lspconfig",

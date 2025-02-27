@@ -1,5 +1,5 @@
 # Font
-font-family = "JetBrainsMono NF"
+# font-family = "JetBrainsMono NF"
 font-size = 15
 
 # Mouse
@@ -8,6 +8,7 @@ mouse-scroll-multiplier = 2
 cursor-style = block
 
 # Terminal look
+gtk-adwaita = true
 adw-toolbar-style = flat
 window-theme = ghostty
 gtk-titlebar = false
@@ -15,13 +16,16 @@ gtk-titlebar = false
 # Colors
 theme = GruvboxDarkHard
 background = 1C2021
+# theme = Adwaita Dark
+# background-opacity = 0.9
+background-blur = 30
 # theme = tokyonight_night
 # theme = "Kanagawa Wave"
 
 window-padding-balance = true
-window-decoration = false
+# window-decoration = none
 
-adjust-cell-height = 25%
+adjust-cell-height = 35%
 shell-integration-features = no-cursor,sudo,no-title
 confirm-close-surface = false
 

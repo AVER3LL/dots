@@ -12,23 +12,30 @@ local map = function(mode, lhs, rhs, opts)
 end
 
 map("n", "<leader><leader>l", function()
+    -- Deactivate line numbers
     if vim.wo.number then
-        vim.wo.number = false
-        vim.wo.relativenumber = false
+        vim.opt.number = false
+        vim.opt.relativenumber = false
+        vim.opt.foldcolumn = "0"
+    -- Activate line numbers
     else
-        vim.wo.number = true
-        vim.wo.relativenumber = true
+        vim.opt.number = true
+        vim.opt.relativenumber = true
+        vim.opt.foldcolumn = "1"
     end
 end, { desc = "Toggle line numbers" })
 
 local M = {}
 
-M.bufferline = function()
-    -- Go to next or last buffer
-    map("n", "<tab>", ":BufferLineCycleNext<CR>", { desc = "Go to next buffer" })
-    map("n", "<S-tab>", ":BufferLineCyclePrev<CR>", { desc = "Go to previous buffer" })
+map("n", "<tab>", ":bnext<CR>", { desc = "Go to next buffer" })
+map("n", "<S-tab>", ":bprevious<CR>", { desc = "Go to previous buffer" })
 
-    map("n", "<leader>b", "<cmd>BufferLinePick<CR>", { desc = "Pick buffer" })
+M.bufferlin = function()
+    -- Go to next or last buffer
+    map("n", "<tab>", ":BufferLineCycleNex<CR>", { desc = "Go to next buffer" })
+    map("n", "<S-tab>", ":BufferLineCyclePre<CR>", { desc = "Go to previous buffer" })
+
+    map("n", "<leader>b", "<cmd>BufferLinePic<CR>", { desc = "Pick buffer" })
 
     -- Re-order to previous/next
     map("n", "<leader>gp", ":BufferLineMovePrev<CR>", { silent = true })
@@ -55,7 +62,10 @@ M.tmux = function()
     map("n", "<C-k>", "<cmd>TmuxNavigateUp<cr>", { desc = "Move to top split" })
     map("n", "<C-l>", "<cmd>TmuxNavigateRight<cr>", { desc = "Move to right split" })
 end
-M.tmux()
+map("n", "<C-h>", "<C-w>h", { desc = "Move to left split" })
+map("n", "<C-j>", "<C-w>j", { desc = "Move to bottom split" })
+map("n", "<C-k>", "<C-w>k", { desc = "Move to top split" })
+map("n", "<C-l>", "<C-w>l", { desc = "Move to right split" })
 
 M.noice = function()
     map("n", "<leader>nd", "<cmd>NoiceDismiss<CR>", { desc = "Dismiss Noice Message" })

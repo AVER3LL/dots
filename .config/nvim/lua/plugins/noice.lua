@@ -5,7 +5,7 @@ return {
     -- the search flicker
     {
         "folke/noice.nvim",
-        -- enabled = false,
+        enabled = true,
         event = "VeryLazy",
         dependencies = {
             "MunifTanjim/nui.nvim",
