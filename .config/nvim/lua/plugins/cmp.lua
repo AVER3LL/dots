@@ -58,6 +58,7 @@ return {
             "hrsh7th/cmp-nvim-lsp", -- source for lsp
             "saadparwaiz1/cmp_luasnip", -- for autocompletion
             "rafamadriz/friendly-snippets", -- useful snippets
+            "f3fora/cmp-spell",
             { "roobert/tailwindcss-colorizer-cmp.nvim", opts = {} },
 
             {
@@ -307,6 +308,18 @@ return {
                 cmdline = {},
                 per_filetype = {
                     sql = { "vim-dadbod-completion", "buffer" },
+                    tex = {
+                        {
+                            name = "spell",
+                            option = {
+                                keep_all_entries = false,
+                                enable_in_context = function()
+                                    return true
+                                end,
+                                preselect_correct_word = true,
+                            },
+                        },
+                    },
                 },
             },
         },

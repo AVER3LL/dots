@@ -20,7 +20,7 @@ return {
                 },
                 popupmenu = {
                     relative = "editor",
-                    position = { row = "72%", col = "50%" },
+                    position = { row = "77%", col = "50%" },
                     size = { width = 60, height = 10 },
                     border = { style = bt, padding = { 0, 2 } },
                     win_options = {

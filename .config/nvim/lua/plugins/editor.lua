@@ -25,6 +25,9 @@ return {
         dependencies = { "nvim-lua/plenary.nvim" },
         opts = {
             signs = true,
+            keywords = {
+                TWEAK = { icon = "󰖷", color = "info" },
+            },
         },
     },
 
@@ -175,7 +178,9 @@ return {
     {
         "NStefan002/visual-surround.nvim",
         event = { "BufReadPre", "BufNewFile" },
-        opts = {},
+        opts = {
+            surround_chars = { "{", "}", "[", "]", "(", ")", "'", '"', "`" },
+        },
     },
 
     {

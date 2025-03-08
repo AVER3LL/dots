@@ -4,4 +4,4 @@ require "config.lazy"
 
 require "snippets"
 
-vim.cmd.colorscheme "catppuccin"
+-- vim.cmd.colorscheme "catppuccin"

@@ -67,6 +67,28 @@ autocmd("ColorScheme", {
         sethl(0, "LspDiagnosticsLineNrInformation", { link = "DiagnosticSignInfo" })
         sethl(0, "LspDiagnosticsLineNrHint", { link = "DiagnosticSignHint" })
 
+        -- Add underlined diagnostics regardless of theme
+        sethl(
+            0,
+            "DiagnosticUnderlineError",
+            { undercurl = true, sp = vim.api.nvim_get_hl(0, { name = "DiagnosticSignError" }).fg }
+        )
+        sethl(
+            0,
+            "DiagnosticUnderlineWarn",
+            { undercurl = true, sp = vim.api.nvim_get_hl(0, { name = "DiagnosticSignWarn" }).fg }
+        )
+        sethl(
+            0,
+            "DiagnosticUnderlineInfo",
+            { undercurl = true, sp = vim.api.nvim_get_hl(0, { name = "DiagnosticSignInfo" }).fg }
+        )
+        sethl(
+            0,
+            "DiagnosticUnderlineHint",
+            { undercurl = true, sp = vim.api.nvim_get_hl(0, { name = "DiagnosticSignHint" }).fg }
+        )
+
         -- Modern looking floating windows
         local normal_bg = vim.api.nvim_get_hl(0, { name = "Normal" }).bg
         local normal_fg = vim.api.nvim_get_hl(0, { name = "Comment" }).fg

@@ -65,6 +65,7 @@ return {
                             "%.venv",
                             ".mypy_cache",
                             "__pycache__",
+                            "vendor",
                         },
                         hidden = true,
                     },
@@ -75,6 +76,7 @@ return {
                             "%.venv",
                             ".mypy_cache",
                             "__pycache__",
+                            "vendor",
                         },
                         additional_args = function(_)
                             return { "--hidden" }

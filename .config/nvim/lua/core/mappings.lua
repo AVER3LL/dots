@@ -14,11 +14,13 @@ end
 map("n", "<leader><leader>l", function()
     -- Deactivate line numbers
     if vim.wo.number then
+        vim.g.show_line_number = false
         vim.opt.number = false
         vim.opt.relativenumber = false
         vim.opt.foldcolumn = "0"
     -- Activate line numbers
     else
+        vim.g.show_line_number = true
         vim.opt.number = true
         vim.opt.relativenumber = true
         vim.opt.foldcolumn = "1"
@@ -29,6 +31,10 @@ local M = {}
 
 map("n", "<tab>", ":bnext<CR>", { desc = "Go to next buffer" })
 map("n", "<S-tab>", ":bprevious<CR>", { desc = "Go to previous buffer" })
+
+-- Indentation in Visual Mode
+map("v", "<", "<gv")
+map("v", ">", ">gv")
 
 M.bufferlin = function()
     -- Go to next or last buffer
@@ -103,10 +109,6 @@ map("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, desc = 
 
 map("n", "gl", "$", { desc = "Move to end of line" })
 map("n", "gh", "_", { desc = "Move to end of line" })
-
--- Indentation in Visual Mode
-map("v", "<", "<gv")
-map("v", ">", ">gv")
 
 -- Commenting
 map("n", "<leader>v", "gcc", { desc = "Toggle Comment", remap = true })

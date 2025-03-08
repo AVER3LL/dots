@@ -34,6 +34,7 @@ local function config_ts()
             "bibtex",
             "java",
             "php",
+            "phpdoc",
             "java",
             "json",
             "jsonc",

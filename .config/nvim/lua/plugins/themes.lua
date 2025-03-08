@@ -1,9 +1,36 @@
 return {
 
+    -- theme switcher
+    {
+        "gagbo/circadian.nvim",
+        config = function()
+            require("circadian").setup {
+                -- Latitude: Defaults to Paris' latitude
+                lat = 0.0,
+                -- Longitude: Defaults to Paris' longitude
+                lon = 0.0,
+                -- Day theme: the background is optional, but useful for themes that
+                -- control light/dark variants with it. Defaults to nil everywhere
+                -- (will not change a thing when Sun rises)
+                day = { background = "light", colorscheme = "catppuccin" },
+                -- Night theme: the background is optional, but useful for themes that
+                -- control light/dark variants with it. Defaults to nil everywhere
+                -- (will not change a thing when Sun sets)
+                night = { background = "dark", colorscheme = "kanagawa" },
+            }
+        end,
+    },
+
     { -- eldritch
         "eldritch-theme/eldritch.nvim",
         enabled = false,
         lazy = false,
+        priority = 1000,
+        opts = {},
+    },
+
+    {
+        "yorickpeterse/nvim-grey",
         priority = 1000,
         opts = {},
     },
@@ -194,7 +221,7 @@ return {
                         surface2 = "#bfb695",
                         surface1 = "#d1c7a3",
                         surface0 = "#e3dec3",
-                        base = "#f9f5d7",
+                        base = "#fbf1c7",
                         mantle = "#f0ebce",
                         crust = "#e8e3c8",
                     },
@@ -230,7 +257,7 @@ return {
                 transparent_background = false,
                 show_end_of_buffer = false,
                 integration_default = false,
-                no_bold = true,
+                no_bold = false,
                 no_italic = false,
                 no_underline = true,
                 integrations = {

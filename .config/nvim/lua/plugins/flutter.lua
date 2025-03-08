@@ -9,6 +9,14 @@ return {
             widget_guides = {
                 enabled = true,
             },
+            lsp = {
+                color = {
+                    enabled = true,
+                    background = true,
+                    virtual_text = false, -- show the highlight using virtual text
+                    virtual_text_str = "■", -- the virtual text character to highlight
+                },
+            },
         }
     end,
 }

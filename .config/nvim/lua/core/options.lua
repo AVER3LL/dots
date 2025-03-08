@@ -2,6 +2,7 @@
 vim.g.codeium_disable_bindings = 1
 vim.g.codeium_enabled = false
 vim.g.fold_indicator = true
+vim.g.show_line_number = false
 
 vim.g.show_indent = false
 vim.g.use_blink = false
@@ -20,8 +21,8 @@ vim.opt.showmode = false
 vim.opt.colorcolumn = { 81, 121 }
 
 -- Line Numbers
-vim.opt.number = true
-vim.opt.relativenumber = true
+vim.opt.number = vim.g.show_line_number
+vim.opt.relativenumber = vim.g.show_line_number
 vim.opt.numberwidth = 2
 vim.opt.ruler = false
 
@@ -53,7 +54,7 @@ vim.opt.softtabstop = 4
 vim.opt.expandtab = true
 vim.opt.smarttab = true
 
--- vim.opt.copyindent = true
+vim.opt.copyindent = true
 vim.opt.smartindent = true
 vim.opt.autoindent = true
 
@@ -93,7 +94,7 @@ vim.opt.shada = { "!", "'1000", "<50", "s10", "h" }
 vim.opt.confirm = true
 
 -- Folding (Treesitter)
-vim.opt.foldcolumn = vim.g.fold_indicator and "1" or "0"
+vim.opt.foldcolumn = vim.g.show_line_number and "1" or "0"
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
 vim.opt.foldenable = true

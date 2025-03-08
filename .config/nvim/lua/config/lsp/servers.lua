@@ -28,6 +28,7 @@ M.default = {
     "tailwindcss", -- obvious
     "basedpyright",
     "lua_ls",
+    -- "phpactor",
 }
 
 -- Function to convert the default array into key-value pairs
@@ -40,6 +41,7 @@ local function process_default_lsps()
 end
 
 M.lspconfig = vim.tbl_extend("force", process_default_lsps(), {
+
     intelephense = { -- no nonsense lsp for php. No rename tho
         filetypes = {
             "php",
