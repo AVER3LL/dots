@@ -14,10 +14,12 @@ window-theme = ghostty
 gtk-titlebar = false
 
 # Colors
+# Dark theme
 theme = GruvboxDarkHard
 background = 1C2021
-# theme = Adwaita Dark
-# background-opacity = 0.9
+# Light theme
+# theme = GruvboxLight
+
 background-blur = 30
 # theme = tokyonight_night
 # theme = "Kanagawa Wave"

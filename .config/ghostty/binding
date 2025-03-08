@@ -1,6 +1,7 @@
 # Keybinds
 keybind = ctrl+enter=unbind
 keybind = ctrl+d=unbind
+keybind = ctrl+,=unbind
 keybind = ctrl+shift+q=unbind
 
 keybind = ctrl+alt+l=goto_split:right
