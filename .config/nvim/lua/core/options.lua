@@ -2,7 +2,7 @@
 vim.g.codeium_disable_bindings = 1
 vim.g.codeium_enabled = false
 vim.g.fold_indicator = true
-vim.g.show_line_number = false
+vim.g.show_line_number = true
 
 vim.g.show_indent = false
 vim.g.use_blink = false

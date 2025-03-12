@@ -14,9 +14,10 @@ return {
                     enabled = true,
                     background = true,
                     virtual_text = false, -- show the highlight using virtual text
-                    virtual_text_str = "■", -- the virtual text character to highlight
+                    virtual_text_str = "󱓻", -- the virtual text character to highlight
                 },
             },
         }
+        require("telescope").load_extension "flutter"
     end,
 }

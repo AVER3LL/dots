@@ -95,6 +95,7 @@ autocmd("ColorScheme", {
         sethl(0, "LspInfoBorder", { bg = normal_bg })
         sethl(0, "NormalFloat", { bg = normal_bg })
         sethl(0, "FloatBorder", { fg = adjust_brightness(normal_fg, 0.3), bg = normal_bg })
+        sethl(0, "Comment", { fg = "#008c7d" })
 
         -- local adjusted_brightness = adjust_brightness(normal_bg, 0.2)
         -- sethl(0, "LspInfoBorder", { bg = adjusted_brightness })

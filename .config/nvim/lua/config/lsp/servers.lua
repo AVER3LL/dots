@@ -11,7 +11,9 @@ M.mason = {
     "typescript-language-server",
     "bash-language-server",
     "tailwindcss-language-server",
+    "css-variables-language-server",
     "emmet-language-server",
+    "cssmodules-language-server",
     "css-lsp",
     "gopls",
     "jinja-lsp",
@@ -28,6 +30,8 @@ M.default = {
     "tailwindcss", -- obvious
     "basedpyright",
     "lua_ls",
+    "css_variables",
+    "cssmodules_ls",
     -- "phpactor",
 }
 
@@ -45,20 +49,20 @@ M.lspconfig = vim.tbl_extend("force", process_default_lsps(), {
     intelephense = { -- no nonsense lsp for php. No rename tho
         filetypes = {
             "php",
-            -- "blade",
+            "blade",
             -- "php_only",
         },
         settings = {
             intelephense = {
                 filetypes = {
                     "php",
-                    -- "blade",
+                    "blade",
                     -- "php_only",
                 },
                 files = {
                     associations = {
                         "*.php",
-                        -- "*.blade.php",
+                        "*.blade.php",
                     }, -- Associating .blade.php files as well
                     maxSize = 5000000,
                 },

@@ -3,19 +3,12 @@ return {
     -- theme switcher
     {
         "gagbo/circadian.nvim",
+        priority = 900,
         config = function()
             require("circadian").setup {
-                -- Latitude: Defaults to Paris' latitude
-                lat = 0.0,
-                -- Longitude: Defaults to Paris' longitude
-                lon = 0.0,
-                -- Day theme: the background is optional, but useful for themes that
-                -- control light/dark variants with it. Defaults to nil everywhere
-                -- (will not change a thing when Sun rises)
-                day = { background = "light", colorscheme = "catppuccin" },
-                -- Night theme: the background is optional, but useful for themes that
-                -- control light/dark variants with it. Defaults to nil everywhere
-                -- (will not change a thing when Sun sets)
+                lat = 6.390192,
+                lon = 2.270412,
+                day = { background = "dark", colorscheme = "catppuccin" },
                 night = { background = "dark", colorscheme = "kanagawa" },
             }
         end,
@@ -23,56 +16,16 @@ return {
 
     { -- eldritch
         "eldritch-theme/eldritch.nvim",
-        enabled = false,
+        enabled = true,
         lazy = false,
         priority = 1000,
         opts = {},
-    },
-
-    {
-        "yorickpeterse/nvim-grey",
-        priority = 1000,
-        opts = {},
-    },
-
-    {
-        "tiagovla/tokyodark.nvim",
-        enabled = false,
-        priority = 1000,
-        opts = {
-            transparent_background = false, -- set background to transparent
-            gamma = 1.00, -- adjust the brightness of the theme
-        },
     },
 
     {
         "bluz71/vim-moonfly-colors",
         lazy = false,
         priority = 1000,
-    },
-
-    {
-        "dasupradyumna/midnight.nvim",
-        enabled = false,
-        lazy = false,
-        priority = 1000,
-    },
-
-    { -- everblush
-        "Everblush/nvim",
-        enabled = false,
-        name = "everblush",
-        priority = 1000,
-        opts = {
-            transparent_background = false,
-        },
-    },
-
-    { -- palenightfall
-        "JoosepAlviste/palenightfall.nvim",
-        enabled = false,
-        priority = 1000,
-        opts = {},
     },
 
     { -- solarized-osaka
@@ -89,8 +42,6 @@ return {
         priority = 1000,
         opts = {},
         config = function()
-            -- local colors = require "ayu.colors"
-            -- colors.generate(true)
             require("ayu").setup {
                 mirage = true,
                 terminal = false,
@@ -125,17 +76,8 @@ return {
                 local theme = colors.theme
                 return {
 
-                    -- NormalFloat = { bg = "none" },
-                    -- FloatBorder = { bg = "none" },
-                    -- FloatTitle = { bg = "none" },
-
-                    -- Save an hlgroup with dark background and dimmed foreground
-                    -- so that you can use it where your still want darker windows.
-                    -- E.g.: autocmd TermOpen * setlocal winhighlight=Normal:NormalDark
                     NormalDark = { fg = theme.ui.fg_dim, bg = theme.ui.bg_m3 },
 
-                    -- Popular plugins that open floats will link to NormalFloat by default;
-                    -- set their background accordingly if you wish to keep them dark and borderless
                     LazyNormal = { bg = theme.ui.bg_m3, fg = theme.ui.fg_dim },
                     MasonNormal = { bg = theme.ui.bg_m3, fg = theme.ui.fg_dim },
 
@@ -164,11 +106,6 @@ return {
                     DiagnosticUnderlineError = { sp = theme.diag.error, undercurl = true },
                     DiagnosticUnderlineHint = { sp = theme.diag.hint, undercurl = true },
                     DiagnosticUnderlineInfo = { sp = theme.diag.info, undercurl = true },
-
-                    -- LspDiagnosticsLineNrError = { fg = theme.diag.error },
-                    -- LspDiagnosticsLineNrWarning = { fg = theme.diag.warning },
-                    -- LspDiagnosticsLineNrHint = { fg = theme.diag.hint },
-                    -- LspDiagnosticsLineNrInfo = { fg = theme.diag.info },
                 }
             end,
         },
@@ -176,16 +113,15 @@ return {
 
     { -- everforest
         "sainnhe/everforest",
-        -- enabled = false,
         name = "everforest",
         priority = 1000,
         config = function()
-            -- vim.g.everforest_better_performance = 1
+            vim.g.everforest_better_performance = 1
             vim.g.everforest_transparent_background = 0
         end,
     },
 
-    { --catppuccin
+    { -- catppuccin
         "catppuccin/nvim",
         name = "catppuccin",
         lazy = false,
@@ -255,11 +191,13 @@ return {
                     },
                 },
                 transparent_background = false,
-                show_end_of_buffer = false,
-                integration_default = false,
-                no_bold = false,
-                no_italic = false,
-                no_underline = true,
+                styles = { -- Handles the styles of general hi groups (see `:h highlight-args`):
+                    comments = { "italic" },
+                    functions = { "bold" },
+                    keywords = { "bold" },
+                    types = { "bold", "italic" },
+                    loops = { "bold" },
+                },
                 integrations = {
                     barbecue = { dim_dirname = true, bold_basename = true, dim_context = false, alt_background = false },
                     cmp = true,
@@ -543,57 +481,6 @@ return {
             vim.api.nvim_set_hl(0, "NavicIconsOperator", { default = true, bg = "none", fg = "#eedaad" })
             vim.api.nvim_set_hl(0, "NavicText", { default = true, bg = "none", fg = "#eedaad" })
             vim.api.nvim_set_hl(0, "NavicSeparator", { default = true, bg = "none", fg = "#eedaad" })
-
-            -- vim.api.nvim_command("colorscheme catppuccin")
-        end,
-    },
-
-    { -- rose-pine
-        "rose-pine/neovim",
-        enabled = false,
-        name = "rose-pine",
-        priority = 1000,
-        config = function()
-            ---@diagnostic disable-next-line: missing-fields
-            require("rose-pine").setup {
-                variant = "auto", -- auto, main, moon, or dawn
-                dark_variant = "moon", -- main, moon, or dawn
-                dim_inactive_windows = false,
-                -- extend_background_behind_borders = true,
-
-                enable = {
-                    terminal = true,
-                    -- legacy_highlights = true, -- Improve compatibility for previous versions of Neovim
-                    migrations = true, -- Handle deprecated options automatically
-                },
-
-                styles = {
-                    bold = true,
-                    italic = true,
-                    transparency = false,
-                },
-
-                highlight_groups = {
-                    TelescopeResultsTitle = { fg = "surface", bg = "surface" },
-                    TelescopeBorder = { fg = "surface", bg = "surface" },
-                    TelescopeSelection = { fg = "text", bg = "overlay", bold = true },
-                    TelescopeSelectionCaret = { fg = "text", bg = "highlight_med" },
-                    TelescopeMultiSelection = { fg = "text", bg = "highlight_high" },
-
-                    TelescopePromptTitle = { fg = "base", bg = "love" },
-                    TelescopePreviewTitle = { fg = "base", bg = "foam" },
-
-                    TelescopeTitle = { fg = "base", bg = "love" },
-                    TelescopePromptNormal = { bg = "overlay" },
-                    TelescopePromptBorder = { fg = "overlay", bg = "overlay" },
-                    TelescopePromptPrefix = { fg = "love", bg = "overlay" },
-                    NvimTreeCursorLine = { bg = "surface" },
-                    -- NvimTreeNormal = { bg = "#161420" },
-                    -- NvimTreeWinSeparator = { bg = "#161420", fg = "#161420" },
-                    NvimTreeWinSeparator = { bg = "base", fg = "#191724" },
-                    -- CmpWinBorder = { fg = "overlay", bg = "base" },
-                },
-            }
         end,
     },
 
@@ -667,16 +554,5 @@ return {
                 auto = true,
             },
         },
-    },
-
-    { --cyberdream
-        "scottmckendry/cyberdream.nvim",
-        enabled = false,
-        priority = 1000,
-        lazy = false,
-        opts = function(_, opts)
-            opts.italic_comments = true
-            opts.transparent = false
-        end,
     },
 }

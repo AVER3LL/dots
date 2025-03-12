@@ -263,15 +263,17 @@ return {
     -- css colors highlighting
     {
         "brenoprata10/nvim-highlight-colors",
-        enabled = false,
+        enabled = true,
         event = "VeryLazy",
         config = function()
             require("nvim-highlight-colors").setup {
-                -- render = "virtual",
+                render = "virtual",
                 virtual_symbol_position = "eow",
-                virtual_symbol = " ",
+                -- virtual_symbol = " ",
+                virtual_symbol = "󱓻",
                 virtual_symbol_prefix = " ",
                 virtual_symbol_suffix = "",
+                enable_tailwind = true,
                 exclude_buftypes = {},
                 exclude_filetypes = { "NvimTree", "TelescopePrompt", "TelescopeResults", "lazy", "mason", "neo-tree" },
             }
@@ -281,20 +283,28 @@ return {
     {
         "NvChad/nvim-colorizer.lua",
         lazy = false,
+        enabled = false,
         opts = {
             filetypes = {
                 "*", -- Highlight all files, but customize some others.
-                css = { names = true },
+                css = {
+                    names = true,
+                    rgb_fn = true, -- CSS rgb() and rgba() functions #FFF
+                    hsl_fn = true, -- CSS hsl() and hsla() functions
+                    css = true, -- Enable all CSS *features*:
+                    RRGGBBAA = true, -- #RRGGBBAA hex codes
+                    AARRGGBB = true, -- 0xAARRGGBB hex codes
+                },
                 html = { names = true },
                 javascriptreact = { names = true },
                 typescriptreact = { names = true },
             },
             user_default_options = {
+                mode = "virtualtext",
+                virtualtext = "󱓻",
+                virtualtext_inline = "before",
                 names = false,
                 tailwind = true,
-                rgb_fn = true, -- CSS rgb() and rgba() functions
-                hsl_fn = true, -- CSS hsl() and hsla() functions
-                css = true, -- Enable all CSS *features*:
             },
         },
     },
@@ -319,7 +329,7 @@ return {
         cmd = "NoNeckPain",
         version = "*",
         opts = {
-            width = 115,
+            width = 120,
             autocmds = { -- Better autocmd configuration
                 enableOnVimEnter = false, -- Enable when Vim starts
                 reloadOnColorSchemeChange = true,

@@ -124,16 +124,9 @@ return {
                 },
 
                 mapping = cmp.mapping.preset.insert {
-                    -- ["<C-k>"] = cmp.mapping(function(fallback)
-                    --     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Up>", true, true, true), "i", true)
-                    -- end, { "i", "s" }),
 
                     ["<C-j>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Select },
                     ["<C-k>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Select },
-
-                    -- ["<C-j>"] = cmp.mapping(function(fallback)
-                    --     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Down>", true, true, true), "i", true)
-                    -- end, { "i", "s" }),
 
                     ["<C-b>"] = cmp.mapping.scroll_docs(-4),
                     ["<C-f>"] = cmp.mapping.scroll_docs(4),
@@ -147,7 +140,6 @@ return {
 
                     ["<Tab>"] = cmp.mapping(function(fallback)
                         if cmp.visible() then
-                            -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Down>", true, true, true), "i", true)
                             cmp.select_next_item { behavior = cmp.SelectBehavior.Select }
                         elseif luasnip.locally_jumpable(1) then
                             luasnip.jump(1)
@@ -158,7 +150,6 @@ return {
 
                     ["<S-Tab>"] = cmp.mapping(function(fallback)
                         if cmp.visible() then
-                            -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Up>", true, true, true), "i", true)
                             cmp.select_prev_item { behavior = cmp.SelectBehavior.Select }
                         elseif luasnip.locally_jumpable(-1) then
                             luasnip.jump(-1)

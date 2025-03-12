@@ -95,6 +95,9 @@ map("n", "<leader><leader>ct", function()
     end
 end, { desc = "Toggle Codeium" })
 
+-- Toggle supermaven
+map("n", "<leader><leader>cs", "<cmd>supermavenToggle<cr>", { desc = "Toggle Supermaven" })
+
 map("n", "<leader>tl", function()
     if vim.g.colors_name == "cyberdream" then
         vim.cmd "CyberdreamToggleMode"
