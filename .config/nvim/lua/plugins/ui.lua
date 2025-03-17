@@ -212,7 +212,7 @@ return {
     -- Better ui somehow
     {
         "stevearc/dressing.nvim",
-        enabled = true,
+        enabled = false,
         opts = {
             input = {
                 relative = "cursor",
@@ -268,11 +268,11 @@ return {
         config = function()
             require("nvim-highlight-colors").setup {
                 render = "virtual",
-                virtual_symbol_position = "eow",
+                virtual_symbol_position = "inline",
                 -- virtual_symbol = " ",
                 virtual_symbol = "󱓻",
-                virtual_symbol_prefix = " ",
-                virtual_symbol_suffix = "",
+                virtual_symbol_prefix = "",
+                virtual_symbol_suffix = " ",
                 enable_tailwind = true,
                 exclude_buftypes = {},
                 exclude_filetypes = { "NvimTree", "TelescopePrompt", "TelescopeResults", "lazy", "mason", "neo-tree" },

@@ -30,8 +30,8 @@ M.default = {
     "tailwindcss", -- obvious
     "basedpyright",
     "lua_ls",
-    "css_variables",
-    "cssmodules_ls",
+    -- "css_variables",
+    -- "cssmodules_ls",
     -- "phpactor",
 }
 

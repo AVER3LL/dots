@@ -21,42 +21,6 @@ local comp_sep = {
 }
 
 local function setup_lualine()
-    local function truncate_branch_name(branch)
-        if not branch or branch == "" then
-            return ""
-        end
-
-        -- Match the branch name to the specified format
-        local user, team, ticket_number = string.match(branch, "^(%w+)/(%w+)%-(%d+)")
-
-        -- If the branch name matches the format, display {user}/{team}-{ticket_number}, otherwise display the full branch name
-        if ticket_number then
-            return user .. "/" .. team .. "-" .. ticket_number
-        else
-            return branch
-        end
-    end
-
-    local function current_lsp()
-        local name_mappings = {
-            emmet_language_server = "Emmet",
-            jedi_language_server = "Jedi",
-        }
-
-        local bufnr = vim.api.nvim_get_current_buf()
-        local buf_clients = vim.lsp.get_clients { bufnr = bufnr } -- bufnr = 0 for current buffer, same thing
-        if not next(buf_clients) then
-            return ""
-        end
-
-        local lsp_names = vim.tbl_map(function(client)
-            return name_mappings[client.name] or client.name
-        end, buf_clients)
-
-        local lsp_icon = " " -- You can change this icon to your preference
-        return lsp_icon .. " " .. table.concat(lsp_names, ", ")
-    end
-
     local function activated_python_environment()
         if vim.bo.filetype ~= "python" then
             return ""
@@ -87,15 +51,6 @@ local function setup_lualine()
         return "recording @" .. reg
     end
 
-    local mode = {
-        "mode",
-        fmt = function(str)
-            -- return ' ' .. str:sub(1, 1) -- displays only the first character of the mode
-            -- return " " .. str
-            return " " .. str:sub(1, 1):upper() .. str:sub(2):lower()
-        end,
-    }
-
     -- configure lualine with modified theme
     lualine.setup {
         options = {
@@ -108,7 +63,16 @@ local function setup_lualine()
         },
         sections = {
             -- lualine_a = { { "mode", separator = { left = "" }, right_padding = 2 } },
-            lualine_a = { mode },
+            lualine_a = {
+                {
+                    "mode",
+                    icons_enabled = true,
+                    icon = "",
+                    fmt = function(string, _)
+                        return string:sub(1, 1):upper() .. string:sub(2):lower()
+                    end,
+                },
+            },
             lualine_b = {
                 {
                     "filename",
@@ -118,7 +82,6 @@ local function setup_lualine()
                 {
                     "branch",
                     icon = "",
-                    fmt = truncate_branch_name,
                 },
             },
             lualine_c = {
@@ -153,7 +116,34 @@ local function setup_lualine()
                         vim.cmd "VenvSelect"
                     end,
                 },
-                current_lsp,
+                {
+                    "lsp_status",
+                    icon = " ",
+                    symbols = {
+                        -- Standard unicode symbols to cycle through for LSP progress:
+                        spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" },
+                        -- Standard unicode symbol for when LSP is done:
+                        done = "✓",
+                        -- Delimiter inserted between LSP names:
+                        separator = ", ",
+                    },
+                    -- List of LSP names to ignore (e.g., `null-ls`):
+                    ignore_lsp = {},
+                    fmt = function(inputString)
+                        local replacementMap = {
+                            emmet_language_server = "Emmet",
+                            jedi_language_server = "Jedi",
+                        }
+
+                        local result = {}
+                        for value in inputString:gmatch "([^,]+)" do
+                            value = value:match "^%s*(.-)%s*$" -- Trim spaces
+                            table.insert(result, replacementMap[value] or value)
+                        end
+
+                        return table.concat(result, ", ")
+                    end,
+                },
                 "filetype",
                 "progress",
             },

@@ -33,7 +33,7 @@ return {
             },
             lsp = {
                 signature = { enabled = false },
-                progress = { enabled = true },
+                progress = { enabled = false },
                 hover = { enabled = false },
                 override = {
                     ["vim.lsp.util.convert_input_to_markdown_lines"] = true,

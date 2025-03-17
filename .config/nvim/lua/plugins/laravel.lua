@@ -1,7 +1,6 @@
 return {
     {
         "ricardoramirezr/blade-nav.nvim",
-        enabled = false,
         dependencies = {
             "hrsh7th/nvim-cmp",
         },
@@ -17,6 +16,7 @@ return {
             "kevinhwang91/promise-async",
         },
         cmd = { "Laravel" },
+        ft = { "blade", "php" },
         keys = {
             { "<leader>la", ":Laravel artisan<cr>" },
             { "<leader>lr", ":Laravel routes<cr>" },

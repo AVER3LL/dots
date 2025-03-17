@@ -223,5 +223,8 @@
     "spwn": "spwn build",
     "pkl": "cd $dir && pkl eval -f yaml $fileName -o $fileNameWithoutExt.yaml",
     "gleam": "gleam run -m $fileNameWithoutExt"
-  }
+  },
+  "php.validate.executablePath": "/home/averell/.config/herd-lite/bin/php",
+  "Laravel.phpCommand": "/home/averell/.config/herd-lite/bin/php",
+  "workbench.statusBar.visible": false
 }
