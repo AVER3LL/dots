@@ -3,7 +3,6 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 -- Keymap helper function
-
 local map = function(mode, lhs, rhs, opts)
     opts = opts or {}
     opts.noremap = true
@@ -244,6 +243,7 @@ map("n", "<Leader>dg", "<cmd>Neogen<CR>", { desc = "Generate Documentation" })
 
 -- Telescope
 map("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Telescope find files" })
+map("n", "<leader>fg", "<cmd>Telescope git_files<cr>", { desc = "Telescope find git files" })
 map("n", "<leader>fw", "<cmd>Telescope live_grep<CR>", { desc = "Telescope live grep" })
 map("n", "<leader>fz", "<cmd>Telescope current_buffer_fuzzy_find<CR>", {
     desc = "Telescope find in current buffer",
