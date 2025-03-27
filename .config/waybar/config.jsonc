@@ -7,8 +7,8 @@
   "margin-top": 6,
   "margin-bottom": 0,
 
-  "margin-left": 20,
-  "margin-right": 20,
+  "margin-left": 15,
+  "margin-right": 15,
 
   "height": 54,
   "exclusive": true,
@@ -18,7 +18,9 @@
   "modules-left": [
     "custom/left",
     "custom/menu",
+    "custom/separator#blank_2",
     "custom/separator#dot-line",
+    "custom/separator#blank_1",
     "hyprland/workspaces",
     "custom/right",
 
@@ -268,11 +270,11 @@
   "idle_inhibitor": {
     "format": "{icon}",
     "format-icons": {
-      // "activated": " ",
-      // "deactivated": " ",
+      "activated": " ",
+      "deactivated": " ",
       //   
-      "activated": " ",
-      "deactivated": " ﯈",
+      // "activated": " ",
+      // "deactivated": " ﯈",
       // "activated": "󰥔 ",
       // "deactivated": " ",
     },

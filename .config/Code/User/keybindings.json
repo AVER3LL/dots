@@ -97,6 +97,22 @@
   },
   // Buffer navigation
   {
+    "key": "space s v",
+    "when": "vim.mode == 'Normal' && (editorTextFocus || !inputFocus)",
+    "command": "workbench.action.splitEditorLeft"
+  },
+  {
+    "key": "space s h",
+    "when": "vim.mode == 'Normal' && (editorTextFocus || !inputFocus)",
+    "command": "workbench.action.splitEditorDown"
+  },
+  // This should be closing splits
+  {
+    "key": "space s x",
+    "when": "vim.mode == 'Normal' && (editorTextFocus || !inputFocus)",
+    "command": "workbench.action.closeEditorsInGroup"
+  },
+  {
     "command": "workbench.action.nextEditorInGroup",
     "key": "tab",
     "when": "(vim.mode == 'Normal' || vim.mode == 'Visual') && (editorTextFocus || !inputFocus)"

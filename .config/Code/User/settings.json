@@ -14,7 +14,7 @@
   "editor.matchBrackets": "never",
   "workbench.tips.enabled": false,
   "editor.colorDecorators": true,
-  "window.menuBarVisibility": "compact",
+  "window.menuBarVisibility": "toggle",
 
   "editor.copyWithSyntaxHighlighting": false,
   "diffEditor.ignoreTrimWhitespace": false,
@@ -104,8 +104,7 @@
   },
   "window.dialogStyle": "custom",
   "workbench.layoutControl.enabled": false,
-  "window.titleBarStyle": "custom",
-  "window.customTitleBarVisibility": "windowed",
+  "window.titleBarStyle": "native",
   "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -226,5 +225,7 @@
   },
   "php.validate.executablePath": "/home/averell/.config/herd-lite/bin/php",
   "Laravel.phpCommand": "/home/averell/.config/herd-lite/bin/php",
+  "workbench.editor.editorActionsLocation": "titleBar",
+  "window.customTitleBarVisibility": "never",
   "workbench.statusBar.visible": false
 }
