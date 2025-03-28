@@ -28,7 +28,7 @@ M.default = {
     "taplo", -- markdown
     "bashls", -- bash lsp
     "tailwindcss", -- obvious
-    "basedpyright",
+    "basedpyright", -- apparently need to set contentFormat to "plaintext" if I want to fix doc breaks
     "lua_ls",
     -- "css_variables",
     -- "cssmodules_ls",

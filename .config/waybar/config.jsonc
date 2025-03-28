@@ -6,20 +6,19 @@
   // "spacing": 4,
   "margin-top": 6,
   "margin-bottom": 0,
-
   "margin-left": 15,
   "margin-right": 15,
-
   "height": 54,
   "exclusive": true,
   "passthrough": false,
-  "gtk-layer-shell": true,
+  // "gtk-layer-shell": true,
 
   "modules-left": [
     "custom/left",
     "custom/menu",
     "custom/separator#blank_2",
     "custom/separator#dot-line",
+
     "custom/separator#blank_1",
     "hyprland/workspaces",
     "custom/right",
@@ -42,56 +41,55 @@
     // "custom/right",
 
     "custom/left",
+    "custom/pacman",
+    "custom/separator#blank_1",
+
     "tray",
     "custom/right",
 
     "custom/left",
     "custom/separator#blank_1",
-    "custom/notifications",
+
     "custom/swaync",
     "custom/separator#blank_1",
+
     "clock",
     "custom/separator#blank_1",
+
     "custom/separator#dot-line",
     "custom/separator#blank_1",
+
+    "custom/wallpaper_change",
+    "custom/separator#blank_1",
+
     "idle_inhibitor",
     "custom/separator#blank_1",
-    "custom/lock_screen",
-    "custom/separator#blank_1",
+
     "custom/wlogout",
     "custom/right",
   ],
-
-  "network": {
-    "tooltip": true,
-    "rotate": 0,
-    "format-wifi": "<span foreground='#FF8B49'> {bandwidthDownBytes}</span> <span foreground='#FF6962'> {bandwidthUpBytes}</span>",
-    "format-ethernet": "<span foreground='#FF8B49'> {bandwidthDownBytes}</span> <span foreground='#FF6962'> {bandwidthUpBytes}</span>",
-    "tooltip-format": "Network: <big><b>{essid}</b></big>\nSignal strength: <b>{signaldBm}dBm ({signalStrength}%)</b>\nFrequency: <b>{frequency}MHz</b>\nInterface: <b>{ifname}</b>\nIP: <b>{ipaddr}/{cidr}</b>\nGateway: <b>{gwaddr}</b>\nNetmask: <b>{netmask}</b>",
-    "format-linked": "󰈀 {ifname} (No IP)",
-    "format-disconnected": " 󰖪 ",
-    "tooltip-format-disconnected": "Disconnected",
-    "interval": 2,
-
-    // "on-click-right": "~/.config/waybar/network.py",
-
-    // "tooltip": true,
-    // "format-wifi": " ",
-    // "rotate": 0,
-    // "format-ethernet": "󰈀 ",
-    // "tooltip-format": "Network: <big><b>{essid}</b></big>\nSignal strength: <b>{signaldBm}dBm ({signalStrength}%)</b>\nFrequency: <b>{frequency}MHz</b>\nInterface: <b>{ifname}</b>\nIP: <b>{ipaddr}/{cidr}</b>\nGateway: <b>{gwaddr}</b>\nNetmask: <b>{netmask}</b>",
-    // "format-linked": "󰈀 {ifname} (No IP)",
-    // "format-disconnected": "󰖪 ",
-    // "tooltip-format-disconnected": "Disconnected",
-    // "format-alt": "<span foreground='#99ffdd'> {bandwidthDownBytes}</span> <span foreground='#ffcc66'> {bandwidthUpBytes}</span>",
-    // "interval": 2,
-  },
 
   "custom/lock_screen": {
     "format": " ",
     "on-click": "sh -c '(sleep 0.1s; hyprlock)' & disown",
     "tooltip": true,
     "tooltip-format": "Lock screen",
+  },
+
+  "custom/wallpaper_change": {
+    "format": "󰸉 ",
+    "on-click": "sh -c '(waypaper --random)' & disown",
+    "tooltip": true,
+    "tooltip-format": "Change wallpaper",
+  },
+
+  "custom/pacman": {
+    "format": "{text}  ",
+    "interval": 3600, // every hour
+    "exec": "checkupdates | wc -l", // # of updates
+    "exec-if": "exit 0", // always run; consider advanced run conditions
+    "on-click": "ghostty -e 'sudo pacman -Syu'; pkill -SIGRTMIN+8 waybar", // update system
+    "signal": 8,
   },
 
   // Taskbar - Not activated yet
@@ -126,12 +124,6 @@
     "format": "{temperatureC}°C ",
   },
 
-  // Rofi
-  "custom/rofi": {
-    "format": "  {}",
-    "on-click": "~/.config/hypr/scripts/Rofi-launcher.sh",
-  },
-
   // Workspaces
   "hyprland/workspaces": {
     "disable-scroll": true,
@@ -149,8 +141,6 @@
       // "default": "",
     },
     "persistent-workspaces": {
-      // "1": 6,
-      // "*": 6,
       "1": [],
       "2": [],
       "3": [],
@@ -177,7 +167,12 @@
       // "default": "",
     },
     "persistent-workspaces": {
-      "*": 6,
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": [],
     },
   },
 
@@ -196,6 +191,7 @@
       "3": [],
       "4": [],
       "5": [],
+      "6": [],
     },
     "format-icons": {
       "1": "I",
@@ -223,6 +219,7 @@
       "3": [],
       "4": [],
       "5": [],
+      "6": [],
     },
     "format-icons": {
       "1": "一",
@@ -285,7 +282,7 @@
   "pulseaudio": {
     "format": "{icon} {volume}",
     // "format": "{icon} ",
-    "format-muted": "婢 {volume}",
+    "format-muted": "  {volume}",
     "on-click-middle": "pavucontrol -t 3",
     "on-click": "~/.config/hypr/scripts/volume_hyprdots.sh -o m",
     // "on-scroll-up": "~/.config/hypr/scripts/volumecontrol.sh -o i",
@@ -310,8 +307,8 @@
     "format-source-muted": " ",
     "on-click-middle": "pavucontrol -t 4",
     "on-click": "~/.config/hypr/scripts/volume_hyprdots.sh -i m",
-    "on-scroll-up": "~/.config/hypr/scripts/volume_hyprdots.sh -i i",
-    "on-scroll-down": "~/.config/hypr/scripts/volume_hyprdots.sh -i d",
+    // "on-scroll-up": "~/.config/hypr/scripts/volume_hyprdots.sh -i i",
+    // "on-scroll-down": "~/.config/hypr/scripts/volume_hyprdots.sh -i d",
     "tooltip-format": "{format_source} {source_desc} // {source_volume}%",
     "scroll-step": 5,
   },
@@ -370,12 +367,10 @@
     "on-scroll-up": "light -A 7",
     "on-scroll-down": "light -U 7",
     "format": "{icon} {percent}%",
-    // "format-icons": ["", "", "", ""],
     "format-icons": ["", "", "", "", "", "", "", "", ""],
     "tooltip-format": "{icon} Luminosity // {percent}%",
   },
 
-  // UNUSED
   "custom/swaync": {
     "tooltip": true,
     "format": "{} {icon} ",
@@ -396,56 +391,6 @@
     "on-click-right": "swaync-client -d -sw",
     "escape": true,
   },
-
-  "custom/notifications": {
-    "tooltip": false,
-    // "format": "{icon} {}",
-    "format": "{} {icon} ",
-    "rotate": 0,
-    "format-icons": {
-      "email-notification": "<span foreground='white'><sup></sup></span>",
-      "chat-notification": "󱋊<span foreground='white'><sup></sup></span>",
-      "warning-notification": "󱨪<span foreground='yellow'><sup></sup></span>",
-      "error-notification": "󱨪<span foreground='red'><sup></sup></span>",
-      "network-notification": "󱂇<span foreground='white'><sup></sup></span>",
-      "battery-notification": "󰁺<span foreground='white'><sup></sup></span>",
-      "update-notification": "󰚰<span foreground='white'><sup></sup></span>",
-      "music-notification": "󰝚<span foreground='white'><sup></sup></span>",
-      "volume-notification": "󰕿<span foreground='white'><sup></sup></span>",
-      "notification": "󰂚<span foreground='white'><sup></sup></span>",
-      "none": "",
-    },
-    "return-type": "json",
-    "exec-if": "which dunstctl",
-    "exec": "~/.config/waybar/scripts/notifications.py",
-    "on-click": "sleep 0.1 && dunstctl history-pop",
-    "on-click-middle": "dunstctl history-clear",
-    "on-click-right": "dunstctl close-all",
-    "interval": 1,
-    "tooltip": true,
-    "escape": true,
-  },
-
-  // "custom/swaync": {
-  //   "tooltip": true,
-  //   "format": " {} {icon} ",
-  //   "format-icons": {
-  //     "notification": "🔔<span foreground='red'><sup></sup></span>",
-  //     "none": "🔔",
-  //     "dnd-notification": "🔕<span foreground='red'><sup></sup></span>",
-  //     "dnd-none": "🔕",
-  //     "inhibited-notification": "🔔<span foreground='red'><sup></sup></span>",
-  //     "inhibited-none": "🔔",
-  //     "dnd-inhibited-notification": "🔕<span foreground='red'><sup></sup></span>",
-  //     "dnd-inhibited-none": "🔕",
-  //   },
-  //   "return-type": "json",
-  //   "exec-if": "which swaync-client",
-  //   "exec": "swaync-client -swb",
-  //   "on-click": "sleep 0.1 && swaync-client -t -sw",
-  //   "on-click-right": "swaync-client -d -sw",
-  //   "escape": true,
-  // },
 
   "mpris": {
     "format": "{title} - {artist}",

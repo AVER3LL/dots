@@ -79,7 +79,7 @@ return {
     -- Automatically closes brackets
     {
         "windwp/nvim-autopairs",
-        enabled = false,
+        enabled = true,
         event = "InsertEnter",
         opts = {
             check_ts = true,
@@ -189,13 +189,13 @@ return {
             require("configs.mini-ai").setup()
             require("mini.surround").setup()
             require("mini.trailspace").setup()
-            require("mini.pairs").setup {
-                modes = { insert = true, command = true, terminal = false },
-                skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
-                skip_ts = { "string" },
-                skip_unbalanced = true,
-                markdown = true,
-            }
+            -- require("mini.pairs").setup {
+            --     modes = { insert = true, command = true, terminal = false },
+            --     skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
+            --     skip_ts = { "string" },
+            --     skip_unbalanced = true,
+            --     markdown = true,
+            -- }
         end,
     },
 

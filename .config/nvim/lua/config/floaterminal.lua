@@ -18,7 +18,9 @@ local run_commands = {
     typescript = "ts-node %",
     cpp = "g++ % -o %:r && ./%:r",
     c = "gcc % -o %:r && ./%:r",
-    java = "javac % && java %:r",
+    -- java = "javac % && java %:r",
+    -- java = "javac % && java $fileWithoutExt",
+    java = "cd $dir && javac $filename && java $fileWithoutExt",
     rust = "rustc % && ./%:r",
     go = "go run %",
     sh = "bash %",
@@ -66,6 +68,20 @@ local function send_command(cmd)
     end
 end
 
+local function format_command(command)
+    local filepath = vim.fn.expand "%:p" -- Full path to the file
+    local dir = vim.fn.expand "%:h" -- Directory of the file
+    local filename = vim.fn.expand "%:t" -- Filename with extension
+    local fileWithoutExt = vim.fn.expand "%:t:r" -- Filename without extension
+
+    return command
+        :gsub("%$dir", dir)
+        :gsub("%$filename", filename)
+        :gsub("%$fileWithoutExt", fileWithoutExt)
+        :gsub("%%:r", fileWithoutExt) -- Existing %:r behavior
+        :gsub("%%", filepath) -- Use full path for %%
+end
+
 function M.run()
     local filetype = vim.bo.filetype
     local command = run_commands[filetype]
@@ -74,8 +90,7 @@ function M.run()
         return
     end
     -- Replace % with current file path
-    command = command:gsub("%%:r", vim.fn.expand "%:r")
-    command = command:gsub("%%", vim.fn.expand "%")
+    command = format_command(command)
     send_command(command)
 end
 
