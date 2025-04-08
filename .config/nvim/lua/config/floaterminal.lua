@@ -11,7 +11,7 @@ local state = {
 }
 
 local run_commands = {
-    python = "python -u %",
+    python = "python -u $filepath",
     lua = "lua %",
     javascript = "node %",
     php = "php %",
@@ -19,7 +19,6 @@ local run_commands = {
     cpp = "g++ % -o %:r && ./%:r",
     c = "gcc % -o %:r && ./%:r",
     -- java = "javac % && java %:r",
-    -- java = "javac % && java $fileWithoutExt",
     java = "cd $dir && javac $filename && java $fileWithoutExt",
     rust = "rustc % && ./%:r",
     go = "go run %",
@@ -78,6 +77,7 @@ local function format_command(command)
         :gsub("%$dir", dir)
         :gsub("%$filename", filename)
         :gsub("%$fileWithoutExt", fileWithoutExt)
+        :gsub("%$filepath", filepath)
         :gsub("%%:r", fileWithoutExt) -- Existing %:r behavior
         :gsub("%%", filepath) -- Use full path for %%
 end

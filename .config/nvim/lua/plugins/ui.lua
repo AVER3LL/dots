@@ -52,12 +52,12 @@ return {
         lazy = false,
         opts = {
             bigfile = { enabled = true },
-            dashboard = { enabled = false },
-            indent = { enabled = false, only_current = true },
             input = { enabled = true },
             picker = { enabled = true },
             notifier = { enabled = true },
             quickfile = { enabled = true },
+            dashboard = { enabled = false },
+            indent = { enabled = false, only_current = true },
             scroll = { enabled = false },
             statuscolumn = { enabled = false },
             words = { enabled = false },
@@ -78,34 +78,56 @@ return {
         version = "*",
         event = { "BufReadPost", "BufNewFile" },
         dependencies = "nvim-tree/nvim-web-devicons",
-        config = function()
-            require("core.mappings").bufferline()
-            return require "configs.bufferline-nvim"
-        end,
+        opts = {},
     },
 
     {
         "b0o/incline.nvim",
+        enabled = false,
         event = "BufReadPre",
         config = function()
             require("incline").setup {
-                highlight = {
-                    groups = {
-                        InclineNormal = { guibg = "#303270", guifg = "#a9b1d6" },
-                        InclineNormalNC = { guibg = "none", guifg = "#a9b1d6" },
+                window = {
+                    margin = { vertical = 0, horizontal = 0 },
+                    placement = {
+                        horizontal = "center",
+                        vertical = "top",
                     },
+                    overlap = {
+                        winbar = false,
+                    },
+                    width = "fit",
                 },
-                window = { margin = { vertical = 0, horizontal = 1 } },
-                hide = { cursorline = true, only_win = true },
+                hide = { cursorline = false, only_win = false },
+
                 render = function(props)
                     local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":t")
                     if vim.bo[props.buf].modified then
                         filename = "[*]" .. filename
                     end
 
+                    local function get_diagnostic_label()
+                        local icons = { error = " ", warn = " ", info = " ", hint = "H " }
+                        local label = {}
+
+                        for severity, icon in pairs(icons) do
+                            local n = #vim.diagnostic.get(
+                                props.buf,
+                                { severity = vim.diagnostic.severity[string.upper(severity)] }
+                            )
+                            if n > 0 then
+                                table.insert(label, { icon .. n .. " ", group = "DiagnosticSign" .. severity })
+                            end
+                        end
+                        if #label > 0 then
+                            table.insert(label, { " " })
+                        end
+                        return label
+                    end
+
                     local icon, color = require("nvim-web-devicons").get_icon_color(filename)
 
-                    return { { icon, guifg = color }, { " " }, { filename } }
+                    return { { icon, guifg = color }, { " " }, { filename }, { " " }, { get_diagnostic_label() } }
                 end,
             }
         end,
@@ -114,10 +136,12 @@ return {
     -- Line at the bottom
     {
         "nvim-lualine/lualine.nvim",
+        enabled = false,
         event = "VeryLazy",
         dependencies = { "nvim-tree/nvim-web-devicons" },
         init = function()
-            vim.g.lualine_laststatus = vim.o.laststatus
+            vim.opt.laststatus = 0
+            vim.g.lualine_laststatus = 0
             if vim.fn.argc(-1) > 0 then
                 -- set an empty statusline till lualine loads
                 vim.o.statusline = " "
@@ -127,6 +151,8 @@ return {
             end
         end,
         config = function()
+            vim.opt.laststatus = 0
+            vim.g.lualine_laststatus = 0
             return require "configs.lualine"
         end,
     },
@@ -182,19 +208,58 @@ return {
         end,
     },
 
-    -- File explorer
-    -- (switched because nvim-tree decided to hide .env files)
     {
-        "nvim-neo-tree/neo-tree.nvim",
-        branch = "v3.x",
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-            "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
-            "MunifTanjim/nui.nvim",
-            -- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
-        },
+        "nvim-tree/nvim-tree.lua",
+        cmd = { "NvimTreeToggle", "NvimTreeFocus" },
         config = function()
-            return require "configs.neo-tree"
+            local function my_on_attach(bufnr)
+                local api = require "nvim-tree.api"
+
+                local function opts(desc)
+                    return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+                end
+
+                -- default mappings
+                api.config.mappings.default_on_attach(bufnr)
+
+                -- custom mappings
+                vim.keymap.set("n", "l", api.node.open.edit, opts "Open")
+                vim.keymap.set("n", "s", api.node.open.vertical, opts "Open in vertical split")
+                vim.keymap.set("n", "H", api.tree.toggle_hidden_filter, opts "Toggle Dotfiles")
+            end
+            require("nvim-tree").setup {
+                on_attach = my_on_attach,
+                filters = { dotfiles = false, exclude = { ".env" } },
+                disable_netrw = true,
+                hijack_cursor = true,
+                sync_root_with_cwd = true,
+                update_focused_file = {
+                    enable = true,
+                    update_root = false,
+                },
+                view = {
+                    width = 32,
+                    preserve_window_proportions = true,
+                },
+                renderer = {
+                    root_folder_label = false,
+                    highlight_git = true,
+                    indent_markers = { enable = false },
+                    icons = {
+                        glyphs = {
+                            default = "󰈚",
+                            folder = {
+                                default = "",
+                                empty = "",
+                                empty_open = "",
+                                open = "",
+                                symlink = "",
+                            },
+                            git = { unmerged = "" },
+                        },
+                    },
+                },
+            }
         end,
     },
 
@@ -347,5 +412,20 @@ return {
             -- bottom-left, bottom-right, bottom-center, top-left, top-right, top-center
             position = "bottom-right",
         },
+    },
+
+    {
+        "kevinhwang91/nvim-ufo",
+        enabled = false,
+        dependencies = {
+            "kevinhwang91/promise-async",
+        },
+        config = function()
+            require("ufo").setup {
+                provider_selector = function(bufnr, filetype, buftype)
+                    return { "treesitter", "indent" }
+                end,
+            }
+        end,
     },
 }

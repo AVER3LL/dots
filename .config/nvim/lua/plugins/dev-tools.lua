@@ -14,13 +14,6 @@ return {
     },
 
     {
-        "mikavilpas/yazi.nvim",
-        enabled = false,
-        cmd = "Yazi",
-        opts = {},
-    },
-
-    {
         "christoomey/vim-tmux-navigator",
         enabled = false,
         cmd = {

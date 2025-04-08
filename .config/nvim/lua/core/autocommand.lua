@@ -30,7 +30,7 @@ autocmd("TextYankPost", {
     desc = "Highlight when yanking (copying) text",
     group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
     callback = function()
-        vim.highlight.on_yank {
+        vim.hl.on_yank {
             timeout = 150,
         }
     end,
@@ -61,11 +61,24 @@ autocmd("ColorScheme", {
     desc = "Tweaks some color to make nvim clean",
     group = vim.api.nvim_create_augroup("prepare-colors-averell", { clear = true }),
     callback = function()
-        -- Highlight line numbers with diagnostics
+        -- Cleaning the gutter
+        sethl(0, "DiagnosticSignError", { bg = "NONE" })
+        sethl(0, "DiagnosticSignWarn", { bg = "NONE" })
+        sethl(0, "DiagnosticSignInfo", { bg = "NONE" })
+        sethl(0, "DiagnosticSignHint", { bg = "NONE" })
+
+        -- Highlight line numbers with diagnostics colors
         sethl(0, "LspDiagnosticsLineNrError", { link = "DiagnosticSignError" })
         sethl(0, "LspDiagnosticsLineNrWarning", { link = "DiagnosticSignWarn" })
         sethl(0, "LspDiagnosticsLineNrInformation", { link = "DiagnosticSignInfo" })
         sethl(0, "LspDiagnosticsLineNrHint", { link = "DiagnosticSignHint" })
+
+        sethl(0, "WinBarDiagError", { fg = "#D67B7B", bold = true }) -- Soft red
+        sethl(0, "WinBarDiagWarn", { fg = "#D8A657", bold = true }) -- Muted amber
+        sethl(0, "WinBarDiagInfo", { fg = "#7BAFD6", bold = true }) -- Soft blue
+        sethl(0, "WinBarDiagHint", { fg = "#88C0A9" }) -- Muted green
+
+        sethl(0, "WinBarPath", { fg = "#888888", italic = true })
 
         -- Add underlined diagnostics regardless of theme
         sethl(
@@ -92,28 +105,27 @@ autocmd("ColorScheme", {
         -- Modern looking floating windows
         local normal_bg = vim.api.nvim_get_hl(0, { name = "Normal" }).bg
         local normal_fg = vim.api.nvim_get_hl(0, { name = "Comment" }).fg
+
+        sethl(0, "WinBar", { bg = normal_bg })
+        sethl(0, "WinBarNC", { bg = normal_bg })
+
         sethl(0, "LspInfoBorder", { bg = normal_bg })
         sethl(0, "NormalFloat", { bg = normal_bg })
         sethl(0, "FloatBorder", { fg = adjust_brightness(normal_fg, 0.3), bg = normal_bg })
-        sethl(0, "Comment", { fg = "#008c7d" })
-
-        -- local adjusted_brightness = adjust_brightness(normal_bg, 0.2)
-        -- sethl(0, "LspInfoBorder", { bg = adjusted_brightness })
-        -- sethl(0, "NormalFloat", { bg = adjusted_brightness })
-        -- sethl(0, "FloatBorder", { fg = adjusted_brightness, bg = adjusted_brightness })
-
-        -- sethl(0, "LspInfoBorder", { link = "CmpItemMenu" })
-        -- sethl(0, "NormalFloat", { link = "CmpItemMenu" })
-        -- sethl(0, "FloatBorder", { link = "CmpItemMenu" })
+        sethl(0, "Comment", { fg = "#008c7d", italic = true })
 
         -- Matching parentheses colors
-        sethl(0, "MatchParen", { bg = "NONE", fg = "#39ff14" })
+        local paren_color = (vim.o.background == "dark") and "#39ff14" or "#ff007f"
+        sethl(0, "MatchParen", { bg = "NONE", fg = paren_color })
 
         -- Remove background color from line numbers
-        sethl(0, "FoldColumn", { bg = "NONE", fg = normal_fg })
         sethl(0, "CursorLineNr", { bg = "NONE" })
         sethl(0, "CursorLineSign", { bg = "NONE" })
         sethl(0, "CursorLineFold", { bg = "NONE" })
+        sethl(0, "FoldColumn", { bg = "NONE", fg = normal_fg })
+        sethl(0, "SignColumn", { bg = "NONE" })
+        sethl(0, "ColorColumn", { bg = "NONE" })
+        sethl(0, "CursorColumn", { bg = "NONE" })
 
         -- vim.cmd "highlight Winbar guibg=none"
     end,

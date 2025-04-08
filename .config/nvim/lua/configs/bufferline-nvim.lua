@@ -24,6 +24,9 @@ local function setup_buffeline()
                 {
                     filetype = "neo-tree",
                 },
+                {
+                    filetype = "nvim-tree",
+                },
             },
         },
     }

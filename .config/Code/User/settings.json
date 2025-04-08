@@ -6,7 +6,6 @@
   "editor.fontLigatures": true,
   "editor.suggestFontSize": 16,
   "editor.suggestLineHeight": 30,
-  "editor.cursorSmoothCaretAnimation": "off",
   "editor.stickyScroll.enabled": false,
   "workbench.sideBar.location": "left",
   "editor.minimap.enabled": false,
@@ -15,6 +14,8 @@
   "workbench.tips.enabled": false,
   "editor.colorDecorators": true,
   "window.menuBarVisibility": "toggle",
+
+  "git.autorefresh": false,
 
   "editor.copyWithSyntaxHighlighting": false,
   "diffEditor.ignoreTrimWhitespace": false,
@@ -39,6 +40,7 @@
   "vim.useSystemClipboard": true,
   "vim.hlsearch": true,
   "vim.useCtrlKeys": true,
+  "vim.statusBarColorControl": false,
   // vim appearance
   "editor.cursorSurroundingLines": 10,
   // highlight on yank
@@ -110,21 +112,22 @@
   },
   "editor.overviewRulerBorder": false,
   "extensions.experimental.affinity": {
-    "vscodevim.vim": 1
+    "asvetliakov.vscode-neovim": 1
   },
   "dart.previewFlutterUiGuides": true,
   "workbench.activityBar.location": "hidden",
   "editor.scrollbar.horizontal": "hidden",
   "editor.scrollbar.vertical": "hidden",
   "vscode_custom_css.imports": [
-    "file:///home/averell/.config/Code/User/resize-quickinput-widget.js"
+    "file:///home/averell/.config/Code/User/resize-quickinput-widget.js",
+    "file:///home/averell/.config/Code/User/styles.css",
   ],
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "vim.foldfix": true,
   "errorLens.scrollbarHackEnabled": true,
-  "workbench.colorTheme": "Gruvbox Dark Hard",
+  "workbench.colorTheme": "Ayu Mirage",
   "redhat.telemetry.enabled": false,
   "code-runner.executorMapByFileExtension": {
     ".vb": "cd $dir && vbc /nologo $fileName && $dir$fileNameWithoutExt",
@@ -227,5 +230,15 @@
   "Laravel.phpCommand": "/home/averell/.config/herd-lite/bin/php",
   "workbench.editor.editorActionsLocation": "titleBar",
   "window.customTitleBarVisibility": "never",
-  "workbench.statusBar.visible": false
+  "editor.quickSuggestions": {
+    "strings": "on"
+  },
+  "voltage.suppressErrors": true,
+  "files.autoSave": "afterDelay",
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "workbench.statusBar.visible": false,
+  "editor.cursorBlinking": "solid",
+  "tailwind-fold.autoFold": true
 }

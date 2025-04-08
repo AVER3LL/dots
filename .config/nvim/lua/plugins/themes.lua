@@ -14,6 +14,14 @@ return {
         end,
     },
 
+    { -- gruvbox
+        "ellisonleao/gruvbox.nvim",
+        enabled = false,
+        priority = 1000,
+        config = true,
+        opts = {},
+    },
+
     { -- eldritch
         "eldritch-theme/eldritch.nvim",
         enabled = true,
@@ -192,7 +200,7 @@ return {
                 },
                 transparent_background = false,
                 styles = { -- Handles the styles of general hi groups (see `:h highlight-args`):
-                    comments = { "italic" },
+                    -- comments = { "italic" },
                     functions = { "bold" },
                     keywords = { "bold" },
                     types = { "bold", "italic" },
@@ -502,7 +510,7 @@ return {
 
     { -- vscode
         "Mofiqul/vscode.nvim",
-        -- enabled = false,
+        enabled = false,
         name = "vscode-theme",
         priority = 1000,
         config = function()

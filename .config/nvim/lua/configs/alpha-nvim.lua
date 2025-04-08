@@ -163,7 +163,7 @@ local function setup_alpha()
         dashboard.button(
             "SPC e",
             "   File Explorer",
-            "<cmd>Neotree source=filesystem reveal=true position=left<CR>"
+            "<cmd>NvimTreeFocus<CR>"
         ),
         dashboard.button("SPC f f", "󰱼   Find File", "<cmd>Telescope find_files<CR>"),
         dashboard.button("SPC f w", "   Find Word", "<cmd>Telescope live_grep<CR>"),

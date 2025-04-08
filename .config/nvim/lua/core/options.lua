@@ -16,7 +16,7 @@ vim.opt.termguicolors = true
 vim.opt.cursorline = true
 vim.opt.cursorlineopt = "number"
 vim.opt.signcolumn = "yes"
-vim.opt.laststatus = 3
+vim.opt.laststatus = 0
 vim.opt.showmode = false
 vim.opt.colorcolumn = { 81, 121 }
 

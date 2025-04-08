@@ -1,5 +1,6 @@
 local lualine_installed, lualine = pcall(require, "lualine")
 
+{ Error = "󰅙", Info = "󰋼", Hint = "󰌵", Warn = "" }
 if not lualine_installed then
     return
 end
@@ -21,6 +22,7 @@ local comp_sep = {
 }
 
 local function setup_lualine()
+    vim.o.laststatus = 0
     local function activated_python_environment()
         if vim.bo.filetype ~= "python" then
             return ""

@@ -10,6 +10,17 @@ local map = function(mode, lhs, rhs, opts)
     vim.keymap.set(mode, lhs, rhs, opts)
 end
 
+map("n", "<leader>wt", function()
+    local current = vim.o.laststatus
+    if current == 0 then
+        vim.o.laststatus = 3 -- or 2 if you prefer per-window statusline
+        vim.notify("Statusline enabled", vim.log.levels.INFO, { title = "Statusline" })
+    else
+        vim.o.laststatus = 0
+        vim.notify("Statusline Disabled", vim.log.levels.INFO, { title = "Statusline" })
+    end
+end, { desc = "Togggle statusline" })
+
 map("n", "<leader><leader>l", function()
     -- Deactivate line numbers
     if vim.wo.number then
@@ -223,21 +234,8 @@ map("n", "<leader>u", "<cmd>UndotreeToggle<CR>", { desc = "Toggle undo tree" })
 map("n", "<leader>m", "<cmd>TSJToggle<CR>", { desc = "Join Toggle" })
 
 -- File Tree
--- map("n", "<C-n>", "<cmd>NvimTreeToggle<CR>", { desc = "Nvimtree toggle window" })
--- map("n", "<leader>e", "<cmd>NvimTreeFocus<CR>", { desc = "Nvimtree focus window" })
-
-map(
-    "n",
-    "<leader>e",
-    "<cmd>Neotree source=filesystem reveal=true position=left<CR>",
-    { desc = "Neotree toggle window" }
-)
-map(
-    "n",
-    "<C-n>",
-    "<cmd>Neotree source=filesystem reveal=true position=left toggle=true<CR>",
-    { desc = "Neotree focus window" }
-)
+map("n", "<C-n>", "<cmd>NvimTreeToggle<CR>", { desc = "Nvimtree toggle window" })
+map("n", "<leader>e", "<cmd>NvimTreeFocus<CR>", { desc = "Nvimtree focus window" })
 
 map("n", "<Leader>dg", "<cmd>Neogen<CR>", { desc = "Generate Documentation" })
 
@@ -263,7 +261,7 @@ map("n", "<leader>z", "<cmd>Telescope current_buffer_fuzzy_find<CR>", {
 map("n", "<leader>fb", "<cmd>Telescope buffers<CR>", { desc = "Telescope find buffers" })
 map("n", "<leader>fk", "<cmd>Telescope keymaps<CR>", { desc = "Telescope find keymaps" })
 map("n", "<leader>th", "<cmd>Telescope colorscheme<CR>", { desc = "Telescope colorscheme" })
-map("n", "<leader>fy", ":Yazi toggle<cr>", { desc = "Open yazi" })
+-- map("n", "<leader>fy", ":Yazi toggle<cr>", { desc = "Open yazi" })
 
 -- Session Management
 map("n", "<leader>ws", "<cmd>SessionSave<CR>", { desc = "Save session" })
@@ -284,8 +282,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
         map("n", "<leader>k", vim.lsp.buf.hover, opts "Show documentation")
         map("n", "<leader>rn", vim.lsp.buf.rename, opts "Smart rename")
         -- map("n", "<leader>D", vim.lsp.buf.type_definition, opts "Go to type definition")
-        map("n", "]d", vim.diagnostic.get_next, opts "Go to next diagnostic")
-        map("n", "[d", vim.diagnostic.get_prev, opts "Go to previous diagnostic")
+        -- map("n", "]d", vim.diagnostic.jump { count = 1, float = false }, opts "Go to next diagnostic")
+        -- map("n", "[d", vim.diagnostic.jump { count = -1, float = false }, opts "Go to previous diagnostic")
         map("n", "<leader>ds", vim.diagnostic.setloclist, opts "Show diagnostic loclist")
         map("n", "<leader>dl", vim.diagnostic.open_float, opts "Show inline diagnostics")
         map("n", "<leader>fs", require("telescope.builtin").lsp_document_symbols, opts "Show document symbols")

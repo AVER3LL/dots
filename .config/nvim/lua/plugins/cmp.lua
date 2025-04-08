@@ -61,18 +61,18 @@ return {
             "f3fora/cmp-spell",
             { "roobert/tailwindcss-colorizer-cmp.nvim", opts = {} },
 
-            {
-                "kristijanhusak/vim-dadbod-ui",
-                dependencies = {
-                    "tpope/vim-dadbod",
-                    "kristijanhusak/vim-dadbod-completion",
-                },
-                cmd = { "DBUI", "DBUIToggle", "DBUIAddConnection", "DBUIFindBuffer" },
-                init = function()
-                    -- Your DBUI configuration
-                    vim.g.db_ui_use_nerd_fonts = 1
-                end,
-            },
+            -- {
+            --     "kristijanhusak/vim-dadbod-ui",
+            --     dependencies = {
+            --         "tpope/vim-dadbod",
+            --         "kristijanhusak/vim-dadbod-completion",
+            --     },
+            --     cmd = { "DBUI", "DBUIToggle", "DBUIAddConnection", "DBUIFindBuffer" },
+            --     init = function()
+            --         -- Your DBUI configuration
+            --         vim.g.db_ui_use_nerd_fonts = 1
+            --     end,
+            -- },
 
             -- {
             --     "onsails/lspkind.nvim",
@@ -218,12 +218,12 @@ return {
                 },
             }
 
-            cmp.setup.filetype({ "sql" }, {
-                sources = {
-                    { name = "vim-dadbod-completion" },
-                    { name = "buffer" },
-                },
-            })
+            -- cmp.setup.filetype({ "sql" }, {
+            --     sources = {
+            --         { name = "vim-dadbod-completion" },
+            --         { name = "buffer" },
+            --     },
+            -- })
         end,
     },
 
@@ -298,7 +298,7 @@ return {
                 default = { "lsp", "path", "snippets", "buffer" },
                 cmdline = {},
                 per_filetype = {
-                    sql = { "vim-dadbod-completion", "buffer" },
+                    -- sql = { "vim-dadbod-completion", "buffer" },
                     tex = {
                         {
                             name = "spell",

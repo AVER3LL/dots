@@ -5,54 +5,54 @@
   {
     "command": "workbench.action.navigateLeft",
     "key": "ctrl-h",
-    "when": "vim.mode == 'Normal'"
+    "when": "neovim.mode == normal"
   },
   {
     "command": "workbench.action.navigateDown",
     "key": "ctrl-j",
-    "when": "vim.mode == 'Normal'"
+    "when": "neovim.mode == normal"
   },
   {
     "command": "workbench.action.navigateUp",
     "key": "ctrl-k",
-    "when": "vim.mode == 'Normal'"
+    "when": "neovim.mode == normal"
   },
   {
     "command": "workbench.action.navigateRight",
     "key": "ctrl-l",
-    "when": "vim.mode == 'Normal'"
+    "when": "neovim.mode == normal"
   },
   // Insert mode navigation
   {
     "command": "cursorLeft",
     "key": "ctrl-h",
-    "when": "vim.mode == 'Insert'"
+    "when": "neovim.mode == insert"
   },
   {
     "command": "cursorDown",
     "key": "ctrl-j",
-    "when": "vim.mode == 'Insert'"
+    "when": "neovim.mode == insert"
   },
   {
     "command": "cursorUp",
     "key": "ctrl-k",
-    "when": "vim.mode == 'Insert'"
+    "when": "neovim.mode == insert"
   },
   {
     "command": "cursorRight",
     "key": "ctrl-l",
-    "when": "vim.mode == 'Insert'"
+    "when": "neovim.mode == insert"
   },
   // Suggestion navigation
   {
     "command": "selectNextSuggestion",
     "key": "ctrl-j",
-    "when": "vim.mode == 'Insert' && editorTextFocus && suggestWidgetVisible && vim.active && !inDebugRepl"
+    "when": "neovim.mode == insert && editorTextFocus && suggestWidgetVisible && !inDebugRepl"
   },
   {
     "command": "selectNextCodeAction",
     "key": "ctrl-j",
-    "when": "vim.mode == 'Normal' && codeActionMenuVisible"
+    "when": "neovim.mode == normal && codeActionMenuVisible"
   },
   {
     "command": "workbench.action.quickOpenSelectNext",
@@ -62,7 +62,7 @@
   {
     "command": "selectPrevSuggestion",
     "key": "ctrl-k",
-    "when": "vim.mode == 'Insert' && editorTextFocus && suggestWidgetVisible && vim.active && !inDebugRepl"
+    "when": "neovim.mode == insert && editorTextFocus && suggestWidgetVisible && !inDebugRepl"
   },
   {
     "command": "workbench.action.quickOpenSelectPrevious",
@@ -72,122 +72,122 @@
   {
     "command": "selectPrevCodeAction",
     "key": "ctrl-k",
-    "when": "vim.mode == 'Normal' && codeActionMenuVisible"
+    "when": "neovim.mode == normal && codeActionMenuVisible"
   },
   // File finding
   {
     "command": "workbench.action.quickOpen",
     "key": "space f f",
-    "when": "vim.mode == 'Normal' && (editorTextFocus || !inputFocus)"
+    "when": "neovim.mode == normal && (editorTextFocus || !inputFocus)"
   },
   {
     "command": "workbench.action.showAllEditors",
     "key": "space f b",
-    "when": "vim.mode == 'Normal' && (editorTextFocus  || !inputFocus)"
+    "when": "neovim.mode == normal && (editorTextFocus  || !inputFocus)"
   },
   {
     "command": "workbench.action.toggleSidebarVisibility",
     "key": "ctrl-n",
-    "when": "vim.mode == 'Normal' && (editorTextFocus || !inputFocus)"
+    "when": "neovim.mode == normal && (editorTextFocus || !inputFocus)"
   },
   {
     "command": "workbench.action.focusSideBar",
     "key": "space e",
-    "when": "vim.mode == 'Normal' && (editorTextFocus || !inputFocus)"
+    "when": "neovim.mode == normal && (editorTextFocus || !inputFocus)"
   },
   // Buffer navigation
   {
     "key": "space s v",
-    "when": "vim.mode == 'Normal' && (editorTextFocus || !inputFocus)",
+    "when": "neovim.mode == normal && (editorTextFocus || !inputFocus)",
     "command": "workbench.action.splitEditorLeft"
   },
   {
     "key": "space s h",
-    "when": "vim.mode == 'Normal' && (editorTextFocus || !inputFocus)",
+    "when": "neovim.mode == normal && (editorTextFocus || !inputFocus)",
     "command": "workbench.action.splitEditorDown"
   },
   // This should be closing splits
   {
     "key": "space s x",
-    "when": "vim.mode == 'Normal' && (editorTextFocus || !inputFocus)",
+    "when": "neovim.mode == normal && (editorTextFocus || !inputFocus)",
     "command": "workbench.action.closeEditorsInGroup"
   },
   {
     "command": "workbench.action.nextEditorInGroup",
     "key": "tab",
-    "when": "(vim.mode == 'Normal' || vim.mode == 'Visual') && (editorTextFocus || !inputFocus)"
+    "when": "(neovim.mode == normal || neovim.mode == 'Visual') && (editorTextFocus || !inputFocus)"
   },
   {
     "command": "workbench.action.previousEditorInGroup",
     "key": "shift-tab",
-    "when": "(vim.mode == 'Normal' || vim.mode == 'Visual') && (editorTextFocus || !inputFocus)"
+    "when": "(neovim.mode == normal || neovim.mode == 'Visual') && (editorTextFocus || !inputFocus)"
   },
   {
     "command": "workbench.action.closeActiveEditor",
     "key": "space x",
-    "when": "vim.mode == 'Normal' && editorTextFocus"
+    "when": "neovim.mode == normal && editorTextFocus"
   },
   {
     "command": "workbench.action.closeOtherEditors",
     "key": "space c b a",
-    "when": "vim.mode == 'Normal' && editorTextFocus"
+    "when": "neovim.mode == normal && editorTextFocus"
   },
   {
     "command": "workbench.action.terminal.toggleTerminal",
     "key": "space t e",
-    "when": "vim.mode == 'Normal' && editorTextFocus"
+    "when": "neovim.mode == normal && editorTextFocus"
   },
   {
     "command": "workbench.action.toggleStatusbarVisibility",
     "key": "space w",
-    "when": "vim.mode == 'Normal' && editorTextFocus"
+    "when": "neovim.mode == normal && editorTextFocus"
   },
   {
     "command": "workbench.action.toggleCenteredLayout",
     "key": "space space n",
-    "when": "vim.mode == 'Normal' && editorTextFocus"
+    "when": "neovim.mode == normal && editorTextFocus"
   },
   // Move lines
   {
     "command": "editor.action.moveLinesDownAction",
     "key": "alt-j",
-    "when": "vim.mode != 'Insert' && editorTextFocus"
+    "when": "neovim.mode != insert && editorTextFocus"
   },
   {
     "command": "editor.action.moveLinesUpAction",
     "key": "alt-k",
-    "when": "vim.mode != 'Insert' && editorTextFocus"
+    "when": "neovim.mode != insert && editorTextFocus"
   },
   // Hover
   {
     "command": "editor.action.showHover",
     "key": "space k",
-    "when": "vim.mode == 'Normal' && editorTextFocus"
+    "when": "neovim.mode == normal && editorTextFocus"
   },
   {
     "command": "editor.action.codeAction",
     "key": "space c a",
-    "when": "vim.mode == 'Normal' && editorTextFocus"
+    "when": "neovim.mode == normal && editorTextFocus"
   },
   {
     "command": "editor.action.rename",
     "key": "space r n",
-    "when": "vim.mode == 'Normal' && editorTextFocus"
+    "when": "neovim.mode == normal && editorTextFocus"
   },
   {
     "command": "editor.action.revealDefinition",
     "key": "g d",
-    "when": "vim.mode == 'Normal' && editorTextFocus"
+    "when": "neovim.mode == normal && editorTextFocus"
   },
   {
     "command": "editor.action.goToReferences",
     "key": "g r",
-    "when": "vim.mode == 'Normal' && editorTextFocus"
+    "when": "neovim.mode == normal && editorTextFocus"
   },
   {
     "command": "workbench.action.findInFiles",
     "key": "space f w",
-    "when": "vim.mode == 'Normal' && (editorTextFocus || !inputFocus)"
+    "when": "neovim.mode == normal && (editorTextFocus || !inputFocus)"
   },
   // File explorer
   {
@@ -245,42 +245,42 @@
   {
     "command": "cursorTop",
     "key": "g g",
-    "when": "vim.mode == 'Normal' && editorTextFocus"
+    "when": "neovim.mode == normal && editorTextFocus"
   },
   {
     "command": "editor.action.commentLine",
     "key": "g c c",
-    "when": "vim.mode == 'Normal' && editorTextFocus"
+    "when": "neovim.mode == normal && editorTextFocus"
   },
   // Clipboard bindings
   {
     "command": "editor.action.clipboardCopyAction",
     "key": "space y",
-    "when": "vim.mode == 'Normal' && editorTextFocus"
+    "when": "neovim.mode == normal && editorTextFocus"
   },
   {
     "command": "editor.action.clipboardPasteAction",
     "key": "space p",
-    "when": "vim.mode == 'Normal' && editorTextFocus"
+    "when": "neovim.mode == normal && editorTextFocus"
   },
   {
     "command": "editor.action.formatDocument",
     "key": "space f m",
-    "when": "vim.mode == 'Normal' && editorTextFocus"
+    "when": "neovim.mode == normal && editorTextFocus"
   },
   {
     "command": "workbench.action.selectTheme",
     "key": "space t h",
-    "when": "vim.mode == 'Normal' && (editorTextFocus || !inputFocus)"
+    "when": "neovim.mode == normal && (editorTextFocus || !inputFocus)"
   },
   {
     "command": "editor.action.openLink",
     "key": "g f",
-    "when": "vim.mode == 'Normal' && editorTextFocus"
+    "when": "neovim.mode == normal && editorTextFocus"
   },
   {
     "command": "code-runner.run",
     "key": "space space r",
-    "when": "vim.mode == 'Normal' && editorTextFocus"
+    "when": "neovim.mode == normal && editorTextFocus"
   }
 ]
