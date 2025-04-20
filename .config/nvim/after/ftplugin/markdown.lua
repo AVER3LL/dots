@@ -8,5 +8,5 @@ vim.opt.linebreak = true -- Line break on whole words
 -- vim.keymap.set("n", "k", "gk")
 
 -- Spell check
--- vim.opt.spelllang = { "en_us", "fr_fr" }
 -- vim.opt.spell = true
+-- vim.opt.spelllang = { "en" }

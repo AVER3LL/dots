@@ -1,51 +1,8 @@
 ---@diagnostic disable: unused-local
 
-local current_border = require("config.looks").current_border
+local current_border = require("config.looks").border
 local bt = require("config.looks").border_type()
-local symbol_map = {
-    Namespace = "󰌗",
-    Text = "󰉿",
-    Method = "󰊕",
-    Function = "󰊕", -- 󰆧 , ƒ, 󰡱, 󰊕, 󰮊 ,󱒗 , 󰫢
-    Constructor = "",
-    Field = "󰜢",
-    Variable = "󰀫",
-    Class = "󰠱",
-    Interface = "",
-    Module = "",
-    Property = "󰜢",
-    Unit = "󰑭",
-    Value = "󰎠",
-    Enum = "",
-    Keyword = "󰌋",
-    Snippet = "",
-    Color = "󰏘",
-    File = "󰈚",
-    Reference = "󰈇",
-    Folder = "󰉋",
-    EnumMember = "",
-    Constant = "󰏿",
-    Struct = "󰙅",
-    Event = "",
-    Operator = "󰆕",
-    TypeParameter = "󰊄",
-    Table = "",
-    Object = "󰅩",
-    Tag = "",
-    Array = "[]",
-    Boolean = "",
-    Number = "",
-    Null = "󰟢",
-    Supermaven = "",
-    String = "󰉿",
-    Calendar = "",
-    Watch = "󰥔",
-    Package = "",
-    Copilot = "",
-    Codeium = "",
-    TabNine = "",
-    BladeNav = "",
-}
+local symbol_map = require("icons").symbol_kinds
 
 return {
     {
@@ -59,45 +16,12 @@ return {
             "saadparwaiz1/cmp_luasnip", -- for autocompletion
             "rafamadriz/friendly-snippets", -- useful snippets
             "f3fora/cmp-spell",
+            "L3MON4D3/LuaSnip",
             { "roobert/tailwindcss-colorizer-cmp.nvim", opts = {} },
-
-            -- {
-            --     "kristijanhusak/vim-dadbod-ui",
-            --     dependencies = {
-            --         "tpope/vim-dadbod",
-            --         "kristijanhusak/vim-dadbod-completion",
-            --     },
-            --     cmd = { "DBUI", "DBUIToggle", "DBUIAddConnection", "DBUIFindBuffer" },
-            --     init = function()
-            --         -- Your DBUI configuration
-            --         vim.g.db_ui_use_nerd_fonts = 1
-            --     end,
-            -- },
-
-            -- {
-            --     "onsails/lspkind.nvim",
-            --     config = function()
-            --         require("lspkind").init {
-            --             preset = "codicons",
-            --             symbol_map = symbol_map,
-            --         }
-            --     end,
-            -- }, -- vs-code like pictograms
-
-            {
-                "L3MON4D3/LuaSnip",
-                dependencies = "rafamadriz/friendly-snippets",
-                opts = { history = true, updateevents = "TextChanged,TextChangedI" },
-                build = "make install_jsregexp",
-            },
         },
         config = function()
             local cmp = require "cmp"
             local luasnip = require "luasnip"
-            -- local lspkind = require "lspkind"
-
-            -- loads vscode style snippets from installed plugins (e.g. friendly-snippets)
-            require("luasnip.loaders.from_vscode").lazy_load()
 
             cmp.setup {
                 completion = {
@@ -218,12 +142,6 @@ return {
                 },
             }
 
-            -- cmp.setup.filetype({ "sql" }, {
-            --     sources = {
-            --         { name = "vim-dadbod-completion" },
-            --         { name = "buffer" },
-            --     },
-            -- })
         end,
     },
 
@@ -298,7 +216,6 @@ return {
                 default = { "lsp", "path", "snippets", "buffer" },
                 cmdline = {},
                 per_filetype = {
-                    -- sql = { "vim-dadbod-completion", "buffer" },
                     tex = {
                         {
                             name = "spell",

@@ -22,7 +22,7 @@ if signature then
     })
 end
 
--- don't auto comment new line when pressing o, O or <CR>
+-- Don't auto comment new line when pressing o, O or <CR>
 -- autocmd("BufEnter", { command = [[set formatoptions-=cro]] })
 
 --Highlight when yanking (copying) text
@@ -67,17 +67,13 @@ autocmd("ColorScheme", {
         sethl(0, "DiagnosticSignInfo", { bg = "NONE" })
         sethl(0, "DiagnosticSignHint", { bg = "NONE" })
 
-        -- Highlight line numbers with diagnostics colors
-        sethl(0, "LspDiagnosticsLineNrError", { link = "DiagnosticSignError" })
-        sethl(0, "LspDiagnosticsLineNrWarning", { link = "DiagnosticSignWarn" })
-        sethl(0, "LspDiagnosticsLineNrInformation", { link = "DiagnosticSignInfo" })
-        sethl(0, "LspDiagnosticsLineNrHint", { link = "DiagnosticSignHint" })
-
+        -- color winbar component
         sethl(0, "WinBarDiagError", { fg = "#D67B7B", bold = true }) -- Soft red
         sethl(0, "WinBarDiagWarn", { fg = "#D8A657", bold = true }) -- Muted amber
         sethl(0, "WinBarDiagInfo", { fg = "#7BAFD6", bold = true }) -- Soft blue
         sethl(0, "WinBarDiagHint", { fg = "#88C0A9" }) -- Muted green
 
+        -- grey out the path
         sethl(0, "WinBarPath", { fg = "#888888", italic = true })
 
         -- Add underlined diagnostics regardless of theme

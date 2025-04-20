@@ -10,6 +10,7 @@ return {
                 javascript = { "prettier" },
                 javascriptreact = { "prettier" },
                 typescript = { "prettier" },
+                vue = { "prettier" },
                 typescriptreact = { "prettier" },
                 markdown = { "doctoc", "prettier" },
                 json = { "prettier" },
@@ -29,6 +30,7 @@ return {
                 latex = { "latexindent" },
                 go = { "goimports-reviser", "gofumpt" },
                 -- dart = { "ast-grep" },
+                ["_"] = { "trim_whitespace", "trim_newlines" },
             },
 
             formatters = {

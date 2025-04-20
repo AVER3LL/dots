@@ -1,6 +1,6 @@
 local M = {}
 
-M.border_square = function(hl_name)
+M.square = function(hl_name)
     return {
         { "┌", hl_name },
         { "─", hl_name },
@@ -13,20 +13,8 @@ M.border_square = function(hl_name)
     }
 end
 
-M.border_kanagawa = function(hl_name)
-    return {
-        { "🭽", hl_name },
-        { "▔", hl_name },
-        { "🭾", hl_name },
-        { "▕", hl_name },
-        { "🭿", hl_name },
-        { "▁", hl_name },
-        { "🭼", hl_name },
-        { "▏", hl_name },
-    }
-end
 
-M.border_rounded = function(hl_name)
+M.rounded = function(hl_name)
     return {
         { "╭", hl_name },
         { "─", hl_name },
@@ -39,8 +27,8 @@ M.border_rounded = function(hl_name)
     }
 end
 
--- Options are border_square, border_rounded and border_kanagawa
-M.current_border = M.border_rounded
+-- Options are border_square, border_rounded and
+M.current_border = M.rounded
 
 M.current_border_telescope = function()
     local formatted = {}

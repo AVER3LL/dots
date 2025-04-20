@@ -8,6 +8,7 @@ vim.g.show_indent = false
 vim.g.use_blink = false
 vim.g.markdown_recommended_style = 0
 
+
 vim.opt.conceallevel = 2
 
 -- Core UI and Appearance
@@ -17,8 +18,9 @@ vim.opt.cursorline = true
 vim.opt.cursorlineopt = "number"
 vim.opt.signcolumn = "yes"
 vim.opt.laststatus = 0
+vim.opt.statusline = " %f %m %= %l:%c ♥ "
 vim.opt.showmode = false
-vim.opt.colorcolumn = { 81, 121 }
+-- vim.opt.colorcolumn = { 81, 121 }
 
 -- Line Numbers
 vim.opt.number = vim.g.show_line_number

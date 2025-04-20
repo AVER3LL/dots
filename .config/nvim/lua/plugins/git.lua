@@ -1,3 +1,7 @@
+local delete = require("icons").misc.delete
+local bar = require("icons").misc.thick_bar
+local border = require("config.looks").border_type()
+
 return {
     {
         "lewis6991/gitsigns.nvim",
@@ -5,22 +9,22 @@ return {
         config = function()
             require("gitsigns").setup {
                 preview_config = {
-                    border = require("config.looks").border_type(),
+                    border = border,
                 },
                 signs = {
-                    add = { text = " ▎" },
-                    change = { text = " ▎" },
-                    delete = { text = " " },
-                    topdelete = { text = " " },
-                    changedelete = { text = " ▎" },
-                    untracked = { text = " ▎" },
+                    add = { text = bar },
+                    change = { text = bar },
+                    delete = { text = delete },
+                    topdelete = { text = delete },
+                    changedelete = { text = bar },
+                    untracked = { text = bar },
                 },
                 signs_staged = {
-                    add = { text = " ▎" },
-                    change = { text = " ▎" },
-                    delete = { text = " " },
-                    topdelete = { text = " " },
-                    changedelete = { text = " ▎" },
+                    add = { text = bar },
+                    change = { text = bar },
+                    delete = { text = delete },
+                    topdelete = { text = delete },
+                    changedelete = { text = bar },
                 },
             }
         end,

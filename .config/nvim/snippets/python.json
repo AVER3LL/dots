@@ -1,0 +1,13 @@
+{
+  "main() template": {
+    "prefix": "ifmain",
+    "body": [
+      "def main() -> None:",
+      "    ${1:pass}",
+      "",
+      "if __name__ == \"__main__\":",
+      "    main()$0"
+    ],
+    "description": "Build a main function"
+  }
+}

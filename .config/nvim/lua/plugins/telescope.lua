@@ -18,7 +18,7 @@ return {
 
             telescope.setup {
                 defaults = {
-                    path_display = { "truncate" },
+                    path_display = { "filename_first" },
                     prompt_prefix = "   ",
                     selection_caret = " ",
                     entry_prefix = " ",
@@ -44,6 +44,17 @@ return {
                     },
                     borderchars = current_borders,
                     color_devicons = true,
+                    vimgrep_arguments = {
+                        "rg",
+                        "--color=never",
+                        "--no-heading",
+                        "--with-filename",
+                        "--line-number",
+                        "--column",
+                        "--smart-case",
+                        "--hidden",
+                        "--glob=!.git/",
+                    },
                     set_env = { ["COLORTERM"] = "truecolor" },
                 },
                 extensions = {

@@ -14,6 +14,34 @@ return {
         end,
     },
 
+    {
+        "bluz71/vim-nightfly-colors",
+        name = "nightfly",
+        lazy = false,
+        priority = 1000,
+    },
+
+    {
+        "olivercederborg/poimandres.nvim",
+        lazy = false,
+        priority = 1000,
+        opts = {
+            bold_vert_split = true, -- use bold vertical separators
+        },
+    },
+
+    {
+        "AlexvZyl/nordic.nvim",
+        lazy = false,
+        priority = 1000,
+        opts = {
+            telescope = {
+                -- Available styles: `classic`, `flat`.
+                style = "classic",
+            },
+        },
+    },
+
     { -- gruvbox
         "ellisonleao/gruvbox.nvim",
         enabled = false,
@@ -24,7 +52,6 @@ return {
 
     { -- eldritch
         "eldritch-theme/eldritch.nvim",
-        enabled = true,
         lazy = false,
         priority = 1000,
         opts = {},
@@ -46,7 +73,6 @@ return {
 
     { -- ayu
         "Shatur/neovim-ayu",
-        -- enabled = false,
         priority = 1000,
         opts = {},
         config = function()
@@ -67,6 +93,13 @@ return {
         opts = {
             transparent = false,
             undercurl = true,
+
+            commentStyle = { italic = true },
+            functionStyle = { italic = true },
+            keywordStyle = {},
+            statementStyle = { italic = true },
+            typeStyle = {},
+
             colors = {
                 palette = {
                     winterYellow = "#302e30",
@@ -197,34 +230,39 @@ return {
                         mantle = "#191b1c",
                         crust = "#141617",
                     },
+                    frappe = {
+                        -- custom everforest dark hard port
+                        rosewater = "#fed1cb",
+                        flamingo = "#ff9185",
+                        pink = "#d699b6",
+                        mauve = "#cb7ec8",
+                        red = "#e06062",
+                        maroon = "#e67e80",
+                        peach = "#e69875",
+                        yellow = "#d3ad63",
+                        green = "#b0cc76",
+                        teal = "#6db57f",
+                        sky = "#7fbbb3",
+                        sapphire = "#60aaa0",
+                        blue = "#59a6c3",
+                        lavender = "#e0d3d4",
+                        text = "#e8e1bf",
+                        subtext1 = "#e0d7c3",
+                        subtext0 = "#d3c6aa",
+                        overlay2 = "#9da9a0",
+                        overlay1 = "#859289",
+                        overlay0 = "#6d6649",
+                        surface2 = "#585c4a",
+                        surface1 = "#414b50",
+                        surface0 = "#374145",
+                        base = "#1f2428",
+                        mantle = "#161b1d",
+                        crust = "#14181a",
+                    },
                 },
                 transparent_background = false,
-                styles = { -- Handles the styles of general hi groups (see `:h highlight-args`):
-                    -- comments = { "italic" },
-                    functions = { "bold" },
-                    keywords = { "bold" },
-                    types = { "bold", "italic" },
-                    loops = { "bold" },
-                },
+                default_integrations = true,
                 integrations = {
-                    barbecue = { dim_dirname = true, bold_basename = true, dim_context = false, alt_background = false },
-                    cmp = true,
-                    gitsigns = true,
-                    hop = true,
-                    illuminate = { enabled = true },
-                    native_lsp = { enabled = true, inlay_hints = { background = true } },
-                    neogit = true,
-                    neotree = true,
-                    semantic_tokens = true,
-                    treesitter = true,
-                    treesitter_context = true,
-                    vimwiki = true,
-                    which_key = true,
-                    aerial = true,
-                    fidget = true,
-                    mason = true,
-                    neotest = true,
-                    dap_ui = true,
                     telescope = {
                         enabled = true,
                         style = "nvchad",
@@ -510,7 +548,6 @@ return {
 
     { -- vscode
         "Mofiqul/vscode.nvim",
-        enabled = false,
         name = "vscode-theme",
         priority = 1000,
         config = function()
@@ -523,7 +560,6 @@ return {
 
     { -- tokyonight
         "folke/tokyonight.nvim",
-        -- enabled = false,
         priority = 1000,
         opts = {
             on_highlights = function(hl, c)

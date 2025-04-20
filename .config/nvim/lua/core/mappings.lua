@@ -19,7 +19,7 @@ map("n", "<leader>wt", function()
         vim.o.laststatus = 0
         vim.notify("Statusline Disabled", vim.log.levels.INFO, { title = "Statusline" })
     end
-end, { desc = "Togggle statusline" })
+end, { desc = "Toggle statusline" })
 
 map("n", "<leader><leader>l", function()
     -- Deactivate line numbers
@@ -140,7 +140,13 @@ map("i", "<C-j>", "<Down>", { desc = "Move down" })
 map("i", "<C-k>", "<Up>", { desc = "Move up" })
 
 -- Clear Highlights
-map("n", "<Esc>", "<cmd>noh<CR>", { desc = "General clear highlights" })
+map({ "i", "s", "n" }, "<esc>", function()
+    if require("luasnip").expand_or_jumpable() then
+        require("luasnip").unlink_current()
+    end
+    vim.cmd "noh"
+    return "<esc>"
+end, { desc = "Escape, clear hlsearch, and stop snippet session", expr = true })
 map("n", "<leader>no", "<cmd>noh<CR>", { desc = "General clear highlights" })
 
 -- Clipboard Operations

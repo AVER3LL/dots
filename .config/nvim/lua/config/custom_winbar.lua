@@ -80,7 +80,6 @@ function M.update_winbar()
     end
 
     local file_path = get_file_path()
-    local path_component = file_path ~= "" and file_path .. " " or ""
     local icon, icon_color = get_file_icon()
     local diagnostics, plain_diagnostics = get_diagnostics()
     local modified, plain_modified = get_modified_status()
@@ -88,26 +87,63 @@ function M.update_winbar()
     -- Apply highlight to icon
     vim.api.nvim_set_hl(0, "WinBarFileIcon", { fg = icon_color })
 
-    -- Create the content without extra spaces
-    local colored_icon = "%#WinBarFileIcon#" .. icon .. "%*"
-    local italic_path = "%#WinBarPath#" .. path_component .. "%*"
-    local filename_part = filename .. "  "
-
-    -- Construct the actual content with proper highlighting
-    local content = colored_icon .. filename_part .. italic_path .. modified .. diagnostics
-
-    -- Calculate the actual visual width of the content (excluding highlight syntax)
-    local visual_content = icon .. filename_part .. path_component .. plain_modified .. plain_diagnostics
-    local content_width = display_width(visual_content)
-
-    -- Center the content properly based on window width
+    -- Get window width
     local win_width = vim.api.nvim_win_get_width(0)
-    local padding = math.floor((win_width - content_width) / 2)
-    if padding < 0 then
-        padding = 0
+
+    -- Calculate base content width (without path)
+    local colored_icon = "%#WinBarFileIcon#" .. icon .. "%*"
+    local filename_part = filename .. "  "
+    local base_visual_content = icon .. filename_part .. plain_modified .. plain_diagnostics
+    local base_width = display_width(base_visual_content)
+
+    -- Calculate available space for path
+    local padding = 2 -- minimum padding on each side
+    local available_path_space = win_width - base_width - (padding * 2)
+
+    -- Truncate path if necessary
+    local path_component = ""
+    if file_path ~= "" then
+        local path_width = display_width(file_path)
+        if path_width > available_path_space and available_path_space > 3 then
+            -- If path is too long, truncate it with ellipsis
+            local truncate_to = available_path_space - 3 -- space for "..."
+            local truncated_path = ""
+            local current_width = 0
+
+            -- Split path into components
+            for part in string.gmatch(file_path, "[^/]+") do
+                local part_width = display_width(part)
+                if current_width + part_width + 1 <= truncate_to then
+                    truncated_path = truncated_path .. (truncated_path == "" and "" or "/") .. part
+                    current_width = current_width + part_width + 1
+                else
+                    break
+                end
+            end
+
+            path_component = "%#WinBarPath#" .. truncated_path .. "...%* "
+        elseif available_path_space >= path_width then
+            path_component = "%#WinBarPath#" .. file_path .. " %*"
+        end
     end
 
-    local winbar = string.rep(" ", padding) .. content
+    -- Construct the content
+    local content = colored_icon .. filename_part .. path_component .. modified .. diagnostics
+
+    -- Calculate final padding
+    local visual_content = icon
+        .. filename_part
+        .. (path_component ~= "" and file_path .. " " or "")
+        .. plain_modified
+        .. plain_diagnostics
+    local content_width = display_width(visual_content)
+
+    local final_padding = math.floor((win_width - content_width) / 2)
+    if final_padding < 0 then
+        final_padding = 0
+    end
+
+    local winbar = string.rep(" ", final_padding) .. content
 
     -- Set the winbar
     vim.wo.winbar = winbar
@@ -115,9 +151,10 @@ end
 
 -- Set up autocmds to update the winbar
 function M.setup()
+    local autocmd = vim.api.nvim_create_autocmd
     local group = vim.api.nvim_create_augroup("CustomWinBar", { clear = true })
 
-    vim.api.nvim_create_autocmd({ "FileType" }, {
+    autocmd({ "FileType" }, {
         callback = function()
             local filename = vim.fn.expand "%:t"
             local extension = vim.fn.expand "%:e"
@@ -129,7 +166,8 @@ function M.setup()
         end,
     })
 
-    vim.api.nvim_create_autocmd({
+    -- update the winbar
+    autocmd({
         "BufWinEnter",
         "BufFilePost",
         "BufWritePost",

@@ -5,7 +5,5 @@ else
 
     require "config.lazy"
 
-    require "snippets"
-
     require("config.custom_winbar").setup()
 end

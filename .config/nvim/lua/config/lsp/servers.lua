@@ -70,37 +70,39 @@ M.lspconfig = vim.tbl_extend("force", process_default_lsps(), {
         },
     },
 
-    ts_ls = {
-        single_file_support = true,
-        settings = {
-            typescript = {
-                inlayHints = {
-                    includeInlayParameterNameHints = "literal",
-                    includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                    includeInlayFunctionParameterTypeHints = true,
-                    includeInlayVariableTypeHints = false,
-                    includeInlayPropertyDeclarationTypeHints = true,
-                    includeInlayFunctionLikeReturnTypeHints = true,
-                    includeInlayEnumMemberValueHints = true,
-                },
-            },
-            javascript = {
-                inlayHints = {
-                    includeInlayParameterNameHints = "all",
-                    includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                    includeInlayFunctionParameterTypeHints = true,
-                    includeInlayVariableTypeHints = true,
-                    includeInlayPropertyDeclarationTypeHints = true,
-                    includeInlayFunctionLikeReturnTypeHints = true,
-                    includeInlayEnumMemberValueHints = true,
-                },
-            },
-        },
-    },
+    -- ts_ls = {
+    --     single_file_support = true,
+    --     settings = {
+    --         typescript = {
+    --             inlayHints = {
+    --                 includeInlayParameterNameHints = "literal",
+    --                 includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+    --                 includeInlayFunctionParameterTypeHints = true,
+    --                 includeInlayVariableTypeHints = false,
+    --                 includeInlayPropertyDeclarationTypeHints = true,
+    --                 includeInlayFunctionLikeReturnTypeHints = true,
+    --                 includeInlayEnumMemberValueHints = true,
+    --             },
+    --         },
+    --         javascript = {
+    --             inlayHints = {
+    --                 includeInlayParameterNameHints = "all",
+    --                 includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+    --                 includeInlayFunctionParameterTypeHints = true,
+    --                 includeInlayVariableTypeHints = true,
+    --                 includeInlayPropertyDeclarationTypeHints = true,
+    --                 includeInlayFunctionLikeReturnTypeHints = true,
+    --                 includeInlayEnumMemberValueHints = true,
+    --             },
+    --         },
+    --     },
+    -- },
 
     jinja_lsp = {
         filetypes = { "jinja", "htmldjango" },
     },
+
+    volar = { 'vue' },
 
     emmet_language_server = {
         filetypes = {
