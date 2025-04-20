@@ -8,8 +8,9 @@ config.window_close_confirmation = "NeverPrompt"
 
 -- font settings
 config.font_size = 15
-config.line_height = 1.2
-config.font = wezterm.font("JetBrainsMono NF")
+config.line_height = 1.5
+-- config.font = wezterm.font("JetBrainsMono NF")
+config.font = wezterm.font("Monaspace Neon")
 
 -- Colors
 -- config.colors = {

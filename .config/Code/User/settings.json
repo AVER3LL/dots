@@ -127,7 +127,7 @@
   },
   "vim.foldfix": true,
   "errorLens.scrollbarHackEnabled": true,
-  "workbench.colorTheme": "Ayu Mirage",
+  "workbench.colorTheme": "Astro Kanagawa Dark",
   "redhat.telemetry.enabled": false,
   "code-runner.executorMapByFileExtension": {
     ".vb": "cd $dir && vbc /nologo $fileName && $dir$fileNameWithoutExt",
@@ -238,7 +238,7 @@
   "[css]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "workbench.statusBar.visible": false,
   "editor.cursorBlinking": "solid",
-  "tailwind-fold.autoFold": true
+  "tailwind-fold.autoFold": true,
+  "workbench.statusBar.visible": false
 }

@@ -1,5 +1,6 @@
 # Font
-# font-family = "JetBrainsMono NF"
+# font-family = "Geist Mono"
+# font-family = "Monaspace Neon"
 font-size = 15
 
 # Mouse
@@ -20,7 +21,7 @@ background = 1C2021
 # Light theme
 # theme = GruvboxLight
 
-background-blur = 30
+# background-blur = 30
 # theme = tokyonight_night
 # theme = "Kanagawa Wave"
 
@@ -29,7 +30,9 @@ window-padding-x = 0
 window-padding-y = 0
 # window-decoration = none
 
-adjust-cell-height = 35%
+# adjust-cell-height = 35%
+adjust-cell-height = 31%
+adjust-cursor-height = 45%
 shell-integration-features = no-cursor,sudo,no-title
 confirm-close-surface = false
 

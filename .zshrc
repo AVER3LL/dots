@@ -67,7 +67,7 @@ alias cler='clear'
 alias clar='clear'
 alias sl='ls'
 alias gs='git status'
-alias cpr='composer run dev'
+alias run='composer run dev'
 
 google() {
     if [ $# -eq 0 ]; then
