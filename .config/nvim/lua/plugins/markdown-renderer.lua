@@ -24,6 +24,7 @@ return {
                 sign = false,
                 icons = {},
             },
+            completions = { lsp = { enabled = true } },
         },
     },
 }

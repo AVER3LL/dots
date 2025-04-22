@@ -87,6 +87,7 @@ vim.opt.backspace = "indent,eol,start"
 -- Performance and Updates
 vim.opt.updatetime = 250
 vim.opt.timeoutlen = 300
+vim.opt.ttimeoutlen = 10
 
 -- History and Persistence
 vim.opt.undofile = true

@@ -153,6 +153,8 @@ autocmd("FileType", {
         "man",
         "notify",
         "qf",
+        "query",
+        "scratch",
         "spectre_panel",
         "startuptime",
         "tsplayground",

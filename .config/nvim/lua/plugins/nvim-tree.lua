@@ -21,7 +21,7 @@ return {
             end
             require("nvim-tree").setup {
                 on_attach = my_on_attach,
-                filters = { dotfiles = false, exclude = { ".env" } },
+                filters = { dotfiles = false, git_ignored = false, exclude = { ".env" } },
                 disable_netrw = true,
                 hijack_cursor = true,
                 sync_root_with_cwd = true,

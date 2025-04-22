@@ -165,9 +165,14 @@ map("n", "<C-Right>", "<C-W><", { desc = "Split decrease width" })
 map("n", "<C-Left>", "<C-W>>", { desc = "Split increase width" })
 
 -- Git Commands
-map("n", "<leader>gb", ":Gitsigns blame_line<CR>", { desc = "Blame the current line" })
-map("n", "<leader>gd", ":Gitsigns preview_hunk <CR>", { desc = "Diff the current line" })
-map("n", "<leader>gg", ":Neogit kind=floating <CR>", { desc = "Open neogit" })
+map("n", "<leader>gb", ":Gitsigns blame_line<CR>", { desc = "Git blame the current line" })
+map("n", "<leader>gd", ":Gitsigns preview_hunk <CR>", { desc = "Git diff the current hunk" })
+map(
+    "n",
+    "<leader>gg",
+    ":lua require('gitsigns').diffthis(nil, { vertical = true }) <CR>",
+    { desc = "Git diff the current file" }
+)
 
 -- Redo
 map("n", "U", "<C-r>", { desc = "Redo" })
@@ -259,7 +264,6 @@ map("n", "<leader>e", "<cmd>NvimTreeFocus<CR>", { desc = "Nvimtree focus window"
 -- Session Management
 map("n", "<leader>ws", "<cmd>SessionSave<CR>", { desc = "Save session" })
 map("n", "<leader>wr", "<cmd>SessionRestore<CR>", { desc = "Restore session" })
-
 
 local terminal = require "config.floaterminal"
 map("n", toggle_terminal_mapping, function()
