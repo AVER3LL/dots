@@ -197,9 +197,7 @@ end, { desc = "Buffer delete" })
 
 map("n", "<leader>cba", function()
     Snacks.bufdelete.other()
-end, {
-    desc = "Close all buffers but the current one",
-})
+end, { desc = "Close all buffers but the current one" })
 
 -- Centering
 map("n", "<C-d>", "<C-d>zz")

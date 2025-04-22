@@ -1,3 +1,5 @@
+local icons = require("icons").diagnostics
+
 -- Custom minimal centered winbar
 local M = {}
 
@@ -25,20 +27,20 @@ local function get_diagnostics()
     local plain_result = "" -- for width calculation
 
     if errors > 0 then
-        result = result .. "%#WinBarDiagError# 󰅙 " .. errors .. "%* "
-        plain_result = plain_result .. " 󰅙 " .. errors .. " "
+        result = result .. "%#WinBarDiagError# " .. icons.ERROR .. " " .. errors .. "%* "
+        plain_result = plain_result .. " " .. icons.ERROR .. " " .. errors .. " "
     end
     if warnings > 0 then
-        result = result .. "%#WinBarDiagWarn#  " .. warnings .. "%* "
-        plain_result = plain_result .. "  " .. warnings .. " "
+        result = result .. "%#WinBarDiagWarn# " .. icons.WARN .. " " .. warnings .. "%* "
+        plain_result = plain_result .. " " .. icons.WARN .. " " .. warnings .. " "
     end
     if info > 0 then
-        result = result .. "%#WinBarDiagInfo# 󰋼 " .. info .. "%* "
-        plain_result = plain_result .. " 󰋼 " .. info .. " "
+        result = result .. "%#WinBarDiagInfo# " .. icons.INFO .. " " .. info .. "%* "
+        plain_result = plain_result .. " " .. icons.INFO .. " " .. info .. " "
     end
     if hints > 0 then
-        result = result .. "%#WinBarDiagHint# 󰌵 " .. hints .. "%* "
-        plain_result = plain_result .. " 󰌵 " .. hints .. " "
+        result = result .. "%#WinBarDiagHint# " .. icons.HINT .. " " .. hints .. "%* "
+        plain_result = plain_result .. " " .. icons.HINT .. " " .. hints .. " "
     end
 
     return result, plain_result
@@ -67,12 +69,12 @@ end
 
 -- Function to calculate string display width correctly
 local function display_width(str)
-    -- Use strdisplaywidth to get actual display width
     return vim.fn.strdisplaywidth(str)
 end
 
 -- Update the winbar
-function M.update_winbar()
+function M.update_winbar(is_active)
+    -- local is_active = is_active ~= nil and is_active or true
     local filename = vim.fn.expand "%:t"
     if filename == "" then
         vim.wo.winbar = ""
@@ -100,29 +102,11 @@ function M.update_winbar()
     local padding = 2 -- minimum padding on each side
     local available_path_space = win_width - base_width - (padding * 2)
 
-    -- Truncate path if necessary
+    -- Determine path component
     local path_component = ""
-    if file_path ~= "" then
+    if is_active and file_path ~= "" then
         local path_width = display_width(file_path)
-        if path_width > available_path_space and available_path_space > 3 then
-            -- If path is too long, truncate it with ellipsis
-            local truncate_to = available_path_space - 3 -- space for "..."
-            local truncated_path = ""
-            local current_width = 0
-
-            -- Split path into components
-            for part in string.gmatch(file_path, "[^/]+") do
-                local part_width = display_width(part)
-                if current_width + part_width + 1 <= truncate_to then
-                    truncated_path = truncated_path .. (truncated_path == "" and "" or "/") .. part
-                    current_width = current_width + part_width + 1
-                else
-                    break
-                end
-            end
-
-            path_component = "%#WinBarPath#" .. truncated_path .. "...%* "
-        elseif available_path_space >= path_width then
+        if available_path_space >= path_width then
             path_component = "%#WinBarPath#" .. file_path .. " %*"
         end
     end
@@ -138,11 +122,7 @@ function M.update_winbar()
         .. plain_diagnostics
     local content_width = display_width(visual_content)
 
-    local final_padding = math.floor((win_width - content_width) / 2)
-    if final_padding < 0 then
-        final_padding = 0
-    end
-
+    local final_padding = math.max(math.floor((win_width - content_width) / 2), 0)
     local winbar = string.rep(" ", final_padding) .. content
 
     -- Set the winbar
@@ -166,7 +146,7 @@ function M.setup()
         end,
     })
 
-    -- update the winbar
+    -- Update when active
     autocmd({
         "BufWinEnter",
         "BufFilePost",
@@ -178,15 +158,25 @@ function M.setup()
         "DiagnosticChanged",
         "VimResized",
         "WinResized",
-        "WinLeave",
         "WinScrolled",
-        "WinEnter", -- Added to handle switching between splits
+        "WinEnter",
     }, {
         group = group,
         callback = function()
-            -- Only show winbar in normal buffers
             if vim.bo.buftype == "" then
-                M.update_winbar()
+                M.update_winbar(true)
+            else
+                vim.wo.winbar = ""
+            end
+        end,
+    })
+
+    -- Update when inactive
+    autocmd("WinLeave", {
+        group = group,
+        callback = function()
+            if vim.bo.buftype == "" then
+                M.update_winbar(false)
             else
                 vim.wo.winbar = ""
             end
