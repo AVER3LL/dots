@@ -135,11 +135,25 @@ autocmd("VimResized", {
 })
 
 -- Fix conceallevel for json files
-vim.api.nvim_create_autocmd({ "FileType" }, {
+autocmd({ "FileType" }, {
     group = augroup "json_conceal",
     pattern = { "json", "jsonc", "json5" },
     callback = function()
         vim.opt_local.conceallevel = 0
+    end,
+})
+
+-- Notifications when a macro starts
+autocmd("RecordingEnter", {
+    callback = function()
+        local reg = vim.fn.reg_recording()
+        vim.notify("Recording macro @" .. reg, vim.log.levels.INFO, { title = "Macro" })
+    end,
+})
+
+autocmd("RecordingLeave", {
+    callback = function()
+        vim.notify("Stopped recording macro", vim.log.levels.INFO, { title = "Macro" })
     end,
 })
 
@@ -156,6 +170,8 @@ autocmd("FileType", {
         "query",
         "scratch",
         "spectre_panel",
+        "grug-far",
+        "vim",
         "startuptime",
         "tsplayground",
         "neotest-output",

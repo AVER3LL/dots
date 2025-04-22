@@ -1,6 +1,7 @@
 return {
     "sindrets/diffview.nvim",
     event = "VeryLazy",
+    cmd = { "DiffviewOpen", "DiffviewFileHistory" },
     keys = {
         {
             "<leader>gp",
@@ -9,7 +10,7 @@ return {
         },
         {
             "<leader>gf",
-            "<cmd>DiffviewFileHistory<CR>",
+            "<cmd>DiffviewFileHistory %<CR>",
             desc = "Git list all the previous versions of the file",
         },
     },
