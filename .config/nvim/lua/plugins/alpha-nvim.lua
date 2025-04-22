@@ -4,9 +4,10 @@ return {
     -- Greeter
     {
         "goolord/alpha-nvim",
+        priority = 900,
         event = "VimEnter",
         config = function()
-            local alpha = require("alpha")
+            local alpha = require "alpha"
             local dashboard = require "alpha.themes.dashboard"
             local default_header = {
                 "                                                     ",
@@ -162,8 +163,8 @@ return {
             dashboard.section.buttons.val = {
                 dashboard.button("e", "   New File", "<cmd>ene<CR>"),
                 dashboard.button("SPC e", "   File Explorer", "<cmd>NvimTreeFocus<CR>"),
-                dashboard.button("SPC f f", "󰱼   Find File", "<cmd>Telescope find_files<CR>"),
-                dashboard.button("SPC f w", "   Find Word", "<cmd>Telescope live_grep<CR>"),
+                dashboard.button("SPC f f", "󰱼   Find File", "<cmd>lua Snacks.picker.files()<CR>"),
+                dashboard.button("SPC f w", "   Find Word", "<cmd>lua Snacks.picker.grep()<CR>"),
                 dashboard.button("SPC w r", "󰁯   Restore Session", "<cmd>SessionRestore<CR>"),
                 -- dashboard.button("SPC w r", "󰁯   Restore Session", "<cmd>lua require('persistence').load() <CR>"),
                 dashboard.button("c", "  Configuration", ":cd ~/.config/nvim | NvimTreeToggle<CR>"),

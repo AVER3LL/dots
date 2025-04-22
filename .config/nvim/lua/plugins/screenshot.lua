@@ -3,6 +3,14 @@ return {
     {
         "michaelrommel/nvim-silicon",
         enabled = false,
+        keys = {
+            {
+                "<leader>sc",
+                ":Silicon<CR>",
+                desc = "Take a screenshot",
+                mode = {"v", "n"},
+            },
+        },
         cmd = "Silicon",
         config = function()
             require("nvim-silicon").setup {
@@ -31,8 +39,16 @@ return {
     {
         "mistricky/codesnap.nvim",
         -- enabled = false,
-        build = "make build_generator",
+        keys = {
+            {
+                "<leader>sc",
+                "<cmd>CodeSnapSave<CR>",
+                desc = "Take a screenshot",
+                mode = "n",
+            },
+        },
         cmd = { "CodeSnapSave" },
+        build = "make build_generator",
         opts = {
             code_font_family = "JetBrainsMono NF",
             watermark_font_family = "Pacifico",

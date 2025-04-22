@@ -21,9 +21,9 @@ return {
         cmd = { "Laravel" },
         ft = { "blade", "php" },
         keys = {
-            { "<leader>la", ":Laravel artisan<cr>" },
-            { "<leader>lr", ":Laravel routes<cr>" },
-            { "<leader>lm", ":Laravel related<cr>" },
+            { "<leader>la", ":Laravel artisan<cr>", desc = "Laravel artisan command" },
+            { "<leader>lr", ":Laravel routes<cr>", desc = "Laravel list routes" },
+            { "<leader>lm", ":Laravel related<cr>", desc = "Laravel related" },
             {
                 "gf",
                 function()

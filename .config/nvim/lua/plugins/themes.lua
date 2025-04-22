@@ -563,8 +563,7 @@ return {
         priority = 1000,
         opts = {
             on_highlights = function(hl, c)
-                -- local prompt = "#2d3149"
-                local prompt = c.black
+                local prompt = "#2d3149"
                 hl.TelescopeNormal = {
                     bg = c.bg_dark,
                     fg = c.fg_dark,
@@ -592,6 +591,17 @@ return {
                     bg = c.bg_dark,
                     fg = c.bg_dark,
                 }
+                local bg_float2 = "#14151f"
+                local bg_float3 = "#0a0b10"
+
+                hl.SnacksPicker = { fg = c.fg, bg = bg_float2 }
+                hl.SnacksPickerTitle = { fg = bg_float2, bg = c.blue }
+                hl.SnacksPickerBorder = { fg = bg_float2, bg = bg_float2 }
+                hl.SnacksPickerInput = { fg = c.fg, bg = c.bg_float }
+                hl.SnacksPickerInputTitle = { fg = c.bg_float, bg = c.orange }
+                hl.SnacksPickerInputBorder = { fg = c.bg_float, bg = c.bg_float }
+                hl.SnacksPickerPreview = { fg = c.fg, bg = bg_float3 }
+                hl.SnacksPickerPreviewBorder = { fg = bg_float3, bg = bg_float3 }
             end,
             plugins = {
                 all = package.loaded.lazy == nil,

@@ -3,6 +3,8 @@ if vim.g.vscode then
 else
     require "core"
 
+    require "lsp"
+
     require "config.lazy"
 
     require("config.custom_winbar").setup()

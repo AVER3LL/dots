@@ -17,6 +17,14 @@ return {
 
     {
         "danymat/neogen",
+        keys = {
+            {
+                "<leader>dg",
+                "<cmd>Neogen<CR>",
+                desc = "Generate Documentation",
+                mode = "n",
+            },
+        },
         cmd = "Neogen",
         config = function()
             require("neogen").setup {

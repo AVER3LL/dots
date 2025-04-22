@@ -1,3 +1,4 @@
+local bt = require("config.looks").border_type()
 return {
 
     -- Helps manage keymaps
@@ -6,7 +7,10 @@ return {
         event = "VeryLazy",
         opts = {
             -- classic, modern, helix
-            preset = "modern",
+            preset = "helix",
+            win = {
+                border = bt,
+            },
         },
     },
 }

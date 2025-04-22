@@ -10,6 +10,8 @@ local map = function(mode, lhs, rhs, opts)
     vim.keymap.set(mode, lhs, rhs, opts)
 end
 
+map("n", "<leader>ll", "<cmd>Lazy<CR>", { desc = "Open Lazy" })
+
 map("n", "<leader>wt", function()
     local current = vim.o.laststatus
     if current == 0 then
@@ -85,11 +87,6 @@ map("n", "<C-l>", "<C-w>l", { desc = "Move to right split" })
 
 M.noice = function()
     map("n", "<leader>nd", "<cmd>NoiceDismiss<CR>", { desc = "Dismiss Noice Message" })
-end
-
-M.venv = function()
-    -- Virtual Environment Selector
-    map("n", "<leader>se", "<cmd>VenvSelect<CR>", { desc = "Select virtual environment" })
 end
 
 local toggle_terminal_mapping = '<A-">'
@@ -220,94 +217,49 @@ map("n", "<A-l>", "dawwP", { desc = "Move word right" })
 map("v", "<A-h>", "<Left>dvhP`[v`]", { desc = "Move selection left" })
 map("v", "<A-l>", "<Right>dp`[v`]", { desc = "Move selection right" })
 
--- Screenshot
--- map({ "v", "n" }, "<leader>sc", ":Silicon<cr>", { desc = "Take a screenshot" })
-map({ "v", "n" }, "<leader>sc", ":CodeSnapSave<cr>", { desc = "Take screenshot" })
-
--- Search and Replace
-map("n", "<leader>ra", '<cmd>lua require("spectre").toggle()<CR>', { desc = "Toggle Spectre" })
--- map("n", "<leader>ra", ":IncRename ", { desc = "Rename all" })
-
 -- Formatting
 map("n", "<leader>fm", function()
     require("conform").format { async = true, lsp_format = "fallback" }
 end, { desc = "Format files" })
 
--- Undo Tree
-map("n", "<leader>u", "<cmd>UndotreeToggle<CR>", { desc = "Toggle undo tree" })
-
--- Split Line
-map("n", "<leader>m", "<cmd>TSJToggle<CR>", { desc = "Join Toggle" })
-
 -- File Tree
 map("n", "<C-n>", "<cmd>NvimTreeToggle<CR>", { desc = "Nvimtree toggle window" })
 map("n", "<leader>e", "<cmd>NvimTreeFocus<CR>", { desc = "Nvimtree focus window" })
 
-map("n", "<Leader>dg", "<cmd>Neogen<CR>", { desc = "Generate Documentation" })
-
 -- Telescope
-map("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Telescope find files" })
-map("n", "<leader>fg", "<cmd>Telescope git_files<cr>", { desc = "Telescope find git files" })
-map("n", "<leader>fw", "<cmd>Telescope live_grep<CR>", { desc = "Telescope live grep" })
-map("n", "<leader>fz", "<cmd>Telescope current_buffer_fuzzy_find<CR>", {
-    desc = "Telescope find in current buffer",
-})
-map("n", "<leader>fo", "<cmd>Telescope oldfiles<CR>", { desc = "Telescope find oldfiles" })
-map(
-    "n",
-    "<leader>fc",
-    -- "<cmd>lua require('telescope.builtin').find_files { cwd = vim.fn.stdpath 'config' }<cr>",
-    "<cmd>lua require('telescope.builtin').find_files { cwd = '~/dotfiles/.config/nvim' }<cr>",
-    { desc = "Find config file" }
-)
+-- map("n", "<leader>ff", "<cmd>lua Snacks.picker.files() <CR>", { desc = "Snacks find files" })
+-- map("n", "<leader>fg", "<cmd>lua Snacks.picker.git_files() <CR>", { desc = "Snacks find git files" })
+-- map("n", "<leader>fw", "<cmd>lua Snacks.picker.grep() <CR>", { desc = "Snacks live grep" })
+-- map("n", "<leader>fb", "<cmd>lua Snacks.picker.buffers() <CR>", { desc = "Snacks find buffers" })
+-- map("n", "<leader>th", "<cmd>lua Snacks.picker.colorschemes() <CR>", { desc = "Snacks find colorscheme" })
 
-map("n", "<leader>z", "<cmd>Telescope current_buffer_fuzzy_find<CR>", {
-    desc = "Telescope find in current buffer",
-})
-map("n", "<leader>fb", "<cmd>Telescope buffers<CR>", { desc = "Telescope find buffers" })
-map("n", "<leader>fk", "<cmd>Telescope keymaps<CR>", { desc = "Telescope find keymaps" })
-map("n", "<leader>th", "<cmd>Telescope colorscheme<CR>", { desc = "Telescope colorscheme" })
+-- map("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Telescope find files" })
+-- map("n", "<leader>fg", "<cmd>Telescope git_files<cr>", { desc = "Telescope find git files" })
+-- map("n", "<leader>fw", "<cmd>Telescope live_grep<CR>", { desc = "Telescope live grep" })
+-- map("n", "<leader>fz", "<cmd>Telescope current_buffer_fuzzy_find<CR>", {
+--     desc = "Telescope find in current buffer",
+-- })
+-- map("n", "<leader>fo", "<cmd>Telescope oldfiles<CR>", { desc = "Telescope find oldfiles" })
+-- map(
+--     "n",
+--     "<leader>fc",
+--     -- "<cmd>lua require('telescope.builtin').find_files { cwd = vim.fn.stdpath 'config' }<cr>",
+--     "<cmd>lua require('telescope.builtin').find_files { cwd = '~/dotfiles/.config/nvim' }<cr>",
+--     { desc = "Find config file" }
+-- )
+
+-- map("n", "<leader>z", "<cmd>Telescope current_buffer_fuzzy_find<CR>", {
+--     desc = "Telescope find in current buffer",
+-- })
+-- map("n", "<leader>fb", "<cmd>Telescope buffers<CR>", { desc = "Telescope find buffers" })
+-- map("n", "<leader>fk", "<cmd>Telescope keymaps<CR>", { desc = "Telescope find keymaps" })
+-- map("n", "<leader>th", "<cmd>Telescope colorscheme<CR>", { desc = "Telescope colorscheme" })
 -- map("n", "<leader>fy", ":Yazi toggle<cr>", { desc = "Open yazi" })
 
 -- Session Management
 map("n", "<leader>ws", "<cmd>SessionSave<CR>", { desc = "Save session" })
 map("n", "<leader>wr", "<cmd>SessionRestore<CR>", { desc = "Restore session" })
 
--- LSP Keymappings (inside LspAttach autocmd)
-vim.api.nvim_create_autocmd("LspAttach", {
-    group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
-    callback = function(event)
-        local function opts(desc)
-            return { buffer = event.buf, desc = "LSP " .. desc }
-        end
-
-        map("n", "gD", vim.lsp.buf.declaration, opts "Go to declaration")
-        map("n", "gd", vim.lsp.buf.definition, opts "Go to definition")
-        map("n", "gi", vim.lsp.buf.implementation, opts "Go to implementation")
-        map("n", "<leader>h", vim.lsp.buf.signature_help, opts "Show signature help")
-        map("n", "<leader>k", vim.lsp.buf.hover, opts "Show documentation")
-        map("n", "<leader>rn", vim.lsp.buf.rename, opts "Smart rename")
-        -- map("n", "<leader>D", vim.lsp.buf.type_definition, opts "Go to type definition")
-        -- map("n", "]d", vim.diagnostic.jump { count = 1, float = false }, opts "Go to next diagnostic")
-        -- map("n", "[d", vim.diagnostic.jump { count = -1, float = false }, opts "Go to previous diagnostic")
-        map("n", "<leader>ds", vim.diagnostic.setloclist, opts "Show diagnostic loclist")
-        map("n", "<leader>dl", vim.diagnostic.open_float, opts "Show inline diagnostics")
-        map("n", "<leader>fs", require("telescope.builtin").lsp_document_symbols, opts "Show document symbols")
-
-        map("n", "<leader>dh", function()
-            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(), nil)
-        end, opts "Toggle inlay hints")
-
-        map("n", "<leader>da", "<cmd>Trouble diagnostics<CR>", opts "Show all diagnostics")
-
-        map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts "Code action")
-        map({ "n", "v" }, "<leader>cc", vim.lsp.codelens.run, opts "Run Codelens")
-        map({ "n", "v" }, "<leader>cC", vim.lsp.codelens.refresh, opts "Refresh & Display Codelens")
-
-        map("n", "gr", require("telescope.builtin").lsp_references, opts "Go to references")
-        map("i", "<C-x>", vim.lsp.buf.signature_help, opts "Show signature help")
-    end,
-})
 
 local terminal = require "config.floaterminal"
 map("n", toggle_terminal_mapping, function()
