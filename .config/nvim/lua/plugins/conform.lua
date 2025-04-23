@@ -27,6 +27,7 @@ return {
                 php = { "pint", "php_cs_fixer" },
                 java = { "google-java-format" },
                 blade = { "blade-formatter" },
+                kotlin = { "ktlint" },
                 latex = { "latexindent" },
                 go = { "goimports-reviser", "gofumpt" },
                 -- dart = { "ast-grep" },

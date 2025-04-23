@@ -28,7 +28,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         -- map("n", "[d", vim.diagnostic.jump { count = -1 }, opts "Go to previous diagnostic")
         map("n", "<leader>ds", vim.diagnostic.setloclist, opts "Show diagnostic loclist")
         map("n", "<leader>dl", vim.diagnostic.open_float, opts "Show inline diagnostics")
-        map("n", "<leader>fs", require("telescope.builtin").lsp_document_symbols, opts "Show document symbols")
+        map("n", "<leader>fs", function() Snacks.picker.lsp_symbols() end, opts "Show document symbols")
 
         map("n", "<leader>dh", function()
             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(), nil)
@@ -40,7 +40,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         map({ "n", "v" }, "<leader>cc", vim.lsp.codelens.run, opts "Run Codelens")
         map({ "n", "v" }, "<leader>cC", vim.lsp.codelens.refresh, opts "Refresh & Display Codelens")
 
-        map("n", "gr", require("telescope.builtin").lsp_references, opts "Go to references")
+        map("n", "gr", function() Snacks.picker.lsp_references() end, opts "Go to references")
         map("i", "<C-x>", vim.lsp.buf.signature_help, opts "Show signature help")
     end,
 })

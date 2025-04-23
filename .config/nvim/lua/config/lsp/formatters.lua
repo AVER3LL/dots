@@ -8,6 +8,8 @@ return {
     -- LaTeX
     "latexindent",
 
+    "ktlint",
+
     -- PHP
     "blade-formatter",
     "php-cs-fixer",

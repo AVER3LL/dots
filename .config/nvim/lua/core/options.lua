@@ -5,7 +5,7 @@ vim.g.fold_indicator = true
 vim.g.show_line_number = true
 
 vim.g.show_indent = false
-vim.g.use_blink = false
+vim.g.use_blink = true
 vim.g.markdown_recommended_style = 0
 
 

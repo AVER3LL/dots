@@ -8,6 +8,7 @@ return {
     {
         "hrsh7th/nvim-cmp",
         enabled = not vim.g.use_blink,
+        version = "1.*",
         event = "InsertEnter",
         dependencies = {
             "hrsh7th/cmp-buffer", -- source for text in buffer
@@ -141,7 +142,6 @@ return {
                     },
                 },
             }
-
         end,
     },
 
@@ -154,29 +154,18 @@ return {
 
             keymap = {
                 preset = "none",
+                ["<C-space>"] = { "show" },
                 ["<C-k>"] = { "select_prev", "fallback" },
                 ["<C-j>"] = { "select_next", "fallback" },
                 ["<CR>"] = { "accept", "fallback" },
                 ["<C-e>"] = { "hide", "fallback" },
                 ["<Tab>"] = {
-                    function(cmp)
-                        if cmp.snippet_active() then
-                            return cmp.snippet_forward()
-                        else
-                            return cmp.select_next()
-                        end
-                    end,
+                    "snippet_forward",
                     "select_next",
                     "fallback",
                 },
                 ["<S-Tab>"] = {
-                    function(cmp)
-                        if cmp.snippet_active() then
-                            return cmp.snippet_backward()
-                        else
-                            return cmp.select_prev()
-                        end
-                    end,
+                    "snippet_backward",
                     "select_prev",
                     "fallback",
                 },
@@ -192,45 +181,69 @@ return {
                 enabled = false,
             },
 
+            cmdline = {
+                enabled = false,
+            },
+
+            snippets = { preset = "luasnip" },
+
             completion = {
+                list = {
+                    selection = { preselect = true, auto_insert = false },
+                },
                 menu = {
+                    draw = {
+                        -- left and right padding
+                        padding = { 1, 1 },
+                        columns = {
+                            { "label", "label_description", gap = 1 },
+                            { "kind_icon", "kind", gap = 2 },
+                        },
+                        components = {
+                            kind_icon = {
+                                -- Add some space between the label and the icon
+                                text = function(ctx)
+                                    return "   " .. ctx.kind_icon .. ctx.icon_gap
+                                end,
+                            },
+                        },
+                    },
                     border = bt,
-                    winhighlight = "Normal:CmpPmenu,Search:None,FloatBorder:CmpBorder",
+                    winhighlight = "Normal:BlinkCmpMenu,Search:None,FloatBorder:BlinkCmpMenuBorder",
+                    -- winhighlight = "Normal:BlinkCmpMenu,FloatBorder:BlinkCmpMenuBorder,CursorLine:BlinkCmpMenuSelection,Search:None",
                     scrollbar = false,
-                    winblend = vim.o.pumblend,
                 },
                 documentation = {
                     auto_show = true,
                     auto_show_delay_ms = 50,
                     window = {
                         border = bt,
-                        winhighlight = "Normal:CmpDoc,FloatBorder:CmpDocBorder",
+                        winhighlight = "Normal:BlinkCmpDoc,FloatBorder:BlinkCmpDocBorder",
+                        -- winhighlight = 'Normal:BlinkCmpDoc,FloatBorder:BlinkCmpDocBorder,EndOfBuffer:BlinkCmpDoc',
                         scrollbar = false,
                         max_width = 100,
-                        winblend = vim.o.pumblend,
                     },
                 },
             },
 
             sources = {
-                default = { "lsp", "path", "snippets", "buffer" },
-                cmdline = {},
-                per_filetype = {
-                    tex = {
-                        {
-                            name = "spell",
-                            option = {
-                                keep_all_entries = false,
-                                enable_in_context = function()
-                                    return true
-                                end,
-                                preselect_correct_word = true,
-                            },
-                        },
-                    },
-                },
+                default = function()
+                    local sources = { "lsp", "buffer" }
+                    local ok, node = pcall(vim.treesitter.get_node)
+
+                    if ok and node then
+                        if not vim.tbl_contains({ "comment", "line_comment", "block_comment" }, node:type()) then
+                            table.insert(sources, "path")
+                        end
+                        if node:type() ~= "string" then
+                            table.insert(sources, "snippets")
+                        end
+                    end
+
+                    return sources
+                end,
             },
+            -- opts_extend = { "sources.default" },
         },
-        opts_extend = { "sources.default" },
     },
 }

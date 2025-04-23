@@ -127,7 +127,7 @@
   },
   "vim.foldfix": true,
   "errorLens.scrollbarHackEnabled": true,
-  "workbench.colorTheme": "Gruvbox Light Hard",
+  "workbench.colorTheme": "Gruvbox Dark Medium",
   "redhat.telemetry.enabled": false,
   "code-runner.executorMapByFileExtension": {
     ".vb": "cd $dir && vbc /nologo $fileName && $dir$fileNameWithoutExt",
@@ -234,11 +234,11 @@
     "strings": "on"
   },
   "voltage.suppressErrors": true,
-  "files.autoSave": "afterDelay",
   "[css]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "editor.cursorBlinking": "solid",
   "tailwind-fold.autoFold": true,
-  "workbench.statusBar.visible": false
+  "workbench.statusBar.visible": false,
+  "files.autoSave": "afterDelay"
 }

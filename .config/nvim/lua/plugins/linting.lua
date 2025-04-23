@@ -13,6 +13,8 @@ return {
 
             php = { "phpstan" },
 
+            kotlin = { "ktlint" },
+
             htmldjango = { "djlint" },
 
             -- java = { "checkstyle" },

@@ -8,14 +8,20 @@ config.window_close_confirmation = "NeverPrompt"
 
 -- font settings
 config.font_size = 15
-config.line_height = 1.5
+config.line_height = 1.8
+config.font = wezterm.font("MonoLisa Nerd Font Mono")
 -- config.font = wezterm.font("JetBrainsMono NF")
-config.font = wezterm.font("Monaspace Neon")
+-- config.font = wezterm.font("Monaspace Neon")
 
 -- Colors
 -- config.colors = {
 -- 	cursor_bg = "white",
 -- 	cursor_border = "white",
+-- }
+
+-- config.window_content_alignment = {
+-- 	horitontal = "center",
+-- 	vertical = "center",
 -- }
 
 -- Appearance
@@ -30,7 +36,9 @@ config.window_padding = {
 config.enable_tab_bar = false
 config.use_fancy_tab_bar = false
 config.tab_bar_at_bottom = true
-config.color_scheme = "Apple System Colors"
+-- config.color_scheme = "Apple System Colors"
+config.color_scheme = "Gruvbox dark, hard (base16)"
+
 -- config.default_cursor_style = "BlinkingBar",
 -- config.cursor_thickness = 2,
 -- config.cursor_blink_rate = 600,

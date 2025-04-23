@@ -1,7 +1,6 @@
 return {
 
-    -- theme switcher
-    {
+    { -- theme switcher
         "gagbo/circadian.nvim",
         priority = 900,
         config = function()
@@ -14,14 +13,14 @@ return {
         end,
     },
 
-    {
+    { -- nightfly
         "bluz71/vim-nightfly-colors",
         name = "nightfly",
         lazy = false,
         priority = 1000,
     },
 
-    {
+    { -- poimandres
         "olivercederborg/poimandres.nvim",
         lazy = false,
         priority = 1000,
@@ -30,7 +29,7 @@ return {
         },
     },
 
-    {
+    { -- eldritch
         "AlexvZyl/nordic.nvim",
         lazy = false,
         priority = 1000,
@@ -57,7 +56,7 @@ return {
         opts = {},
     },
 
-    {
+    { -- moonfly
         "bluz71/vim-moonfly-colors",
         lazy = false,
         priority = 1000,
@@ -160,6 +159,11 @@ return {
             vim.g.everforest_better_performance = 1
             vim.g.everforest_transparent_background = 0
         end,
+    },
+
+    { -- sonokai
+        "sainnhe/sonokai",
+        priority = 1000,
     },
 
     { -- catppuccin

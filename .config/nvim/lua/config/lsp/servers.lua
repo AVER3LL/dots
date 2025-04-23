@@ -12,6 +12,7 @@ M.mason = {
     "bash-language-server",
     "tailwindcss-language-server",
     "css-variables-language-server",
+    "kotlin-language-server",
     "emmet-language-server",
     "cssmodules-language-server",
     "css-lsp",
@@ -30,6 +31,7 @@ M.default = {
     "tailwindcss", -- obvious
     "basedpyright", -- apparently need to set contentFormat to "plaintext" if I want to fix doc breaks
     "lua_ls",
+    "kotlin_language_server",
     -- "css_variables",
     -- "cssmodules_ls",
     -- "phpactor",

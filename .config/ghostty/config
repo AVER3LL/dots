@@ -1,6 +1,18 @@
 # Font
 # font-family = "Geist Mono"
 # font-family = "Monaspace Neon"
+# font-family = "MonoLisa Nerd Font Mono"
+
+# font-family = "MonaspiceNe NF"
+# Ne looks good for now, Rn looks hypnotizing
+
+# font-family = "CaskaydiaCove Nerd Font"
+
+# Ar, Kr, Ne, Rn, Xe
+# font-family = "MonoLisa Nerd Font Mono"
+# font-family = "GeistMono NF"
+
+font-family = "JetBrainsMono NF"
 font-size = 15
 
 # Mouse
@@ -30,9 +42,20 @@ window-padding-x = 0
 window-padding-y = 0
 # window-decoration = none
 
-# adjust-cell-height = 35%
 adjust-cell-height = 31%
 adjust-cursor-height = 45%
+
+adjust-underline-position = 5
+adjust-underline-thickness = 40%
+# adjust-cursor-thickness = 150%
+cursor-style-blink = false
+
+# adjust-cell-height = 46%
+# adjust-cursor-height = 56%
+
+# adjust-cell-height = 80%
+# adjust-cursor-height = 90%
+
 shell-integration-features = no-cursor,sudo,no-title
 confirm-close-surface = false
 
