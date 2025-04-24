@@ -8,7 +8,6 @@ vim.g.show_indent = false
 vim.g.use_blink = true
 vim.g.markdown_recommended_style = 0
 
-
 vim.opt.conceallevel = 2
 
 -- Core UI and Appearance
@@ -101,8 +100,6 @@ vim.opt.foldcolumn = vim.g.show_line_number and "1" or "0"
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
 vim.opt.foldenable = true
-vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-vim.opt.foldmethod = "expr"
 vim.opt.foldtext = ""
 
 -- Session Management

@@ -85,6 +85,7 @@ return {
                 },
 
                 -- sources for autocompletion
+                ---@diagnostic disable-next-line: redundant-parameter
                 sources = cmp.config.sources {
                     {
                         name = "lazydev",
@@ -123,8 +124,8 @@ return {
                         item.menu = ""
 
                         -- Combine icon with source name
-                        -- local source = entry.source.name
-                        -- item.menu = string.format("%s %s", menu_icon[source] or "", source)
+                        local source = entry.source.name
+                        item.menu = string.format("%s %s", menu_icon[source] or "", source)
                         --
                         -- if source == "nvim_lsp" then
                         --     local client_name = entry.source.source.client.name
@@ -146,9 +147,19 @@ return {
     },
 
     {
+        "saghen/blink.compat",
+        -- use the latest release, via version = '*', if you also use the latest release for blink.cmp
+        version = "*",
+        -- lazy.nvim will automatically load the plugin when it's required by blink.cmp
+        lazy = true,
+        -- make sure to set opts so that lazy.nvim calls blink.compat's setup
+        opts = {},
+    },
+
+    {
         "saghen/blink.cmp",
         enabled = vim.g.use_blink,
-        dependencies = "rafamadriz/friendly-snippets",
+        dependencies = { "rafamadriz/friendly-snippets" },
         version = "*",
         opts = {
 
@@ -228,7 +239,7 @@ return {
 
             sources = {
                 default = function()
-                    local sources = { "lsp", "buffer" }
+                    local sources = { "lsp", "buffer", "blade-nav" }
                     local ok, node = pcall(vim.treesitter.get_node)
 
                     if ok and node then
@@ -242,6 +253,13 @@ return {
 
                     return sources
                 end,
+
+                providers = {
+                    ["blade-nav"] = {
+                        name = "blade-nav",
+                        module = "blink.compat.source",
+                    },
+                },
             },
             -- opts_extend = { "sources.default" },
         },

@@ -29,7 +29,7 @@ M.default = {
     "taplo", -- markdown
     "bashls", -- bash lsp
     "tailwindcss", -- obvious
-    "basedpyright", -- apparently need to set contentFormat to "plaintext" if I want to fix doc breaks
+    -- "basedpyright", -- apparently need to set contentFormat to "plaintext" if I want to fix doc breaks
     "lua_ls",
     "kotlin_language_server",
     -- "css_variables",
@@ -47,6 +47,18 @@ local function process_default_lsps()
 end
 
 M.lspconfig = vim.tbl_extend("force", process_default_lsps(), {
+
+    basedpyright = {
+        settings = {
+            basedpyright = {
+                typeCheckingMode = "basic", -- or "off"
+                diagnosticSeverityOverrides = {
+                    reportUnknownVariableType = "none",
+                    reportMissingTypeStubs = "none",
+                },
+            },
+        },
+    },
 
     intelephense = { -- no nonsense lsp for php. No rename tho
         filetypes = {
@@ -104,7 +116,7 @@ M.lspconfig = vim.tbl_extend("force", process_default_lsps(), {
         filetypes = { "jinja", "htmldjango" },
     },
 
-    volar = { 'vue' },
+    volar = { "vue" },
 
     emmet_language_server = {
         filetypes = {
