@@ -13,6 +13,11 @@
     "when": "neovim.mode == normal"
   },
   {
+    "command": "editor.toggleFold",
+    "key": "z a",
+    "when": "neovim.mode == normal"
+  },
+  {
     "command": "workbench.action.navigateUp",
     "key": "ctrl-k",
     "when": "neovim.mode == normal"

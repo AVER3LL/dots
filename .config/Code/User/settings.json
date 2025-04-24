@@ -127,7 +127,7 @@
   },
   "vim.foldfix": true,
   "errorLens.scrollbarHackEnabled": true,
-  "workbench.colorTheme": "Gruvbox Dark Medium",
+  "workbench.colorTheme": "Astro Kanagawa Dark",
   "redhat.telemetry.enabled": false,
   "code-runner.executorMapByFileExtension": {
     ".vb": "cd $dir && vbc /nologo $fileName && $dir$fileNameWithoutExt",
