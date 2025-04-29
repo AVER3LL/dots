@@ -39,18 +39,9 @@ cd "$WALL_DIR" || {
 # Handle spaces in filenames
 IFS=$'\n'
 
-# Get all supported image files
-image_files=()
-for ext in jpg jpeg png gif webp bmp; do
-    # Use nullglob to avoid errors when no matches are found
-    shopt -s nullglob
-    for file in *."$ext" *."${ext^^}"; do
-        if [ -f "$file" ]; then
-            image_files+=("$file")
-        fi
-    done
-    shopt -u nullglob
-done
+# Find all supported image files in one go (much faster)
+# Use find command instead of multiple glob patterns
+image_files=($(find "$WALL_DIR" -maxdepth 1 -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.gif" -o -iname "*.webp" -o -iname "*.bmp" \) -printf "%f\n"))
 
 # Check if any wallpapers were found
 if [ ${#image_files[@]} -eq 0 ]; then

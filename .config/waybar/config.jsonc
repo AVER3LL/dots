@@ -148,7 +148,7 @@
 
   "custom/wallpaper_change": {
     "format": "󰸉 ",
-    "on-click": "sh -c '(waypaper --random)' & disown",
+    "on-click": "sh -c '/home/averell/.local/bin/walset-backend \"$(find \"$HOME/wallpaper\" -type f | shuf -n 1)\"' & disown",
     "tooltip": true,
     "tooltip-format": "Change wallpaper",
   },

@@ -45,7 +45,7 @@ fi
 notify-send "Wallpaper" "Changing wallpaper..."
 
 # Set the wallpaper using swww
-swww img "$IMAGE" --transition-type="center" || {
+swww img "$IMAGE" --transition-type="center" --transition-step=45 --transition-fps="60" || {
     echo "Error: Failed to set wallpaper with swww."
     exit 1
 }
