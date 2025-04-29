@@ -20,6 +20,19 @@ return {
         priority = 1000,
     },
 
+    {
+        "sponkurtus2/angelic.nvim",
+        lazy = false,
+        priority = 1000,
+        opts = {},
+    },
+
+    {
+        "ceigh/vercel-theme.nvim",
+        lazy = false,
+        priority = 1000,
+    },
+
     { -- poimandres
         "olivercederborg/poimandres.nvim",
         lazy = false,
@@ -109,12 +122,26 @@ return {
                             bg_gutter = "none",
                         },
                     },
+                    wave = {
+                        ui = {
+                            -- bg = "#181823",
+                        },
+                    },
                 },
             },
             terminalColors = false,
             overrides = function(colors)
                 local theme = colors.theme
+                local makeDiagnosticColor = function(color)
+                    local c = require "kanagawa.lib.color"
+                    return { fg = color, bg = c(color):blend(theme.ui.bg, 0.95):to_hex() }
+                end
                 return {
+
+                    DiagnosticVirtualTextHint = makeDiagnosticColor(theme.diag.hint),
+                    DiagnosticVirtualTextInfo = makeDiagnosticColor(theme.diag.info),
+                    DiagnosticVirtualTextWarn = makeDiagnosticColor(theme.diag.warning),
+                    DiagnosticVirtualTextError = makeDiagnosticColor(theme.diag.error),
 
                     NormalDark = { fg = theme.ui.fg_dim, bg = theme.ui.bg_m3 },
 

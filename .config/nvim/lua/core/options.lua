@@ -19,7 +19,7 @@ vim.opt.signcolumn = "yes"
 vim.opt.laststatus = 0
 vim.opt.statusline = " %f %m %= %l:%c ♥ "
 vim.opt.showmode = false
--- vim.opt.colorcolumn = { 81, 121 }
+vim.opt.colorcolumn = { 81, 121 }
 
 -- Line Numbers
 vim.opt.number = vim.g.show_line_number

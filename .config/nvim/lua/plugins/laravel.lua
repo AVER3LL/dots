@@ -14,7 +14,7 @@ return {
         "adalessa/laravel.nvim",
         dependencies = {
             "tpope/vim-dotenv",
-            "nvim-telescope/telescope.nvim",
+            -- "nvim-telescope/telescope.nvim",
             "MunifTanjim/nui.nvim",
             "kevinhwang91/promise-async",
         },
@@ -39,6 +39,13 @@ return {
         },
         opts = {
             lsp_server = "intelephense",
+            pickers = {
+                enable = true,
+                pickers = {
+                    enable = true,
+                    provider = "snacks|telescope|fzf-lua|ui.select",
+                },
+            },
         },
     },
 }

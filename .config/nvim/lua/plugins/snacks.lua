@@ -12,7 +12,7 @@ return {
             { "<leader>z", function() Snacks.picker.grep_word() end, desc = "Find word" },
             { "<leader>fb", function() Snacks.picker.buffers() end, desc = "Find buffers" },
             { "<leader>fk", function() Snacks.picker.keymaps() end, desc = "Find keymaps" },
-            { "<leader>th", function() Snacks.picker.colorschemes() end, desc = "Find buffers" },
+            -- { "<leader>th", function() Snacks.picker.colorschemes() end, desc = "Find buffers" },
             { "<leader>o", function() Snacks.picker.spelling() end, desc = "Spelling suggestions" },
             { "<leader>fp", function() Snacks.picker.projects { dev = { "~/Projects" } } end },
         },

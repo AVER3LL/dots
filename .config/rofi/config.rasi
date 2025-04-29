@@ -104,8 +104,12 @@ configuration {
     }
 
 	/*---------- Keybindings ----------*/
-    kb-element-next: "Tab,Control+j";
-    kb-element-prev: "Shift+Tab,Control+k";
+    kb-element-next: "Control+j";
+    kb-element-prev: "Control+k";
+	kb-row-left: "Control+Page_Up,Control+h";
+	kb-row-right: "Control+Page_Down,Control+l";
+	kb-mode-next: "Shift+Right,Tab";
+	kb-mode-previous: "Shift+Left,Shift+Tab";
 	kb-primary-paste: "Control+V,Shift+Insert";
 	kb-secondary-paste: "Control+v,Insert";
 	kb-clear-line: "Control+w";
@@ -119,18 +123,14 @@ configuration {
 	kb-remove-word-forward: "Control+Alt+d";
 	kb-remove-char-forward: "Delete,Control+d";
 	kb-remove-char-back: "BackSpace,Shift+BackSpace";
-	kb-remove-to-eol: ""; 
+	kb-remove-to-eol: "";
 	kb-remove-to-sol: "Control+u";
 	kb-accept-entry: "Control+m,Return,KP_Enter";
 	kb-accept-custom: "Control+Return";
 	kb-accept-custom-alt: "Control+Shift+Return";
 	kb-accept-alt: "Shift+Return";
 	kb-delete-entry: "Shift+Delete";
-	kb-mode-next: "Shift+Right,Control+Tab,Control+l";
-	kb-mode-previous: "Shift+Left,Control+ISO_Left_Tab,Control+h";
 	kb-mode-complete: "";
-	kb-row-left: "Control+Page_Up";
-	kb-row-right: "Control+Page_Down";
 	kb-row-down: "Down,Control+n";
 	kb-page-prev: "Page_Up";
 	kb-page-next: "Page_Down";

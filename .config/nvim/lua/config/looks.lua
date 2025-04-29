@@ -28,7 +28,7 @@ M.rounded = function(hl_name)
 end
 
 -- Options are border_square, border_rounded and
-M.current_border = M.rounded
+M.current_border = M.square
 
 M.current_border_telescope = function()
     local formatted = {}

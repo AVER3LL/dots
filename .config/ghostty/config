@@ -12,7 +12,7 @@
 # font-family = "MonoLisa Nerd Font Mono"
 # font-family = "GeistMono NF"
 
-font-family = "JetBrainsMono NF"
+font-family = JetBrainsMono NF
 font-size = 15
 
 # Mouse
@@ -28,14 +28,17 @@ gtk-titlebar = false
 
 # Colors
 # Dark theme
-theme = GruvboxDarkHard
-background = 1C2021
+# theme = GruvboxDarkHard
+# background = 1C2021
+
 # Light theme
 # theme = GruvboxLight
 
 # background-blur = 30
 # theme = tokyonight_night
 # theme = "Kanagawa Wave"
+theme = kanagawabones
+background = 181823
 
 window-padding-balance = true
 window-padding-x = 0

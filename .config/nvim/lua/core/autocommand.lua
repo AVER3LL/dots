@@ -1,5 +1,6 @@
 local autocmd = vim.api.nvim_create_autocmd
 local sethl = vim.api.nvim_set_hl
+local gethl = vim.api.nvim_get_hl
 
 local function augroup(name)
     return vim.api.nvim_create_augroup(name, { clear = true })
@@ -58,6 +59,8 @@ autocmd("FileType", {
     end,
 })
 
+--- Function written solely by an AI. The purpose was to get
+--- a color that could be used for borders no matter the theme
 local function adjust_brightness(color, amount)
     -- Extract RGB components using bitwise operations from LuaJIT's `bit` library
     local r = bit.rshift(color, 16) % 256
@@ -83,6 +86,16 @@ autocmd("ColorScheme", {
     desc = "Tweaks some color to make nvim clean",
     group = vim.api.nvim_create_augroup("prepare-colors-averell", { clear = true }),
     callback = function()
+        local error_fg = gethl(0, { name = "DiagnosticError" }).fg
+        local warn_fg = gethl(0, { name = "DiagnosticWarn" }).fg
+        local info_fg = gethl(0, { name = "DiagnosticInfo" }).fg
+        local hint_fg = gethl(0, { name = "DiagnosticHint" }).fg
+        -- Highlight line numbers with diagnostics
+        sethl(0, "LspDiagnosticsLineNrError", { fg = error_fg })
+        sethl(0, "LspDiagnosticsLineNrWarning", { fg = warn_fg })
+        sethl(0, "LspDiagnosticsLineNrInformation", { fg = info_fg })
+        sethl(0, "LspDiagnosticsLineNrHint", { fg = hint_fg })
+
         -- Cleaning the gutter
         sethl(0, "DiagnosticSignError", { bg = "NONE" })
         sethl(0, "DiagnosticSignWarn", { bg = "NONE" })
@@ -90,35 +103,23 @@ autocmd("ColorScheme", {
         sethl(0, "DiagnosticSignHint", { bg = "NONE" })
 
         -- color winbar component
-        sethl(0, "WinBarDiagError", { fg = "#D67B7B", bold = true }) -- Soft red
-        sethl(0, "WinBarDiagWarn", { fg = "#D8A657", bold = true }) -- Muted amber
-        sethl(0, "WinBarDiagInfo", { fg = "#7BAFD6", bold = true }) -- Soft blue
-        sethl(0, "WinBarDiagHint", { fg = "#88C0A9" }) -- Muted green
+        -- sethl(0, "WinBarDiagError", { fg = "#D67B7B", bold = true }) -- Soft red
+        -- sethl(0, "WinBarDiagWarn", { fg = "#D8A657", bold = true }) -- Muted amber
+        -- sethl(0, "WinBarDiagInfo", { fg = "#7BAFD6", bold = true }) -- Soft blue
+        -- sethl(0, "WinBarDiagHint", { fg = "#88C0A9" }) -- Muted green
+        sethl(0, "WinBarDiagError", { fg = error_fg, bold = true }) -- Soft red
+        sethl(0, "WinBarDiagWarn", { fg = warn_fg, bold = true }) -- Muted amber
+        sethl(0, "WinBarDiagInfo", { fg = info_fg, bold = true }) -- Soft blue
+        sethl(0, "WinBarDiagHint", { fg = hint_fg }) -- Muted green
 
         -- grey out the path
         sethl(0, "WinBarPath", { fg = "#888888", italic = true })
 
         -- Add underlined diagnostics regardless of theme
-        sethl(
-            0,
-            "DiagnosticUnderlineError",
-            { undercurl = true, sp = vim.api.nvim_get_hl(0, { name = "DiagnosticSignError" }).fg }
-        )
-        sethl(
-            0,
-            "DiagnosticUnderlineWarn",
-            { undercurl = true, sp = vim.api.nvim_get_hl(0, { name = "DiagnosticSignWarn" }).fg }
-        )
-        sethl(
-            0,
-            "DiagnosticUnderlineInfo",
-            { undercurl = true, sp = vim.api.nvim_get_hl(0, { name = "DiagnosticSignInfo" }).fg }
-        )
-        sethl(
-            0,
-            "DiagnosticUnderlineHint",
-            { undercurl = true, sp = vim.api.nvim_get_hl(0, { name = "DiagnosticSignHint" }).fg }
-        )
+        sethl(0, "DiagnosticUnderlineError", { undercurl = true, sp = error_fg })
+        sethl(0, "DiagnosticUnderlineWarn", { undercurl = true, sp = warn_fg })
+        sethl(0, "DiagnosticUnderlineInfo", { undercurl = true, sp = info_fg })
+        sethl(0, "DiagnosticUnderlineHint", { undercurl = true, sp = hint_fg })
 
         -- Modern looking floating windows
         local normal_bg = vim.api.nvim_get_hl(0, { name = "Normal" }).bg

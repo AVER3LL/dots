@@ -1,0 +1,91 @@
+#!/bin/bash
+# Wallpaper Selector Script
+# This script provides a rofi interface to select wallpapers from a directory
+
+# Configuration
+WALL_DIR="$HOME/wallpaper/"
+BACKEND_CMD="walset-backend"
+
+# Check if wallpaper directory exists
+if [ ! -d "$WALL_DIR" ]; then
+    notify-send "Wallpaper Selector" "Error: Wallpaper directory not found: $WALL_DIR"
+    echo "Error: Wallpaper directory not found: $WALL_DIR"
+    exit 1
+fi
+
+# Check if rofi is installed
+if ! command -v rofi &>/dev/null; then
+    echo "Error: rofi is not installed. Please install it and try again."
+    exit 1
+fi
+
+# Check if backend command is available
+if ! command -v "$BACKEND_CMD" &>/dev/null; then
+    notify-send "Wallpaper Selector" "Error: Backend command not found: $BACKEND_CMD"
+    echo "Error: Backend command not found: $BACKEND_CMD"
+    exit 1
+fi
+
+# Save current directory
+CWD="$(pwd)"
+
+# Change to wallpaper directory
+cd "$WALL_DIR" || {
+    notify-send "Wallpaper Selector" "Error: Failed to access wallpaper directory"
+    echo "Error: Failed to access wallpaper directory"
+    exit 1
+}
+
+# Handle spaces in filenames
+IFS=$'\n'
+
+# Get all supported image files
+image_files=()
+for ext in jpg jpeg png gif webp bmp; do
+    # Use nullglob to avoid errors when no matches are found
+    shopt -s nullglob
+    for file in *."$ext" *."${ext^^}"; do
+        if [ -f "$file" ]; then
+            image_files+=("$file")
+        fi
+    done
+    shopt -u nullglob
+done
+
+# Check if any wallpapers were found
+if [ ${#image_files[@]} -eq 0 ]; then
+    notify-send "Wallpaper Selector" "No wallpapers found in $WALL_DIR"
+    echo "No wallpapers found in $WALL_DIR"
+    cd "$CWD" || exit
+    exit 1
+fi
+
+# Build the rofi menu with image icons
+rofi_input=""
+for file in "${image_files[@]}"; do
+    rofi_input+="$file\0icon\x1f$WALL_DIR$file\n"
+done
+
+# Show rofi selection dialog
+SELECTED_WALL=$(echo -en "$rofi_input" | rofi -dmenu -theme ~/.config/rofi/material-you.rasi -p "" -i)
+
+# Process the selection
+if [ -n "$SELECTED_WALL" ]; then
+    # notify-send "Wallpaper Selector" "Setting wallpaper: $SELECTED_WALL"
+    echo "Setting wallpaper: $SELECTED_WALL"
+    "$BACKEND_CMD" "$SELECTED_WALL"
+    exit_status=$?
+
+    if [ $exit_status -eq 0 ]; then
+        # notify-send "Wallpaper Selector" "Wallpaper set successfully!"
+        echo "Wallpaper set successfully!"
+    else
+        # notify-send "Wallpaper Selector" "Failed to set wallpaper"
+        echo "Failed to set wallpaper. Backend command exited with status $exit_status"
+    fi
+else
+    echo "Wallpaper selection cancelled"
+fi
+
+# Return to original directory
+cd "$CWD" || exit

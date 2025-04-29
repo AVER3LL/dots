@@ -23,7 +23,7 @@ configuration {
 window {
       border-radius: 7px;
       width: 60%;
-      height: 60%;
+      height: 80%;
       background-color: @bg;
       text-color: @fg;
 }
@@ -55,8 +55,8 @@ inputbar {
 }
 
 listview {
-    	columns: 1;
-    	lines: 3;
+    	columns: 4;
+    	lines: 4;
     	cycle: false;
     	dynamic: true;
     	layout: vertical;
