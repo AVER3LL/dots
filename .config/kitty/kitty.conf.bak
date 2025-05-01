@@ -51,6 +51,6 @@ include mappings.conf
 # include multiplexing.conf
 
 # BEGIN_KITTY_THEME
-# kanagawabones
+# Adwaita dark
 include current-theme.conf
 # END_KITTY_THEME

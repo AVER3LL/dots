@@ -17,9 +17,10 @@ vim.opt.cursorline = true
 vim.opt.cursorlineopt = "number"
 vim.opt.signcolumn = "yes"
 vim.opt.laststatus = 0
-vim.opt.statusline = " %f %m %= %l:%c ♥ "
+-- vim.opt.statusline = " %f %m %= %l:%c ♥ "
+vim.opt.statusline = " %<%f %h%m%r %= %y [%{&fileformat}] %l:%c %P ♥ "
 vim.opt.showmode = false
-vim.opt.colorcolumn = { 81, 121 }
+-- vim.opt.colorcolumn = { 81, 121 }
 
 -- Line Numbers
 vim.opt.number = vim.g.show_line_number
@@ -63,7 +64,7 @@ vim.opt.wrap = false
 vim.opt.linebreak = true
 vim.opt.breakindent = true
 vim.opt.formatoptions = table.concat {
-    "2", -- Use the second line's indent vale when indenting (allows indented first line)
+    -- "2", -- Use the second line's indent vale when indenting (allows indented first line)
     "q", -- Formatting comments with gq
     "w", -- Trailing whitespace indicates a paragraph
     "j", -- Remove comment leader when makes sense (joining lines)

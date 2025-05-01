@@ -31,6 +31,7 @@ M.default = {
     "tailwindcss", -- obvious
     -- "basedpyright", -- apparently need to set contentFormat to "plaintext" if I want to fix doc breaks
     "lua_ls",
+    -- "html",
     "kotlin_language_server",
     -- "css_variables",
     -- "cssmodules_ls",
@@ -60,7 +61,11 @@ M.lspconfig = vim.tbl_extend("force", process_default_lsps(), {
         },
     },
 
-    intelephense = { -- no nonsense lsp for php. No rename tho
+    html = {
+        filetypes = { "html", "templ", "blade" },
+    },
+
+    intelephense = {
         filetypes = {
             "php",
             "blade",

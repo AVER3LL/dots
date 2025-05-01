@@ -127,7 +127,7 @@
   },
   "vim.foldfix": true,
   "errorLens.scrollbarHackEnabled": true,
-  "workbench.colorTheme": "Ayu Mirage",
+  "workbench.colorTheme": "Vercel Theme",
   "redhat.telemetry.enabled": false,
   "code-runner.executorMapByFileExtension": {
     ".vb": "cd $dir && vbc /nologo $fileName && $dir$fileNameWithoutExt",
@@ -239,8 +239,8 @@
   },
   "editor.cursorBlinking": "smooth",
   "tailwind-fold.autoFold": true,
-  "workbench.statusBar.visible": false,
   "files.autoSave": "afterDelay",
   "editor.cursorSmoothCaretAnimation": "on",
-  "editor.smoothScrolling": true
+  "editor.smoothScrolling": true,
+  "workbench.statusBar.visible": false
 }
