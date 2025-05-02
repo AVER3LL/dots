@@ -4,18 +4,89 @@ return {
     {
         "folke/snacks.nvim",
         keys = {
-            { "<leader>ff", function() Snacks.picker.files() end, desc = "Find files" },
-            { "<leader>fc", function() Snacks.picker.files { cwd = vim.fn.stdpath "config" } end, desc = "Find config files" },
-            { "<leader>fg", function() Snacks.picker.git_files() end, desc = "Find git files" },
-            { "<leader>fo", function() Snacks.picker.recent() end, desc = "Find recent files" },
-            { "<leader>fw", function() Snacks.picker.grep() end, desc = "Find word" },
-            { "<leader>z", function() Snacks.picker.grep_word() end, desc = "Find word" },
-            { "<leader>fb", function() Snacks.picker.buffers() end, desc = "Find buffers" },
-            { "<leader>fk", function() Snacks.picker.keymaps() end, desc = "Find keymaps" },
-            { "<leader>th", function() Snacks.picker.colorschemes() end, desc = "Find buffers" },
-            { "<leader>o", function() Snacks.picker.spelling() end, desc = "Spelling suggestions" },
-            { "<leader>fp", function() Snacks.picker.projects { dev = { "~/Projects" } } end },
-            { "<leader>ft", function() Snacks.picker.todo_comments() end, desc = "Todos" },
+            {
+                "<leader>ff",
+                function()
+                    Snacks.picker.files()
+                end,
+                desc = "Find files",
+            },
+            {
+                "<leader>fc",
+                function()
+                    Snacks.picker.files { cwd = vim.fn.stdpath "config" }
+                end,
+                desc = "Find config files",
+            },
+            {
+                "<leader>fg",
+                function()
+                    Snacks.picker.git_files()
+                end,
+                desc = "Find git files",
+            },
+            {
+                "<leader>fo",
+                function()
+                    Snacks.picker.recent()
+                end,
+                desc = "Find recent files",
+            },
+            {
+                "<leader>fw",
+                function()
+                    Snacks.picker.grep()
+                end,
+                desc = "Find word",
+            },
+            {
+                "<leader>z",
+                function()
+                    Snacks.picker.grep_word()
+                end,
+                desc = "Find word",
+            },
+            {
+                "<leader>fb",
+                function()
+                    Snacks.picker.buffers()
+                end,
+                desc = "Find buffers",
+            },
+            {
+                "<leader>fk",
+                function()
+                    Snacks.picker.keymaps()
+                end,
+                desc = "Find keymaps",
+            },
+            {
+                "<leader>th",
+                function()
+                    Snacks.picker.colorschemes()
+                end,
+                desc = "Find buffers",
+            },
+            {
+                "<leader>o",
+                function()
+                    Snacks.picker.spelling()
+                end,
+                desc = "Spelling suggestions",
+            },
+            {
+                "<leader>fp",
+                function()
+                    Snacks.picker.projects { dev = { "~/Projects" } }
+                end,
+            },
+            {
+                "<leader>ft",
+                function()
+                    Snacks.picker.todo_comments()
+                end,
+                desc = "Todos",
+            },
         },
         priority = 1002,
         lazy = false,
@@ -25,6 +96,17 @@ return {
             picker = {
                 enabled = true,
                 layout = "dropdown",
+                formatters = {
+                    file = {
+                        truncate = 70,
+                    },
+                },
+                sources = {
+                    files = {
+                        hidden = true,
+                        ignored = true,
+                    },
+                },
                 layouts = {
                     vscode = {
                         preview = false,

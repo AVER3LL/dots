@@ -7,10 +7,22 @@ return {
             require("circadian").setup {
                 lat = 6.390192,
                 lon = 2.270412,
-                day = { background = "dark", colorscheme = "catppuccin" },
-                night = { background = "dark", colorscheme = "kanagawa" },
+                day = { background = "dark", colorscheme = "kanagawa" },
+                night = { background = "dark", colorscheme = "vercel" },
             }
         end,
+    },
+
+    {
+        "nyoom-engineering/oxocarbon.nvim",
+        lazy = false,
+        priority = 1000,
+    },
+
+    {
+        "scottmckendry/cyberdream.nvim",
+        lazy = false,
+        priority = 1000,
     },
 
     { -- nightfly
@@ -28,7 +40,7 @@ return {
     },
 
     {
-        "ceigh/vercel-theme.nvim",
+        "tiesen243/vercel.nvim",
         lazy = false,
         priority = 1000,
     },
