@@ -1,7 +1,6 @@
 return {
     "barrett-ruth/live-server.nvim",
-    enabled = false,
-    ft = { "html", "htmldjango" },
+    ft = { "html" },
     build = "npm i -g live-server",
     cmd = { "LiveServerStart", "LiveServerStop", "LiveServerToggle" },
     config = true,

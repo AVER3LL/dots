@@ -29,17 +29,17 @@ return {
             local capabilities = require("config.lsp-requirements").capabilities
             local lspconfig = require "lspconfig"
 
-            local cmp_capabilities = vim.g.use_blink and require("blink.cmp").get_lsp_capabilities()
-                or require("cmp_nvim_lsp").default_capabilities()
-
-            capabilities = vim.tbl_deep_extend("force", capabilities, cmp_capabilities, {
-                textDocument = {
-                    foldingRange = {
-                        dynamicRegistration = false,
-                        lineFoldingOnly = true,
-                    },
-                },
-            })
+            -- local cmp_capabilities = vim.g.use_blink and require("blink.cmp").get_lsp_capabilities()
+            --     or require("cmp_nvim_lsp").default_capabilities()
+            --
+            -- capabilities = vim.tbl_deep_extend("force", capabilities, cmp_capabilities, {
+            --     textDocument = {
+            --         foldingRange = {
+            --             dynamicRegistration = false,
+            --             lineFoldingOnly = true,
+            --         },
+            --     },
+            -- })
 
             local ok, border = pcall(require, "config.looks")
 

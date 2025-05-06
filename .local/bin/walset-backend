@@ -5,7 +5,7 @@
 # Check if required tools are installed
 check_dependencies() {
     local missing_deps=()
-    for cmd in swww magick notify-send file; do
+    for cmd in swww matugen magick notify-send file; do
         if ! command -v "$cmd" &>/dev/null; then
             missing_deps+=("$cmd")
         fi
@@ -23,6 +23,8 @@ if [ "$#" -ne 1 ]; then
     echo "Usage: $0 <path-to-image>"
     exit 1
 fi
+
+
 
 # Run dependency check
 check_dependencies
@@ -45,7 +47,7 @@ fi
 notify-send "Wallpaper" "Changing wallpaper..."
 
 # Set the wallpaper using swww
-swww img "$IMAGE" --transition-type="center" --transition-step=45 --transition-fps="60" || {
+swww img "$IMAGE" --transition-type="center" --transition-step=15 --transition-fps="60" || {
     echo "Error: Failed to set wallpaper with swww."
     exit 1
 }
@@ -81,6 +83,9 @@ if [ "$extension_lc" = "gif" ]; then
 else
     CACHE_SRC="$IMAGE"
 fi
+
+# Use Matugen to generate Material You colors
+matugen image "$IMAGE"
 
 # Generate cached versions using ImageMagick
 echo "Generating square crop..."

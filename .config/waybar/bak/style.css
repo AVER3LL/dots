@@ -16,7 +16,7 @@
 /* Window Styling */
 window#waybar {
   background: @background;
-  border-radius: 10px;
+  border-radius: 5px;
   color: @foreground;
   border-color: rgba(246, 247, 252, 0.4);
   transition-property: background-color;
@@ -124,6 +124,10 @@ tooltip label {
   opacity: 1;
   padding: 0px 8px;
   border: 0px;
+}
+
+#custom-separator {
+  padding: 0;
 }
 
 /* Temperature Warning */
