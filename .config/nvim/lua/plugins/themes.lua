@@ -8,7 +8,7 @@ return {
                 lat = 6.390192,
                 lon = 2.270412,
                 day = { background = "dark", colorscheme = "kanagawa" },
-                night = { background = "dark", colorscheme = "vercel" },
+                night = { background = "dark", colorscheme = "moonfly" },
             }
         end,
     },

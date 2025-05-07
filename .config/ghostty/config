@@ -26,6 +26,8 @@ adw-toolbar-style = flat
 window-theme = ghostty
 gtk-titlebar = false
 
+# background-opacity = 0.95
+
 # Colors
 # Dark theme
 # theme = GruvboxDarkHard

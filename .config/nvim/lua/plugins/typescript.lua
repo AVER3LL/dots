@@ -2,7 +2,6 @@ return {
     {
         "pmizio/typescript-tools.nvim",
         dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-        opts = {},
         ft = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue" },
         config = function()
             require("typescript-tools").setup {
@@ -22,7 +21,7 @@ return {
                         "@vue/typescript-plugin",
                     },
                     jsx_close_tag = {
-                        enable = true,
+                        enable = false,
                         filetypes = { "javascriptreact", "typescriptreact" },
                     },
                 },

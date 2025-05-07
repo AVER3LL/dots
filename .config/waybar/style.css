@@ -33,6 +33,7 @@ tooltip {
     color: @outline;
     border-radius: 10px;
     min-width: 25px;
+    padding: 0 8px;
     transition:
         margin 150ms ease-in-out,
         padding 150ms ease-in-out,
@@ -107,4 +108,21 @@ tooltip {
 
 window#waybar.empty #window {
     background-color: transparent;
+}
+
+/* Battery Indicator */
+@keyframes blink {
+    to {
+        background-color: @surface_container;
+        color: @primary;
+    }
+}
+
+#battery.critical:not(.charging):not(.plugged) {
+    animation: blink 0.5s linear infinite alternate;
+    color: @on_error;
+}
+
+#battery.warning:not(.charging) {
+    color: @source_color;
 }

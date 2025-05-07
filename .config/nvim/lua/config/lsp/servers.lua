@@ -28,7 +28,7 @@ M.default = {
     "clangd", -- C lsp
     "taplo", -- markdown
     "bashls", -- bash lsp
-    "tailwindcss", -- obvious
+    "tailwindcss",
     -- "basedpyright", -- apparently need to set contentFormat to "plaintext" if I want to fix doc breaks
     "lua_ls",
     -- "html",
@@ -91,6 +91,16 @@ M.lspconfig = vim.tbl_extend("force", process_default_lsps(), {
 
     -- ts_ls = {
     --     single_file_support = true,
+    --     init_options = {
+    --         plugins = {
+    --             {
+    --                 name = "@vue/typescript-plugin",
+    --                 location = vim.fn.stdpath "data"
+    --                     .. "/mason/packages/vue-language-server/node_modules/@vue/language-server",
+    --                 languages = { "vue" },
+    --             },
+    --         },
+    --     },
     --     settings = {
     --         typescript = {
     --             inlayHints = {
@@ -121,7 +131,11 @@ M.lspconfig = vim.tbl_extend("force", process_default_lsps(), {
         filetypes = { "jinja", "htmldjango" },
     },
 
-    volar = { "vue" },
+    volar = {
+        vue = {
+            hybridMode = false,
+        },
+    },
 
     emmet_language_server = {
         filetypes = {
@@ -138,6 +152,7 @@ M.lspconfig = vim.tbl_extend("force", process_default_lsps(), {
             "sass",
             "scss",
             "pug",
+            "vue",
         },
     },
 
