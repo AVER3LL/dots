@@ -2,39 +2,39 @@ local M = {}
 
 M.mason = {
     "basedpyright",
-    "lua-language-server",
+    "bash-language-server",
+    "css-lsp",
+    "css-variables-language-server",
+    "cssmodules-language-server",
+    "emmet-language-server",
+    "gopls",
     "hyprls",
     "intelephense",
-    "texlab",
     "jdtls",
-    "taplo",
-    "typescript-language-server",
-    "bash-language-server",
-    "tailwindcss-language-server",
-    "css-variables-language-server",
-    "kotlin-language-server",
-    "emmet-language-server",
-    "cssmodules-language-server",
-    "css-lsp",
-    "gopls",
     "jinja-lsp",
+    "kotlin-language-server",
+    "lua-language-server",
+    "tailwindcss-language-server",
+    "taplo",
+    "texlab",
+    "typescript-language-server",
 }
 
 M.default = {
-    "hyprls", -- Hyprland dots
-    "html",
-    "texlab",
-    "cssls", -- CSS lsp
-    "clangd", -- C lsp
-    "taplo", -- markdown
     "bashls", -- bash lsp
-    "tailwindcss",
-    -- "basedpyright", -- apparently need to set contentFormat to "plaintext" if I want to fix doc breaks
-    "lua_ls",
-    -- "html",
+    "clangd", -- C lsp
+    "cssls", -- CSS lsp
+    "html",
+    "hyprls", -- Hyprland dots
     "kotlin_language_server",
+    "lua_ls",
+    "tailwindcss",
+    "taplo", -- markdown
+    "texlab",
+    -- "basedpyright", -- apparently need to set contentFormat to "plaintext" if I want to fix doc breaks
     -- "css_variables",
     -- "cssmodules_ls",
+    -- "html",
     -- "phpactor",
 }
 
@@ -139,25 +139,25 @@ M.lspconfig = vim.tbl_extend("force", process_default_lsps(), {
 
     emmet_language_server = {
         filetypes = {
-            "css",
-            "php",
             "blade",
+            "css",
             "eruby",
             "html",
             "htmldjango",
             "javascript",
             "javascriptreact",
-            "typescriptreact",
             "less",
+            "php",
+            "pug",
             "sass",
             "scss",
-            "pug",
+            "typescriptreact",
             "vue",
         },
     },
 
     gopls = {
-        filetypes = { "go", "gomod", "gowork", "gohtmltmpl", "gotexttmpl", "gotmpl" },
+        filetypes = {"go", "gohtmltmpl", "gomod", "gotexttmpl", "gotmpl", "gowork"},
         settings = {
             gopls = {
                 analyses = {

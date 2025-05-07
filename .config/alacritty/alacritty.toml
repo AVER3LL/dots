@@ -8,4 +8,5 @@ size = 15
 offset.y = 12
 
 [general]
-import = ["~/.config/alacritty/themes/kanagawa_wave.toml"]
+# import = ["~/.config/alacritty/themes/kanagawa_wave.toml"]
+import = ["colors.toml"]

@@ -83,6 +83,11 @@ function fish_user_key_bindings
     bind \cf zi
 end
 
+function fish_cancel
+    echo ''
+    commandline -f repaint
+end
+
 source ~/.config/fish/aliases.fish
 
 starship init fish | source

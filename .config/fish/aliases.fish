@@ -5,6 +5,9 @@ alias ll='ls -alFh'  # long format
 alias sl='ls'
 alias l='ls'
 
+# tree alias
+alias tree="eza --tree --icons"
+
 # Neovim
 alias v='nvim'
 alias nv='neovide'

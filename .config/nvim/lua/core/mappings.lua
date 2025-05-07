@@ -80,6 +80,7 @@ M.tmux = function()
     map("n", "<C-k>", "<cmd>TmuxNavigateUp<cr>", { desc = "Move to top split" })
     map("n", "<C-l>", "<cmd>TmuxNavigateRight<cr>", { desc = "Move to right split" })
 end
+
 map("n", "<C-h>", "<C-w>h", { desc = "Move to left split" })
 map("n", "<C-j>", "<C-w>j", { desc = "Move to bottom split" })
 map("n", "<C-k>", "<C-w>k", { desc = "Move to top split" })

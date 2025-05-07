@@ -50,7 +50,7 @@
         "format": "  {}",
         "interval": "once",
         "exec": "checkupdates | wc -l",
-        "on-click": "ghostty -e 'sudo pacman -Syu'; pkill -SIGRTMIN+8 waybar",
+        "on-click": "kitty -e 'sudo pacman -Syu'; pkill -SIGRTMIN+8 waybar",
         "signal": 8,
         "tooltip-format": "{} updates available",
     },
@@ -65,7 +65,7 @@
         "smooth-scrolling-threshold": 1, // This value was tested using a trackpad, it should be lowered if using a mouse.
         "on-scroll-up": "playerctl next",
         "on-scroll-down": "playerctl previous",
-        "exec": "$HOME/.config/waybar/scripts/mediaplayer.py 2> /dev/null", // Script in resources/custom_modules folder
+        "exec": "$HOME/.config/waybar/scripts/mediaplayer.py 2> /dev/null",
     },
 
     "tray": {
@@ -101,11 +101,12 @@
         "format-bluetooth": "󰂱 {volume}%",
         "format-muted": "󰖁",
         "scroll-step": 1,
-        "on-click": "pavucontrol",
+        "on-click": "~/.config/hypr/scripts/volume_hyprdots.sh -o m",
+        "on-click-middle": "pavucontrol",
         "ignored-sinks": ["Easy Effects Sink"],
         "format-icons": {
             "headphone": "",
-            "hands-free": "",
+            "hands-free": "",
             "headset": "󰋎",
             "phone": "",
             "portable": "",
@@ -217,7 +218,7 @@
         "orientation": "inherit",
         "drawer": {
             "transition-duration": 300,
-            "children-class": "backlight",
+            "children-class": "pulseaudio",
             "transition-right-to-left": true,
         },
         "modules": ["pulseaudio", "backlight", "power-profiles-daemon", "pulseaudio#microphone"],
