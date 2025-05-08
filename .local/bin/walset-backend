@@ -13,6 +13,7 @@ check_dependencies() {
 
     if [ ${#missing_deps[@]} -ne 0 ]; then
         echo "Error: Missing dependencies: ${missing_deps[*]}"
+        notify-send "Wallpaper error" "Error: Missing dependencies: ${missing_deps[*]}"
         echo "Please install the required tools and try again."
         exit 1
     fi
@@ -23,8 +24,6 @@ if [ "$#" -ne 1 ]; then
     echo "Usage: $0 <path-to-image>"
     exit 1
 fi
-
-
 
 # Run dependency check
 check_dependencies
@@ -46,8 +45,8 @@ fi
 # Send notification to the user
 notify-send "Wallpaper" "Changing wallpaper..."
 
-# Set the wallpaper using swww
-swww img "$IMAGE" --transition-type="center" --transition-step=15 --transition-fps="60" || {
+# Set the wallpaper using swww - this happens first and doesn't wait
+swww img "$IMAGE" --transition-type="center" || {
     echo "Error: Failed to set wallpaper with swww."
     exit 1
 }
@@ -60,7 +59,6 @@ wallSqr="${WALLPAPER_CACHE_DIR}/wall.sqre" # Square crop of the wallpaper
 wallTmb="${WALLPAPER_CACHE_DIR}/wall.thmb" # Thumbnail version
 wallBlr="${WALLPAPER_CACHE_DIR}/wall.blur" # Blurred version for backgrounds
 wallQad="${WALLPAPER_CACHE_DIR}/wall.quad"
-# wallDcl="${WALLPAPER_CACHE_DIR}/wall.dcol" # Dominant color extraction
 
 # Ensure cache directory exists
 mkdir -p "$WALLPAPER_CACHE_DIR"
@@ -69,48 +67,57 @@ mkdir -p "$WALLPAPER_CACHE_DIR"
 echo "$IMAGE" >"$wallSet"
 ln -sf "$IMAGE" "$wallCur"
 
-# Determine image format
-extension="${IMAGE##*.}"
-extension_lc="$(echo "$extension" | tr '[:upper:]' '[:lower:]')"
+# Create a function for the background processing
+generate_caches() {
+    local image="$1"
+    local cache_dir="$2"
 
-# If it's a gif, extract first frame for processing
-if [ "$extension_lc" = "gif" ]; then
-    TEMP_FRAME="${WALLPAPER_CACHE_DIR}/wall.firstframe.png"
-    magick "$IMAGE[0]" "$TEMP_FRAME" || {
-        echo "Warning: Failed to extract first frame from GIF."
-    }
-    CACHE_SRC="$TEMP_FRAME"
-else
-    CACHE_SRC="$IMAGE"
-fi
+    # Determine image format
+    local extension="${image##*.}"
+    local extension_lc="$(echo "$extension" | tr '[:upper:]' '[:lower:]')"
+    local cache_src="$image"
+    local temp_frame=""
 
-# Use Matugen to generate Material You colors
-matugen image "$IMAGE"
+    # If it's a gif, extract first frame for processing
+    if [ "$extension_lc" = "gif" ]; then
+        temp_frame="${cache_dir}/wall.firstframe.png"
+        magick "$image[0]" "$temp_frame" || {
+            echo "Warning: Failed to extract first frame from GIF."
+        }
+        cache_src="$temp_frame"
+    fi
 
-# Generate cached versions using ImageMagick
-echo "Generating square crop..."
-magick "$CACHE_SRC" -strip -thumbnail 500x500^ -gravity center -extent 500x500 "$wallSqr" || echo "Warning: Failed to create square crop."
+    # Generate cached versions using ImageMagick
+    echo "Generating square crop..."
+    magick "$cache_src" -strip -thumbnail 500x500^ -gravity center -extent 500x500 "$wallSqr" || echo "Warning: Failed to create square crop."
 
-echo "Generating thumbnail..."
-magick "$CACHE_SRC" -strip -thumbnail 320x180^ -gravity center -extent 320x180 "$wallTmb" || echo "Warning: Failed to create thumbnail."
+    echo "Generating thumbnail..."
+    magick "$cache_src" -strip -thumbnail 320x180^ -gravity center -extent 320x180 "$wallTmb" || echo "Warning: Failed to create thumbnail."
 
-echo "Generating blurred version..."
-magick "$CACHE_SRC" -strip -resize 1920x1080^ -gravity center -extent 1920x1080 -blur 0x8 "$wallBlr" || echo "Warning: Failed to create blurred wallpaper."
+    echo "Generating blurred version..."
+    magick "$cache_src" -strip -resize 1920x1080^ -gravity center -extent 1920x1080 -blur 0x8 "$wallBlr" || echo "Warning: Failed to create blurred wallpaper."
 
-echo "Generating quad version..."
-magick "$wallSqr" \( -size 500x500 xc:white -fill "rgba(0,0,0,0.7)" -draw "polygon 400,500 500,500 500,0 450,0" -fill black -draw "polygon 500,500 500,0 450,500" \) \
-    -alpha Off -compose CopyOpacity -composite "${wallQad}.png" &&
-    mv "${wallQad}.png" "$wallQad" || echo "Warning: Failed to create quad version."
+    echo "Generating quad version..."
+    magick "$wallSqr" \( -size 500x500 xc:white -fill "rgba(0,0,0,0.7)" -draw "polygon 400,500 500,500 500,0 450,0" -fill black -draw "polygon 500,500 500,0 450,500" \) \
+        -alpha Off -compose CopyOpacity -composite "${wallQad}.png" &&
+        mv "${wallQad}.png" "$wallQad" || echo "Warning: Failed to create quad version."
 
-# echo "Extracting dominant color..."
-# magick "$CACHE_SRC" -resize 1x1 txt:- | grep -oP '#\w+' | head -n1 >"$wallDcl" || echo "Warning: Failed to extract dominant color."
+    # Clean up temp frame if needed
+    [ -n "$temp_frame" ] && [ -f "$temp_frame" ] && rm "$temp_frame"
+}
 
-# Clean up temp frame if needed
-[ -f "$TEMP_FRAME" ] && rm "$TEMP_FRAME"
+# Run the most time-consuming tasks in the background
+{
+    # Generate all the cached versions
+    generate_caches "$IMAGE" "$WALLPAPER_CACHE_DIR"
 
-echo "Wallpaper set successfully!"
-echo "Cached versions available at: $WALLPAPER_CACHE_DIR"
+    # Use Matugen to generate Material You colors (the slowest part)
+    matugen image "$IMAGE"
 
-# Optional: List all generated files
-echo "Generated files:"
-ls -l "$WALLPAPER_CACHE_DIR"
+    echo "Wallpaper processing completed!"
+    echo "Cached versions available at: $WALLPAPER_CACHE_DIR"
+} &
+
+# Exit immediately, letting the background processes continue
+echo "Wallpaper set. Additional processing continuing in background."
+exit 0

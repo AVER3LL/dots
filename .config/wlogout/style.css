@@ -1,3 +1,5 @@
+@import "colors.css";
+
 * {
   background-image: none;
   box-shadow: none;
@@ -9,11 +11,11 @@ window {
 
 button {
   border-radius: 15px;
-  border-color: black;
+  border-color: @background;
   margin: 5px;
   text-decoration-color: #ffffff;
-  color: #ffffff;
-  background-color: #1e1e1e;
+  color: @outline;
+  background-color: @surface_container_low;
   border-style: solid;
   border-width: 1px;
   background-repeat: no-repeat;
@@ -24,7 +26,8 @@ button {
 button:focus,
 button:active,
 button:hover {
-  background-color: #3700b3;
+  background-color: @primary_fixed_dim;
+  color: @on_primary_fixed;
   outline-style: none;
 }
 

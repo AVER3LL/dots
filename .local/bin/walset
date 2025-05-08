@@ -6,6 +6,9 @@
 WALL_DIR="$HOME/wallpaper/"
 BACKEND_CMD="walset-backend"
 
+# Ensure wallpaper directory path ends with a slash
+[[ "$WALL_DIR" != */ ]] && WALL_DIR="${WALL_DIR}/"
+
 # Check if wallpaper directory exists
 if [ ! -d "$WALL_DIR" ]; then
     notify-send "Wallpaper Selector" "Error: Wallpaper directory not found: $WALL_DIR"
@@ -26,28 +29,17 @@ if ! command -v "$BACKEND_CMD" &>/dev/null; then
     exit 1
 fi
 
-# Save current directory
-CWD="$(pwd)"
-
-# Change to wallpaper directory
-cd "$WALL_DIR" || {
-    notify-send "Wallpaper Selector" "Error: Failed to access wallpaper directory"
-    echo "Error: Failed to access wallpaper directory"
-    exit 1
-}
-
 # Handle spaces in filenames
 IFS=$'\n'
 
-# Find all supported image files in one go (much faster)
-# Use find command instead of multiple glob patterns
-image_files=($(find "$WALL_DIR" -maxdepth 1 -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.gif" -o -iname "*.webp" -o -iname "*.bmp" \) -printf "%f\n"))
+# Find all supported image files in one go
+# Use find command with absolute paths
+image_files=($(find "$WALL_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.gif" -o -iname "*.webp" -o -iname "*.bmp" \) -printf "%P\n"))
 
 # Check if any wallpapers were found
 if [ ${#image_files[@]} -eq 0 ]; then
     notify-send "Wallpaper Selector" "No wallpapers found in $WALL_DIR"
     echo "No wallpapers found in $WALL_DIR"
-    cd "$CWD" || exit
     exit 1
 fi
 
@@ -62,21 +54,17 @@ SELECTED_WALL=$(echo -en "$rofi_input" | rofi -dmenu -theme ~/.config/rofi/mater
 
 # Process the selection
 if [ -n "$SELECTED_WALL" ]; then
-    # notify-send "Wallpaper Selector" "Setting wallpaper: $SELECTED_WALL"
     echo "Setting wallpaper: $SELECTED_WALL"
-    "$BACKEND_CMD" "$SELECTED_WALL"
+    
+    # Use the absolute path directly
+    "$BACKEND_CMD" "$WALL_DIR$SELECTED_WALL"
     exit_status=$?
-
+    
     if [ $exit_status -eq 0 ]; then
-        # notify-send "Wallpaper Selector" "Wallpaper set successfully!"
         echo "Wallpaper set successfully!"
     else
-        # notify-send "Wallpaper Selector" "Failed to set wallpaper"
         echo "Failed to set wallpaper. Backend command exited with status $exit_status"
     fi
 else
     echo "Wallpaper selection cancelled"
 fi
-
-# Return to original directory
-cd "$CWD" || exit

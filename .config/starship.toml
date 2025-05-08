@@ -1,4 +1,8 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
 command_timeout = 2000
+
+add_newline = true
 
 [time]
 disabled = true
@@ -6,14 +10,22 @@ format = '[$time]($style) '
 time_format = '%H:%M'
 
 [character]
-success_symbol = "[0 ❯](bold green)"
-#error_symbol = "[➜](bold red)"
+# success_symbol = "[0 ❯](bold green)"
+success_symbol = "[0 ➜](bold green)"
+error_symbol = "[➜](bold red)"
 
 [directory]
 truncation_symbol = '.../'
 
 [git_branch]
 truncation_length = 20
+symbol = ' '
+
+[gradle]
+symbol = ' '
+
+[kotlin]
+symbol = ' '
 
 [git_commit]
 tag_disabled = false

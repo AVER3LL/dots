@@ -241,7 +241,7 @@ return {
 
             sources = {
                 default = function()
-                    local sources = { "lsp", "buffer", "blade-nav" }
+                    local sources = { "lazydev", "lsp", "buffer", "blade-nav" }
                     local ok, node = pcall(vim.treesitter.get_node)
 
                     if ok and node then
@@ -260,6 +260,11 @@ return {
                     ["blade-nav"] = {
                         name = "blade-nav",
                         module = "blink.compat.source",
+                    },
+                    lazydev = {
+                        name = "LazyDev",
+                        module = "lazydev.integrations.blink",
+                        score_offset = 100,
                     },
                 },
             },
