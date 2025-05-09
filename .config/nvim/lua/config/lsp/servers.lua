@@ -24,7 +24,7 @@ M.default = {
     "bashls", -- bash lsp
     "clangd", -- C lsp
     "cssls", -- CSS lsp
-    "html",
+    -- "html",
     "hyprls", -- Hyprland dots
     "kotlin_language_server",
     "lua_ls",
@@ -61,9 +61,9 @@ M.lspconfig = vim.tbl_extend("force", process_default_lsps(), {
         },
     },
 
-    html = {
-        filetypes = { "html", "templ", "blade" },
-    },
+    -- html = {
+    --     filetypes = { "html", "templ" },
+    -- },
 
     intelephense = {
         filetypes = {
@@ -157,7 +157,7 @@ M.lspconfig = vim.tbl_extend("force", process_default_lsps(), {
     },
 
     gopls = {
-        filetypes = {"go", "gohtmltmpl", "gomod", "gotexttmpl", "gotmpl", "gowork"},
+        filetypes = { "go", "gohtmltmpl", "gomod", "gotexttmpl", "gotmpl", "gowork" },
         settings = {
             gopls = {
                 analyses = {

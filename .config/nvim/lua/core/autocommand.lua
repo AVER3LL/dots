@@ -125,6 +125,11 @@ autocmd("ColorScheme", {
         local normal_bg = vim.api.nvim_get_hl(0, { name = "Normal" }).bg
         local normal_fg = vim.api.nvim_get_hl(0, { name = "Comment" }).fg
 
+        -- Clean nvim-tree
+        sethl(0, "NvimTreeLineNr", { bg = "NONE" })
+        sethl(0, "NvimTreeWinSeparator", { bg = normal_bg, fg = normal_bg })
+        sethl(0, "NvimTreeEndOfBuffer", { bg = normal_bg })
+
         sethl(0, "BlinkCmpMenuBorder", { bg = normal_bg, fg = adjust_brightness(normal_fg, 0.3) })
         sethl(0, "BlinkCmpDocBorder", { bg = normal_bg, fg = adjust_brightness(normal_fg, 0.3) })
         sethl(0, "BlinkCmpMenu", { bg = normal_bg })

@@ -3,6 +3,7 @@ return {
     -- Hide fold level numbers
     {
         "luukvbaal/statuscol.nvim",
+        enabled = false,
         opts = function()
             local builtin = require "statuscol.builtin"
             return {

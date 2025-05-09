@@ -15,7 +15,7 @@ return {
             { "<leader>th", function() Snacks.picker.colorschemes() end, desc = "Find buffers" },
             { "<leader>o", function() Snacks.picker.spelling() end, desc = "Spelling suggestions" },
             { "<leader>fp", function() Snacks.picker.projects { dev = { "~/Projects" } } end },
-            { "<leader>fv", function() Snacks.picker.cliphist() end, desc = "Search in clipboard" }
+            { "<leader>fv", function() Snacks.picker.cliphist() end, desc = "Search in clipboard" },
         },
         priority = 1002,
         lazy = false,
@@ -112,7 +112,14 @@ return {
             dashboard = { enabled = false },
             indent = { enabled = false, only_current = true },
             scroll = { enabled = false },
-            statuscolumn = { enabled = false },
+            statuscolumn = {
+                enabled = true,
+                left = { "mark", "sign", "fold" }, -- priority of signs on the left (high to low)
+                right = {"git"}, -- priority of signs on the right (high to low)
+                folds = {
+                    open = true,
+                },
+            },
             words = { enabled = false },
             terminal = {
                 enabled = false,
