@@ -27,7 +27,7 @@ fi
 echo $ >"$LOCKFILE"
 
 # Use rofi to select recording mode
-CHOICE=$(echo -e "Record Full Screen\nRecord Full Screen with Audio\nRecord Selected Area\nRecord Selected Area with Audio" | rofi -dmenu -theme ~/.config/rofi/material-you.rasi -p "Recording Mode :" -i )
+CHOICE=$(echo -e "Record Full Screen\nRecord Full Screen with Audio\nRecord Selected Area\nRecord Selected Area with Audio" | rofi -dmenu -theme ~/.config/rofi/material-you.rasi -p "Recording Mode :" -i)
 
 # If no choice was made (user pressed escape), exit
 if [ -z "$CHOICE" ]; then
@@ -35,13 +35,14 @@ if [ -z "$CHOICE" ]; then
     exit 0
 fi
 
-# Countdown notifications
-notify-send -h string:wf-recorder:record -t 1000 "Recording in:" "<span color='#90a4f4' font='26px'><i><b>3</b></i></span>"
-sleep 1
-notify-send -h string:wf-recorder:record -t 1000 "Recording in:" "<span color='#90a4f4' font='26px'><i><b>2</b></i></span>"
-sleep 1
-notify-send -h string:wf-recorder:record -t 950 "Recording in:" "<span color='#90a4f4' font='26px'><i><b>1</b></i></span>"
-sleep 1
+countdown_notify() {
+    notify-send -h string:wf-recorder:record -t 1000 "Recording in:" "<span color='#90a4f4' font='26px'><i><b>3</b></i></span>"
+    sleep 1
+    notify-send -h string:wf-recorder:record -t 1000 "Recording in:" "<span color='#90a4f4' font='26px'><i><b>2</b></i></span>"
+    sleep 1
+    notify-send -h string:wf-recorder:record -t 950 "Recording in:" "<span color='#90a4f4' font='26px'><i><b>1</b></i></span>"
+    sleep 1
+}
 
 # Output file name based on current date and time
 dateTime=$(date +%m-%d-%Y-%H:%M:%S)
@@ -51,19 +52,31 @@ output_file="$HOME/Videos/$dateTime.mp4"
 case "$CHOICE" in
 "Record Full Screen")
     notify-send -h string:wf-recorder:record -t 2000 "Recording Full Screen"
+    countdown_notify
     wf-recorder --bframes max_b_frames -f "$output_file"
     ;;
 "Record Full Screen with Audio")
     notify-send -h string:wf-recorder:record -t 2000 "Recording Full Screen with Audio"
+    countdown_notify
     wf-recorder --bframes max_b_frames --audio -f "$output_file"
     ;;
 "Record Selected Area")
     notify-send -h string:wf-recorder:record -t 2000 "Select Area to Record"
-    wf-recorder --bframes max_b_frames -g "$(slurp)" -f "$output_file"
+    GEOM=$(slurp) || {
+        rm -f "$LOCKFILE"
+        exit 1
+    }
+    countdown_notify
+    wf-recorder --bframes max_b_frames -g "$GEOM" -f "$output_file"
     ;;
 "Record Selected Area with Audio")
     notify-send -h string:wf-recorder:record -t 2000 "Select Area to Record with Audio"
-    wf-recorder --bframes max_b_frames --audio -g "$(slurp)" -f "$output_file"
+    GEOM=$(slurp) || {
+        rm -f "$LOCKFILE"
+        exit 1
+    }
+    countdown_notify
+    wf-recorder --bframes max_b_frames --audio -g "$GEOM" -f "$output_file"
     ;;
 esac
 

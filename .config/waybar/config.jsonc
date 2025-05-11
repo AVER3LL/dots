@@ -7,7 +7,7 @@
     "height": 45,
     "modules-left": ["custom/launcher", "clock", "custom/media"],
     "modules-center": ["custom/notification", "hyprland/workspaces", "idle_inhibitor"],
-    "modules-right": ["custom/pacman", "tray", "custom/weather", "group/sys_info", "battery"],
+    "modules-right": ["custom/pacman", "custom/rec_status", "tray", "custom/weather", "group/sys_info", "battery"],
 
     "custom/notification": {
         "tooltip": false,
@@ -53,6 +53,14 @@
         "on-click": "kitty -e 'sudo pacman -Syu'; pkill -SIGRTMIN+8 waybar",
         "signal": 8,
         "tooltip-format": "{} updates available",
+    },
+
+    "custom/rec_status": {
+        "exec": "~/.config/waybar/scripts/record_status.sh",
+        "interval": 1,
+        "return-type": "json",
+        "on-click": "~/.config/waybar/scripts/record_status.sh --click",
+        "format": "{}",
     },
 
     "custom/media": {

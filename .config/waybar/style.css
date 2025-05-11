@@ -90,6 +90,7 @@ tooltip {
 #custom-launcher,
 #custom-notification,
 #idle_inhibitor,
+#custom-rec_status,
 #power-profiles-daemon {
     color: @primary;
     background-color: @surface_container;
