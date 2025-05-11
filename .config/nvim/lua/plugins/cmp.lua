@@ -258,8 +258,10 @@ return {
 
                 providers = {
                     ["blade-nav"] = {
-                        name = "blade-nav",
-                        module = "blink.compat.source",
+                        module = "blade-nav.blink",
+                        opts = {
+                            close_tag_on_complete = false, -- default: true,
+                        },
                     },
                     lazydev = {
                         name = "LazyDev",

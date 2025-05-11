@@ -4,7 +4,7 @@
 
 # Configuration
 WALL_DIR="$HOME/wallpaper/"
-BACKEND_CMD="walset-backend"
+BACKEND_CMD="$HOME/.local/bin/walset-backend"
 
 # Ensure wallpaper directory path ends with a slash
 [[ "$WALL_DIR" != */ ]] && WALL_DIR="${WALL_DIR}/"
@@ -55,11 +55,11 @@ SELECTED_WALL=$(echo -en "$rofi_input" | rofi -dmenu -theme ~/.config/rofi/mater
 # Process the selection
 if [ -n "$SELECTED_WALL" ]; then
     echo "Setting wallpaper: $SELECTED_WALL"
-    
+
     # Use the absolute path directly
     "$BACKEND_CMD" "$WALL_DIR$SELECTED_WALL"
     exit_status=$?
-    
+
     if [ $exit_status -eq 0 ]; then
         echo "Wallpaper set successfully!"
     else

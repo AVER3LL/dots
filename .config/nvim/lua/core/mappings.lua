@@ -30,7 +30,7 @@ map("n", "<leader><leader>l", function()
         vim.opt.number = false
         vim.opt.relativenumber = false
         vim.opt.foldcolumn = "0"
-    -- Activate line numbers
+        -- Activate line numbers
     else
         vim.g.show_line_number = true
         vim.opt.number = true
@@ -107,10 +107,23 @@ end, { desc = "Toggle Codeium" })
 map("n", "<leader><leader>cs", "<cmd>supermavenToggle<cr>", { desc = "Toggle Supermaven" })
 
 map("n", "<leader>tl", function()
+    -- Handle cyberdream toggle
     if vim.g.colors_name == "cyberdream" then
         vim.cmd "CyberdreamToggleMode"
         return
     end
+
+    -- Handle monokai-pro variants
+    if string.match(vim.g.colors_name or "", "^monokai%-pro") then
+        if vim.g.colors_name == "monokai-pro-light" then
+            vim.cmd "colorscheme monokai-pro-octagon"
+        else
+            vim.cmd "colorscheme monokai-pro-light"
+        end
+        return
+    end
+
+    -- Default light/dark toggle behavior
     vim.o.background = (vim.o.background == "dark") and "light" or "dark"
 end, { desc = "Light Dark Toggle" })
 

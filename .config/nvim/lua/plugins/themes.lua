@@ -2,15 +2,53 @@ return {
 
     { -- theme switcher
         "gagbo/circadian.nvim",
-        priority = 900,
         config = function()
             require("circadian").setup {
                 lat = 6.390192,
                 lon = 2.270412,
                 day = { background = "dark", colorscheme = "kanagawa" },
-                night = { background = "dark", colorscheme = "moonfly" },
+                night = { background = "dark", colorscheme = "nightfly" },
             }
         end,
+    },
+
+    {
+        "rose-pine/neovim",
+        name = "rose-pine",
+        opts = {
+            variant = "auto", -- auto, main, moon, or dawn
+            dark_variant = "moon", -- main, moon, or dawn
+            dim_inactive_windows = false,
+
+            styles = {
+                bold = true,
+                italic = false,
+                transparency = false,
+            },
+
+            -- Breaks borderless telescope if set to true
+            --
+            -- I think.
+            extend_background_behind_borders = false,
+
+            highlight_groups = {
+                StatusLine = { fg = "love", bg = "love", blend = 10 },
+                StatusLineNC = { fg = "subtle", bg = "surface" },
+
+                TelescopeBorder = { fg = "overlay", bg = "overlay" },
+                TelescopeNormal = { fg = "subtle", bg = "overlay" },
+                TelescopeSelection = { fg = "text", bg = "highlight_med" },
+                TelescopeSelectionCaret = { fg = "love", bg = "highlight_med" },
+                TelescopeMultiSelection = { fg = "text", bg = "highlight_high" },
+
+                TelescopeTitle = { fg = "base", bg = "love" },
+                TelescopePromptTitle = { fg = "base", bg = "pine" },
+                TelescopePreviewTitle = { fg = "base", bg = "iris" },
+
+                TelescopePromptNormal = { fg = "text", bg = "surface" },
+                TelescopePromptBorder = { fg = "surface", bg = "surface" },
+            },
+        },
     },
 
     {

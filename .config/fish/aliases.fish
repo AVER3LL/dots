@@ -5,6 +5,9 @@ alias ll='ls -alFh'  # long format
 alias sl='ls'
 alias l='ls'
 
+alias cp 'advcp -g'
+alias mv 'advmv -g'
+
 # tree alias
 alias tree="eza --tree --icons"
 

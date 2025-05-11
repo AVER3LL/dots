@@ -6,17 +6,6 @@ end
 
 local extendedClientCapabilities = jdtls.extendedClientCapabilities
 
-local capabilities = require("config.lsp-requirements").capabilities
-if vim.g.use_blink then
-    capabilities = vim.tbl_deep_extend("force", capabilities, require("blink.cmp").get_lsp_capabilities())
-else
-    capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
-end
-capabilities.textDocument.foldingRange = {
-    dynamicRegistration = false,
-    lineFoldingOnly = true,
-}
-
 local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
 local workspace_path = vim.fn.stdpath "data" .. "/jdtls-workspace/"
 local workspace_dir = workspace_path .. project_name
@@ -49,8 +38,6 @@ local config = {
     },
 
     root_dir = vim.fs.root(0, { ".git", "mvnw", "gradlew" }),
-
-    capabilities = capabilities,
 
     settings = {
         java = {

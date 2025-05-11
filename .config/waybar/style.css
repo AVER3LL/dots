@@ -124,5 +124,5 @@ window#waybar.empty #window {
 }
 
 #battery.warning:not(.charging) {
-    color: @source_color;
+    color: @on_error_container;
 }

@@ -107,16 +107,18 @@ generate_caches() {
 }
 
 # Run the most time-consuming tasks in the background
-{
-    # Generate all the cached versions
-    generate_caches "$IMAGE" "$WALLPAPER_CACHE_DIR"
+# Generate all the cached versions
+generate_caches "$IMAGE" "$WALLPAPER_CACHE_DIR"
 
-    # Use Matugen to generate Material You colors (the slowest part)
-    matugen image "$IMAGE"
+# Use Matugen to generate Material You colors (the slowest part)
+matugen image "$IMAGE"
 
-    echo "Wallpaper processing completed!"
-    echo "Cached versions available at: $WALLPAPER_CACHE_DIR"
-} &
+# Refresh swaync
+pkill swaync
+swaync > /dev/null 2>&1 &
+
+echo "Wallpaper processing completed!"
+echo "Cached versions available at: $WALLPAPER_CACHE_DIR"
 
 # Exit immediately, letting the background processes continue
 echo "Wallpaper set. Additional processing continuing in background."
