@@ -15,7 +15,7 @@ map("n", "<leader>ll", "<cmd>Lazy<CR>", { desc = "Open Lazy" })
 map("n", "<leader>wt", function()
     local current = vim.o.laststatus
     if current == 0 then
-        vim.o.laststatus = 3 -- or 2 if you prefer per-window statusline
+        vim.o.laststatus = 3
         vim.notify("Statusline enabled", vim.log.levels.INFO, { title = "Statusline" })
     else
         vim.o.laststatus = 0
@@ -30,7 +30,6 @@ map("n", "<leader><leader>l", function()
         vim.opt.number = false
         vim.opt.relativenumber = false
         vim.opt.foldcolumn = "0"
-        -- Activate line numbers
     else
         vim.g.show_line_number = true
         vim.opt.number = true
@@ -140,6 +139,29 @@ map("v", "<leader>v", "gc", { desc = "Toggle comment", remap = true })
 
 -- Word Wrap
 map("n", "<leader>ww", "<cmd>set wrap!<CR>", { desc = "Toggle word wrap" })
+
+-- Azerty keyboard tweaks
+map("n", "&", "1")
+map("n", "é", "2")
+map("n", '"', "3")
+map("n", "'", "4")
+map("n", "(", "5")
+map("n", "-", "6")
+map("n", "è", "7")
+map("n", "_", "8")
+map("n", "ç", "9")
+map("n", "à", "0")
+
+map("n", "1", "&")
+map("n", "2", "é")
+map("n", "3", '"')
+map("n", "4", "'")
+map("n", "5", "(")
+map("n", "6", "-")
+map("n", "7", "è")
+map("n", "8", "_")
+map("n", "9", "ç")
+map("n", "0", "à")
 
 -- Insert Mode Navigation
 map("i", "<C-b>", "<ESC>^i", { desc = "Move to beginning of line" })

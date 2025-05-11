@@ -24,7 +24,7 @@ vim.opt.showmode = false
 
 -- Line Numbers
 vim.opt.number = vim.g.show_line_number
-vim.opt.relativenumber = false
+vim.opt.relativenumber = vim.g.show_line_number
 vim.opt.numberwidth = 2
 vim.opt.ruler = false
 

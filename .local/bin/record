@@ -1,0 +1,71 @@
+#!/bin/env bash
+
+# Create a temporary lockfile to track if we're in countdown
+LOCKFILE="/tmp/screen_recorder_countdown.lock"
+
+# Check if already recording or in countdown, if so stop everything
+if pgrep -x "wf-recorder" >/dev/null; then
+    pkill -INT -x wf-recorder
+    notify-send -h string:wf-recorder:record -t 1000 "Finished Recording"
+    exit 0
+elif [ -f "$LOCKFILE" ]; then
+    # Get PID of the script that's in countdown
+    COUNTDOWN_PID=$(cat "$LOCKFILE")
+    # Check if the PID exists and is a screen recorder script
+    if ps -p "$COUNTDOWN_PID" >/dev/null && grep -q "screen.*record" "/proc/$COUNTDOWN_PID/cmdline"; then
+        kill "$COUNTDOWN_PID"
+        rm -f "$LOCKFILE"
+        notify-send -h string:wf-recorder:record -t 1000 "Countdown Cancelled"
+        exit 0
+    else
+        # Stale lockfile, remove it
+        rm -f "$LOCKFILE"
+    fi
+fi
+
+# Register this script as being in countdown mode
+echo $ >"$LOCKFILE"
+
+# Use rofi to select recording mode
+CHOICE=$(echo -e "Record Full Screen\nRecord Full Screen with Audio\nRecord Selected Area\nRecord Selected Area with Audio" | rofi -dmenu -theme ~/.config/rofi/material-you.rasi -p "Recording Mode :" -i )
+
+# If no choice was made (user pressed escape), exit
+if [ -z "$CHOICE" ]; then
+    rm -f "$LOCKFILE"
+    exit 0
+fi
+
+# Countdown notifications
+notify-send -h string:wf-recorder:record -t 1000 "Recording in:" "<span color='#90a4f4' font='26px'><i><b>3</b></i></span>"
+sleep 1
+notify-send -h string:wf-recorder:record -t 1000 "Recording in:" "<span color='#90a4f4' font='26px'><i><b>2</b></i></span>"
+sleep 1
+notify-send -h string:wf-recorder:record -t 950 "Recording in:" "<span color='#90a4f4' font='26px'><i><b>1</b></i></span>"
+sleep 1
+
+# Output file name based on current date and time
+dateTime=$(date +%m-%d-%Y-%H:%M:%S)
+output_file="$HOME/Videos/$dateTime.mp4"
+
+# Start recording based on selected mode
+case "$CHOICE" in
+"Record Full Screen")
+    notify-send -h string:wf-recorder:record -t 2000 "Recording Full Screen"
+    wf-recorder --bframes max_b_frames -f "$output_file"
+    ;;
+"Record Full Screen with Audio")
+    notify-send -h string:wf-recorder:record -t 2000 "Recording Full Screen with Audio"
+    wf-recorder --bframes max_b_frames --audio -f "$output_file"
+    ;;
+"Record Selected Area")
+    notify-send -h string:wf-recorder:record -t 2000 "Select Area to Record"
+    wf-recorder --bframes max_b_frames -g "$(slurp)" -f "$output_file"
+    ;;
+"Record Selected Area with Audio")
+    notify-send -h string:wf-recorder:record -t 2000 "Select Area to Record with Audio"
+    wf-recorder --bframes max_b_frames --audio -g "$(slurp)" -f "$output_file"
+    ;;
+esac
+
+# Remove the lockfile when the script is done with the countdown
+rm -f "$LOCKFILE"
