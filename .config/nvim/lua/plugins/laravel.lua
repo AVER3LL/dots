@@ -19,11 +19,10 @@ return {
             "kevinhwang91/promise-async",
         },
         cmd = { "Laravel" },
-        ft = { "blade", "php" },
         keys = {
-            { "<leader>la", ":Laravel artisan<cr>", desc = "Laravel artisan command" },
-            { "<leader>lr", ":Laravel routes<cr>", desc = "Laravel list routes" },
-            { "<leader>lm", ":Laravel related<cr>", desc = "Laravel related" },
+            { "<leader>la", "<cmd>Laravel artisan<cr>", desc = "Laravel artisan command" },
+            { "<leader>lr", "<cmd>Laravel routes<cr>", desc = "Laravel list routes" },
+            { "<leader>lm", "<cmd>Laravel related<cr>", desc = "Laravel related" },
             {
                 "gf",
                 function()
@@ -38,14 +37,13 @@ return {
             },
         },
         opts = {
-            lsp_server = "intelephense",
-            pickers = {
-                enable = true,
+            features = {
                 pickers = {
                     enable = true,
-                    provider = "snacks|telescope|fzf-lua|ui.select",
+                    provider = "snacks",
                 },
             },
+            lsp_server = "intelephense",
         },
     },
 }

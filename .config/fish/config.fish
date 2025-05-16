@@ -100,11 +100,11 @@ end
 source ~/.config/fish/aliases.fish
 
 # Initialize tools
-function starship_transient_prompt_func
-  starship module character
-end
+# function starship_transient_prompt_func
+#   starship module character
+# end
 starship init fish | source
-enable_transience
+# enable_transience
 zoxide init fish | source
 fzf --fish | source
 

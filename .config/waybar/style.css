@@ -20,6 +20,10 @@ tooltip {
     margin-right: 12px;
 }
 
+/* -----------------------------------------------------
+ * Workspaces
+ * ----------------------------------------------------- */
+
 #workspaces {
     background-color: @surface_container_low;
     padding: 5px 5px 5px 5px;
@@ -31,7 +35,7 @@ tooltip {
     background-color: @outline_variant;
     margin: 0 3px 0 3px;
     color: @outline;
-    border-radius: 10px;
+    border-radius: 5px;
     min-width: 25px;
     padding: 0 8px;
     transition:
@@ -98,6 +102,12 @@ tooltip {
     margin: 0 0 0 12px;
 }
 
+#custom-pacman {
+    color: @surface_container;
+    background-color: @primary;
+    border: 1px solid @surface_container;
+}
+
 #window.hidden {
     opacity: 0;
     min-width: 0;
@@ -125,5 +135,5 @@ window#waybar.empty #window {
 }
 
 #battery.warning:not(.charging) {
-    color: @on_error_container;
+    color: @error;
 }

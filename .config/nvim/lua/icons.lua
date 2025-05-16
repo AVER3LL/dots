@@ -67,7 +67,7 @@ M.misc = {
     bug = "",
     ellipsis = "…",
     git = "",
-    search = "",
+    search = "   ",
     vertical_bar = "│",
     dashed_bar = "┊",
 

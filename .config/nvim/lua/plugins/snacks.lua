@@ -1,22 +1,9 @@
 local bt = require("config.looks").border_type()
+local search = require("icons").misc.search
 return {
 
     {
         "folke/snacks.nvim",
-        keys = {
-            { "<leader>ff", function() Snacks.picker.files() end, desc = "Find files" },
-            { "<leader>fc", function() Snacks.picker.files { cwd = vim.fn.stdpath "config" } end, desc = "Find config files" },
-            { "<leader>fg", function() Snacks.picker.git_files() end, desc = "Find git files" },
-            { "<leader>fo", function() Snacks.picker.recent() end, desc = "Find recent files" },
-            { "<leader>fw", function() Snacks.picker.grep() end, desc = "Find word" },
-            { "<leader>z", function() Snacks.picker.grep_word() end, desc = "Find word" },
-            { "<leader>fb", function() Snacks.picker.buffers() end, desc = "Find buffers" },
-            { "<leader>fk", function() Snacks.picker.keymaps() end, desc = "Find keymaps" },
-            { "<leader>th", function() Snacks.picker.colorschemes() end, desc = "Find buffers" },
-            { "<leader>o", function() Snacks.picker.spelling() end, desc = "Spelling suggestions" },
-            { "<leader>fp", function() Snacks.picker.projects { dev = { "~/Projects" } } end },
-            { "<leader>fv", function() Snacks.picker.cliphist() end, desc = "Search in clipboard" },
-        },
         priority = 1002,
         lazy = false,
         opts = {
@@ -24,7 +11,8 @@ return {
             input = { enabled = true },
             picker = {
                 enabled = true,
-                layout = "dropdown",
+                prompt = search,
+                layout = "custom_layout",
                 formatters = {
                     file = {
                         truncate = 70,
@@ -74,7 +62,7 @@ return {
                                     title = "{title} {live} {flags}",
                                     title_pos = "center",
                                 },
-                                { win = "list", title = " Results ", title_pos = "center", border = "rounded" },
+                                { win = "list", title = " Results ", title_pos = "center", border = bt },
                             },
                             {
                                 win = "preview",
@@ -109,7 +97,44 @@ return {
             },
             notifier = { enabled = true },
             quickfile = { enabled = true },
-            dashboard = { enabled = false },
+            dashboard = {
+                enabled = false,
+                sections = {
+                    { section = "header" },
+                    -- {
+                    --     pane = 2,
+                    --     section = "terminal",
+                    --     cmd = "colorscript -e square",
+                    --     height = 5,
+                    --     padding = 1,
+                    -- },
+                    { section = "keys", gap = 1, padding = 1 },
+                    {
+                        pane = 2,
+                        icon = " ",
+                        title = "Recent Files",
+                        section = "recent_files",
+                        indent = 2,
+                        padding = 1,
+                    },
+                    { pane = 2, icon = " ", title = "Projects", section = "projects", indent = 2, padding = 1 },
+                    {
+                        pane = 2,
+                        icon = " ",
+                        title = "Git Status",
+                        section = "terminal",
+                        enabled = function()
+                            return Snacks.git.get_root() ~= nil
+                        end,
+                        cmd = "git status --short --branch --renames",
+                        height = 5,
+                        padding = 1,
+                        ttl = 5 * 60,
+                        indent = 3,
+                    },
+                    { section = "startup" },
+                },
+            },
             indent = { enabled = false, only_current = true },
             scroll = { enabled = false },
             statuscolumn = {
@@ -128,6 +153,91 @@ return {
                     width = math.floor(vim.o.columns * 0.8),
                     height = math.floor(vim.o.lines * 0.8),
                 },
+            },
+        },
+        keys = {
+            {
+                "<leader>ff",
+                function()
+                    Snacks.picker.files()
+                end,
+                desc = "Find files",
+            },
+            {
+                "<leader>fc",
+                function()
+                    Snacks.picker.files { cwd = vim.fn.stdpath "config" }
+                end,
+                desc = "Find config files",
+            },
+            {
+                "<leader>fg",
+                function()
+                    Snacks.picker.git_files()
+                end,
+                desc = "Find git files",
+            },
+            {
+                "<leader>fo",
+                function()
+                    Snacks.picker.recent()
+                end,
+                desc = "Find recent files",
+            },
+            {
+                "<leader>fw",
+                function()
+                    Snacks.picker.grep()
+                end,
+                desc = "Find word",
+            },
+            {
+                "<leader>z",
+                function()
+                    Snacks.picker.grep_word()
+                end,
+                desc = "Find word",
+            },
+            {
+                "<leader>fb",
+                function()
+                    Snacks.picker.buffers()
+                end,
+                desc = "Find buffers",
+            },
+            {
+                "<leader>fk",
+                function()
+                    Snacks.picker.keymaps()
+                end,
+                desc = "Find keymaps",
+            },
+            {
+                "<leader>th",
+                function()
+                    Snacks.picker.colorschemes()
+                end,
+                desc = "Find buffers",
+            },
+            {
+                "<leader>o",
+                function()
+                    Snacks.picker.spelling()
+                end,
+                desc = "Spelling suggestions",
+            },
+            {
+                "<leader>fp",
+                function()
+                    Snacks.picker.projects { dev = { "~/Projects" } }
+                end,
+            },
+            {
+                "<leader>fv",
+                function()
+                    Snacks.picker.cliphist()
+                end,
+                desc = "Search in clipboard",
             },
         },
     },

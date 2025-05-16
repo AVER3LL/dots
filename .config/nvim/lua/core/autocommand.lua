@@ -62,23 +62,18 @@ autocmd("FileType", {
 --- Function written solely by an AI. The purpose was to get
 --- a color that could be used for borders no matter the theme
 local function adjust_brightness(color, amount)
-    -- Extract RGB components using bitwise operations from LuaJIT's `bit` library
+    -- Extract RGB components
     local r = bit.rshift(color, 16) % 256
     local g = bit.rshift(color, 8) % 256
     local b = color % 256
 
-    -- Compute relative luminance
-    local luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b
+    -- Apply brightness adjustment directly
+    -- Positive amount brightens, negative darkens
+    r = math.min(255, math.max(0, math.floor(r * amount)))
+    g = math.min(255, math.max(0, math.floor(g * amount)))
+    b = math.min(255, math.max(0, math.floor(b * amount)))
 
-    -- Adjust brightness factor
-    local factor = luminance < 128 and (1 + amount) or (1 - amount)
-
-    -- Adjust RGB values
-    r = math.min(255, math.max(0, math.floor(r * factor)))
-    g = math.min(255, math.max(0, math.floor(g * factor)))
-    b = math.min(255, math.max(0, math.floor(b * factor)))
-
-    -- Convert back to hex using bitwise operations
+    -- Convert back to hex
     return bit.bor(bit.lshift(r, 16), bit.lshift(g, 8), b)
 end
 
@@ -128,11 +123,11 @@ autocmd("ColorScheme", {
         -- Clean nvim-tree
         sethl(0, "NvimTreeLineNr", { bg = gethl(0, { name = "NvimTreeNormal" }).bg })
         sethl(0, "NvimTreeWinSeparator", { bg = normal_bg, fg = normal_bg })
-        sethl(0, "NvimTreeEndOfBuffer", { link = "NvimTreeNormal" })
+        sethl(0, "NvimTreeEndOfBuffer", { bg = gethl(0, { name = "NvimTreeNormal" }).bg })
         sethl(0, "NvimTreeSignColumn", { bg = "NONE" })
 
-        sethl(0, "BlinkCmpMenuBorder", { bg = normal_bg, fg = adjust_brightness(normal_fg, 0.3) })
-        sethl(0, "BlinkCmpDocBorder", { bg = normal_bg, fg = adjust_brightness(normal_fg, 0.3) })
+        sethl(0, "BlinkCmpMenuBorder", { bg = normal_bg, fg = adjust_brightness(normal_fg, 0.7) })
+        sethl(0, "BlinkCmpDocBorder", { bg = normal_bg, fg = adjust_brightness(normal_fg, 0.7) })
         sethl(0, "BlinkCmpMenu", { bg = normal_bg })
         sethl(0, "BlinkCmpDoc", { bg = normal_bg })
 
@@ -141,7 +136,8 @@ autocmd("ColorScheme", {
 
         sethl(0, "LspInfoBorder", { bg = normal_bg })
         sethl(0, "NormalFloat", { bg = normal_bg })
-        sethl(0, "FloatBorder", { fg = adjust_brightness(normal_fg, 0.3), bg = normal_bg })
+        sethl(0, "FloatBorder", { fg = adjust_brightness(normal_fg, 0.7), bg = normal_bg })
+        sethl(0, "FloatTitle", { bg = normal_bg })
         sethl(0, "Comment", { fg = "#008c7d", italic = true })
 
         -- Matching parentheses colors

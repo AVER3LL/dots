@@ -24,17 +24,20 @@ map("n", "<leader>wt", function()
 end, { desc = "Toggle statusline" })
 
 map("n", "<leader><leader>l", function()
+    local toggleSigns = require("utils").ToggleDiagnosticIcons
     -- Deactivate line numbers
     if vim.wo.number then
         vim.g.show_line_number = false
         vim.opt.number = false
         vim.opt.relativenumber = false
         vim.opt.foldcolumn = "0"
+        toggleSigns()
     else
         vim.g.show_line_number = true
         vim.opt.number = true
         vim.opt.relativenumber = true
         vim.opt.foldcolumn = "1"
+        toggleSigns()
     end
 end, { desc = "Toggle line numbers" })
 
@@ -139,29 +142,6 @@ map("v", "<leader>v", "gc", { desc = "Toggle comment", remap = true })
 
 -- Word Wrap
 map("n", "<leader>ww", "<cmd>set wrap!<CR>", { desc = "Toggle word wrap" })
-
--- Azerty keyboard tweaks
-map("n", "&", "1")
-map("n", "é", "2")
-map("n", '"', "3")
-map("n", "'", "4")
-map("n", "(", "5")
-map("n", "-", "6")
-map("n", "è", "7")
-map("n", "_", "8")
-map("n", "ç", "9")
-map("n", "à", "0")
-
-map("n", "1", "&")
-map("n", "2", "é")
-map("n", "3", '"')
-map("n", "4", "'")
-map("n", "5", "(")
-map("n", "6", "-")
-map("n", "7", "è")
-map("n", "8", "_")
-map("n", "9", "ç")
-map("n", "0", "à")
 
 -- Insert Mode Navigation
 map("i", "<C-b>", "<ESC>^i", { desc = "Move to beginning of line" })

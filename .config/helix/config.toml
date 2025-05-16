@@ -1,4 +1,4 @@
-theme = "gruvbox"
+theme = "monokai_pro_octagon"
 
 [editor]
 line-number = "relative"
@@ -11,7 +11,7 @@ lsp.display-messages = true
 lsp.display-inlay-hints = true
 cursorline = true
 true-color = true
-scrolloff = 10
+scrolloff = 100
 
 
 [keys.normal]

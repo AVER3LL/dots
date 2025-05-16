@@ -23,25 +23,18 @@ local function get_diagnostics()
     local info = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.INFO })
     local hints = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.HINT })
 
-    local result = ""
-    local plain_result = "" -- for width calculation
+    local result, plain_result = "", ""
+    local add_diagnostic = function(count, icon, hl)
+        if count > 0 then
+            result = result .. ("%%#%s# %s %d %%*"):format(hl, icon, count)
+            plain_result = plain_result .. (" %s %d "):format(icon, count)
+        end
+    end
 
-    if errors > 0 then
-        result = result .. "%#WinBarDiagError# " .. icons.ERROR .. " " .. errors .. "%* "
-        plain_result = plain_result .. " " .. icons.ERROR .. " " .. errors .. " "
-    end
-    if warnings > 0 then
-        result = result .. "%#WinBarDiagWarn# " .. icons.WARN .. " " .. warnings .. "%* "
-        plain_result = plain_result .. " " .. icons.WARN .. " " .. warnings .. " "
-    end
-    if info > 0 then
-        result = result .. "%#WinBarDiagInfo# " .. icons.INFO .. " " .. info .. "%* "
-        plain_result = plain_result .. " " .. icons.INFO .. " " .. info .. " "
-    end
-    if hints > 0 then
-        result = result .. "%#WinBarDiagHint# " .. icons.HINT .. " " .. hints .. "%* "
-        plain_result = plain_result .. " " .. icons.HINT .. " " .. hints .. " "
-    end
+    add_diagnostic(errors, icons.ERROR, "WinBarDiagError")
+    add_diagnostic(warnings, icons.WARN, "WinBarDiagWarn")
+    add_diagnostic(info, icons.INFO, "WinBarDiagInfo")
+    add_diagnostic(hints, icons.HINT, "WinBarDiagHint")
 
     return result, plain_result
 end
@@ -56,15 +49,29 @@ end
 
 -- Function to get relative file path
 local function get_file_path()
-    local filepath = vim.fn.expand "%:~:."
-    local filename = vim.fn.expand "%:t"
+    local filepath = vim.fn.fnamemodify(vim.fn.expand "%", ":~:.:h")
 
-    if filepath == filename then
+    if filepath == "." or filepath == "" then
         return ""
-    else
-        local path = string.sub(filepath, 1, #filepath - #filename - 1)
-        return path
     end
+
+    return filepath
+end
+
+-- Function to truncate text with ellipsis
+local function truncate(text, max_width)
+    if vim.fn.strdisplaywidth(text) <= max_width then
+        return text
+    end
+    local ellipsis = "…"
+    max_width = max_width - vim.fn.strdisplaywidth(ellipsis)
+    for i = #text, 1, -1 do
+        local truncated = ellipsis .. text:sub(-i)
+        if vim.fn.strdisplaywidth(truncated) <= max_width then
+            return truncated
+        end
+    end
+    return ellipsis
 end
 
 -- Function to calculate string display width correctly
@@ -76,7 +83,8 @@ end
 function M.update_winbar(is_active)
     -- local is_active = is_active ~= nil and is_active or true
     local filename = vim.fn.expand "%:t"
-    if filename == "" then
+
+    if filename == "" or vim.bo.buftype ~= "" then
         vim.wo.winbar = ""
         return
     end
@@ -105,28 +113,26 @@ function M.update_winbar(is_active)
     -- Determine path component
     local path_component = ""
     if is_active and file_path ~= "" then
-        local path_width = display_width(file_path)
-        if available_path_space >= path_width then
-            path_component = "%#WinBarPath#" .. file_path .. " %*"
+        local truncated_path = truncate(file_path, math.max(available_path_space, 0))
+        if vim.fn.strdisplaywidth(truncated_path) > 0 then
+            path_component = ("%%#WinBarPath#%s %%*"):format(truncated_path)
         end
     end
 
     -- Construct the content
     local content = colored_icon .. filename_part .. path_component .. modified .. diagnostics
 
-    -- Calculate final padding
-    local visual_content = icon
-        .. filename_part
-        .. (path_component ~= "" and file_path .. " " or "")
-        .. plain_modified
-        .. plain_diagnostics
-    local content_width = display_width(visual_content)
-
+    -- Calculate padding and set winbar
+    local content_width = vim.fn.strdisplaywidth(
+        icon
+            .. filename
+            .. "  "
+            .. (path_component ~= "" and file_path .. " " or "")
+            .. plain_modified
+            .. plain_diagnostics
+    )
     local final_padding = math.max(math.floor((win_width - content_width) / 2), 0)
-    local winbar = string.rep(" ", final_padding) .. content
-
-    -- Set the winbar
-    vim.wo.winbar = winbar
+    vim.wo.winbar = string.rep(" ", final_padding) .. content
 end
 
 -- Set up autocmds to update the winbar
@@ -134,32 +140,31 @@ function M.setup()
     local autocmd = vim.api.nvim_create_autocmd
     local group = vim.api.nvim_create_augroup("CustomWinBar", { clear = true })
 
-    autocmd({ "FileType" }, {
-        callback = function()
-            local filename = vim.fn.expand "%:t"
-            local extension = vim.fn.expand "%:e"
-            local _, color = require("nvim-web-devicons").get_icon_color(filename, extension)
-
-            if color then
-                vim.api.nvim_set_hl(0, "WinBarFileIcon", { fg = color })
-            end
-        end,
-    })
+    -- autocmd({ "FileType" }, {
+    --     callback = function()
+    --         local filename = vim.fn.expand "%:t"
+    --         local extension = vim.fn.expand "%:e"
+    --         local _, color = require("nvim-web-devicons").get_icon_color(filename, extension)
+    --
+    --         if color then
+    --             vim.api.nvim_set_hl(0, "WinBarFileIcon", { fg = color })
+    --         end
+    --     end,
+    -- })
 
     -- Update when active
     autocmd({
-        "BufWinEnter",
+        "BufEnter",
         "BufFilePost",
+        "BufWinEnter",
         "BufWritePost",
+        "DiagnosticChanged",
         "InsertEnter",
         "InsertLeave",
-        "BufEnter",
-        "CursorHold",
-        "DiagnosticChanged",
+        "TextChanged",
         "VimResized",
-        "WinResized",
-        "WinScrolled",
         "WinEnter",
+        "WinResized",
     }, {
         group = group,
         callback = function()

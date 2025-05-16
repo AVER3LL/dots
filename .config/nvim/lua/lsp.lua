@@ -1,6 +1,11 @@
 local ok, border = pcall(require, "config.looks")
 local borderType = ok and border.border_type() or "rounded"
-local diagnostic_icons = require("icons").diagnostics
+
+-- vim.api.nvim_create_autocmd("BufEnter", {
+--     desc = "Convert blade filetype to php",
+--     pattern = "*.blade.php",
+--     command = "set filetype=php",
+-- })
 
 local map = function(mode, lhs, rhs, opts)
     opts = opts or {}
@@ -28,7 +33,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
         -- map("n", "[d", vim.diagnostic.jump { count = -1 }, opts "Go to previous diagnostic")
         map("n", "<leader>ds", vim.diagnostic.setloclist, opts "Show diagnostic loclist")
         map("n", "<leader>dl", vim.diagnostic.open_float, opts "Show inline diagnostics")
-        map("n", "<leader>fs", function() Snacks.picker.lsp_symbols() end, opts "Show document symbols")
+        map("n", "<leader>fs", function()
+            Snacks.picker.lsp_symbols()
+        end, opts "Show document symbols")
 
         map("n", "<leader>dh", function()
             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(), nil)
@@ -40,47 +47,14 @@ vim.api.nvim_create_autocmd("LspAttach", {
         map({ "n", "v" }, "<leader>cc", vim.lsp.codelens.run, opts "Run Codelens")
         map({ "n", "v" }, "<leader>cC", vim.lsp.codelens.refresh, opts "Refresh & Display Codelens")
 
-        map("n", "gr", function() Snacks.picker.lsp_references() end, opts "Go to references")
+        map("n", "gr", function()
+            Snacks.picker.lsp_references()
+        end, opts "Go to references")
         map("i", "<C-x>", vim.lsp.buf.signature_help, opts "Show signature help")
     end,
 })
 
-vim.diagnostic.config {
-    title = false,
-    virtual_text = {
-        prefix = "",
-    },
-    -- virtual_lines = true,
-    signs = {
-        text = {
-            [vim.diagnostic.severity.ERROR] = "",
-            [vim.diagnostic.severity.WARN] = "",
-            [vim.diagnostic.severity.INFO] = "",
-            [vim.diagnostic.severity.HINT] = "",
-        },
-        numhl = {
-            [vim.diagnostic.severity.WARN] = "LspDiagnosticsLineNrWarning",
-            [vim.diagnostic.severity.ERROR] = "LspDiagnosticsLineNrError",
-            [vim.diagnostic.severity.INFO] = "LspDiagnosticsLineNrInfo",
-            [vim.diagnostic.severity.HINT] = "LspDiagnosticsLineNrHint",
-        },
-    },
-    update_in_insert = false,
-    severity_sort = true,
-    underline = true,
-    float = {
-        border = borderType,
-        -- Show severity icons as prefixes.
-        prefix = function(diag)
-            local level = vim.diagnostic.severity[diag.severity]
-            local prefix = string.format(" %s  ", diagnostic_icons[level])
-            return prefix, "Diagnostic" .. level:gsub("^%l", string.upper)
-        end,
-        source = "if_many",
-        style = "minimal",
-        header = "",
-    },
-}
+require("utils").ToggleDiagnosticIcons()
 
 local float = {
     style = "minimal",

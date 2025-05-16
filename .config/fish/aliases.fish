@@ -5,6 +5,8 @@ alias ll='ls -alFh'  # long format
 alias sl='ls'
 alias l='ls'
 
+alias lazy='NVIM_APPNAME=LazyVim nvim'
+
 alias cp 'advcp -g'
 alias mv 'advmv -g'
 

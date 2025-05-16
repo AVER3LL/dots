@@ -19,6 +19,6 @@ return {
                 },
             },
         }
-        require("telescope").load_extension "flutter"
+        -- require("telescope").load_extension "flutter"
     end,
 }
