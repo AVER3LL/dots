@@ -82,7 +82,7 @@ return {
         lazy = false,
         priority = 1000,
         opts = {
-            overrides = function(colors) -- NOTE: This function nullifies the `highlights` option
+            overrides = function(colors)
                 -- Example:
                 return {
                     -- Comment = { fg = colors.green, bg = "NONE", italic = true },

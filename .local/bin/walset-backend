@@ -111,11 +111,18 @@ generate_caches() {
 generate_caches "$IMAGE" "$WALLPAPER_CACHE_DIR"
 
 # Use Matugen to generate Material You colors (the slowest part)
-matugen image "$IMAGE"
+matugen image "$IMAGE" -m "dark"
+
+wallust run "$IMAGE"
 
 # Refresh swaync
 pkill swaync
 swaync > /dev/null 2>&1 &
+
+# Refresh waybar
+# sleep 2
+# $HOME/.config/waybar/scripts/launch.sh
+
 
 echo "Wallpaper processing completed!"
 echo "Cached versions available at: $WALLPAPER_CACHE_DIR"

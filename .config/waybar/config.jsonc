@@ -50,7 +50,7 @@
         "format": "  {}",
         "interval": "once",
         "exec": "count=$(checkupdates | wc -l); [ \"$count\" -eq 0 ] && echo '' || echo \"$count\"",
-        "on-click": "kitty -e 'sudo pacman -Syu'; pkill -SIGRTMIN+8 waybar",
+        "on-click": "kitty -e sh -c 'sudo pacman -Syu; pkill -SIGRTMIN+8 waybar'",
         "signal": 8,
         "tooltip-format": "{} updates available",
     },
