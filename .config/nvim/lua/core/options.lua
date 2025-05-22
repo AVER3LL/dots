@@ -60,7 +60,7 @@ vim.opt.copyindent = true
 vim.opt.smartindent = true
 vim.opt.autoindent = true
 
-vim.opt.wrap = false
+vim.opt.wrap = true
 vim.opt.linebreak = true
 vim.opt.breakindent = true
 vim.opt.formatoptions = table.concat {

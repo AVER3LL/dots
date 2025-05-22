@@ -35,7 +35,7 @@ map("n", "<leader><leader>l", function()
     else
         vim.g.show_line_number = true
         vim.opt.number = true
-        vim.opt.relativenumber = true
+        vim.opt.relativenumber = false
         vim.opt.foldcolumn = "1"
         toggleSigns()
     end
