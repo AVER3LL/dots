@@ -9,7 +9,6 @@ return {
                 package_uninstalled = " ",
             },
         },
-        PATH = "skip",
         max_concurrent_installers = 10,
         ensure_installed = function()
             local tools = {}

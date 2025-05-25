@@ -37,7 +37,7 @@ vim.opt.listchars = {
     extends = "»",
     precedes = "«",
     trail = "·",
-    eol = "↴", -- ⏎, ¬, ↴
+    -- eol = "↴", -- ⏎, ¬, ↴
 }
 vim.opt.showbreak = "↳ " -- Cool character on line wrap
 vim.opt.fillchars = {
@@ -64,7 +64,7 @@ vim.opt.wrap = true
 vim.opt.linebreak = true
 vim.opt.breakindent = true
 vim.opt.formatoptions = table.concat {
-    -- "2", -- Use the second line's indent vale when indenting (allows indented first line)
+    "2", -- Use the second line's indent vale when indenting (allows indented first line)
     "q", -- Formatting comments with gq
     "w", -- Trailing whitespace indicates a paragraph
     "j", -- Remove comment leader when makes sense (joining lines)

@@ -12,14 +12,14 @@ end
 
 map("n", "<leader>ll", "<cmd>Lazy<CR>", { desc = "Open Lazy" })
 
-map("n", "<leader>wt", function()
+map("n", "<leader><leader>w", function()
     local current = vim.o.laststatus
     if current == 0 then
         vim.o.laststatus = 3
-        vim.notify("Statusline enabled", vim.log.levels.INFO, { title = "Statusline" })
+        -- vim.notify("Statusline enabled", vim.log.levels.INFO, { title = "Statusline" })
     else
         vim.o.laststatus = 0
-        vim.notify("Statusline Disabled", vim.log.levels.INFO, { title = "Statusline" })
+        -- vim.notify("Statusline Disabled", vim.log.levels.INFO, { title = "Statusline" })
     end
 end, { desc = "Toggle statusline" })
 

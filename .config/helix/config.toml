@@ -1,9 +1,10 @@
 theme = "monokai_pro_octagon"
 
 [editor]
-line-number = "relative"
+evil = true
+line-number = "absolute"
 bufferline = "multiple"
-mouse = false
+mouse = true
 color-modes = true
 completion-replace = false 
 lsp.enable = true
@@ -13,15 +14,6 @@ cursorline = true
 true-color = true
 scrolloff = 100
 
-
-[keys.normal]
-esc = ["collapse_selection", "keep_primary_selection"]
-S-x = "extend_line_above"
-"tab" = { s = "switch_case", u = "switch_to_uppercase",  l = "switch_to_lowercase" }
-_ = "goto_first_nonwhitespace"
-
-[keys.select]
-"tab" = { s = "switch_case", u = "switch_to_uppercase",  l = "switch_to_lowercase" }
 
 [keys.insert]
 j = { k = "normal_mode"}
@@ -35,6 +27,6 @@ select = "underline"
 render = true
 
 [editor.statusline]
-mode.normal = "NORMAL"
-mode.insert = "INSERT"
-mode.select = "SELECT"
+mode.normal = "Normal"
+mode.insert = "Insert"
+mode.select = "Select"

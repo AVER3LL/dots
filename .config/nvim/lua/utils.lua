@@ -7,6 +7,7 @@ local M = {}
 M.ToggleDiagnosticIcons = function()
     vim.diagnostic.config {
         title = false,
+        -- virtual_text = false,
         virtual_text = {
             prefix = "",
         },
