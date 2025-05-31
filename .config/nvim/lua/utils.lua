@@ -7,10 +7,10 @@ local M = {}
 M.ToggleDiagnosticIcons = function()
     vim.diagnostic.config {
         title = false,
-        -- virtual_text = false,
-        virtual_text = {
-            prefix = "",
-        },
+        virtual_text = false,
+        -- virtual_text = {
+        --     prefix = "",
+        -- },
         -- virtual_lines = true,
         signs = {
             text = {
@@ -29,6 +29,7 @@ M.ToggleDiagnosticIcons = function()
         update_in_insert = false,
         severity_sort = true,
         underline = true,
+        -- underline = { severity = vim.diagnostic.severity.ERROR },
         float = {
             border = borderType,
             -- Show severity icons as prefixes.

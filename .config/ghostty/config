@@ -47,7 +47,7 @@ window-padding-x = 0
 window-padding-y = 0
 # window-decoration = none
 
-adjust-cell-height = 31%
+adjust-cell-height = 41%
 adjust-cursor-height = 45%
 
 adjust-underline-position = 5

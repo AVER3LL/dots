@@ -83,7 +83,7 @@
 
     "battery": {
         "interval": 1,
-        "full-at": 95,
+        "full-at": 80,
         "states": {
             "good": 95,
             "warning": 30,

@@ -5,7 +5,7 @@ return {
     -- the search flicker
     {
         "folke/noice.nvim",
-        enabled = true,
+        enabled = false,
         event = "VeryLazy",
         dependencies = {
             "MunifTanjim/nui.nvim",
@@ -33,7 +33,7 @@ return {
             },
             lsp = {
                 signature = { enabled = false },
-                progress = { enabled = false },
+                progress = { enabled = true },
                 hover = { enabled = false },
                 override = {
                     ["vim.lsp.util.convert_input_to_markdown_lines"] = true,

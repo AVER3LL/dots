@@ -9,6 +9,8 @@ vim.g.use_blink = true
 vim.g.markdown_recommended_style = 0
 
 vim.opt.conceallevel = 2
+vim.o.mouse = ""
+vim.o.cmdheight = 0
 
 -- Core UI and Appearance
 vim.opt.background = "dark"

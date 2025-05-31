@@ -14,7 +14,7 @@ return {
                 virtual_symbol_prefix = "",
                 virtual_symbol_suffix = " ",
                 enable_tailwind = true,
-                exclude_buftypes = {},
+                exclude_buftypes = { "terminal" },
                 exclude_filetypes = { "NvimTree", "TelescopePrompt", "TelescopeResults", "lazy", "mason", "neo-tree" },
             }
         end,

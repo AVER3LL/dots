@@ -1,4 +1,23 @@
 return {
+    {
+        "stevearc/oil.nvim",
+        ---@module 'oil'
+        ---@type oil.SetupOpts
+        opts = {
+            watch_for_changes = false,
+            delete_to_trash = true,
+            view_options = {
+                show_hidden = true,
+            },
+            keymaps = {
+                ["l"] = "actions.select",
+            },
+        },
+        -- Optional dependencies
+        dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
+        -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
+        lazy = false,
+    },
 
     {
         "nvim-tree/nvim-tree.lua",
@@ -36,7 +55,7 @@ return {
                 },
                 view = {
                     width = 32,
-                    preserve_window_proportions = true,
+                    preserve_window_proportions = false,
                 },
                 renderer = {
                     root_folder_label = false,

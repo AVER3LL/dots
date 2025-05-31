@@ -85,6 +85,7 @@ autocmd("ColorScheme", {
         local warn_fg = gethl(0, { name = "DiagnosticWarn" }).fg
         local info_fg = gethl(0, { name = "DiagnosticInfo" }).fg
         local hint_fg = gethl(0, { name = "DiagnosticHint" }).fg
+
         -- Highlight line numbers with diagnostics
         sethl(0, "LspDiagnosticsLineNrError", { fg = error_fg })
         sethl(0, "LspDiagnosticsLineNrWarning", { fg = warn_fg })
@@ -96,6 +97,9 @@ autocmd("ColorScheme", {
         sethl(0, "DiagnosticSignWarn", { bg = "NONE" })
         sethl(0, "DiagnosticSignInfo", { bg = "NONE" })
         sethl(0, "DiagnosticSignHint", { bg = "NONE" })
+
+        -- Cleans tinyInlineDiagnostic
+        sethl(0, "TinyInlineDiagnosticVirtualTextArrow", { bg = "NONE" })
 
         -- color winbar component
         -- sethl(0, "WinBarDiagError", { fg = "#D67B7B", bold = true }) -- Soft red

@@ -26,6 +26,24 @@ return {
         event = "VeryLazy",
     },
 
+    {
+        "rachartier/tiny-inline-diagnostic.nvim",
+        event = "VeryLazy",
+        priority = 1000, -- needs to be loaded in first
+        opts = {
+            preset = "simple",
+            hi = {
+                background = "NONE",
+            },
+            options = {
+                multilines = {
+                    enabled = false,
+                    always_show = false,
+                },
+            },
+        },
+    },
+
     -- Lsp messages on the top right like Helix
     {
         "dgagn/diagflow.nvim",

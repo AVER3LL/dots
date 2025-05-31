@@ -31,9 +31,11 @@ return {
                     enable = true,
                     use_languagetree = true,
                     disable = { "latex" },
+                    additional_vim_regex_highlighting = { "ruby" },
                 },
                 ignore_install = {
                     -- "dart",
+                    "ruby",
                 },
                 modules = {},
                 auto_install = true,

@@ -37,13 +37,13 @@ return {
             },
         },
         opts = {
+            lsp_server = "intelephense",
             features = {
                 pickers = {
                     enable = true,
                     provider = "snacks",
                 },
             },
-            lsp_server = "intelephense",
         },
     },
 }

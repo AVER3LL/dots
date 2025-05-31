@@ -138,7 +138,7 @@ return {
             indent = { enabled = false, only_current = true },
             scroll = { enabled = false },
             statuscolumn = {
-                enabled = true,
+                enabled = false,
                 left = { "mark", "sign" }, -- priority of signs on the left (high to low)
                 right = { "git", "fold" }, -- priority of signs on the right (high to low)
                 folds = {
@@ -238,6 +238,13 @@ return {
                     Snacks.picker.cliphist()
                 end,
                 desc = "Search in clipboard",
+            },
+            {
+                "<leader>fh",
+                function()
+                    Snacks.picker.help()
+                end,
+                desc = "Search the help manual",
             },
         },
     },
