@@ -30,6 +30,7 @@ add_to_path_if_needed $HOME/.config/herd-lite/bin
 add_to_path_if_needed $HOME/development/flutter/bin
 add_to_path_if_needed $HOME/.local/bin
 add_to_path_if_needed $HOME/Applications/depot_tools
+add_to_path_if_needed $HOME/.cargo/bin
 add_to_path_if_needed $JAVA_HOME/bin
 
 ### KEY BINDINGS ###

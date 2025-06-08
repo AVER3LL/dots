@@ -6,7 +6,7 @@ return {
     {
         "nvim-lualine/lualine.nvim",
         enabled = false,
-        event = "VeryLazy",
+        -- event = "VeryLazy",
         dependencies = { "nvim-tree/nvim-web-devicons" },
         init = function()
             vim.opt.laststatus = 0
@@ -110,11 +110,11 @@ return {
                         recording,
                     },
                     lualine_x = {
-                        {
-                            require("noice").api.status.command.get,
-                            cond = require("noice").api.status.command.has,
-                            color = { fg = "#ff9e64" },
-                        },
+                        -- {
+                        --     require("noice").api.status.command.get,
+                        --     cond = require("noice").api.status.command.has,
+                        --     color = { fg = "#ff9e64" },
+                        -- },
                         {
                             require("lazy.status").updates,
                             cond = require("lazy.status").has_updates,
@@ -175,6 +175,9 @@ return {
                 },
                 extensions = { "nvim-tree", "fzf", "toggleterm", "mason", "lazy", "neo-tree" },
             }
+
+            lualine.hide { unhide = true, place = { "statusline" } } -- hide on plugin loading
+            vim.opt.laststatus = 0
         end,
     },
 }

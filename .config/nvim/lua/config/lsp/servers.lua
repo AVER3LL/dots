@@ -12,6 +12,7 @@ M.mason = {
     "intelephense",
     "jdtls",
     "jinja-lsp",
+    "rust-analyzer",
     "kotlin-language-server",
     "lua-language-server",
     "tailwindcss-language-server",
@@ -31,6 +32,7 @@ M.default = {
     "tailwindcss",
     "taplo", -- markdown
     "texlab",
+    -- "rust_analyzer",
     -- "basedpyright", -- apparently need to set contentFormat to "plaintext" if I want to fix doc breaks
     -- "css_variables",
     -- "cssmodules_ls",

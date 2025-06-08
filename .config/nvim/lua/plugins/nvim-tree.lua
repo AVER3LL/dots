@@ -1,6 +1,9 @@
 return {
     {
         "stevearc/oil.nvim",
+        enabled = false,
+        -- Optional dependencies
+        dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
         ---@module 'oil'
         ---@type oil.SetupOpts
         opts = {
@@ -13,10 +16,12 @@ return {
                 ["l"] = "actions.select",
             },
         },
-        -- Optional dependencies
-        dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
-        -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
-        lazy = false,
+        config = function(_, opts)
+            require("oil").setup(opts)
+
+            -- Open parent directory in floating window
+            vim.keymap.set("n", "<space>-", require("oil").toggle_float)
+        end,
     },
 
     {
@@ -56,6 +61,7 @@ return {
                 view = {
                     width = 32,
                     preserve_window_proportions = false,
+                    signcolumn = "no",
                 },
                 renderer = {
                     root_folder_label = false,
@@ -76,6 +82,20 @@ return {
                     },
                 },
             }
+
+            local prev = { new_name = "", old_name = "" } -- Prevents duplicate events
+            vim.api.nvim_create_autocmd("User", {
+                pattern = "NvimTreeSetup",
+                callback = function()
+                    local events = require("nvim-tree.api").events
+                    events.subscribe(events.Event.NodeRenamed, function(data)
+                        if prev.new_name ~= data.new_name or prev.old_name ~= data.old_name then
+                            data = data
+                            Snacks.rename.on_rename_file(data.old_name, data.new_name)
+                        end
+                    end)
+                end,
+            })
         end,
     },
 }

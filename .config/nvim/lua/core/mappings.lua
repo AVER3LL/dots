@@ -130,8 +130,8 @@ map("n", "<leader>tl", function()
 end, { desc = "Light Dark Toggle" })
 
 -- Basic Navigation
-map("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, desc = "Move up" })
-map("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, desc = "Move down" })
+map({ "n", "v" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, desc = "Move up" })
+map({ "n", "v" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, desc = "Move down" })
 
 map("n", "gl", "$", { desc = "Move to end of line" })
 map("n", "gh", "_", { desc = "Move to end of line" })

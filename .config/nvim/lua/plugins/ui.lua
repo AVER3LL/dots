@@ -5,6 +5,12 @@ return {
         opts = {},
     },
 
+    {
+        "sphamba/smear-cursor.nvim",
+        enabled = false,
+        opts = {},
+    },
+
     -- {
     --     "echasnovski/mini.icons",
     --     opts = {},

@@ -27,6 +27,7 @@ return {
             {
                 "<leader>ft",
                 function()
+                    ---@diagnostic disable-next-line: undefined-field
                     Snacks.picker.todo_comments { keywords = { "TODO", "FIX", "FIXME", "NOTE" } }
                 end,
                 desc = "Todo/Fix/Fixme",

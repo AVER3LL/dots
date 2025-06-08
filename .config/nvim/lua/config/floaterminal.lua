@@ -12,19 +12,19 @@ local state = {
 
 local run_commands = {
     python = "python -u $filepath",
-    lua = "lua %",
-    javascript = "node %",
-    php = "php %",
+    lua = "lua $filepath",
+    javascript = "node $filepath",
+    php = "php $filepath",
     typescript = "tsc $filename && node $fileWithoutExt.js",
-    cpp = "g++ % -o %:r && ./%:r",
-    c = "gcc % -o %:r && ./%:r",
-    -- java = "javac % && java %:r",
+    cpp = "g++ $filepath -o $fileWithoutExt && ./$fileWithoutExt",
+    c = "gcc $filepath -o $fileWithoutExt && ./$fileWithoutExt",
     java = "cd $dir && javac $filename && java $fileWithoutExt",
     kotlin = "cd $dir && kotlinc $filename -include-runtime -d $fileWithoutExt.jar && java -jar $fileWithoutExt.jar",
-    rust = "rustc % && ./%:r",
-    go = "go run %",
-    sh = "bash %",
-    dart = "dart %",
+    rust = "rustc $filepath && ./$fileWithoutExt",
+    go = "go run $filepath",
+    sh = "bash $filepath",
+    dart = "dart $filepath",
+    html = "xdg-open $filepath", -- ouvrir dans le navigateur sous Linux
 }
 
 local function create_floating_window(opts)
@@ -79,8 +79,6 @@ local function format_command(command)
         :gsub("%$filename", filename)
         :gsub("%$fileWithoutExt", fileWithoutExt)
         :gsub("%$filepath", filepath)
-        :gsub("%%:r", fileWithoutExt) -- Existing %:r behavior
-        :gsub("%%", filepath) -- Use full path for %%
 end
 
 function M.run()

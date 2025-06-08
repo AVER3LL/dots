@@ -3,7 +3,7 @@ return {
     { -- theme switcher
         "gagbo/circadian.nvim",
         config = function()
-            local dark_themes = {"tokyonight-night", "moonfly", "gruvbox-material"}
+            local dark_themes = { "tokyonight-night", "moonfly", "gruvbox-material" }
             math.randomseed(os.time())
             local selected_dark_theme = dark_themes[math.random(#dark_themes)]
             require("circadian").setup {
@@ -12,6 +12,15 @@ return {
                 day = { background = "dark", colorscheme = "kanagawa" },
                 night = { background = "dark", colorscheme = selected_dark_theme },
             }
+        end,
+    },
+
+    {
+        "baliestri/aura-theme",
+        lazy = false,
+        priority = 1000,
+        config = function(plugin)
+            vim.opt.rtp:append(plugin.dir .. "/packages/neovim")
         end,
     },
 

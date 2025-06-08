@@ -5,7 +5,7 @@ opacity = 1
 [font]
 normal = { family = "JetBrainsMono NF" }
 size = 15
-offset.y = 12
+offset.y = 14
 
 [general]
 # import = ["~/.config/alacritty/themes/kanagawa_wave.toml"]

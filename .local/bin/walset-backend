@@ -46,7 +46,7 @@ fi
 notify-send "Wallpaper" "Changing wallpaper..."
 
 # Set the wallpaper using swww - this happens first and doesn't wait
-swww img "$IMAGE" --transition-type="center" || {
+swww img "$IMAGE" --transition-type="center" --transition-duration=2 --transition-step=90 --transition-angle=0 --transition-fps=60 || {
     echo "Error: Failed to set wallpaper with swww."
     exit 1
 }
@@ -117,12 +117,11 @@ wallust run "$IMAGE"
 
 # Refresh swaync
 pkill swaync
-swaync > /dev/null 2>&1 &
+swaync >/dev/null 2>&1 &
 
 # Refresh waybar
 # sleep 2
 # $HOME/.config/waybar/scripts/launch.sh
-
 
 echo "Wallpaper processing completed!"
 echo "Cached versions available at: $WALLPAPER_CACHE_DIR"

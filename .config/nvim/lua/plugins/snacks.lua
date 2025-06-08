@@ -6,8 +6,11 @@ return {
         "folke/snacks.nvim",
         priority = 1002,
         lazy = false,
+        ---@type snacks.Config
         opts = {
             bigfile = { enabled = true },
+            explorer = { enabled = false },
+            image = { enabled = true },
             input = { enabled = true },
             picker = {
                 enabled = true,
@@ -194,7 +197,7 @@ return {
             {
                 "<leader>z",
                 function()
-                    Snacks.picker.grep_word()
+                    Snacks.picker.lines()
                 end,
                 desc = "Find word",
             },

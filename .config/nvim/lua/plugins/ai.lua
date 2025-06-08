@@ -1,7 +1,7 @@
 return {
     {
         "Exafunction/codeium.vim",
-        enabled = false,
+        enabled = true,
         event = "BufEnter",
         config = function()
             vim.keymap.set("i", "<C-o>", function()

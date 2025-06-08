@@ -11,6 +11,7 @@ return {
                 easing_function = "sine",
                 hide_cursor = true,
                 cursor_scrolls_alone = true,
+                performance_mode = false,
             }
         end,
     },

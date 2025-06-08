@@ -1,6 +1,6 @@
 -- Plugin Settings
 vim.g.codeium_disable_bindings = 1
-vim.g.codeium_enabled = false
+vim.g.codeium_enabled = true
 vim.g.fold_indicator = true
 vim.g.show_line_number = false
 
@@ -16,7 +16,7 @@ vim.o.cmdheight = 0
 vim.opt.background = "dark"
 vim.opt.termguicolors = true
 vim.opt.cursorline = true
-vim.opt.cursorlineopt = "number"
+vim.opt.cursorlineopt = "both"
 vim.opt.signcolumn = "yes"
 vim.opt.laststatus = 0
 -- vim.opt.statusline = " %f %m %= %l:%c ♥ "

@@ -30,6 +30,7 @@ return {
                 kotlin = { "ktlint" },
                 latex = { "latexindent" },
                 go = { "goimports-reviser", "gofumpt" },
+                rust = { name = "rust_analyzer", timeout_ms = 500, lsp_format = "prefer" },
                 ["_"] = { "trim_whitespace", "trim_newlines" },
             },
 
