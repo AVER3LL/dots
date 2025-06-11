@@ -1,23 +1,53 @@
 local icons = require("icons").diagnostics
 
+-- Code generated purely by AI
+-- Sure I modified some parts to have it actually work
+-- but I am not smart enough for all this.
+
 -- Custom minimal centered winbar
 local M = {}
+local MODIFIED_ICON = "[+]"
 
--- Function to get file icon and color using nvim-web-devicons
+-- Configuration options
+M.config = {
+    show_diagnostics = true,
+    show_modified = true,
+    show_path_when_inactive = false,
+    min_padding = 2,
+}
+
+-- Cache for file icons
+local icon_cache = {}
+local update_timer = nil
+
+-- Function to get file icon and color using nvim-web-devicons with caching
 local function get_file_icon()
-    local filename = vim.fn.expand "%:t"
-    local extension = vim.fn.expand "%:e"
-    local icon, color = require("nvim-web-devicons").get_icon_color(filename, extension)
-
-    if icon then
-        return icon .. " ", color
+    local bufnr = vim.api.nvim_get_current_buf()
+    if icon_cache[bufnr] then
+        return unpack(icon_cache[bufnr])
     end
 
-    return "", ""
+    local ok, devicons = pcall(require, "nvim-web-devicons")
+    if not ok then
+        icon_cache[bufnr] = { "", "" }
+        return "", ""
+    end
+
+    local filename = vim.fn.expand "%:t"
+    local extension = vim.fn.expand "%:e"
+    local icon, color = devicons.get_icon_color(filename, extension)
+
+    local result = { icon and (icon .. " ") or "", color or "" }
+    icon_cache[bufnr] = result
+    return unpack(result)
 end
 
 -- Function to get diagnostic counts with colors
 local function get_diagnostics()
+    if not M.config.show_diagnostics then
+        return "", ""
+    end
+
     local errors = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })
     local warnings = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARN })
     local info = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.INFO })
@@ -41,10 +71,10 @@ end
 
 -- Function to get save status
 local function get_modified_status()
-    if vim.bo.modified then
-        return " [+]", " [+]"
+    if not M.config.show_modified or not vim.bo.modified then
+        return "", ""
     end
-    return "", ""
+    return " " .. MODIFIED_ICON, " " .. MODIFIED_ICON
 end
 
 -- Function to get relative file path
@@ -58,15 +88,22 @@ local function get_file_path()
     return filepath
 end
 
--- Function to truncate text with ellipsis
+-- Function to truncate text with ellipsis (improved for better Unicode handling)
 local function truncate(text, max_width)
     if vim.fn.strdisplaywidth(text) <= max_width then
         return text
     end
     local ellipsis = "…"
-    max_width = max_width - vim.fn.strdisplaywidth(ellipsis)
-    for i = #text, 1, -1 do
-        local truncated = ellipsis .. text:sub(-i)
+    local ellipsis_width = vim.fn.strdisplaywidth(ellipsis)
+    local target_width = max_width - ellipsis_width
+
+    if target_width <= 0 then
+        return ellipsis
+    end
+
+    local char_count = vim.fn.strchars(text)
+    for i = char_count, 1, -1 do
+        local truncated = ellipsis .. vim.fn.strpart(text, char_count - i, i)
         if vim.fn.strdisplaywidth(truncated) <= max_width then
             return truncated
         end
@@ -79,9 +116,28 @@ local function display_width(str)
     return vim.fn.strdisplaywidth(str)
 end
 
+-- Function to calculate content width
+local function calculate_content_width(icon, filename, path, modified, diagnostics)
+    return display_width(icon .. filename .. "  " .. path .. modified .. diagnostics)
+end
+
+-- Debounced update function
+local function debounced_update(is_active)
+    if update_timer then
+        update_timer:stop()
+    end
+    update_timer = vim.uv.new_timer()
+    update_timer:start(
+        50,
+        0,
+        vim.schedule_wrap(function()
+            M.update_winbar(is_active)
+        end)
+    )
+end
+
 -- Update the winbar
 function M.update_winbar(is_active)
-    -- local is_active = is_active ~= nil and is_active or true
     local filename = vim.fn.expand "%:t"
 
     if filename == "" or vim.bo.buftype ~= "" then
@@ -94,28 +150,36 @@ function M.update_winbar(is_active)
     local diagnostics, plain_diagnostics = get_diagnostics()
     local modified, plain_modified = get_modified_status()
 
-    -- Apply highlight to icon
-    vim.api.nvim_set_hl(0, "WinBarFileIcon", { fg = icon_color })
+    -- Create a unique highlight group name for this window
+    local win_id = vim.api.nvim_get_current_win()
+    local icon_hl_name = "WinBarFileIcon" .. win_id
+
+    -- Set window-specific highlight for the icon
+    if icon_color and icon_color ~= "" then
+        vim.api.nvim_set_hl(0, icon_hl_name, { fg = icon_color })
+    end
 
     -- Get window width
     local win_width = vim.api.nvim_win_get_width(0)
 
     -- Calculate base content width (without path)
-    local colored_icon = "%#WinBarFileIcon#" .. icon .. "%*"
+    local colored_icon = icon_color and icon_color ~= "" and ("%#" .. icon_hl_name .. "#" .. icon .. "%*") or icon
     local filename_part = filename .. "  "
     local base_visual_content = icon .. filename_part .. plain_modified .. plain_diagnostics
     local base_width = display_width(base_visual_content)
 
     -- Calculate available space for path
-    local padding = 2 -- minimum padding on each side
+    local padding = M.config.min_padding
     local available_path_space = win_width - base_width - (padding * 2)
 
     -- Determine path component
     local path_component = ""
-    if is_active and file_path ~= "" then
+    local path_for_width = ""
+    if (is_active or M.config.show_path_when_inactive) and file_path ~= "" then
         local truncated_path = truncate(file_path, math.max(available_path_space, 0))
         if vim.fn.strdisplaywidth(truncated_path) > 0 then
             path_component = ("%%#WinBarPath#%s %%*"):format(truncated_path)
+            path_for_width = truncated_path .. " "
         end
     end
 
@@ -123,45 +187,66 @@ function M.update_winbar(is_active)
     local content = colored_icon .. filename_part .. path_component .. modified .. diagnostics
 
     -- Calculate padding and set winbar
-    local content_width = vim.fn.strdisplaywidth(
-        icon
-            .. filename
-            .. "  "
-            .. (path_component ~= "" and file_path .. " " or "")
-            .. plain_modified
-            .. plain_diagnostics
-    )
+    local content_width = calculate_content_width(icon, filename, path_for_width, plain_modified, plain_diagnostics)
     local final_padding = math.max(math.floor((win_width - content_width) / 2), 0)
     vim.wo.winbar = string.rep(" ", final_padding) .. content
 end
 
+-- Clear icon cache for a buffer
+local function clear_icon_cache(bufnr)
+    if bufnr and icon_cache[bufnr] then
+        icon_cache[bufnr] = nil
+    end
+end
+
 -- Set up autocmds to update the winbar
-function M.setup()
+function M.setup(user_config)
+    -- Merge user config with defaults
+    if user_config then
+        M.config = vim.tbl_extend("force", M.config, user_config)
+    end
+
     local autocmd = vim.api.nvim_create_autocmd
     local group = vim.api.nvim_create_augroup("CustomWinBar", { clear = true })
 
-    -- autocmd({ "FileType" }, {
-    --     callback = function()
-    --         local filename = vim.fn.expand "%:t"
-    --         local extension = vim.fn.expand "%:e"
-    --         local _, color = require("nvim-web-devicons").get_icon_color(filename, extension)
-    --
-    --         if color then
-    --             vim.api.nvim_set_hl(0, "WinBarFileIcon", { fg = color })
-    --         end
-    --     end,
-    -- })
+    -- Clear icon cache when buffer is deleted or file is renamed
+    autocmd({ "BufDelete", "BufFilePost" }, {
+        group = group,
+        callback = function(args)
+            clear_icon_cache(args.buf)
+        end,
+    })
 
-    -- Update when active
+    -- Clean up window-specific highlight groups when windows are closed
+    autocmd("WinClosed", {
+        group = group,
+        callback = function(args)
+            local win_id = tonumber(args.match)
+            if win_id then
+                pcall(vim.api.nvim_set_hl, 0, "WinBarFileIcon" .. win_id, {})
+            end
+        end,
+    })
+
+    -- Update when active (with debouncing for frequent events)
+    autocmd({ "TextChanged", "InsertEnter", "InsertLeave" }, {
+        group = group,
+        callback = function()
+            if vim.bo.buftype == "" then
+                debounced_update(true)
+            else
+                vim.wo.winbar = ""
+            end
+        end,
+    })
+
+    -- Update immediately for other events
     autocmd({
         "BufEnter",
         "BufFilePost",
         "BufWinEnter",
         "BufWritePost",
         "DiagnosticChanged",
-        "InsertEnter",
-        "InsertLeave",
-        "TextChanged",
         "VimResized",
         "WinEnter",
         "WinResized",
@@ -187,6 +272,20 @@ function M.setup()
             end
         end,
     })
+end
+
+-- Function to update configuration
+function M.update_config(new_config)
+    M.config = vim.tbl_extend("force", M.config, new_config)
+end
+
+-- Function to clear all caches (useful for debugging)
+function M.clear_caches()
+    icon_cache = {}
+    if update_timer then
+        update_timer:stop()
+        update_timer = nil
+    end
 end
 
 return M
