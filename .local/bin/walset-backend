@@ -51,6 +51,24 @@ swww img "$IMAGE" --transition-type="center" --transition-duration=2 --transitio
     exit 1
 }
 
+brightness=$(magick "$IMAGE" -colorspace Gray -resize 1x1\! -format "%[fx:int(255*r)]" info:)
+if [ -z "$brightness" ] || ! [[ "$brightness" =~ ^[0-9]+$ ]]; then
+    echo "Warning: Could not calculate brightness, defaulting to dark theme"
+    brightness=100  # Default to below threshold (dark)
+fi
+threshold=130
+
+if ((brightness > threshold)); then
+    # Light background - use primary color for border
+    sed -i 's/^\$hyprborder = .*/\$hyprborder = rgba({{colors.primary.default.hex_stripped}}ff)/' ~/.config/matugen/templates/hyprland-colors.conf
+else
+    # Dark background - use fixed dark color for border
+    sed -i 's/^\$hyprborder = .*/\$hyprborder = rgba(3e4142ff)/' ~/.config/matugen/templates/hyprland-colors.conf
+fi
+
+# Then run matugen normally
+matugen image "$IMAGE" -m "dark"
+
 # Define cache directory and files
 WALLPAPER_CACHE_DIR="$HOME/.cache/averell/"
 wallSet="${WALLPAPER_CACHE_DIR}/original.set"

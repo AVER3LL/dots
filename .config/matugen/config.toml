@@ -16,7 +16,7 @@ output_path = '~/.config/rofi/material-colors.rasi'
 [templates.kitty]
 input_path = '~/.config/matugen/templates/kitty-colors.conf'
 output_path = '~/.config/kitty/colors-matugen.conf'
-post_hook = "kitty @ set-colors -a -c ~/.config/kitty/colors.conf"
+post_hook = "kitty @ set-colors -a -c ~/.config/kitty/colors-matugen.conf"
 
 [templates.gtk3]
 input_path = '~/.config/matugen/templates/gtk-colors.css'

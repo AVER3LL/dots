@@ -1,0 +1,434 @@
+{
+    "custom/notification": {
+        "tooltip": false,
+        "format": "{icon}",
+        "format-icons": {
+            "notification": "<span foreground='red'><sup></sup></span>",
+            "none": "",
+            "dnd-notification": "<span foreground='red'><sup></sup></span>",
+            "dnd-none": "",
+            "inhibited-notification": "<span foreground='red'><sup></sup></span>",
+            "inhibited-none": "",
+            "dnd-inhibited-notification": "<span foreground='red'><sup></sup></span>",
+            "dnd-inhibited-none": "",
+        },
+        "return-type": "json",
+        "exec-if": "which swaync-client",
+        "exec": "swaync-client -swb",
+        "on-click": "swaync-client -t -sw",
+        "on-click-right": "swaync-client -d -sw",
+        "escape": true,
+    },
+
+    /* -----------------------------------------------------
+     * Menu, Lock and Power
+     * ----------------------------------------------------- */
+
+    "custom/launcher": {
+        "format": "",
+        "on-click": "~/.config/rofi/launchers/type-1/launcher.sh",
+        "tooltip-format": "Launch your favorite apps",
+    },
+
+    "custom/lock_screen": {
+        "format": " ",
+        "on-click": "sh -c '(sleep 0.1s; hyprlock)' & disown",
+        "tooltip": true,
+        "tooltip-format": "Lock screen",
+    },
+
+    "custom/wlogout": {
+        "format": " ",
+        "on-click": "~/.config/wlogout/launch.sh",
+        "tooltip": true,
+        "tooltip-format": "Power menu",
+    },
+
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "󰥔",
+            "deactivated": "",
+            // "activated": "",
+            // "deactivated": "",
+        },
+    },
+
+    "custom/pacman": {
+        "format": "  {}",
+        "interval": "once",
+        "exec": "count=$(checkupdates | wc -l); [ \"$count\" -eq 0 ] && echo '' || echo \"$count\"",
+        "on-click": "kitty -e sh -c 'sudo pacman -Syu; pkill -SIGRTMIN+8 waybar'",
+        "signal": 8,
+        "tooltip-format": "{} updates available",
+    },
+
+    "wlr/taskbar": {
+        "format": "{icon}",
+        "icon-size": 18,
+        "tooltip-format": "{title}",
+        "on-click": "activate",
+        "on-click-middle": "close",
+        "ignore-list": ["wofi", "rofi"],
+        "app_ids-mapping": {
+            "firefoxdeveloperedition": "firefox-developer-edition",
+        },
+        "rewrite": {
+            "Firefox Web Browser": "Firefox",
+        },
+    },
+
+    "custom/wallpaper_change": {
+        "format": "󰸉",
+        "on-click": "sh -c '/home/averell/.local/bin/walset-backend \"$(find \"$HOME/wallpaper\" -type f | shuf -n 1)\"' & disown",
+        "tooltip": true,
+        "tooltip-format": "Change wallpaper",
+    },
+
+    "custom/rec_status": {
+        "exec": "~/.config/waybar/scripts/record_status.sh",
+        "interval": 1,
+        "return-type": "json",
+        "on-click": "~/.config/waybar/scripts/record_status.sh --click",
+        "format": "{}",
+    },
+
+    "custom/media": {
+        "format": "{}",
+        "escape": true,
+        "return-type": "json",
+        "max-length": 40,
+        "on-click": "playerctl play-pause",
+        "on-click-right": "playerctl stop",
+        "smooth-scrolling-threshold": 1, // This value was tested using a trackpad, it should be lowered if using a mouse.
+        "on-scroll-up": "playerctl next",
+        "on-scroll-down": "playerctl previous",
+        "exec": "$HOME/.config/waybar/scripts/mediaplayer.py 2> /dev/null",
+    },
+
+    "tray": {
+        "icon-size": 20,
+        "spacing": 10,
+    },
+
+    /* -----------------------------------------------------
+     * Audio
+     * ----------------------------------------------------- */
+    "pulseaudio": {
+        "format": "{icon}  {volume}%",
+        "format-bluetooth": "󰂱 {volume}%",
+        "format-muted": "󰖁",
+        "scroll-step": 1,
+        "on-click": "~/.config/hypr/scripts/volume_hyprdots.sh -o m",
+        "on-click-middle": "pavucontrol",
+        "ignored-sinks": ["Easy Effects Sink"],
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "󰋎",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["󰖀", "󰕾"],
+        },
+        "tooltip-format": "Volume: {volume}%",
+    },
+
+    "pulseaudio/slider": {
+        "min": 0,
+        "max": 100,
+        "orientation": "horizontal",
+    },
+
+    "pulseaudio#microphone": {
+        "format": "{format_source}  {volume}%",
+        "rotate": 0,
+        "format-source": "",
+        "format-source-muted": "",
+        "on-click-middle": "pavucontrol -t 4",
+        "on-click": "~/.config/hypr/scripts/volume_hyprdots.sh -i m",
+        "tooltip-format": "{format_source} {source_desc} // {source_volume}%",
+        "scroll-step": 5,
+    },
+
+    "mpris": {
+        "format": "{title} - {artist}",
+        "format-paused": "{title} - {artist}",
+        "on-click": "playerctl play-pause",
+        "on-click-right": "playerctl next",
+        "scroll-step": 5.0,
+        "smooth-scrolling-threshold": 1,
+        "status-icons": {
+            "paused": "󰐎",
+            "playing": "🎶",
+            "stopped": "",
+        },
+        "max-length": 25,
+        // "ignored-players": ["firefox"]
+    },
+
+    /* -----------------------------------------------------
+     * System information
+     * ----------------------------------------------------- */
+
+    "battery": {
+        "interval": 1,
+        "full-at": 80,
+        "states": {
+            "good": 95,
+            "warning": 30,
+            "critical": 20,
+        },
+        "format": "{icon}  {capacity}%",
+        "format-charging": "  {capacity}%",
+        "format-plugged": "  {capacity}%",
+        // "format-charging": "󰂄  {capacity}%",
+        "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+        "format-full": "  Full",
+        "tooltip-format": "Battery is at {capacity}%",
+    },
+
+    "clock": {
+        "format": "󰥔  {:%B %d  %R}",
+        "format-alt": "󰥔  {:%a, %d. %b  %R}",
+        "tooltip-format": "Date: {:%Y-%m-%d}",
+    },
+
+    "network": {
+        "interface": "wlo1",
+        "format": "{ifname}",
+        "format-wifi": "{icon}  {essid}",
+        "format-ethernet": "󰈀  {ipaddr}/{cidr}",
+        "format-disconnected": "󰤭  Disconnected",
+        "max-length": 50,
+        "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
+        "tooltip-format": "Connected to {essid}",
+    },
+
+    "cpu": {
+        "interval": 10,
+        "format": "    {}%",
+        "max-length": 10,
+    },
+
+    "memory": {
+        "interval": 30,
+        "format": "    {}%",
+        "max-length": 10,
+    },
+
+    "disk": {
+        "interval": 30,
+        "format": "   {percentage_used}% used on {path}",
+        "path": "/",
+    },
+
+    /* -----------------------------------------------------
+     * workspaces
+     * ----------------------------------------------------- */
+
+    "hyprland/workspaces": {
+        "format": "{icon}",
+        "on-click": "activate",
+        "format-icons": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4",
+            "5": "5",
+            "6": "6",
+            "7": "7",
+            "8": "8",
+            "9": "9",
+            "10": "10",
+        },
+        "persistent-workspaces": {
+            "*": 6, // 5 workspaces by default on every monitor
+        },
+        "sort-by-number": true,
+    },
+
+    // Workspaces circles
+    "hyprland/workspaces#circles": {
+        "disable-scroll": true,
+        "active-only": false,
+        "all-outputs": true,
+        "show-special": false,
+        "format": "{icon}", // Comment to have the numbers instead
+        "on-click": "activate",
+        "sort-by-number": true,
+        "format-icons": {
+            "active": "",
+            "empty": "",
+            "default": "",
+            "urgent": "",
+            // "default": "",
+        },
+        "persistent-workspaces": {
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": [],
+            "5": [],
+            "6": [],
+        },
+    },
+
+    // ROMAN Numerals style
+    "hyprland/workspaces#roman": {
+        "active-only": false,
+        "all-outputs": true,
+        "format": "{icon}",
+        "show-special": false,
+        "on-click": "activate",
+        "on-scroll-up": "hyprctl dispatch workspace e+1",
+        "on-scroll-down": "hyprctl dispatch workspace e-1",
+        "persistent-workspaces": {
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": [],
+            "5": [],
+            "6": [],
+        },
+        "format-icons": {
+            "1": "I",
+            "2": "II",
+            "3": "III",
+            "4": "IV",
+            "5": "V",
+            "6": "VI",
+            "7": "VII",
+            "8": "VIII",
+            "9": "IX",
+            "10": "X",
+        },
+    },
+
+    // Kanji / Japanese style
+    "hyprland/workspaces#kanji": {
+        "disable-scroll": true,
+        "show-special": false,
+        "all-outputs": true,
+        "format": "{icon}",
+        "persistent-workspaces": {
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": [],
+            "5": [],
+            "6": [],
+        },
+        "format-icons": {
+            "1": "一",
+            "2": "二",
+            "3": "三",
+            "4": "四",
+            "5": "五",
+            "6": "六",
+            "7": "七",
+            "8": "八",
+            "9": "九",
+            "10": "十",
+        },
+    },
+
+    "backlight": {
+        "device": "intel_backlight",
+        "rotate": 0,
+        "on-scroll-up": "light -A 7",
+        "on-scroll-down": "light -U 7",
+        "format": "{icon}  {percent}%",
+        "format-icons": ["", "", "", "", "", "", "", "", ""],
+        "tooltip-format": "{icon} Luminosity // {percent}%",
+    },
+
+    "custom/weather": {
+        "exec": "${HOME}/.config/waybar/scripts/get_weather.sh Bangalore+India",
+        "return-type": "json",
+        "format": "{}",
+        "tooltip": true,
+        "interval": 3600,
+    },
+
+    "power-profiles-daemon": {
+        "format": "{icon}",
+        "tooltip-format": "Power mode: {profile}",
+        "tooltip": true,
+        "format-icons": {
+            "default": "",
+            "performance": "󰠠",
+            "balanced": "󰚀",
+            "power-saver": "󰌪",
+        },
+    },
+
+    "hyprland/window": {
+        "format": "{class}",
+        "separate-outputs": true,
+        "icon": true,
+        "icon-size": 18,
+    },
+
+    "group/sys_info": {
+        "orientation": "inherit",
+        "drawer": {
+            "transition-duration": 300,
+            "children-class": "pulseaudio",
+            "transition-right-to-left": true,
+        },
+        "modules": ["pulseaudio", "backlight", "power-profiles-daemon", "pulseaudio#microphone"],
+    },
+
+    /* -----------------------------------------------------
+     * Spacing modules
+     * ----------------------------------------------------- */
+
+    "custom/left": {
+        "format": " ",
+        "interval": "once",
+        "tooltip": false,
+    },
+
+    "custom/right": {
+        "format": " ",
+        "interval": "once",
+        "tooltip": false,
+    },
+
+    "custom/separator#blank": {
+        "format": "",
+        "interval": "once",
+        "tooltip": false,
+    },
+    "custom/separator#blank_1": {
+        "format": " ",
+        "interval": "once",
+        "tooltip": false,
+    },
+    "custom/separator#blank_2": {
+        "format": "  ",
+        "interval": "once",
+        "tooltip": false,
+    },
+    "custom/separator#blank_3": {
+        "format": "   ",
+        "interval": "once",
+        "tooltip": false,
+    },
+    "custom/separator#dot": {
+        "format": "",
+        "interval": "once",
+        "tooltip": false,
+    },
+    "custom/separator#dot-line": {
+        "format": "  ",
+        "interval": "once",
+        "tooltip": false,
+    },
+    "custom/separator#line": {
+        "format": "|",
+        "interval": "once",
+        "tooltip": false,
+    },
+}

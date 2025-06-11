@@ -1,0 +1,52 @@
+{
+    "reload_style_on_change": true,
+    "layer": "top",
+    "position": "top",
+    "margin-top": 6,
+    "margin-bottom": 0,
+    "margin-left": 13,
+    "margin-right": 13,
+    "height": 45,
+
+    "include": ["${HOME}/.config/waybar/modules.jsonc"],
+
+    "modules-left": [
+        "custom/separator#blank_1",
+        "custom/launcher",
+        "custom/separator#blank_2",
+        "hyprland/workspaces",
+        "group/sys_info",
+    ],
+
+    "modules-center": ["clock"],
+
+    "modules-right": [
+        "mpris",
+        "custom/pacman",
+        "tray",
+        "custom/swaync",
+        "custom/separator#blank_1",
+        "battery",
+        "custom/separator#blank_1",
+        "custom/wallpaper_change",
+        "idle_inhibitor",
+        "custom/wlogout",
+        "custom/right",
+    ],
+
+    "group/sys_info": {
+        "orientation": "inherit",
+        "drawer": {
+            "transition-duration": 300,
+            "children-class": "backlight",
+            "transition-left-to-right": true,
+        },
+        "modules": ["pulseaudio", "backlight", "pulseaudio#microphone"],
+    },
+
+    "clock": {
+        "format": "{:%B %d  %R}",
+        "format-alt": "󰥔  {:%a, %d. %b  %R}",
+        "tooltip-format": "Date: {:%Y-%m-%d}",
+    },
+}

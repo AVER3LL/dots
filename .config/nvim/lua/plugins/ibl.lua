@@ -7,6 +7,13 @@ return {
         event = "VeryLazy",
         dependencies = "tpope/vim-sleuth",
         main = "ibl",
+        keys = {
+            {
+                "<leader><leader>i",
+                "<cmd>IBLToggle<cr>",
+                desc = "Toggle indent lines",
+            },
+        },
         opts = {
             exclude = {
                 filetypes = {
@@ -32,6 +39,8 @@ return {
                     "prompt",
                 },
             },
+            -- Toggling it with a keybinding if need be
+            enabled = false,
             indent = { char = "│", smart_indent_cap = true },
             scope = { enabled = false, char = "│", show_start = false, show_end = false },
         },

@@ -1,0 +1,14 @@
+{
+    "reload_style_on_change": true,
+    "layer": "top",
+    "position": "top",
+    "margin-top": 9,
+    "margin-bottom": 0,
+    "height": 45,
+
+    "include": ["${HOME}/.config/waybar/modules.jsonc"],
+
+    "modules-left": ["custom/launcher", "clock", "custom/media"],
+    "modules-center": ["custom/notification", "hyprland/workspaces", "idle_inhibitor"],
+    "modules-right": ["custom/pacman", "custom/rec_status", "tray", "custom/weather", "group/sys_info", "battery"],
+}

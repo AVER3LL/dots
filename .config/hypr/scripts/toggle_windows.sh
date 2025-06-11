@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Define the unique configuration and style files for the secondary Waybar instance
-WAYBAR_CONFIG="$HOME/.config/waybar/taskbar.jsonc"
-WAYBAR_STYLE="$HOME/.config/waybar/taskbar_style.css"
+WAYBAR_CONFIG="$HOME/.config/waybar/themes/taskbar/config.jsonc"
+WAYBAR_STYLE="$HOME/.config/waybar/themes/taskbar/style.css"
 
 # Check if a Waybar instance with this specific configuration is running
 if pgrep -af "waybar.*$WAYBAR_CONFIG" >/dev/null; then

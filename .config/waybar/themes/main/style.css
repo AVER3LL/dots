@@ -1,0 +1,139 @@
+@import 'colors.css';
+
+* {
+    font-family: 'JetBrainsMono Nerd Font Propo', sans-serif;
+    font-size: 101%;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+window#waybar {
+    background-color: transparent;
+    color: @foreground;
+}
+
+tooltip {
+    border-radius: 10px;
+}
+
+.modules-right {
+    margin-right: 12px;
+}
+
+/* -----------------------------------------------------
+ * Workspaces
+ * ----------------------------------------------------- */
+
+#workspaces {
+    background-color: @surface_container_low;
+    padding: 5px 5px 5px 5px;
+    border-radius: 10px;
+    margin-left: 12px;
+}
+
+#workspaces button {
+    background-color: @outline_variant;
+    margin: 0 3px 0 3px;
+    color: @outline;
+    border-radius: 5px;
+    min-width: 25px;
+    padding: 0 8px;
+    transition:
+        margin 150ms ease-in-out,
+        padding 150ms ease-in-out,
+        background-color 0.3s ease,
+        color 0.3s ease;
+}
+
+/* Non empty and not active */
+#workspaces button.persistent {
+    color: @outline;
+    background-color: @outline_variant;
+    transition: all 0.1s linear;
+}
+
+#workspaces button.empty {
+    color: @outline_variant;
+    background-color: @outline_variant;
+}
+
+#workspaces button.active {
+    background-color: @primary_fixed_dim;
+    color: @on_primary_fixed;
+    border-radius: 5px;
+    padding: 0px 24px;
+}
+
+#workspaces button.active:hover {
+    color: @primary_fixed_dim;
+    background: inherit;
+}
+
+#workspaces button:hover {
+    background: @surface_container_high;
+}
+
+#workspaces button.urgent {
+    background-color: @error;
+    color: @on_error;
+}
+
+#battery,
+#pulseaudio,
+#backlight,
+#custom-pacman,
+#network,
+#clock,
+#custom-weather,
+#custom-media,
+#window,
+#cpu,
+#memory,
+#disk,
+#tray,
+#custom-launcher,
+#custom-notification,
+#idle_inhibitor,
+#custom-rec_status,
+#power-profiles-daemon {
+    color: @primary;
+    background-color: @surface_container;
+    padding: 10px 15px 10px 15px;
+    margin: 0 0 0 12px;
+}
+
+#custom-pacman {
+    color: @surface_container;
+    background-color: @primary;
+    border: 1px solid @surface_container;
+}
+
+#window.hidden {
+    opacity: 0;
+    min-width: 0;
+    min-height: 0;
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+
+window#waybar.empty #window {
+    background-color: transparent;
+}
+
+/* Battery Indicator */
+@keyframes blink {
+    to {
+        background-color: @surface_container;
+        color: @primary;
+    }
+}
+
+#battery.critical:not(.charging):not(.plugged) {
+    animation: blink 0.5s linear infinite alternate;
+    color: @on_error;
+}
+
+#battery.warning:not(.charging) {
+    color: @error;
+}
