@@ -23,7 +23,7 @@ if ! command -v rofi &>/dev/null; then
 fi
 
 # Check if backend command is available
-if ! command -v "$BACKEND_CMD" &>/dev/null; then
+if [ ! -x "$BACKEND_CMD" ]; then
     notify-send "Wallpaper Selector" "Error: Backend command not found: $BACKEND_CMD"
     echo "Error: Backend command not found: $BACKEND_CMD"
     exit 1

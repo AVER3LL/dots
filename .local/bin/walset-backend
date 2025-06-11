@@ -1,18 +1,26 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Wallpaper Manager Script
 # This script sets a wallpaper and creates various cached versions for different uses
 
+# Initialize SET_WALLPAPER flag (default: true)
+SET_WALLPAPER=true
+
+# Check if user wants to skip setting wallpaper
+if [ "$1" = "--no-set" ]; then
+    SET_WALLPAPER=false
+    shift # Remove --no-set from arguments
+fi
+
 # Check if required tools are installed
 check_dependencies() {
+    local critical_deps=(swww matugen wallust)
     local missing_deps=()
-    for cmd in swww matugen magick notify-send file; do
-        if ! command -v "$cmd" &>/dev/null; then
-            missing_deps+=("$cmd")
-        fi
+    for cmd in "${critical_deps[@]}"; do
+        command -v "$cmd" >/dev/null 2>&1 || missing_deps+=("$cmd")
     done
 
     if [ ${#missing_deps[@]} -ne 0 ]; then
-        echo "Error: Missing dependencies: ${missing_deps[*]}"
+        echo "Error: Missing critical dependencies: ${missing_deps[*]}" >&2
         notify-send "Wallpaper error" "Error: Missing dependencies: ${missing_deps[*]}"
         echo "Please install the required tools and try again."
         exit 1
@@ -21,7 +29,7 @@ check_dependencies() {
 
 # Check if the user provided an argument
 if [ "$#" -ne 1 ]; then
-    echo "Usage: $0 <path-to-image>"
+    echo "Usage: $0 [--no-set] <path-to-image>"
     exit 1
 fi
 
@@ -43,18 +51,20 @@ if ! file "$IMAGE" | grep -qE 'image|bitmap|PNG|JPEG|JPG|GIF|BMP|SVG'; then
 fi
 
 # Send notification to the user
-notify-send "Wallpaper" "Changing wallpaper..."
+echo "Changing wallpaper..."
 
 # Set the wallpaper using swww - this happens first and doesn't wait
-swww img "$IMAGE" --transition-type="center" --transition-duration=2 --transition-step=90 --transition-angle=0 --transition-fps=60 || {
-    echo "Error: Failed to set wallpaper with swww."
-    exit 1
-}
+if $SET_WALLPAPER; then
+    swww img "$IMAGE" --transition-type="center" --transition-duration=2 --transition-step=90 --transition-angle=0 --transition-fps=60 || {
+        echo "Error: Failed to set wallpaper with swww."
+        exit 1
+    }
+fi
 
-brightness=$(magick "$IMAGE" -colorspace Gray -resize 1x1\! -format "%[fx:int(255*r)]" info:)
+brightness=$(magick "$IMAGE" -colorspace Gray -resize 1x1\! -format "%[fx:round(255*r)]" info:)
 if [ -z "$brightness" ] || ! [[ "$brightness" =~ ^[0-9]+$ ]]; then
     echo "Warning: Could not calculate brightness, defaulting to dark theme"
-    brightness=100  # Default to below threshold (dark)
+    brightness=100 # Default to below threshold (dark)
 fi
 threshold=130
 
@@ -65,9 +75,6 @@ else
     # Dark background - use fixed dark color for border
     sed -i 's/^\$hyprborder = .*/\$hyprborder = rgba(3e4142ff)/' ~/.config/matugen/templates/hyprland-colors.conf
 fi
-
-# Then run matugen normally
-matugen image "$IMAGE" -m "dark"
 
 # Define cache directory and files
 WALLPAPER_CACHE_DIR="$HOME/.cache/averell/"
@@ -82,21 +89,22 @@ wallQad="${WALLPAPER_CACHE_DIR}/wall.quad"
 mkdir -p "$WALLPAPER_CACHE_DIR"
 
 # Save original image path
-echo "$IMAGE" >"$wallSet"
-ln -sf "$IMAGE" "$wallCur"
+ln -sf "$IMAGE" "$wallCur" &       # Background link creation
+printf '%s\n' "$IMAGE" >"$wallSet" # More efficient than echo
 
 # Create a function for the background processing
 generate_caches() {
     local image="$1"
     local cache_dir="$2"
 
-    # Determine image format
     local extension="${image##*.}"
     local extension_lc="$(echo "$extension" | tr '[:upper:]' '[:lower:]')"
     local cache_src="$image"
     local temp_frame=""
 
-    # If it's a gif, extract first frame for processing
+    mkdir -p "$cache_dir"
+
+    # If it's a gif, extract first frame
     if [ "$extension_lc" = "gif" ]; then
         temp_frame="${cache_dir}/wall.firstframe.png"
         magick "$image[0]" "$temp_frame" || {
@@ -105,41 +113,44 @@ generate_caches() {
         cache_src="$temp_frame"
     fi
 
-    # Generate cached versions using ImageMagick
-    echo "Generating square crop..."
-    magick "$cache_src" -strip -thumbnail 500x500^ -gravity center -extent 500x500 "$wallSqr" || echo "Warning: Failed to create square crop."
+    echo "Processing all outputs in one pass..."
 
-    echo "Generating thumbnail..."
-    magick "$cache_src" -strip -thumbnail 320x180^ -gravity center -extent 320x180 "$wallTmb" || echo "Warning: Failed to create thumbnail."
+    magick "$cache_src" \
+        -strip \
+        \( +clone -thumbnail 500x500^ -gravity center -extent 500x500 -write "$wallSqr" +delete \) \
+        \( +clone -thumbnail 320x180^ -gravity center -extent 320x180 -write "$wallTmb" +delete \) \
+        \( +clone -resize 1920x1080^ -gravity center -extent 1920x1080 -blur 0x8 -write "$wallBlr" +delete \) \
+        null: >/dev/null || echo "Warning: Failed to generate images."
 
-    echo "Generating blurred version..."
-    magick "$cache_src" -strip -resize 1920x1080^ -gravity center -extent 1920x1080 -blur 0x8 "$wallBlr" || echo "Warning: Failed to create blurred wallpaper."
+    # Generate quad from square version
+    if [ -f "$wallSqr" ]; then
+        echo "Generating quad version..."
+        magick "$wallSqr" \
+            \( -size 500x500 xc:white \
+            -fill "rgba(0,0,0,0.7)" -draw "polygon 400,500 500,500 500,0 450,0" \
+            -fill black -draw "polygon 500,500 500,0 450,500" \) \
+            -alpha Off -compose CopyOpacity -composite "$wallQad" ||
+            echo "Warning: Failed to create quad version."
+    fi
 
-    echo "Generating quad version..."
-    magick "$wallSqr" \( -size 500x500 xc:white -fill "rgba(0,0,0,0.7)" -draw "polygon 400,500 500,500 500,0 450,0" -fill black -draw "polygon 500,500 500,0 450,500" \) \
-        -alpha Off -compose CopyOpacity -composite "${wallQad}.png" &&
-        mv "${wallQad}.png" "$wallQad" || echo "Warning: Failed to create quad version."
-
-    # Clean up temp frame if needed
-    [ -n "$temp_frame" ] && [ -f "$temp_frame" ] && rm "$temp_frame"
+    [ -n "$temp_frame" ] && rm -f "$temp_frame"
 }
 
-# Run the most time-consuming tasks in the background
-# Generate all the cached versions
-generate_caches "$IMAGE" "$WALLPAPER_CACHE_DIR"
+generate_caches "$IMAGE" "$WALLPAPER_CACHE_DIR" &
+matugen image "$IMAGE" -m "dark" &
+wallust run "$IMAGE" &
 
-# Use Matugen to generate Material You colors (the slowest part)
-matugen image "$IMAGE" -m "dark"
-
-wallust run "$IMAGE"
+# {
+#     generate_caches "$IMAGE" "$WALLPAPER_CACHE_DIR" &
+#     matugen image "$IMAGE" -m "dark" &
+#     wallust run "$IMAGE" &
+#     wait
+# } &
 
 # Refresh swaync
+# wait
 pkill swaync
 swaync >/dev/null 2>&1 &
-
-# Refresh waybar
-# sleep 2
-# $HOME/.config/waybar/scripts/launch.sh
 
 echo "Wallpaper processing completed!"
 echo "Cached versions available at: $WALLPAPER_CACHE_DIR"
