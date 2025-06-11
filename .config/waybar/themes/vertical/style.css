@@ -8,7 +8,7 @@
 
 window#waybar {
     background: @background;
-    color: @foreground;
+    color: @on_primary_container;
     border: 1px solid #3e4142;
     border-radius: 8px;
     transition: background-color 0.3s ease;
@@ -155,7 +155,7 @@ tooltip {
 }
 
 #battery.good {
-    color: #82A55F;
+    color: #82a55f;
 }
 
 #pulseaudio.mic {
@@ -197,14 +197,29 @@ tooltip {
 
 @keyframes blink-red {
     to {
-        background-color: #c64d4f;
-        color: @foreground;
+        color: #c64d4f;
     }
 }
 
 @keyframes blink-yellow {
     to {
-        background-color: #cf9022;
-        color: @foreground;
+        color: #cf9022;
     }
+}
+
+@keyframes blink {
+    to {
+        background-color: @surface_container;
+        color: @primary;
+    }
+}
+
+#battery.critical:not(.charging):not(.plugged) {
+    animation: blink-red 0.5s linear infinite alternate;
+    color: @on_error;
+}
+
+#battery.warning:not(.charging):not(.plugged) {
+    animation: blink-yellow 0.5s linear infinite alternate;
+    color: @error;
 }

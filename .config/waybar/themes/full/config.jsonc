@@ -21,7 +21,8 @@
     "modules-center": ["clock"],
 
     "modules-right": [
-        "mpris",
+        "custom/rec_status",
+        "privacy",
         "custom/pacman",
         "tray",
         "custom/swaync",

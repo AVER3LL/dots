@@ -93,6 +93,25 @@
         "format": "{}",
     },
 
+    "privacy": {
+        "orientation": "vertical",
+        "icon-spacing": 5,
+        "icon-size": 14,
+        "transition-duration": 250,
+        "modules": [
+            {
+                "type": "screenshare",
+                "tooltip": true,
+                "tooltip-icon-size": 24
+            },
+            {
+                "type": "audio-in",
+                "tooltip": true,
+                "tooltip-icon-size": 24
+            }
+        ],
+    },
+
     "custom/media": {
         "format": "{}",
         "escape": true,

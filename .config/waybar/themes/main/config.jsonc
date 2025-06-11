@@ -10,5 +10,13 @@
 
     "modules-left": ["custom/launcher", "clock", "custom/media"],
     "modules-center": ["custom/notification", "hyprland/workspaces", "idle_inhibitor"],
-    "modules-right": ["custom/pacman", "custom/rec_status", "tray", "custom/weather", "group/sys_info", "battery"],
+    "modules-right": [
+        "custom/pacman",
+        "custom/rec_status",
+        "privacy",
+        "tray",
+        "custom/weather",
+        "group/sys_info",
+        "battery",
+    ],
 }

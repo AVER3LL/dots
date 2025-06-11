@@ -52,7 +52,7 @@ tooltip label {
 }
 
 #workspaces button.persistent {
-    color: @outline;
+    color: alpha(@foreground, 0.1);
     transition: all 0.1s linear;
 }
 

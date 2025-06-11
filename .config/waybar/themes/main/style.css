@@ -95,6 +95,7 @@ tooltip {
 #custom-notification,
 #idle_inhibitor,
 #custom-rec_status,
+#privacy,
 #power-profiles-daemon {
     color: @primary;
     background-color: @surface_container;

@@ -32,10 +32,12 @@ main() {
 
     if [[ "$selected_wallpaper" == "$ASSETS/main.png" ]]; then
         reload_waybar "$THEMES/main/style.css" "$THEMES/main/config.jsonc"
-    elif [[ "$selected_wallpaper" == "$ASSETS/full.png" ]]; then
+    elif [[ "$selected_wallpaper" == "$ASSETS/top.png" ]]; then
         reload_waybar "$THEMES/full/style.css" "$THEMES/full/config.jsonc"
-    elif [[ "$selected_wallpaper" == "$ASSETS/zen.png" ]]; then
+    elif [[ "$selected_wallpaper" == "$ASSETS/vertical.png" ]]; then
         reload_waybar "$THEMES/vertical/style.css" "$THEMES/vertical/config.jsonc"
+    elif [[ "$selected_wallpaper" == "$ASSETS/bottom.png" ]]; then
+        reload_waybar "$THEMES/bottom/style.css" "$THEMES/bottom/config.jsonc"
     fi
 }
 

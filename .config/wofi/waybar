@@ -2,13 +2,13 @@
 [config]
 allow_images=true
 show=drun
-width=1200
-height=600
+width=1800
+height=900
 always_parse_args=true
 show_all=true
 term=kitty
 hide_scroll=true
 print_command=true
 insensitive=true
-columns=1
-image_size=1050
+columns=2
+image_size=450

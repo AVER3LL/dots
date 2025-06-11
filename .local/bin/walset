@@ -50,7 +50,7 @@ for file in "${image_files[@]}"; do
 done
 
 # Show rofi selection dialog
-SELECTED_WALL=$(echo -en "$rofi_input" | rofi -dmenu -theme ~/.config/rofi/material-you.rasi -p "" -i)
+SELECTED_WALL=$(echo -en "$rofi_input" | rofi -dmenu -theme ~/.config/rofi/wallpaper.rasi -p "" -i)
 
 # Process the selection
 if [ -n "$SELECTED_WALL" ]; then
