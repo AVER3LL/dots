@@ -9,6 +9,7 @@
 # Check that settings file exists
 config="$HOME/.config/gtk-3.0/settings.ini"
 if [ ! -f "$config" ]; then exit 1; fi
+terminal=kitty
 
 # Read settings file
 gnome_schema="org.gnome.desktop.interface"
@@ -18,7 +19,6 @@ cursor_theme="$(grep 'gtk-cursor-theme-name' "$config" | sed 's/.*\s*=\s*//')"
 cursor_size="$(grep 'gtk-cursor-theme-size' "$config" | sed 's/.*\s*=\s*//')"
 font_name="$(grep 'gtk-font-name' "$config" | sed 's/.*\s*=\s*//')"
 prefer_dark_theme="$(grep 'gtk-application-prefer-dark-theme' "$config" | sed 's/.*\s*=\s*//')"
-terminal=kitty
 
 # Echo value for debugging
 echo "GTK-Theme:" $gtk_theme

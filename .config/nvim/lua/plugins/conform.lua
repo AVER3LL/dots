@@ -1,9 +1,11 @@
 return {
     "stevearc/conform.nvim",
     event = { "BufReadPre", "BufNewFile" },
-    config = function()
-        local conform = require "conform"
-        conform.setup {
+    opts = function()
+        local util = require "conform.util"
+
+        ---@type conform.setupOpts
+        local opts = {
             formatters_by_ft = {
                 css = { "prettier" },
                 html = { "prettier" },
@@ -35,6 +37,18 @@ return {
             },
 
             formatters = {
+                pint = {
+                    meta = {
+                        url = "https://github.com/laravel/pint",
+                        description = "Laravel Pint is an opinionated PHP code style fixer for minimalists. Pint is built on top of PHP-CS-Fixer and makes it simple to ensure that your code style stays clean and consistent.",
+                    },
+                    command = util.find_executable({
+                        vim.fn.stdpath "data" .. "/mason/bin/pint",
+                        "vendor/bin/pint",
+                    }, "pint"),
+                    args = { "$FILENAME" },
+                    stdin = false,
+                },
                 --python
                 black = {
                     prepend_args = {
@@ -69,7 +83,7 @@ return {
                         "-",
                     },
                     stdin = true,
-                    cwd = require("conform.util").root_file {
+                    cwd = util.root_file {
                         "pyproject.toml",
                         "ruff.toml",
                         ".ruff.toml",
@@ -100,12 +114,6 @@ return {
                     },
                 },
             },
-
-            -- format_on_save = {
-            --   -- These options will be passed to conform.format()
-            --   timeout_ms = 500,
-            --   lsp_fallback = true,
-            -- },
         }
 
         vim.api.nvim_create_user_command("Format", function(args)
@@ -119,5 +127,7 @@ return {
             end
             require("conform").format { async = true, lsp_format = "fallback", range = range }
         end, { range = true })
+
+        return opts
     end,
 }

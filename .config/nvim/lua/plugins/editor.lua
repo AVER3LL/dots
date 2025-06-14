@@ -2,9 +2,8 @@ return {
     -- Better comments somehow
     {
         "numToStr/Comment.nvim",
-        enabled = false,
+        enabled = true,
         event = { "BufReadPre", "BufNewFile" },
-        ft = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
         dependencies = {
             "JoosepAlviste/nvim-ts-context-commentstring",
         },

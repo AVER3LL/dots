@@ -104,12 +104,6 @@
         "format": "󰻠",
         "tooltip": false,
     },
-    "custom/cputemp": {
-        "format": "{}",
-        "exec": "",
-        "interval": 10,
-        "return-type": "json",
-    },
     "cpu": {
         "format": "<b>{usage}󱉸</b>",
         "on-click": "foot btop",
@@ -270,7 +264,7 @@
     },
     "pulseaudio/slider": {
         "min": 0,
-        "max": 140,
+        "max": 100,
         "orientation": "vertical",
     },
     "network": {
@@ -369,45 +363,9 @@
         "on-click": "toggle-hyprshade",
         "return-type": "json",
     },
-    "custom/weather": {
-        "format": "{}",
-        "tooltip": true,
-        "interval": 3600,
-        "exec": "",
-        "return-type": "json",
-    },
-    "custom/updates": {
-        "format": "{}",
-        "interval": 10800,
-        "exec": "",
-        "return-type": "json",
-        "exec-if": "exit 0",
-        "signal": 8,
-    },
-    "custom/vpn": {
-        "format": "{} ",
-        "exec": "",
-        "return-type": "json",
-        "interval": 5,
-    },
-    "custom/hotspot": {
-        "format": "{} ",
-        "exec": "",
-        "return-type": "json",
-        "on-click": "",
-        "interval": 5,
-    },
     "custom/mark": {
         "format": "",
         "tooltip": false,
-    },
-    "custom/colorpicker": {
-        "format": "{}",
-        "return-type": "json",
-        "interval": "once",
-        "exec": "",
-        "on-click": "",
-        "signal": 1,
     },
     "custom/hyprkill": {
         "format": "{}",
@@ -434,14 +392,6 @@
         "on-click": "swaync-client -t -sw",
         "on-click-right": "swaync-client -d -sw",
         "escape": true,
-    },
-    "custom/github": {
-        "format": "{}",
-        "return-type": "json",
-        "interval": 3600,
-        "signal": 9,
-        "exec": "",
-        "on-click": "xdg-open https://github.com/notifications;pkill -RTMIN+9 waybar",
     },
     "idle_inhibitor": {
         "format": "{icon}",

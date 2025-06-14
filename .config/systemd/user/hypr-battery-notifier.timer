@@ -1,0 +1,10 @@
+[Unit]
+Description=Run battery optimizer every 5 minutes
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=5min
+Unit=hypr-battery-notifier.service
+
+[Install]
+WantedBy=default.target

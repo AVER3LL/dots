@@ -12,6 +12,13 @@ return {
         },
         config = function(_, opts)
             require("nvim-autopairs").setup(opts)
+
+            local npairs = require "nvim-autopairs"
+            local Rule = require "nvim-autopairs.rule"
+
+            -- Add auto-closing rule for Blade comments {{-- --}}
+            npairs.add_rule(Rule("{{--", "  --", "blade"))
+
             if not vim.g.use_blink then
                 local cmp_autopairs = require "nvim-autopairs.completion.cmp"
                 local is_cmp_loaded, cmp = pcall(require, "cmp")

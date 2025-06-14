@@ -16,7 +16,7 @@ vim.o.cmdheight = 0
 vim.opt.background = "dark"
 vim.opt.termguicolors = true
 vim.opt.cursorline = true
-vim.opt.cursorlineopt = "both"
+vim.opt.cursorlineopt = "number"
 vim.opt.signcolumn = "yes"
 vim.opt.laststatus = 0
 -- vim.opt.statusline = " %f %m %= %l:%c ♥ "

@@ -1,0 +1,6 @@
+[Unit]
+Description=Disable blur and animations when battery is low
+
+[Service]
+Type=oneshot
+ExecStart=%h/.config/hypr/scripts/battery.sh

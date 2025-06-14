@@ -44,7 +44,7 @@ return {
                 "<leader>sc",
                 "<cmd>CodeSnapSave<CR>",
                 desc = "Take a screenshot",
-                mode = "n",
+                mode = {"n", "v"},
             },
         },
         cmd = { "CodeSnapSave" },

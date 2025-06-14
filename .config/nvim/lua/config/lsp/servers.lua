@@ -71,14 +71,14 @@ M.lspconfig = vim.tbl_extend("force", process_default_lsps(), {
         filetypes = {
             "php",
             "blade",
-            -- "php_only",
+            "php_only",
         },
         settings = {
             intelephense = {
                 filetypes = {
                     "php",
                     "blade",
-                    -- "php_only",
+                    "php_only",
                 },
                 files = {
                     associations = {

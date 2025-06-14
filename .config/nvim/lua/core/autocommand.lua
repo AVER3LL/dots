@@ -23,6 +23,42 @@ if signature then
     })
 end
 
+local the_group = augroup "lsp_blade_workaround"
+-- Autocommand to temporarily change 'blade' filetype to 'php' when opening for LSP server activation
+autocmd({ "BufRead", "BufNewFile" }, {
+    group = the_group,
+    pattern = "*.blade.php",
+    callback = function()
+        vim.bo.filetype = "php"
+    end,
+})
+
+-- Additional autocomman to switch back to 'blade' after LSP has attached
+autocmd("LspAttach", {
+    pattern = "*.blade.php",
+    callback = function(args)
+        vim.schedule(function()
+            local client = vim.lsp.get_client_by_id(args.data.client_id)
+            local bufnr = args.buf
+
+            if client and client.name == "intelephense" then
+                -- Set filetype using treesitter or vim.filetype API
+                vim.bo[bufnr].filetype = "blade"
+                -- Optionally set syntax manually (though unnecessary if filetype is correct)
+                vim.treesitter.start(bufnr, "blade")
+            end
+        end)
+    end,
+})
+
+-- make $ part of the keyword for php
+autocmd("FileType", {
+    pattern = "php",
+    callback = function()
+        vim.opt_local.iskeyword:append "$"
+    end,
+})
+
 -- Don't auto comment new line when pressing o, O or <CR>
 -- autocmd("BufEnter", { command = [[set formatoptions-=cro]] })
 
@@ -106,13 +142,14 @@ autocmd("ColorScheme", {
         -- sethl(0, "WinBarDiagWarn", { fg = "#D8A657", bold = true }) -- Muted amber
         -- sethl(0, "WinBarDiagInfo", { fg = "#7BAFD6", bold = true }) -- Soft blue
         -- sethl(0, "WinBarDiagHint", { fg = "#88C0A9" }) -- Muted green
-        sethl(0, "WinBarDiagError", { fg = error_fg, bold = true }) -- Soft red
-        sethl(0, "WinBarDiagWarn", { fg = warn_fg, bold = true }) -- Muted amber
-        sethl(0, "WinBarDiagInfo", { fg = info_fg, bold = true }) -- Soft blue
-        sethl(0, "WinBarDiagHint", { fg = hint_fg }) -- Muted green
 
-        -- grey out the path
-        sethl(0, "WinBarPath", { fg = "#888888", italic = true })
+        -- sethl(0, "WinBarDiagError", { fg = error_fg, bold = true }) -- Soft red
+        -- sethl(0, "WinBarDiagWarn", { fg = warn_fg, bold = true }) -- Muted amber
+        -- sethl(0, "WinBarDiagInfo", { fg = info_fg, bold = true }) -- Soft blue
+        -- sethl(0, "WinBarDiagHint", { fg = hint_fg }) -- Muted green
+        --
+        -- -- grey out the path
+        -- sethl(0, "WinBarPath", { fg = "#888888", italic = true })
 
         -- Add underlined diagnostics regardless of theme
         sethl(0, "DiagnosticUnderlineError", { undercurl = true, sp = error_fg })

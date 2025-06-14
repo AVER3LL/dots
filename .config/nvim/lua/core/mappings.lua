@@ -132,9 +132,10 @@ end, { desc = "Light Dark Toggle" })
 -- Basic Navigation
 map({ "n", "v" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, desc = "Move up" })
 map({ "n", "v" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, desc = "Move down" })
+map({ "n", "v" }, "$", "v:count == 0 ? 'g$' : '$'", { expr = true, silent = true, desc = "Move down" })
 
-map("n", "gl", "$", { desc = "Move to end of line" })
-map("n", "gh", "_", { desc = "Move to end of line" })
+-- map("n", "gl", "$", { desc = "Move to end of line" })
+-- map("n", "gh", "_", { desc = "Move to end of line" })
 
 -- Commenting
 map("n", "<leader>v", "gcc", { desc = "Toggle Comment", remap = true })

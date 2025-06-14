@@ -4,11 +4,25 @@ local icons = require("icons").diagnostics
 -- Sure I modified some parts to have it actually work
 -- but I am not smart enough for all this.
 
+--- @class CustomWinBar
+--- @field config Config
+--- @field update_winbar fun(is_active: boolean)
+--- @field setup fun(user_config: Config|nil)
+--- @field clear_caches fun()
+
 -- Custom minimal centered winbar
 local M = {}
-local MODIFIED_ICON = "[+]"
+-- local MODIFIED_ICON = ""
+-- local MODIFIED_ICON = ""
+local MODIFIED_ICON = "✱"
 
--- Configuration options
+--- @class Config
+--- @field show_diagnostics boolean
+--- @field show_modified boolean
+--- @field show_path_when_inactive boolean
+--- @field min_padding integer
+
+--- @type Config
 M.config = {
     show_diagnostics = true,
     show_modified = true,
@@ -74,7 +88,10 @@ local function get_modified_status()
     if not M.config.show_modified or not vim.bo.modified then
         return "", ""
     end
-    return " " .. MODIFIED_ICON, " " .. MODIFIED_ICON
+
+    local hl_group = "WinBarModified"
+    local colored = (" " .. "%%#%s#%s%%*" .. " "):format(hl_group, MODIFIED_ICON)
+    return colored, " " .. MODIFIED_ICON .. " "
 end
 
 -- Function to get relative file path
@@ -199,7 +216,27 @@ local function clear_icon_cache(bufnr)
     end
 end
 
+local function set_highlights()
+    local sethl = vim.api.nvim_set_hl
+    local gethl = vim.api.nvim_get_hl
+
+    local error_fg = gethl(0, { name = "DiagnosticError" }).fg
+    local warn_fg = gethl(0, { name = "DiagnosticWarn" }).fg
+    local info_fg = gethl(0, { name = "DiagnosticInfo" }).fg
+    local hint_fg = gethl(0, { name = "DiagnosticHint" }).fg
+
+    sethl(0, "WinBarDiagError", { fg = error_fg, bold = true }) -- Soft red
+    sethl(0, "WinBarDiagWarn", { fg = warn_fg, bold = true }) -- Muted amber
+    sethl(0, "WinBarDiagInfo", { fg = info_fg, bold = true }) -- Soft blue
+    sethl(0, "WinBarDiagHint", { fg = hint_fg }) -- Muted green
+
+    -- grey out the path
+    sethl(0, "WinBarPath", { fg = "#888888", italic = true })
+    sethl(0, "WinBarModified", { fg = "#FF7139", bold = true })
+end
+
 -- Set up autocmds to update the winbar
+--- @param user_config? Config
 function M.setup(user_config)
     -- Merge user config with defaults
     if user_config then
@@ -216,6 +253,13 @@ function M.setup(user_config)
             clear_icon_cache(args.buf)
         end,
     })
+
+    autocmd("ColorScheme", {
+        group = group,
+        callback = set_highlights,
+    })
+
+    set_highlights()
 
     -- Clean up window-specific highlight groups when windows are closed
     autocmd("WinClosed", {
@@ -274,11 +318,6 @@ function M.setup(user_config)
     })
 end
 
--- Function to update configuration
-function M.update_config(new_config)
-    M.config = vim.tbl_extend("force", M.config, new_config)
-end
-
 -- Function to clear all caches (useful for debugging)
 function M.clear_caches()
     icon_cache = {}
@@ -288,4 +327,6 @@ function M.clear_caches()
     end
 end
 
+--- @module 'custom-winbar'
+--- @type CustomWinBar
 return M

@@ -140,13 +140,6 @@ generate_caches "$IMAGE" "$WALLPAPER_CACHE_DIR" &
 matugen image "$IMAGE" -m "dark" &
 wallust run "$IMAGE" &
 
-# {
-#     generate_caches "$IMAGE" "$WALLPAPER_CACHE_DIR" &
-#     matugen image "$IMAGE" -m "dark" &
-#     wallust run "$IMAGE" &
-#     wait
-# } &
-
 # Refresh swaync
 # wait
 pkill swaync
