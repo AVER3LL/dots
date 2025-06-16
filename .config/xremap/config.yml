@@ -1,0 +1,4 @@
+modmap:
+  - name: main remaps
+    remap:
+      KEY_GRAVE: KEY_102ND

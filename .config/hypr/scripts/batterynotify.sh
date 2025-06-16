@@ -1,5 +1,4 @@
-#!/bin/bash
-
+#!/usr/bin/env bash
 # Check if the system is a laptop
 is_laptop() {
     if [ -d /sys/class/power_supply/ ]; then

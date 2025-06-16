@@ -9,7 +9,12 @@ vim.g.use_blink = true
 vim.g.markdown_recommended_style = 0
 
 vim.opt.conceallevel = 2
-vim.o.mouse = ""
+
+-- Enable the mouse
+vim.o.mouse = "a"
+
+-- Disable horizontal scrolling
+vim.o.mousescroll = 'ver:3,hor:0'
 vim.o.cmdheight = 0
 
 -- Core UI and Appearance

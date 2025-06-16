@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Battery script: if battery < 40%, disable blur and animations
 

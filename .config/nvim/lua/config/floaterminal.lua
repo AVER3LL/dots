@@ -15,12 +15,13 @@ local run_commands = {
     lua = "lua $filepath",
     javascript = "node $filepath",
     php = "php $filepath",
-    typescript = "tsc $filename && node $fileWithoutExt.js",
-    cpp = "g++ $filepath -o $fileWithoutExt && ./$fileWithoutExt",
-    c = "gcc $filepath -o $fileWithoutExt && ./$fileWithoutExt",
-    java = "cd $dir && javac $filename && java $fileWithoutExt",
-    kotlin = "cd $dir && kotlinc $filename -include-runtime -d $fileWithoutExt.jar && java -jar $fileWithoutExt.jar",
-    rust = "rustc $filepath && ./$fileWithoutExt",
+    typescript = "tsc $filename && node $filenameWithoutExt.js",
+    cpp = "g++ $filepath -o $filenameWithoutExt && ./$filenameWithoutExt",
+    c = "gcc $filepath -o $filenameWithoutExt && ./$filenameWithoutExt",
+    java = "cd $dir && javac $filename && java $filenameWithoutExt",
+    kotlin = "cd $dir && kotlinc $filename -include-runtime -d $filenameWithoutExt.jar && java -jar $filenameWithoutExt.jar",
+    rust = "rustc $filepath && ./$filenameWithoutExt",
+    tex = "~/Documents/memoire-2025/Template-Licence-3-Latex/compile_latex.sh $filename",
     go = "go run $filepath",
     sh = "bash $filepath",
     dart = "dart $filepath",
@@ -72,12 +73,12 @@ local function format_command(command)
     local filepath = vim.fn.expand "%:p" -- Full path to the file
     local dir = vim.fn.expand "%:h" -- Directory of the file
     local filename = vim.fn.expand "%:t" -- Filename with extension
-    local fileWithoutExt = vim.fn.expand "%:t:r" -- Filename without extension
+    local filenameWithoutExt = vim.fn.expand "%:t:r" -- Filename without extension
 
     return command
         :gsub("%$dir", dir)
         :gsub("%$filename", filename)
-        :gsub("%$fileWithoutExt", fileWithoutExt)
+        :gsub("%$filenameWithoutExt", filenameWithoutExt)
         :gsub("%$filepath", filepath)
 end
 

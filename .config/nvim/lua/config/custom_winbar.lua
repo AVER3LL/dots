@@ -12,27 +12,74 @@ local icons = require("icons").diagnostics
 
 -- Custom minimal centered winbar
 local M = {}
--- local MODIFIED_ICON = ""
--- local MODIFIED_ICON = ""
-local MODIFIED_ICON = "✱"
+
+-- local bt = { "╔", "═", "╗", "║", "╝", "═", "╚", "║" }
 
 --- @class Config
 --- @field show_diagnostics boolean
 --- @field show_modified boolean
 --- @field show_path_when_inactive boolean
 --- @field min_padding integer
+--- @field modified_icon string
+--- @field ignore_filetypes string[]
+--- @field ignore_buftypes string[]
 
 --- @type Config
 M.config = {
     show_diagnostics = true,
     show_modified = true,
     show_path_when_inactive = false,
+
+    modified_icon = "✱",
+
     min_padding = 2,
+    ignore_filetypes = {
+        "help",
+        "alpha",
+        "dashboard",
+        "neo-tree",
+        "Trouble",
+        "trouble",
+        "lazy",
+        "mason",
+        "notify",
+        "toggleterm",
+        "lazyterm",
+    },
+    ignore_buftypes = {
+        "nofile",
+        "terminal",
+        "help",
+        "quickfix",
+        "prompt",
+    },
 }
 
 -- Cache for file icons
 local icon_cache = {}
 local update_timer = nil
+
+-- Function to check if current buffer should be ignored
+local function should_ignore_buffer()
+    local filetype = vim.bo.filetype
+    local buftype = vim.bo.buftype
+
+    -- Check if filetype should be ignored
+    for _, ft in ipairs(M.config.ignore_filetypes) do
+        if filetype == ft then
+            return true
+        end
+    end
+
+    -- Check if buftype should be ignored
+    for _, bt in ipairs(M.config.ignore_buftypes) do
+        if buftype == bt then
+            return true
+        end
+    end
+
+    return false
+end
 
 -- Function to get file icon and color using nvim-web-devicons with caching
 local function get_file_icon()
@@ -90,8 +137,8 @@ local function get_modified_status()
     end
 
     local hl_group = "WinBarModified"
-    local colored = (" " .. "%%#%s#%s%%*" .. " "):format(hl_group, MODIFIED_ICON)
-    return colored, " " .. MODIFIED_ICON .. " "
+    local colored = (" " .. "%%#%s#%s%%*" .. " "):format(hl_group, M.config.modified_icon)
+    return colored, " " .. M.config.modified_icon .. " "
 end
 
 -- Function to get relative file path
@@ -157,7 +204,8 @@ end
 function M.update_winbar(is_active)
     local filename = vim.fn.expand "%:t"
 
-    if filename == "" or vim.bo.buftype ~= "" then
+    -- Check if buffer should be ignored
+    if filename == "" or should_ignore_buffer() then
         vim.wo.winbar = ""
         return
     end
@@ -276,7 +324,7 @@ function M.setup(user_config)
     autocmd({ "TextChanged", "InsertEnter", "InsertLeave" }, {
         group = group,
         callback = function()
-            if vim.bo.buftype == "" then
+            if not should_ignore_buffer() then
                 debounced_update(true)
             else
                 vim.wo.winbar = ""
@@ -297,7 +345,7 @@ function M.setup(user_config)
     }, {
         group = group,
         callback = function()
-            if vim.bo.buftype == "" then
+            if not should_ignore_buffer() then
                 M.update_winbar(true)
             else
                 vim.wo.winbar = ""
@@ -309,7 +357,7 @@ function M.setup(user_config)
     autocmd("WinLeave", {
         group = group,
         callback = function()
-            if vim.bo.buftype == "" then
+            if not should_ignore_buffer() then
                 M.update_winbar(false)
             else
                 vim.wo.winbar = ""
