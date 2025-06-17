@@ -280,7 +280,7 @@ map("n", "<leader>e", "<cmd>NvimTreeFocus<CR>", { desc = "Nvimtree focus window"
 map("n", "<leader>ws", "<cmd>SessionSave<CR>", { desc = "Save session" })
 map("n", "<leader>wr", "<cmd>SessionRestore<CR>", { desc = "Restore session" })
 
-local terminal = require "config.floaterminal"
+local terminal = require "floaterminal"
 map("n", toggle_terminal_mapping, function()
     terminal.toggle()
 end, { desc = "Toggle terminal" })
