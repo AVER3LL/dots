@@ -98,7 +98,8 @@ local function get_file_icon()
     local extension = vim.fn.expand "%:e"
     local icon, color = devicons.get_icon_color(filename, extension)
 
-    local result = { icon and (icon .. " ") or "", color or "" }
+    -- local result = { icon and (icon .. " ") or "", color or "" }
+    local result = { icon or "", color or "" } -- Removed space after icon
     icon_cache[bufnr] = result
     return unpack(result)
 end
@@ -119,6 +120,8 @@ local function get_diagnostics()
         if count > 0 then
             result = result .. ("%%#%s# %s %d %%*"):format(hl, icon, count)
             plain_result = plain_result .. (" %s %d "):format(icon, count)
+            -- result = result .. ("%%#%s#%s%d%%*"):format(hl, icon, count)
+            -- plain_result = plain_result .. ("%s%d"):format(icon, count)
         end
     end
 
@@ -137,8 +140,10 @@ local function get_modified_status()
     end
 
     local hl_group = "WinBarModified"
-    local colored = (" " .. "%%#%s#%s%%*" .. " "):format(hl_group, M.config.modified_icon)
-    return colored, " " .. M.config.modified_icon .. " "
+    -- local colored = (" " .. "%%#%s#%s%%*" .. " "):format(hl_group, M.config.modified_icon)
+    -- return colored, " " .. M.config.modified_icon .. " "
+    local colored = ("%%#%s#%s%%*"):format(hl_group, M.config.modified_icon)
+    return colored, M.config.modified_icon
 end
 
 -- Function to get relative file path
@@ -178,11 +183,6 @@ end
 -- Function to calculate string display width correctly
 local function display_width(str)
     return vim.fn.strdisplaywidth(str)
-end
-
--- Function to calculate content width
-local function calculate_content_width(icon, filename, path, modified, diagnostics)
-    return display_width(icon .. filename .. "  " .. path .. modified .. diagnostics)
 end
 
 -- Debounced update function
@@ -227,32 +227,55 @@ function M.update_winbar(is_active)
     -- Get window width
     local win_width = vim.api.nvim_win_get_width(0)
 
-    -- Calculate base content width (without path)
+    -- Build components with clean content (no extra spaces)
     local colored_icon = icon_color and icon_color ~= "" and ("%#" .. icon_hl_name .. "#" .. icon .. "%*") or icon
-    local filename_part = filename .. "  "
-    local base_visual_content = icon .. filename_part .. plain_modified .. plain_diagnostics
-    local base_width = display_width(base_visual_content)
-
-    -- Calculate available space for path
-    local padding = M.config.min_padding
-    local available_path_space = win_width - base_width - (padding * 2)
-
-    -- Determine path component
     local path_component = ""
     local path_for_width = ""
     if (is_active or M.config.show_path_when_inactive) and file_path ~= "" then
+        local available_path_space = win_width - M.config.min_padding * 2
         local truncated_path = truncate(file_path, math.max(available_path_space, 0))
         if vim.fn.strdisplaywidth(truncated_path) > 0 then
-            path_component = ("%%#WinBarPath#%s %%*"):format(truncated_path)
-            path_for_width = truncated_path .. " "
+            path_component = ("%%#WinBarPath#%s%%*"):format(truncated_path)
+            path_for_width = truncated_path
         end
     end
 
-    -- Construct the content
-    local content = colored_icon .. filename_part .. path_component .. modified .. diagnostics
+    -- ========================================================================
+    -- COMPONENT ORDER CONFIGURATION - CHANGE THIS TO REORDER ELEMENTS
+    -- ========================================================================
+    local components = {
+        -- File icon
+        { content = colored_icon .. " " .. filename, plain = icon .. " " .. filename },
+        -- Modified indicator
+        { content = modified, plain = plain_modified },
+        -- File path
+        { content = path_component, plain = path_for_width },
+        -- Diagnostics (errors/warnings)
+        { content = diagnostics, plain = plain_diagnostics },
+    }
+    -- ========================================================================
+
+    -- Build content with proper spacing
+    local content_builder = {}
+    local plain_builder = {}
+
+    for _, comp in ipairs(components) do
+        if comp.plain and comp.plain ~= "" then
+            -- Add space between components (but not before first)
+            if #content_builder > 0 then
+                table.insert(content_builder, "  ")
+                table.insert(plain_builder, "  ")
+            end
+            table.insert(content_builder, comp.content)
+            table.insert(plain_builder, comp.plain)
+        end
+    end
+
+    local content = table.concat(content_builder)
+    local plain_content = table.concat(plain_builder)
 
     -- Calculate padding and set winbar
-    local content_width = calculate_content_width(icon, filename, path_for_width, plain_modified, plain_diagnostics)
+    local content_width = display_width(plain_content)
     local final_padding = math.max(math.floor((win_width - content_width) / 2), 0)
     vim.wo.winbar = string.rep(" ", final_padding) .. content
 end

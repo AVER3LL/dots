@@ -37,7 +37,7 @@ main() {
     elif [[ "$selected_wallpaper" == "$ASSETS/vertical.png" ]]; then
         reload_waybar "$THEMES/vertical/style.css" "$THEMES/vertical/config.jsonc"
     elif [[ "$selected_wallpaper" == "$ASSETS/bottom.png" ]]; then
-        reload_waybar "$THEMES/bottom/style.css" "$THEMES/bottom/config.jsonc"
+        reload_waybar "$THEMES/windows/style.css" "$THEMES/windows/config.jsonc"
     fi
 }
 

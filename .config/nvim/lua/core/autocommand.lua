@@ -128,6 +128,10 @@ autocmd("ColorScheme", {
         sethl(0, "LspDiagnosticsLineNrInformation", { fg = info_fg })
         sethl(0, "LspDiagnosticsLineNrHint", { fg = hint_fg })
 
+        sethl(0, "HlSearchNear", { bg = "NONE", fg = hint_fg })
+        sethl(0, "HlSearchLens", { bg = "NONE", fg = hint_fg })
+        sethl(0, "HlSearchLensNear", { bg = "NONE", fg = hint_fg })
+
         -- Cleaning the gutter
         sethl(0, "DiagnosticSignError", { bg = "NONE" })
         sethl(0, "DiagnosticSignWarn", { bg = "NONE" })

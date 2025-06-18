@@ -238,7 +238,7 @@ map("v", "<A-h>", "<Left>dvhP`[v`]", { desc = "Move selection left" })
 map("v", "<A-l>", "<Right>dp`[v`]", { desc = "Move selection right" })
 
 -- Formatting
-map("n", "<leader>fm", function()
+map({ "n", "v" }, "<leader>fm", function()
     require("conform").format { async = true, lsp_format = "fallback" }
 end, { desc = "Format files" })
 

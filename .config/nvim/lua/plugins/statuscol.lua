@@ -28,17 +28,18 @@ return {
                 -- override the default list of segments with:
                 -- number-less fold indicator, then signs, then line number & separator
                 segments = {
-                    -- {
-                    --     text = { " " },
-                    --     condition = {
-                    --         function(args)
-                    --             local is_num = vim.wo[args.win].number
-                    --             local is_relnum = vim.wo[args.win].relativenumber
-                    --
-                    --             return not is_num and not is_relnum
-                    --         end,
-                    --     },
-                    -- },
+                    {
+                        -- text = { " " },
+                        text = { " " },
+                        condition = {
+                            function(args)
+                                local is_num = vim.wo[args.win].number
+                                local is_relnum = vim.wo[args.win].relativenumber
+
+                                return not is_num and not is_relnum
+                            end,
+                        },
+                    },
                     {
                         sign = {
                             name = { ".*" },

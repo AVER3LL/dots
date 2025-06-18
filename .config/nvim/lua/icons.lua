@@ -2,11 +2,18 @@ local M = {}
 
 --- Diagnostic severities.
 M.diagnostics = {
-    ERROR = "",
+    ERROR = "󰈸",
     WARN = "",
     HINT = "",
-    INFO = "",
+    INFO = "󰋽",
 }
+
+-- vim.fn.sign_define("DiagnosticSignError", { text = "", texthl = "Error" })
+-- vim.fn.sign_define("DiagnosticSignWarn", { text = "󰈸", texthl = "Warn" })
+-- vim.fn.sign_define("DiagnosticSignSpell", { text = "X", texthl = "Warn" })
+-- vim.fn.sign_define("DiagnosticSignInfo", { text = "󰋽", texthl = "Info" })
+-- vim.fn.sign_define("DiagnosticSignHint", { text = "", texthl = "Hint" })
+
 
 --- For folding.
 M.arrows = {
