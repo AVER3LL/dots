@@ -240,20 +240,12 @@ function M.update_winbar(is_active)
         end
     end
 
-    -- ========================================================================
-    -- COMPONENT ORDER CONFIGURATION - CHANGE THIS TO REORDER ELEMENTS
-    -- ========================================================================
     local components = {
-        -- File icon
         { content = colored_icon .. " " .. filename, plain = icon .. " " .. filename },
-        -- Modified indicator
         { content = modified, plain = plain_modified },
-        -- File path
         { content = path_component, plain = path_for_width },
-        -- Diagnostics (errors/warnings)
         { content = diagnostics, plain = plain_diagnostics },
     }
-    -- ========================================================================
 
     -- Build content with proper spacing
     local content_builder = {}
@@ -263,8 +255,8 @@ function M.update_winbar(is_active)
         if comp.plain and comp.plain ~= "" then
             -- Add space between components (but not before first)
             if #content_builder > 0 then
-                table.insert(content_builder, "  ")
-                table.insert(plain_builder, "  ")
+                table.insert(content_builder, string.rep(" ", M.config.min_padding))
+                table.insert(plain_builder, string.rep(" ", M.config.min_padding))
             end
             table.insert(content_builder, comp.content)
             table.insert(plain_builder, comp.plain)

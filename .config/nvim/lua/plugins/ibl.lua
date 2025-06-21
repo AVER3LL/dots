@@ -9,6 +9,7 @@ return {
         main = "ibl",
         keys = {
             {
+                mode = { "n", "v" },
                 "<leader><leader>i",
                 "<cmd>IBLToggle<cr>",
                 desc = "Toggle indent lines",

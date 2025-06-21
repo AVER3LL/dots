@@ -9,8 +9,8 @@ config.window_close_confirmation = "NeverPrompt"
 -- font settings
 config.font_size = 15
 config.line_height = 1.3
-config.font = wezterm.font("JetBrainsMono NF")
-config.enable_wayland = false
+config.font = wezterm.font("Maple Mono")
+config.enable_wayland = true
 
 -- Appearance
 config.window_decorations = "NONE"

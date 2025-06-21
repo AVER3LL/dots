@@ -3,7 +3,8 @@ decorations = "none"
 opacity = 1
 
 [font]
-normal = { family = "JetBrainsMono NF" }
+# normal = { family = "JetBrainsMono NF" }
+normal = { family = "Maple Mono" }
 size = 15
 offset.y = 14
 

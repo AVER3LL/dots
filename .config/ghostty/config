@@ -13,7 +13,8 @@
 # font-family = "GeistMono NF"
 
 # font-family = JetBrainsMono NF
-font-family = JetBrainsMono Nerd Font
+# font-family = JetBrainsMono Nerd Font
+font-family = Maple Mono
 font-size = 15
 
 # Mouse
