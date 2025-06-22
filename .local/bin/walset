@@ -34,7 +34,11 @@ IFS=$'\n'
 
 # Find all supported image files in one go
 # Use find command with absolute paths
-image_files=($(find "$WALL_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.gif" -o -iname "*.webp" -o -iname "*.bmp" \) -printf "%P\n"))
+# image_files=($(find "$WALL_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.gif" -o -iname "*.webp" -o -iname "*.bmp" \) -printf "%P\n"))
+# image_files=($(find "$WALL_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.gif" -o -iname "*.webp" -o -iname "*.bmp" \) -printf "%P\n" | shuf))
+mapfile -t image_files < <(find "$WALL_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.gif" -o -iname "*.webp" -o -iname "*.bmp" \) -printf "%P\n" | shuf)
+
+
 
 # Check if any wallpapers were found
 if [ ${#image_files[@]} -eq 0 ]; then

@@ -220,7 +220,7 @@ return {
                         },
                     },
                     border = bt,
-                    winhighlight = "Normal:BlinkCmpMenu,Search:None,FloatBorder:BlinkCmpMenuBorder",
+                    -- winhighlight = "Normal:BlinkCmpMenu,Search:None,FloatBorder:BlinkCmpMenuBorder",
                     -- winhighlight = "Normal:BlinkCmpMenu,FloatBorder:BlinkCmpMenuBorder,CursorLine:BlinkCmpMenuSelection,Search:None",
                     scrollbar = false,
                 },
@@ -229,7 +229,7 @@ return {
                     auto_show_delay_ms = 50,
                     window = {
                         border = bt,
-                        winhighlight = "Normal:BlinkCmpDoc,FloatBorder:BlinkCmpDocBorder",
+                        -- winhighlight = "Normal:BlinkCmpDoc,FloatBorder:BlinkCmpDocBorder",
                         -- winhighlight = 'Normal:BlinkCmpDoc,FloatBorder:BlinkCmpDocBorder,EndOfBuffer:BlinkCmpDoc',
                         scrollbar = false,
                         max_width = 100,

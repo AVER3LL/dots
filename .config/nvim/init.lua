@@ -9,5 +9,5 @@ else
 
     require "config.lazy"
 
-    require("config.custom_winbar").setup()
+    require("config.winbar").setup()
 end

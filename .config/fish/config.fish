@@ -42,12 +42,12 @@ set fish_cursor_insert block
 set fish_cursor_replace_one underscore
 
 function fish_user_key_bindings
-    bind \e\[3~ delete-char
-    bind \e\[3\;5~ kill-word
-    bind \b backward-kill-word
-    bind \e\[1\;5C forward-word
-    bind \e\[1\;5D backward-word
-    bind \cf zi
+    bind -M insert \e\[3~ delete-char
+    bind -M insert \e\[3\;5~ kill-word
+    bind -M insert \b backward-kill-word
+    bind -M insert \e\[1\;5C forward-word
+    bind -M insert \e\[1\;5D backward-word
+    bind -M insert \cf 'commandline -r "zi"; commandline -f execute'
 end
 
 # Functions for !! and !$ history substitution

@@ -237,6 +237,28 @@ fi
 #   tmux attach-session -t default || tmux new-session -s default
 # fi
 
+function update_php() {
+  # Check download speed to Google (in bits per second)
+  local speed
+  speed=$(curl -s -o /dev/null -w '%{speed_download}' https://www.google.com)
+
+  # Convert to kilobytes per second (optional, for readability)
+  local kbps=$(( ${speed%.*} / 1024 ))
+
+  # Minimum threshold in KB/s (e.g., 200 KB/s)
+  local threshold=200
+
+  echo "Detected speed: $kbps KB/s"
+
+  if (( kbps > threshold )); then
+    echo "Internet is fast enough, proceeding with installation..."
+    /bin/bash -c "$(curl -fsSL https://php.new/install/linux/8.4)"
+  else
+    echo "Internet is too slow (< $threshold KB/s). Aborting."
+    return 1
+  fi
+}
+
 
 # Evals
 eval "$(zoxide init zsh)"

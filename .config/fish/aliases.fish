@@ -6,9 +6,11 @@ alias sl='ls'
 alias l='ls'
 
 alias lazy='NVIM_APPNAME=LazyVim nvim'
+alias yayf="yay -Slq | fzf --multi --preview 'yay -Sii {1}' --preview-window=down:75% | xargs -ro yay -S"
 
 alias cp 'advcp -g'
 alias mv 'advmv -g'
+alias rm 'trash -v'
 
 # tree alias
 alias tree="eza --tree --icons"

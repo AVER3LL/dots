@@ -2,6 +2,9 @@ local autocmd = vim.api.nvim_create_autocmd
 local sethl = vim.api.nvim_set_hl
 local gethl = vim.api.nvim_get_hl
 
+--- @type "flat" | "clear"
+local style = "flat"
+
 local function augroup(name)
     return vim.api.nvim_create_augroup(name, { clear = true })
 end
@@ -121,6 +124,7 @@ autocmd("ColorScheme", {
         local warn_fg = gethl(0, { name = "DiagnosticWarn" }).fg
         local info_fg = gethl(0, { name = "DiagnosticInfo" }).fg
         local hint_fg = gethl(0, { name = "DiagnosticHint" }).fg
+        local pmenu_bg = gethl(0, { name = "Pmenu" }).bg
 
         -- Highlight line numbers with diagnostics
         sethl(0, "LspDiagnosticsLineNrError", { fg = error_fg })
@@ -141,20 +145,6 @@ autocmd("ColorScheme", {
         -- Cleans tinyInlineDiagnostic
         sethl(0, "TinyInlineDiagnosticVirtualTextArrow", { bg = "NONE" })
 
-        -- color winbar component
-        -- sethl(0, "WinBarDiagError", { fg = "#D67B7B", bold = true }) -- Soft red
-        -- sethl(0, "WinBarDiagWarn", { fg = "#D8A657", bold = true }) -- Muted amber
-        -- sethl(0, "WinBarDiagInfo", { fg = "#7BAFD6", bold = true }) -- Soft blue
-        -- sethl(0, "WinBarDiagHint", { fg = "#88C0A9" }) -- Muted green
-
-        -- sethl(0, "WinBarDiagError", { fg = error_fg, bold = true }) -- Soft red
-        -- sethl(0, "WinBarDiagWarn", { fg = warn_fg, bold = true }) -- Muted amber
-        -- sethl(0, "WinBarDiagInfo", { fg = info_fg, bold = true }) -- Soft blue
-        -- sethl(0, "WinBarDiagHint", { fg = hint_fg }) -- Muted green
-        --
-        -- -- grey out the path
-        -- sethl(0, "WinBarPath", { fg = "#888888", italic = true })
-
         -- Add underlined diagnostics regardless of theme
         sethl(0, "DiagnosticUnderlineError", { undercurl = true, sp = error_fg })
         sethl(0, "DiagnosticUnderlineWarn", { undercurl = true, sp = warn_fg })
@@ -163,7 +153,9 @@ autocmd("ColorScheme", {
 
         -- Modern looking floating windows
         local normal_bg = vim.api.nvim_get_hl(0, { name = "Normal" }).bg
-        local normal_fg = vim.api.nvim_get_hl(0, { name = "Comment" }).fg
+        local normal_fg = vim.api.nvim_get_hl(0, { name = "Normal" }).fg
+        local comment_fg = vim.api.nvim_get_hl(0, { name = "Comment" }).fg
+        local sel_bg = gethl(0, { name = "PmenuSel" }).bg
 
         -- Clean nvim-tree
         sethl(0, "NvimTreeLineNr", { bg = gethl(0, { name = "NvimTreeNormal" }).bg })
@@ -171,18 +163,37 @@ autocmd("ColorScheme", {
         sethl(0, "NvimTreeEndOfBuffer", { bg = gethl(0, { name = "NvimTreeNormal" }).bg })
         sethl(0, "NvimTreeSignColumn", { bg = "NONE" })
 
-        sethl(0, "BlinkCmpMenuBorder", { bg = normal_bg, fg = adjust_brightness(normal_fg, 0.7) })
-        sethl(0, "BlinkCmpDocBorder", { bg = normal_bg, fg = adjust_brightness(normal_fg, 0.7) })
-        sethl(0, "BlinkCmpMenu", { bg = normal_bg })
-        sethl(0, "BlinkCmpDoc", { bg = normal_bg })
+        if style == "flat" then
+            sethl(0, "BlinkCmpMenuBorder", { bg = pmenu_bg, fg = pmenu_bg })
+            sethl(0, "BlinkCmpDocBorder", { bg = pmenu_bg, fg = pmenu_bg })
+            sethl(0, "BlinkCmpDocSeparator", { bg = pmenu_bg, fg = adjust_brightness(normal_fg, 0.7) })
+            sethl(0, "BlinkCmpSignatureHelp", { bg = "NONE", fg = normal_bg })
+
+            -- sethl(0, "BlinkCmpMenuSelection", { link = "PmenuSel", bold = true })
+            sethl(0, "BlinkCmpMenuSelection", { bg = adjust_brightness(pmenu_bg, 0.9), bold = true })
+            sethl(0, "BlinkCmpMenu", { bg = pmenu_bg })
+            sethl(0, "BlinkCmpDoc", { bg = pmenu_bg })
+
+            sethl(0, "LspInfoBorder", { bg = pmenu_bg })
+            -- sethl(0, "SnacksPickerBorder", { bg = normal_bg, fg = adjust_brightness(normal_fg, 0.3) })
+            sethl(0, "NormalFloat", { bg = pmenu_bg })
+            sethl(0, "FloatBorder", { fg = pmenu_bg, bg = pmenu_bg })
+        elseif style == "clear" then
+            sethl(0, "BlinkCmpMenuBorder", { bg = normal_bg, fg = adjust_brightness(normal_fg, 0.7) })
+            sethl(0, "BlinkCmpDocBorder", { bg = normal_bg, fg = adjust_brightness(normal_fg, 0.7) })
+            sethl(0, "BlinkCmpMenu", { bg = normal_bg })
+            sethl(0, "BlinkCmpDoc", { bg = normal_bg })
+
+            sethl(0, "LspInfoBorder", { bg = normal_bg })
+            sethl(0, "NormalFloat", { bg = normal_bg })
+            sethl(0, "FloatBorder", { fg = adjust_brightness(normal_fg, 0.7), bg = normal_bg })
+        end
 
         sethl(0, "WinBar", { bg = normal_bg })
         sethl(0, "WinBarNC", { bg = normal_bg })
 
-        sethl(0, "LspInfoBorder", { bg = normal_bg })
-        sethl(0, "NormalFloat", { bg = normal_bg })
-        sethl(0, "FloatBorder", { fg = adjust_brightness(normal_fg, 0.7), bg = normal_bg })
         sethl(0, "FloatTitle", { bg = normal_bg })
+
         sethl(0, "Comment", { fg = "#008c7d", italic = true })
 
         -- Matching parentheses colors
@@ -193,7 +204,7 @@ autocmd("ColorScheme", {
         sethl(0, "CursorLineNr", { bg = "NONE" })
         sethl(0, "CursorLineSign", { bg = "NONE" })
         sethl(0, "CursorLineFold", { bg = "NONE" })
-        sethl(0, "FoldColumn", { bg = "NONE", fg = normal_fg })
+        sethl(0, "FoldColumn", { bg = "NONE", fg = comment_fg })
         sethl(0, "SignColumn", { bg = "NONE" })
         sethl(0, "ColorColumn", { bg = "NONE" })
         sethl(0, "CursorColumn", { bg = "NONE" })
@@ -259,14 +270,3 @@ autocmd("FileType", {
         vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
     end,
 })
--- autocmd("ColorScheme", {
---     callback = function()
---         vim.api.nvim_set_hl(0, "RainbowDelimiterRed", { fg = "#E29B1F" })
---         vim.api.nvim_set_hl(0, "RainbowDelimiterYellow", { fg = "#D46EC6" })
---         vim.api.nvim_set_hl(0, "RainbowDelimiterBlue", { fg = "#179BD7" })
---         vim.api.nvim_set_hl(0, "RainbowDelimiterOrange", { fg = "#FFCF08" })
---         vim.api.nvim_set_hl(0, "RainbowDelimiterGreen", { fg = "#DA6CB1" })
---         vim.api.nvim_set_hl(0, "RainbowDelimiterViolet", { fg = "#ca72e1" })
---         vim.api.nvim_set_hl(0, "RainbowDelimiterCyan", { fg = "#5ccfe1" })
---     end,
--- })

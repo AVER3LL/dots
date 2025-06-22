@@ -2,8 +2,12 @@ local diagnostic_icons = require("icons").diagnostics
 local ok, border = pcall(require, "config.looks")
 local borderType = ok and border.border_type() or "rounded"
 
+--- @class Utils
+--- @field ToggleDiagnosticIcons fun()
+
 local M = {}
 
+--- Toggle diagnostic icons
 M.ToggleDiagnosticIcons = function()
     vim.diagnostic.config {
         title = false,
@@ -45,4 +49,5 @@ M.ToggleDiagnosticIcons = function()
     }
 end
 
+--- @type Utils
 return M

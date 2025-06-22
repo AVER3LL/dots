@@ -137,13 +137,8 @@ generate_caches() {
 }
 
 generate_caches "$IMAGE" "$WALLPAPER_CACHE_DIR" &
-matugen image "$IMAGE" -m "dark" &
+matugen image "$IMAGE" --type=scheme-fidelity &
 wallust run "$IMAGE" &
-
-# Refresh swaync
-# wait
-pkill swaync
-swaync >/dev/null 2>&1 &
 
 echo "Wallpaper processing completed!"
 echo "Cached versions available at: $WALLPAPER_CACHE_DIR"

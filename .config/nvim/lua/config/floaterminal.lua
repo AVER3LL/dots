@@ -53,6 +53,8 @@ local function create_floating_window(opts)
     return { buf = buf, win = win }
 end
 
+--- Send the command to the terminal
+--- @param cmd string
 local function send_command(cmd)
     -- Ensure terminal is open
     if not vim.api.nvim_win_is_valid(state.floating.win) then
@@ -69,6 +71,8 @@ local function send_command(cmd)
     end
 end
 
+--- Replace the placeholders in the command
+--- @param command string
 local function format_command(command)
     local filepath = vim.fn.expand "%:p" -- Full path to the file
     local dir = vim.fn.expand "%:h" -- Directory of the file

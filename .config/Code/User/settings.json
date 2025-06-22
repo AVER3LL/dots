@@ -242,5 +242,7 @@
   "files.autoSave": "afterDelay",
   "editor.cursorSmoothCaretAnimation": "on",
   "editor.smoothScrolling": true,
-  "workbench.statusBar.visible": false
+  "workbench.statusBar.visible": false,
+  "qt-qml.qmlls.useQmlImportPathEnvVar": true,
+  "qt-core.qtInstallationRoot": "/home/averell/Qt"
 }

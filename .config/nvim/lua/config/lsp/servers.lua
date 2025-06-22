@@ -51,6 +51,10 @@ end
 
 M.lspconfig = vim.tbl_extend("force", process_default_lsps(), {
 
+    qmlls = {
+        cmd = { "qml-lsp", "-E" },
+    },
+
     basedpyright = {
         settings = {
             basedpyright = {
