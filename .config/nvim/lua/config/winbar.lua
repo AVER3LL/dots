@@ -32,7 +32,8 @@ M.config = {
     show_modified = true,
     show_path_when_inactive = false,
 
-    modified_icon = "✱",
+    -- modified_icon = "✱",
+    modified_icon = "",
 
     min_padding = CONSTANTS.DEFAULT_PADDING,
     cache_size_limit = CONSTANTS.CACHE_SIZE_LIMIT,

@@ -155,7 +155,6 @@ autocmd("ColorScheme", {
         local normal_bg = vim.api.nvim_get_hl(0, { name = "Normal" }).bg
         local normal_fg = vim.api.nvim_get_hl(0, { name = "Normal" }).fg
         local comment_fg = vim.api.nvim_get_hl(0, { name = "Comment" }).fg
-        local sel_bg = gethl(0, { name = "PmenuSel" }).bg
 
         -- Clean nvim-tree
         sethl(0, "NvimTreeLineNr", { bg = gethl(0, { name = "NvimTreeNormal" }).bg })
@@ -170,7 +169,7 @@ autocmd("ColorScheme", {
             sethl(0, "BlinkCmpSignatureHelp", { bg = "NONE", fg = normal_bg })
 
             -- sethl(0, "BlinkCmpMenuSelection", { link = "PmenuSel", bold = true })
-            sethl(0, "BlinkCmpMenuSelection", { bg = adjust_brightness(pmenu_bg, 0.9), bold = true })
+            sethl(0, "BlinkCmpMenuSelection", { bg = adjust_brightness(pmenu_bg, 0.8), bold = true })
             sethl(0, "BlinkCmpMenu", { bg = pmenu_bg })
             sethl(0, "BlinkCmpDoc", { bg = pmenu_bg })
 
@@ -208,6 +207,23 @@ autocmd("ColorScheme", {
         sethl(0, "SignColumn", { bg = "NONE" })
         sethl(0, "ColorColumn", { bg = "NONE" })
         sethl(0, "CursorColumn", { bg = "NONE" })
+
+        -- treesitter highlights
+        sethl(0, "@lsp.type.class", { link = "Structure" })
+        sethl(0, "@lsp.type.decorator", { link = "Function" })
+        sethl(0, "@lsp.type.enum", { link = "Type" })
+        sethl(0, "@lsp.type.enumMember", { link = "Constant" })
+        sethl(0, "@lsp.type.function", { link = "@function" })
+        sethl(0, "@lsp.type.interface", { link = "Structure" })
+        sethl(0, "@lsp.type.macro", { link = "@macro" })
+        sethl(0, "@lsp.type.method", { link = "@function.method" })
+        sethl(0, "@lsp.type.namespace", { link = "@module" })
+        sethl(0, "@lsp.type.parameter", { link = "@variable.parameter" })
+        sethl(0, "@lsp.type.property", { link = "@property" })
+        sethl(0, "@lsp.type.struct", { link = "Structure" })
+        sethl(0, "@lsp.type.type", { link = "@type" })
+        sethl(0, "@lsp.type.typeParamater", { link = "TypeDef" })
+        sethl(0, "@lsp.type.variable", { link = "@variable" })
 
         -- vim.cmd "highlight Winbar guibg=none"
     end,

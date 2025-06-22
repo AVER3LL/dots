@@ -17,6 +17,7 @@ return {
 
     {
         "baliestri/aura-theme",
+        enabled = false,
         lazy = false,
         priority = 1000,
         config = function(plugin)
@@ -85,12 +86,14 @@ return {
 
     {
         "nyoom-engineering/oxocarbon.nvim",
+        enabled = false,
         lazy = false,
         priority = 1000,
     },
 
     {
         "scottmckendry/cyberdream.nvim",
+        enabled = false,
         lazy = false,
         priority = 1000,
         opts = {
@@ -127,12 +130,6 @@ return {
         lazy = false,
         priority = 1000,
         opts = {},
-    },
-
-    {
-        "tiesen243/vercel.nvim",
-        lazy = false,
-        priority = 1000,
     },
 
     { -- poimandres
@@ -199,6 +196,7 @@ return {
             }
         end,
     },
+
 
     { -- kanagawa
         "rebelot/kanagawa.nvim",
