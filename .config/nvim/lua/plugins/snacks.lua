@@ -220,7 +220,7 @@ return {
                 function()
                     Snacks.picker.colorschemes()
                 end,
-                desc = "Find buffers",
+                desc = "Find colorschemes",
             },
             {
                 "<leader>o",
@@ -243,12 +243,19 @@ return {
                 desc = "Search in clipboard",
             },
             {
-                "<leader>fh",
+                "<leader>fhh",
                 function()
                     Snacks.picker.help()
                 end,
                 desc = "Search the help manual",
             },
+            {
+                "<leader>fhl",
+                function ()
+                    Snacks.picker.highlights()
+                end,
+                desc = "Search the highlight groups",
+            }
         },
     },
 }

@@ -9,7 +9,7 @@ return {
             require("circadian").setup {
                 lat = 6.390192,
                 lon = 2.270412,
-                day = { background = "dark", colorscheme = "kanagawa" },
+                day = { background = "dark", colorscheme = "sonokai" },
                 night = { background = "dark", colorscheme = selected_dark_theme },
             }
         end,
@@ -197,7 +197,6 @@ return {
         end,
     },
 
-
     { -- kanagawa
         "rebelot/kanagawa.nvim",
         name = "kanagawa",
@@ -304,6 +303,10 @@ return {
     { -- sonokai
         "sainnhe/sonokai",
         priority = 1000,
+        config = function()
+            --- @type "default"|"atlantis"|"andromeda"|"shusia"|"maia"|"espresso"
+            vim.g.sonokai_style = "shusia"
+        end,
     },
 
     { -- catppuccin

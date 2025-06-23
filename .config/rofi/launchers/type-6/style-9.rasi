@@ -30,8 +30,8 @@ configuration {
     // selected:                    #649094;
     // active:                      #E9CC9D;
     // urgent:                      #FEA861;
-    background:                  @on-primary-fixed;
-    background-alt:              @on-primary;
+    background:                  @surface-container;
+    background-alt:              @surface-container-low;
     foreground:                  @inverse-surface;
     selected:                    @secondary-container;
     active:                      #E9CC9D;

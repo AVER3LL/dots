@@ -166,7 +166,9 @@ autocmd("ColorScheme", {
             sethl(0, "BlinkCmpMenuBorder", { bg = pmenu_bg, fg = pmenu_bg })
             sethl(0, "BlinkCmpDocBorder", { bg = pmenu_bg, fg = pmenu_bg })
             sethl(0, "BlinkCmpDocSeparator", { bg = pmenu_bg, fg = adjust_brightness(normal_fg, 0.7) })
-            sethl(0, "BlinkCmpSignatureHelp", { bg = "NONE", fg = normal_bg })
+            sethl(0, "BlinkCmpSignatureHelp", { bg = pmenu_bg })
+            sethl(0, "BlinkCmpSignatureHelpBorder", { bg = pmenu_bg, fg = pmenu_bg })
+            -- sethl(0, "BlinkCmpSignatureHelpActiveParameter", { bg = pmenu_bg })
 
             -- sethl(0, "BlinkCmpMenuSelection", { link = "PmenuSel", bold = true })
             sethl(0, "BlinkCmpMenuSelection", { bg = adjust_brightness(pmenu_bg, 0.8), bold = true })
@@ -180,8 +182,11 @@ autocmd("ColorScheme", {
         elseif style == "clear" then
             sethl(0, "BlinkCmpMenuBorder", { bg = normal_bg, fg = adjust_brightness(normal_fg, 0.7) })
             sethl(0, "BlinkCmpDocBorder", { bg = normal_bg, fg = adjust_brightness(normal_fg, 0.7) })
+            sethl(0, "BlinkCmpSignatureHelpBorder", { bg = normal_bg, fg = adjust_brightness(normal_fg, 0.7) })
+
             sethl(0, "BlinkCmpMenu", { bg = normal_bg })
             sethl(0, "BlinkCmpDoc", { bg = normal_bg })
+            sethl(0, "BlinkCmpSignatureHelp", { bg = normal_bg })
 
             sethl(0, "LspInfoBorder", { bg = normal_bg })
             sethl(0, "NormalFloat", { bg = normal_bg })
