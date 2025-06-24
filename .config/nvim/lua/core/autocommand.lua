@@ -36,7 +36,7 @@ autocmd({ "BufRead", "BufNewFile" }, {
     end,
 })
 
--- Additional autocomman to switch back to 'blade' after LSP has attached
+-- Additional autocommand to switch back to 'blade' after LSP has attached
 autocmd("LspAttach", {
     pattern = "*.blade.php",
     callback = function(args)
@@ -120,21 +120,30 @@ autocmd("ColorScheme", {
     desc = "Tweaks some color to make nvim clean",
     group = vim.api.nvim_create_augroup("prepare-colors-averell", { clear = true }),
     callback = function()
-        local error_fg = gethl(0, { name = "DiagnosticError" }).fg
-        local warn_fg = gethl(0, { name = "DiagnosticWarn" }).fg
-        local info_fg = gethl(0, { name = "DiagnosticInfo" }).fg
-        local hint_fg = gethl(0, { name = "DiagnosticHint" }).fg
-        local pmenu_bg = gethl(0, { name = "Pmenu" }).bg
+        local colors = {
+            error = gethl(0, { name = "DiagnosticError" }).fg,
+            warn = gethl(0, { name = "DiagnosticWarn" }).fg,
+            info = gethl(0, { name = "DiagnosticInfo" }).fg,
+            hint = gethl(0, { name = "DiagnosticHint" }).fg,
+
+            background = gethl(0, { name = "Normal" }).bg,
+            foreground = gethl(0, { name = "Normal" }).fg,
+            comment = gethl(0, { name = "Comment" }).fg,
+
+            pmenu = gethl(0, { name = "Pmenu" }).bg,
+
+            parenthesis = (vim.o.background == "dark") and "#39ff14" or "#ff007f"
+        }
 
         -- Highlight line numbers with diagnostics
-        sethl(0, "LspDiagnosticsLineNrError", { fg = error_fg })
-        sethl(0, "LspDiagnosticsLineNrWarning", { fg = warn_fg })
-        sethl(0, "LspDiagnosticsLineNrInformation", { fg = info_fg })
-        sethl(0, "LspDiagnosticsLineNrHint", { fg = hint_fg })
+        sethl(0, "LspDiagnosticsLineNrError", { fg = colors.error })
+        sethl(0, "LspDiagnosticsLineNrWarning", { fg = colors.warn })
+        sethl(0, "LspDiagnosticsLineNrInformation", { fg = colors.info })
+        sethl(0, "LspDiagnosticsLineNrHint", { fg = colors.hint })
 
-        sethl(0, "HlSearchNear", { bg = "NONE", fg = hint_fg })
-        sethl(0, "HlSearchLens", { bg = "NONE", fg = hint_fg })
-        sethl(0, "HlSearchLensNear", { bg = "NONE", fg = hint_fg })
+        sethl(0, "HlSearchNear", { bg = "NONE", fg = colors.hint })
+        sethl(0, "HlSearchLens", { bg = "NONE", fg = colors.hint })
+        sethl(0, "HlSearchLensNear", { bg = "NONE", fg = colors.hint })
 
         -- Cleaning the gutter
         sethl(0, "DiagnosticSignError", { bg = "NONE" })
@@ -146,69 +155,62 @@ autocmd("ColorScheme", {
         sethl(0, "TinyInlineDiagnosticVirtualTextArrow", { bg = "NONE" })
 
         -- Add underlined diagnostics regardless of theme
-        sethl(0, "DiagnosticUnderlineError", { undercurl = true, sp = error_fg })
-        sethl(0, "DiagnosticUnderlineWarn", { undercurl = true, sp = warn_fg })
-        sethl(0, "DiagnosticUnderlineInfo", { undercurl = true, sp = info_fg })
-        sethl(0, "DiagnosticUnderlineHint", { undercurl = true, sp = hint_fg })
-
-        -- Modern looking floating windows
-        local normal_bg = vim.api.nvim_get_hl(0, { name = "Normal" }).bg
-        local normal_fg = vim.api.nvim_get_hl(0, { name = "Normal" }).fg
-        local comment_fg = vim.api.nvim_get_hl(0, { name = "Comment" }).fg
+        sethl(0, "DiagnosticUnderlineError", { undercurl = true, sp = colors.error })
+        sethl(0, "DiagnosticUnderlineWarn", { undercurl = true, sp = colors.warn })
+        sethl(0, "DiagnosticUnderlineInfo", { undercurl = true, sp = colors.info })
+        sethl(0, "DiagnosticUnderlineHint", { undercurl = true, sp = colors.hint })
 
         -- Clean nvim-tree
         sethl(0, "NvimTreeLineNr", { bg = gethl(0, { name = "NvimTreeNormal" }).bg })
-        sethl(0, "NvimTreeWinSeparator", { bg = normal_bg, fg = normal_bg })
+        sethl(0, "NvimTreeWinSeparator", { bg = colors.background, fg = colors.background })
         sethl(0, "NvimTreeEndOfBuffer", { bg = gethl(0, { name = "NvimTreeNormal" }).bg })
         sethl(0, "NvimTreeSignColumn", { bg = "NONE" })
 
         if style == "flat" then
-            sethl(0, "BlinkCmpMenuBorder", { bg = pmenu_bg, fg = pmenu_bg })
-            sethl(0, "BlinkCmpDocBorder", { bg = pmenu_bg, fg = pmenu_bg })
-            sethl(0, "BlinkCmpDocSeparator", { bg = pmenu_bg, fg = adjust_brightness(normal_fg, 0.7) })
-            sethl(0, "BlinkCmpSignatureHelp", { bg = pmenu_bg })
-            sethl(0, "BlinkCmpSignatureHelpBorder", { bg = pmenu_bg, fg = pmenu_bg })
-            -- sethl(0, "BlinkCmpSignatureHelpActiveParameter", { bg = pmenu_bg })
+            sethl(0, "BlinkCmpMenuBorder", { bg = colors.pmenu, fg = colors.pmenu })
+            sethl(0, "BlinkCmpDocBorder", { bg = colors.pmenu, fg = colors.pmenu })
+            sethl(0, "BlinkCmpDocSeparator", { bg = colors.pmenu, fg = adjust_brightness(colors.foreground, 0.7) })
+            sethl(0, "BlinkCmpSignatureHelp", { bg = colors.pmenu })
+            sethl(0, "BlinkCmpSignatureHelpBorder", { bg = colors.pmenu, fg = colors.pmenu })
+            -- sethl(0, "BlinkCmpSignatureHelpActiveParameter", { bg = colors.pmenu })
 
-            -- sethl(0, "BlinkCmpMenuSelection", { link = "PmenuSel", bold = true })
-            sethl(0, "BlinkCmpMenuSelection", { bg = adjust_brightness(pmenu_bg, 0.8), bold = true })
-            sethl(0, "BlinkCmpMenu", { bg = pmenu_bg })
-            sethl(0, "BlinkCmpDoc", { bg = pmenu_bg })
+            sethl(0, "BlinkCmpMenuSelection", { bg = adjust_brightness(colors.pmenu, 0.8), bold = true })
+            sethl(0, "BlinkCmpMenu", { bg = colors.pmenu })
+            sethl(0, "BlinkCmpDoc", { bg = colors.pmenu })
 
-            sethl(0, "LspInfoBorder", { bg = pmenu_bg })
-            -- sethl(0, "SnacksPickerBorder", { bg = normal_bg, fg = adjust_brightness(normal_fg, 0.3) })
-            sethl(0, "NormalFloat", { bg = pmenu_bg })
-            sethl(0, "FloatBorder", { fg = pmenu_bg, bg = pmenu_bg })
+            sethl(0, "LspInfoBorder", { bg = colors.pmenu })
+            -- sethl(0, "SnacksPickerBorder", { bg = background, fg = adjust_brightness(colors.foreground, 0.3) })
+            sethl(0, "NormalFloat", { bg = colors.pmenu })
+            sethl(0, "FloatBorder", { fg = colors.pmenu, bg = colors.pmenu })
         elseif style == "clear" then
-            sethl(0, "BlinkCmpMenuBorder", { bg = normal_bg, fg = adjust_brightness(normal_fg, 0.7) })
-            sethl(0, "BlinkCmpDocBorder", { bg = normal_bg, fg = adjust_brightness(normal_fg, 0.7) })
-            sethl(0, "BlinkCmpSignatureHelpBorder", { bg = normal_bg, fg = adjust_brightness(normal_fg, 0.7) })
+            sethl(0, "BlinkCmpMenuBorder", { bg = colors.background, fg = adjust_brightness(colors.foreground, 0.7) })
+            sethl(0, "BlinkCmpDocBorder", { bg = colors.background, fg = adjust_brightness(colors.foreground, 0.7) })
+            sethl(0, "BlinkCmpSignatureHelpBorder", { bg = colors.background, fg = adjust_brightness(colors.foreground, 0.7) })
 
-            sethl(0, "BlinkCmpMenu", { bg = normal_bg })
-            sethl(0, "BlinkCmpDoc", { bg = normal_bg })
-            sethl(0, "BlinkCmpSignatureHelp", { bg = normal_bg })
+            sethl(0, "BlinkCmpMenu", { bg = colors.background })
+            sethl(0, "BlinkCmpDoc", { bg = colors.background })
+            sethl(0, "BlinkCmpSignatureHelp", { bg = colors.background })
 
-            sethl(0, "LspInfoBorder", { bg = normal_bg })
-            sethl(0, "NormalFloat", { bg = normal_bg })
-            sethl(0, "FloatBorder", { fg = adjust_brightness(normal_fg, 0.7), bg = normal_bg })
+            sethl(0, "LspInfoBorder", { bg = colors.background })
+            sethl(0, "NormalFloat", { bg = colors.background })
+            sethl(0, "FloatBorder", { fg = adjust_brightness(colors.foreground, 0.7), bg = colors.background })
         end
 
-        sethl(0, "WinBar", { bg = normal_bg })
-        sethl(0, "WinBarNC", { bg = normal_bg })
+        sethl(0, "WinBar", { bg = colors.background })
+        sethl(0, "WinBarNC", { bg = colors.background })
 
-        sethl(0, "FloatTitle", { bg = normal_bg })
+        sethl(0, "FloatTitle", { bg = colors.background })
 
         sethl(0, "Comment", { fg = "#008c7d", italic = true })
 
         -- Matching parentheses colors
-        local paren_color = (vim.o.background == "dark") and "#39ff14" or "#ff007f"
-        sethl(0, "MatchParen", { bg = "NONE", fg = paren_color })
+        sethl(0, "MatchParen", { bg = "NONE", fg = colors.parenthesis })
 
         -- Remove background color from line numbers
         sethl(0, "CursorLineNr", { bg = "NONE" })
         sethl(0, "CursorLineSign", { bg = "NONE" })
         sethl(0, "CursorLineFold", { bg = "NONE" })
-        sethl(0, "FoldColumn", { bg = "NONE", fg = comment_fg })
+        sethl(0, "FoldColumn", { bg = "NONE", fg = colors.comment })
         sethl(0, "SignColumn", { bg = "NONE" })
         sethl(0, "ColorColumn", { bg = "NONE" })
         sethl(0, "CursorColumn", { bg = "NONE" })

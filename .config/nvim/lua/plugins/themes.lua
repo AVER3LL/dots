@@ -4,12 +4,14 @@ return {
         "gagbo/circadian.nvim",
         config = function()
             local dark_themes = { "tokyonight-night", "moonfly", "gruvbox-material" }
+            local light_themes = { "palenight", "sonokai", "kanagawa", "monokai-pro-octagon" }
             math.randomseed(os.time())
+            local selected_light_theme = light_themes[math.random(#light_themes)]
             local selected_dark_theme = dark_themes[math.random(#dark_themes)]
             require("circadian").setup {
                 lat = 6.390192,
                 lon = 2.270412,
-                day = { background = "dark", colorscheme = "sonokai" },
+                day = { background = "dark", colorscheme = selected_light_theme },
                 night = { background = "dark", colorscheme = selected_dark_theme },
             }
         end,
@@ -82,6 +84,7 @@ return {
         "loctvl842/monokai-pro.nvim",
         lazy = false,
         priority = 1000,
+        opts = { },
     },
 
     {
@@ -422,6 +425,20 @@ return {
                 },
             }
         end,
+    },
+
+    {
+        "killitar/obscure.nvim",
+        lazy = false,
+        priority = 1000,
+        opts = {},
+    },
+
+    {
+        "alexmozaidze/palenight.nvim",
+        lazy = false,
+        priority = 1000,
+        opts = {},
     },
 
     { -- gruvbox-material

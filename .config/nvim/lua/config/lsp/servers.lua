@@ -68,7 +68,7 @@ M.lspconfig = vim.tbl_extend("force", process_default_lsps(), {
     },
 
     html = {
-        filetypes = { "html", "templ", "blade" },
+        filetypes = { "html", "templ" },
     },
 
     intelephense = {

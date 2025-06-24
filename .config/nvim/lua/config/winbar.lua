@@ -367,6 +367,7 @@ local function set_highlights()
         warn = gethl(0, { name = "DiagnosticWarn" }).fg,
         info = gethl(0, { name = "DiagnosticInfo" }).fg,
         hint = gethl(0, { name = "DiagnosticHint" }).fg,
+        pmenu = gethl(0, { name = "Pmenu" }).fg,
     }
 
     -- Set highlight groups
@@ -375,7 +376,7 @@ local function set_highlights()
     sethl(0, "WinBarDiagInfo", { fg = colors.info, bold = true })
     sethl(0, "WinBarDiagHint", { fg = colors.hint })
     sethl(0, "WinBarPath", { fg = "#888888", italic = true })
-    sethl(0, "WinBarModified", { fg = "#FF7139", bold = true })
+    sethl(0, "WinBarModified", { fg = colors.pmenu, bold = true })
 end
 
 -- Setup function
