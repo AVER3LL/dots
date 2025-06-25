@@ -68,7 +68,7 @@ autocmd("FileType", {
 --Highlight when yanking (copying) text
 autocmd("TextYankPost", {
     desc = "Highlight when yanking (copying) text",
-    group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
+    group = augroup "kickstart-highlight-yank",
     callback = function()
         vim.hl.on_yank {
             timeout = 150,
@@ -78,7 +78,7 @@ autocmd("TextYankPost", {
 })
 
 autocmd("FileType", {
-    group = vim.api.nvim_create_augroup("mariasolos/treesitter_folding", { clear = true }),
+    group = augroup "mariasolos/treesitter_folding",
     desc = "Enable Treesitter folding",
     callback = function(args)
         local bufnr = args.buf
@@ -118,7 +118,7 @@ end
 
 autocmd("ColorScheme", {
     desc = "Tweaks some color to make nvim clean",
-    group = vim.api.nvim_create_augroup("prepare-colors-averell", { clear = true }),
+    group = augroup "prepare-colors-averell",
     callback = function()
         local colors = {
             error = gethl(0, { name = "DiagnosticError" }).fg,
@@ -132,7 +132,7 @@ autocmd("ColorScheme", {
 
             pmenu = gethl(0, { name = "Pmenu" }).bg,
 
-            parenthesis = (vim.o.background == "dark") and "#39ff14" or "#ff007f"
+            parenthesis = (vim.o.background == "dark") and "#39ff14" or "#ff007f",
         }
 
         -- Highlight line numbers with diagnostics
@@ -185,7 +185,11 @@ autocmd("ColorScheme", {
         elseif style == "clear" then
             sethl(0, "BlinkCmpMenuBorder", { bg = colors.background, fg = adjust_brightness(colors.foreground, 0.7) })
             sethl(0, "BlinkCmpDocBorder", { bg = colors.background, fg = adjust_brightness(colors.foreground, 0.7) })
-            sethl(0, "BlinkCmpSignatureHelpBorder", { bg = colors.background, fg = adjust_brightness(colors.foreground, 0.7) })
+            sethl(
+                0,
+                "BlinkCmpSignatureHelpBorder",
+                { bg = colors.background, fg = adjust_brightness(colors.foreground, 0.7) }
+            )
 
             sethl(0, "BlinkCmpMenu", { bg = colors.background })
             sethl(0, "BlinkCmpDoc", { bg = colors.background })
@@ -268,7 +272,7 @@ autocmd("RecordingLeave", {
 
 -- close some filetypes with <q>
 autocmd("FileType", {
-    group = vim.api.nvim_create_augroup("close_with_q", { clear = true }),
+    group = augroup "close_with_q",
     pattern = {
         "PlenaryTestPopup",
         "help",

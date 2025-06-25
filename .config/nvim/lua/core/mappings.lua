@@ -222,8 +222,12 @@ map("n", "<C-u>", "<C-u>zz")
 map("n", "<C-o>", "<C-o>zz")
 map("n", "<C-i>", "<C-i>zz")
 map("n", "%", "%zz")
-map("n", "n", "nzz")
-map("n", "N", "Nzz")
+-- map("n", "n", "nzz")
+-- map("n", "N", "Nzz")
+
+require("config.search-counter").setup {
+    highlight = "Comment", -- Highlight group for the counter text
+}
 
 -- Line Movement
 map("n", "<A-j>", ":m .+1<CR>==", { desc = "Move line down" })
