@@ -237,7 +237,6 @@ autocmd("ColorScheme", {
         sethl(0, "@lsp.type.typeParamater", { link = "TypeDef" })
         sethl(0, "@lsp.type.variable", { link = "@variable" })
 
-        -- vim.cmd "highlight Winbar guibg=none"
     end,
 })
 
@@ -296,5 +295,23 @@ autocmd("FileType", {
     callback = function(event)
         vim.bo[event.buf].buflisted = false
         vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
+    end,
+})
+
+-- Harmonize terminal color with neovim background
+autocmd({ "UIEnter", "ColorScheme" }, {
+    callback = function()
+        local normal = gethl(0, { name = "Normal" })
+        if not normal.bg then
+            return
+        end
+
+        io.write(string.format("\027]11;#%06x\027\\", normal.bg))
+    end,
+})
+
+autocmd("UILeave", {
+    callback = function()
+        io.write "\027]111\027\\"
     end,
 })
