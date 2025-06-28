@@ -12,12 +12,22 @@ return {
                 local total_lines = vim.api.nvim_buf_line_count(args.buf)
                 local width = string.len(tostring(total_lines))
 
-                -- If this is a wrapped line (virtnum > 0), show dash with proper width
-                if args.virtnum > 0 then
+                -- Handle virtual text cases
+                -- vim.v.virtnum < 0: virtual text above the line (like function usage annotations)
+                -- vim.v.virtnum > 0: wrapped lines
+                -- vim.v.virtnum == 0: normal lines
+
+                if vim.v.virtnum < 0 then
+                    -- Virtual text above the line (like your function usage plugin)
                     return string.rep(" ", width - 1) .. "-"
                 end
 
-                -- Otherwise, use the normal line number logic
+                if vim.v.virtnum > 0 then
+                    -- Wrapped lines
+                    return string.rep(" ", width - 1) .. "-"
+                end
+
+                -- Normal line (vim.v.virtnum == 0)
                 local lnum = args.lnum
                 local relnum = args.relnum
                 local number_to_show

@@ -166,6 +166,9 @@ autocmd("ColorScheme", {
         sethl(0, "NvimTreeSignColumn", { bg = "NONE" })
 
         if style == "flat" then
+            sethl(0, "SnacksInputNormal", { bg = colors.pmenu, fg = colors.foreground })
+            sethl(0, "SnacksInputBorder", { bg = colors.pmenu, fg = colors.pmenu })
+
             sethl(0, "BlinkCmpMenuBorder", { bg = colors.pmenu, fg = colors.pmenu })
             sethl(0, "BlinkCmpDocBorder", { bg = colors.pmenu, fg = colors.pmenu })
             sethl(0, "BlinkCmpDocSeparator", { bg = colors.pmenu, fg = adjust_brightness(colors.foreground, 0.7) })

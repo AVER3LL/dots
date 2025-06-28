@@ -129,10 +129,21 @@ map("n", "<leader>tl", function()
     vim.o.background = (vim.o.background == "dark") and "light" or "dark"
 end, { desc = "Light Dark Toggle" })
 
--- Basic Navigation
+-- Fix annoying wrapped lines
 map({ "n", "v" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, desc = "Move up" })
 map({ "n", "v" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, desc = "Move down" })
-map({ "n", "v" }, "$", "v:count == 0 ? 'g$' : '$'", { expr = true, silent = true, desc = "Move down" })
+map({ "n", "v" }, "$", "v:count == 0 ? 'g$' : '$'", { expr = true, silent = true, desc = "Move to end of line" })
+map({ "n", "v" }, "0", "v:count == 0 ? 'g0' : '0'", { expr = true, silent = true, desc = "Move to beginning of line" })
+map(
+    { "n", "v" },
+    "_",
+    "v:count == 0 ? 'g^' : '_'",
+    { expr = true, silent = true, desc = "Go to first non-blank character" }
+)
+
+-- These need to be normal mode only and without expr
+map("n", "A", "g$a", { desc = "Append at end of display line" })
+map("n", "I", "g^i", { desc = "Insert at first non-blank of display line" })
 
 -- map("n", "gl", "$", { desc = "Move to end of line" })
 -- map("n", "gh", "_", { desc = "Move to end of line" })

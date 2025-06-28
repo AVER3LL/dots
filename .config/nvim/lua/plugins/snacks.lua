@@ -11,7 +11,10 @@ return {
             bigfile = { enabled = true },
             explorer = { enabled = false },
             image = { enabled = true },
-            input = { enabled = true },
+            input = {
+                enabled = true,
+                prompt_pos = "title",
+            },
             picker = {
                 enabled = true,
                 prompt = search,
@@ -251,11 +254,11 @@ return {
             },
             {
                 "<leader>fhl",
-                function ()
+                function()
                     Snacks.picker.highlights()
                 end,
                 desc = "Search the highlight groups",
-            }
+            },
         },
     },
 }
