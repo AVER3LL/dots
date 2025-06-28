@@ -1,8 +1,9 @@
 -- Search counter with virtual text display
 local M = {}
+local api = vim.api
 
 -- Namespace for virtual text
-local ns_id = vim.api.nvim_create_namespace "search_counter"
+local ns_id = api.nvim_create_namespace "search_counter"
 
 -- Function to get search pattern and count matches
 local function get_search_info()
@@ -46,7 +47,7 @@ end
 -- Function to display search counter as virtual text
 local function show_search_counter()
     -- Clear existing virtual text
-    vim.api.nvim_buf_clear_namespace(0, ns_id, 0, -1)
+    api.nvim_buf_clear_namespace(0, ns_id, 0, -1)
 
     local search_info = get_search_info()
     if not search_info then
@@ -59,7 +60,7 @@ local function show_search_counter()
     -- Only show if current line has a match
     if current_line_has_match() then
         -- Add virtual text at the end of current line
-        vim.api.nvim_buf_set_extmark(0, ns_id, current_line, 0, {
+        api.nvim_buf_set_extmark(0, ns_id, current_line, 0, {
             virt_text = { { text, "Comment" } },
             virt_text_pos = "eol",
             priority = 100,
@@ -87,7 +88,7 @@ local function update_search_counter()
         show_search_counter()
     elseif not current_line_has_match() and last_match_line ~= nil then
         -- Clear the counter if we moved away from a match line
-        vim.api.nvim_buf_clear_namespace(0, ns_id, 0, -1)
+        api.nvim_buf_clear_namespace(0, ns_id, 0, -1)
         last_match_line = nil
         last_match_count = nil
     end
@@ -95,10 +96,10 @@ end
 
 -- Set up autocommands for search events
 local function setup_autocommands()
-    local group = vim.api.nvim_create_augroup("SearchCounter", { clear = true })
+    local group = api.nvim_create_augroup("SearchCounter", { clear = true })
 
     -- Show counter when search is performed
-    vim.api.nvim_create_autocmd("CmdlineLeave", {
+    api.nvim_create_autocmd("CmdlineLeave", {
         group = group,
         pattern = "/,\\?",
         callback = function()
@@ -107,7 +108,7 @@ local function setup_autocommands()
     })
 
     -- Update counter when using n/N
-    vim.api.nvim_create_autocmd("CursorMoved", {
+    api.nvim_create_autocmd("CursorMoved", {
         group = group,
         callback = function()
             -- Only update if we're in a search context
@@ -118,12 +119,12 @@ local function setup_autocommands()
     })
 
     -- Clear counter when search highlighting is turned off
-    vim.api.nvim_create_autocmd("OptionSet", {
+    api.nvim_create_autocmd("OptionSet", {
         group = group,
         pattern = "hlsearch",
         callback = function()
             if vim.v.hlsearch == 0 then
-                vim.api.nvim_buf_clear_namespace(0, ns_id, 0, -1)
+                api.nvim_buf_clear_namespace(0, ns_id, 0, -1)
                 last_match_line = nil
                 last_match_count = nil
             end
@@ -159,7 +160,7 @@ local function setup_mappings()
     -- Map Esc to clear search highlights and counter
     vim.keymap.set("n", "<Esc>", function()
         vim.cmd "nohlsearch"
-        vim.api.nvim_buf_clear_namespace(0, ns_id, 0, -1)
+        api.nvim_buf_clear_namespace(0, ns_id, 0, -1)
         last_match_line = nil
         last_match_count = nil
     end, { desc = "Clear search highlights and counter" })
@@ -175,7 +176,7 @@ function M.setup(opts)
     -- Override the show function if custom highlight is provided
     if opts.highlight then
         show_search_counter = function()
-            vim.api.nvim_buf_clear_namespace(0, ns_id, 0, -1)
+            api.nvim_buf_clear_namespace(0, ns_id, 0, -1)
 
             local search_info = get_search_info()
             if not search_info then
@@ -187,7 +188,7 @@ function M.setup(opts)
 
             -- Only show if current line has a match
             if current_line_has_match() then
-                vim.api.nvim_buf_set_extmark(0, ns_id, current_line, 0, {
+                api.nvim_buf_set_extmark(0, ns_id, current_line, 0, {
                     virt_text = { { text, highlight } },
                     virt_text_pos = "eol",
                     priority = 100,
@@ -211,7 +212,7 @@ end
 
 -- Function to clear search counter
 function M.clear_counter()
-    vim.api.nvim_buf_clear_namespace(0, ns_id, 0, -1)
+    api.nvim_buf_clear_namespace(0, ns_id, 0, -1)
     last_match_line = nil
     last_match_count = nil
 end

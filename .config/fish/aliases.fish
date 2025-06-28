@@ -78,6 +78,9 @@ alias listaur="sudo pacman -Qqem"
 #Switch to gdm
 alias togdm="sudo pacman -S gdm --noconfirm --needed ; sudo systemctl enable gdm.service -f ; echo 'Gdm is active - reboot now'"
 
+alias tosddm="sudo pacman -S sddm --noconfirm --needed ; sudo systemctl enable sddm.service -f ; echo 'SDDM is active - reboot now'"
+
+
 
 # Cleanup orphaned packages
 alias cleanup='sudo pacman -Rns (pacman -Qtdq)'

@@ -6,6 +6,7 @@ return {
         enabled = true,
         opts = function()
             local builtin = require "statuscol.builtin"
+
             return {
                 setopt = true,
                 ft_ignore = {
@@ -29,7 +30,6 @@ return {
                 -- number-less fold indicator, then signs, then line number & separator
                 segments = {
                     {
-                        -- text = { " " },
                         text = { " " },
                         condition = {
                             function(args)

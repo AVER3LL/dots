@@ -26,10 +26,9 @@ if signature then
     })
 end
 
-local the_group = augroup "lsp_blade_workaround"
 -- Autocommand to temporarily change 'blade' filetype to 'php' when opening for LSP server activation
 autocmd({ "BufRead", "BufNewFile" }, {
-    group = the_group,
+    group = augroup "lsp_blade_workaround",
     pattern = "*.blade.php",
     callback = function()
         vim.bo.filetype = "php"
@@ -77,26 +76,26 @@ autocmd("TextYankPost", {
     end,
 })
 
-autocmd("FileType", {
-    group = augroup "mariasolos/treesitter_folding",
-    desc = "Enable Treesitter folding",
-    callback = function(args)
-        local bufnr = args.buf
-
-        -- Enable Treesitter folding when not in huge files and when Treesitter
-        -- is working.
-        if vim.bo[bufnr].filetype ~= "bigfile" and pcall(vim.treesitter.start, bufnr) then
-            vim.api.nvim_buf_call(bufnr, function()
-                vim.wo[0][0].foldmethod = "expr"
-                vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
-                vim.cmd.normal "zx"
-            end)
-        else
-            -- Else just fallback to using indentation.
-            vim.wo[0][0].foldmethod = "indent"
-        end
-    end,
-})
+-- autocmd("FileType", {
+--     group = augroup "mariasolos/treesitter_folding",
+--     desc = "Enable Treesitter folding",
+--     callback = function(args)
+--         local bufnr = args.buf
+--
+--         -- Enable Treesitter folding when not in huge files and when Treesitter
+--         -- is working.
+--         if vim.bo[bufnr].filetype ~= "bigfile" and pcall(vim.treesitter.start, bufnr) then
+--             vim.api.nvim_buf_call(bufnr, function()
+--                 vim.wo[0][0].foldmethod = "expr"
+--                 vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
+--                 vim.cmd.normal "zx"
+--             end)
+--         else
+--             -- Else just fallback to using indentation.
+--             vim.wo[0][0].foldmethod = "indent"
+--         end
+--     end,
+-- })
 
 --- Function written solely by an AI. The purpose was to get
 --- a color that could be used for borders no matter the theme
@@ -202,6 +201,8 @@ autocmd("ColorScheme", {
 
         sethl(0, "WinBar", { bg = colors.background })
         sethl(0, "WinBarNC", { bg = colors.background })
+        sethl(0, "StatusLine", { bg = colors.background })
+        sethl(0, "StatusLineNC", { bg = colors.background })
 
         sethl(0, "FloatTitle", { bg = colors.background })
 

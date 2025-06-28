@@ -10,4 +10,5 @@ else
     require "config.lazy"
 
     require("config.winbar").setup()
+    require("config.statusline")
 end

@@ -1,12 +1,6 @@
 local ok, border = pcall(require, "config.looks")
 local borderType = ok and border.border_type() or "rounded"
 
--- vim.api.nvim_create_autocmd("BufEnter", {
---     desc = "Convert blade filetype to php",
---     pattern = "*.blade.php",
---     command = "set filetype=php",
--- })
-
 local map = function(mode, lhs, rhs, opts)
     opts = opts or {}
     opts.noremap = true

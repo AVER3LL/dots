@@ -26,7 +26,7 @@ return {
                 },
                 options = {
                     -- Enable this to see debug information
-                    debug = true,
+                    debug = false,
                 },
             },
         }
