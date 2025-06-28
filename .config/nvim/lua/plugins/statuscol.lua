@@ -7,6 +7,44 @@ return {
         opts = function()
             local builtin = require "statuscol.builtin"
 
+            local function custom_lnumfunc(args)
+                -- Get total lines in buffer to determine width needed
+                local total_lines = vim.api.nvim_buf_line_count(args.buf)
+                local width = string.len(tostring(total_lines))
+
+                -- If this is a wrapped line (virtnum > 0), show dash with proper width
+                if args.virtnum > 0 then
+                    return string.rep(" ", width - 1) .. "-"
+                end
+
+                -- Otherwise, use the normal line number logic
+                local lnum = args.lnum
+                local relnum = args.relnum
+                local number_to_show
+
+                -- Handle different number/relativenumber combinations
+                if args.nu and args.rnu then
+                    -- Both enabled: show absolute for current line, relative for others
+                    if relnum == 0 then
+                        number_to_show = lnum
+                    else
+                        number_to_show = relnum
+                    end
+                elseif args.rnu then
+                    -- Only relative numbers
+                    number_to_show = relnum
+                elseif args.nu then
+                    -- Only absolute numbers
+                    number_to_show = lnum
+                else
+                    -- No numbers enabled
+                    return ""
+                end
+
+                -- Format with proper width (right-aligned)
+                return string.format("%" .. width .. "d", number_to_show)
+            end
+
             return {
                 setopt = true,
                 ft_ignore = {
@@ -50,7 +88,7 @@ return {
                         click = "v:lua.ScSa",
                     },
                     {
-                        text = { builtin.lnumfunc },
+                        text = { custom_lnumfunc },
                         condition = {
                             function(args)
                                 local is_num = vim.wo[args.win].number

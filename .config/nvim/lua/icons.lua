@@ -72,6 +72,7 @@ M.misc = {
     bullet = "•",
     document = "≡",
     lock = "",
+    ok = "✔",
     search = "   ",
     vertical_bar = "│",
     dashed_bar = "┊",
