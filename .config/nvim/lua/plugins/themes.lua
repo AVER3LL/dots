@@ -3,8 +3,10 @@ return {
     { -- theme switcher
         "gagbo/circadian.nvim",
         config = function()
-            local dark_themes = { "tokyonight-night", "moonfly", "gruvbox-material" }
-            local light_themes = { "palenight", "sonokai", "kanagawa", "monokai-pro-octagon" }
+            -- local dark_themes = { "tokyonight-night", "moonfly", "gruvbox-material" }
+            -- local light_themes = { "palenight", "sonokai", "kanagawa", "monokai-pro-octagon" }
+            local dark_themes = { "gruvbox-material" }
+            local light_themes = dark_themes
             math.randomseed(os.time())
             local selected_light_theme = light_themes[math.random(#light_themes)]
             local selected_dark_theme = dark_themes[math.random(#dark_themes)]
@@ -453,6 +455,8 @@ return {
             vim.g.gruvbox_material_float_style = "bright"
             vim.g.gruvbox_material_statusline_style = "material"
             vim.g.gruvbox_material_cursor = "auto"
+
+            vim.g.gruvbox_material_better_performance = 1
         end,
     },
 

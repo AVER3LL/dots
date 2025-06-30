@@ -229,7 +229,6 @@
   "php.validate.executablePath": "/home/averell/.config/herd-lite/bin/php",
   "Laravel.phpCommand": "/home/averell/.config/herd-lite/bin/php",
   "workbench.editor.editorActionsLocation": "titleBar",
-  "window.customTitleBarVisibility": "never",
   "editor.quickSuggestions": {
     "strings": "on"
   },

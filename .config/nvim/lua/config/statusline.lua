@@ -5,7 +5,7 @@ local get_opt = api.nvim_get_option_value
 local icons = require "icons"
 
 local HL = {
-    branch = { "DiagnosticOk", icons.misc.branch },
+    branch = { "DiagnosticOk", icons.misc.git },
     file = { "NonText", icons.misc.node },
     fileinfo = { "DiagnosticInfo", icons.misc.document },
     nomodifiable = { "DiagnosticWarn", icons.misc.bullet },

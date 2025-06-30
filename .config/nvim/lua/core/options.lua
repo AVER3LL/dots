@@ -4,6 +4,11 @@ vim.g.codeium_enabled = true
 vim.g.fold_indicator = true
 vim.g.show_line_number = false
 
+--- @type "flat" | "clear"
+vim.g.style = "clear"
+
+vim.g.enable_signature = true
+
 vim.g.show_indent = false
 vim.g.use_blink = true
 vim.g.markdown_recommended_style = 0

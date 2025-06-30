@@ -33,7 +33,7 @@ M.config = {
     show_path_when_inactive = false,
 
     -- modified_icon = "✱",
-    modified_icon = "",
+    modified_icon = require("icons").misc.bullet,
 
     min_padding = CONSTANTS.DEFAULT_PADDING,
     cache_size_limit = CONSTANTS.CACHE_SIZE_LIMIT,
@@ -376,7 +376,7 @@ local function set_highlights()
     sethl(0, "WinBarDiagInfo", { fg = colors.info, bold = true })
     sethl(0, "WinBarDiagHint", { fg = colors.hint })
     sethl(0, "WinBarPath", { fg = "#888888", italic = true })
-    sethl(0, "WinBarModified", { fg = colors.pmenu, bold = true })
+    sethl(0, "WinBarModified", { fg = colors.error, bold = true })
 end
 
 -- Setup function

@@ -70,6 +70,7 @@ M.misc = {
     branch = "",
     node = "╼",
     bullet = "•",
+    dot = "",
     document = "≡",
     lock = "",
     ok = "✔",

@@ -2,16 +2,11 @@ local autocmd = vim.api.nvim_create_autocmd
 local sethl = vim.api.nvim_set_hl
 local gethl = vim.api.nvim_get_hl
 
---- @type "flat" | "clear"
-local style = "flat"
-
 local function augroup(name)
     return vim.api.nvim_create_augroup(name, { clear = true })
 end
 
-local signature = true
-
-if signature then
+if vim.g.enable_signature then
     autocmd("LspAttach", {
         callback = function(args)
             local client = vim.lsp.get_client_by_id(args.data.client_id)
@@ -165,7 +160,7 @@ autocmd("ColorScheme", {
         sethl(0, "NvimTreeEndOfBuffer", { bg = gethl(0, { name = "NvimTreeNormal" }).bg })
         sethl(0, "NvimTreeSignColumn", { bg = "NONE" })
 
-        if style == "flat" then
+        if vim.g.style == "flat" then
             sethl(0, "SnacksInputNormal", { bg = colors.pmenu, fg = colors.foreground })
             sethl(0, "SnacksInputBorder", { bg = colors.pmenu, fg = colors.pmenu })
 
@@ -184,14 +179,15 @@ autocmd("ColorScheme", {
             -- sethl(0, "SnacksPickerBorder", { bg = background, fg = adjust_brightness(colors.foreground, 0.3) })
             sethl(0, "NormalFloat", { bg = colors.pmenu })
             sethl(0, "FloatBorder", { fg = colors.pmenu, bg = colors.pmenu })
-        elseif style == "clear" then
-            sethl(0, "BlinkCmpMenuBorder", { bg = colors.background, fg = adjust_brightness(colors.foreground, 0.7) })
-            sethl(0, "BlinkCmpDocBorder", { bg = colors.background, fg = adjust_brightness(colors.foreground, 0.7) })
+        elseif vim.g.style == "clear" then
+            sethl(0, "BlinkCmpMenuBorder", { bg = colors.background, fg = adjust_brightness(colors.foreground, 0.5) })
+            sethl(0, "BlinkCmpDocBorder", { bg = colors.background, fg = adjust_brightness(colors.foreground, 0.5) })
             sethl(
                 0,
                 "BlinkCmpSignatureHelpBorder",
-                { bg = colors.background, fg = adjust_brightness(colors.foreground, 0.7) }
+                { bg = colors.background, fg = adjust_brightness(colors.foreground, 0.5) }
             )
+            sethl(0, "BlinkCmpMenuSelection", { bg = adjust_brightness(colors.pmenu, 0.8), bold = true })
 
             sethl(0, "BlinkCmpMenu", { bg = colors.background })
             sethl(0, "BlinkCmpDoc", { bg = colors.background })
@@ -199,7 +195,7 @@ autocmd("ColorScheme", {
 
             sethl(0, "LspInfoBorder", { bg = colors.background })
             sethl(0, "NormalFloat", { bg = colors.background })
-            sethl(0, "FloatBorder", { fg = adjust_brightness(colors.foreground, 0.7), bg = colors.background })
+            sethl(0, "FloatBorder", { fg = adjust_brightness(colors.foreground, 0.5), bg = colors.background })
         end
 
         sethl(0, "WinBar", { bg = colors.background })

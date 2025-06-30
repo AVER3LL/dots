@@ -10,7 +10,7 @@ alias yayf="yay -Slq | fzf --multi --preview 'yay -Sii {1}' --preview-window=dow
 
 alias cp 'advcp -g'
 alias mv 'advmv -g'
-alias rm 'trash -v'
+# alias rm 'trash -v'
 
 # tree alias
 alias tree="eza --tree --icons"

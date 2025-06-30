@@ -4,11 +4,12 @@ local borderType = ok and border.border_type() or "rounded"
 
 --- @class Utils
 --- @field ToggleDiagnosticIcons fun()
+--- @field map fun(mode: string, lhs: string, rhs: string, opts?: table)
 
 local M = {}
 
 --- Toggle diagnostic icons
-M.ToggleDiagnosticIcons = function()
+M.toggle_diagnostic_icons = function()
     vim.diagnostic.config {
         title = false,
         virtual_text = false,
@@ -47,6 +48,17 @@ M.ToggleDiagnosticIcons = function()
             header = "",
         },
     }
+end
+
+--- @param mode string | table
+--- @param lhs string
+--- @param rhs string | fun()
+--- @param opts? table
+M.map = function(mode, lhs, rhs, opts)
+    opts = opts or {}
+    opts.noremap = true
+    opts.silent = true
+    vim.keymap.set(mode, lhs, rhs, opts)
 end
 
 --- @type Utils

@@ -24,7 +24,7 @@ map("n", "<leader><leader>w", function()
 end, { desc = "Toggle statusline" })
 
 map("n", "<leader><leader>l", function()
-    local toggleSigns = require("utils").ToggleDiagnosticIcons
+    local toggleSigns = require("utils").toggle_diagnostic_icons
     -- Deactivate line numbers
     if vim.wo.number then
         vim.g.show_line_number = false

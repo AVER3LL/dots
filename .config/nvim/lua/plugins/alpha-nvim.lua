@@ -157,7 +157,7 @@ return {
             }
 
             -- Set header
-            dashboard.section.header.val = two
+            dashboard.section.header.val = modern_neovim
 
             -- Set menu
             dashboard.section.buttons.val = {
