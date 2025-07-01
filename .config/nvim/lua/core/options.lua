@@ -7,19 +7,21 @@ vim.g.show_line_number = false
 --- @type "flat" | "clear"
 vim.g.style = "clear"
 
+require("config.looks").set_border "square"
+
 vim.g.enable_signature = true
 
 vim.g.show_indent = false
 vim.g.use_blink = true
 vim.g.markdown_recommended_style = 0
 
-vim.opt.conceallevel = 2
+vim.o.conceallevel = 2
 
 -- Enable the mouse
 vim.o.mouse = "a"
 
 -- Disable horizontal scrolling
-vim.o.mousescroll = 'ver:3,hor:0'
+vim.o.mousescroll = "ver:3,hor:0"
 vim.o.cmdheight = 0
 
 -- Core UI and Appearance

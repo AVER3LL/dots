@@ -7,24 +7,59 @@ return {
         opts = function()
             local builtin = require "statuscol.builtin"
 
+            local function hl_str(hl, str)
+                return "%#" .. hl .. "#" .. str .. "%*"
+            end
+
+            local function swap(start_val, end_val)
+                if start_val > end_val then
+                    local swap_val = start_val
+                    start_val = end_val
+                    end_val = swap_val
+                end
+                return start_val, end_val
+            end
+
             local function custom_lnumfunc(args)
+                local highlighted = "Normal"
+                local normal_highlight = "LineNr"
                 -- Get total lines in buffer to determine width needed
                 local total_lines = vim.api.nvim_buf_line_count(args.buf)
                 local width = string.len(tostring(total_lines))
 
-                -- Handle virtual text cases
-                -- vim.v.virtnum < 0: virtual text above the line (like function usage annotations)
-                -- vim.v.virtnum > 0: wrapped lines
-                -- vim.v.virtnum == 0: normal lines
+                -- Check if we're in visual mode first
+                local mode = vim.fn.mode()
+                local normed_mode = vim.fn.strtrans(mode):lower():gsub("%W", "")
+                local in_visual_mode = normed_mode == "v"
 
+                -- Get visual selection range if in visual mode
+                local is_in_selection = false
+                if in_visual_mode then
+                    local s_row = vim.fn.line "v" -- start of visual selection
+                    local e_row = vim.fn.line "." -- end of visual selection (cursor position)
+                    local normed_s_row, normed_e_row = swap(s_row, e_row)
+                    is_in_selection = args.lnum >= normed_s_row and args.lnum <= normed_e_row
+                end
+
+                -- Handle virtual text cases
                 if vim.v.virtnum < 0 then
-                    -- Virtual text above the line (like your function usage plugin)
-                    return string.rep(" ", width - 1) .. "-"
+                    -- Virtual text above the line
+                    local line = string.rep(" ", width - 1) .. "-"
+                    if in_visual_mode and is_in_selection then
+                        return hl_str(highlighted, line)
+                    else
+                        return hl_str(normal_highlight, line)
+                    end
                 end
 
                 if vim.v.virtnum > 0 then
                     -- Wrapped lines
-                    return string.rep(" ", width - 1) .. "-"
+                    local line = string.rep(" ", width - 1) .. "-"
+                    if in_visual_mode and is_in_selection then
+                        return hl_str(highlighted, line)
+                    else
+                        return hl_str(normal_highlight, line)
+                    end
                 end
 
                 -- Normal line (vim.v.virtnum == 0)
@@ -52,7 +87,23 @@ return {
                 end
 
                 -- Format with proper width (right-aligned)
-                return string.format("%" .. width .. "d", number_to_show)
+                local line = string.format("%" .. width .. "d", number_to_show)
+
+                -- Apply highlighting based on visual mode and selection
+                if in_visual_mode then
+                    if is_in_selection then
+                        return hl_str(highlighted, line)
+                    else
+                        return hl_str(normal_highlight, line)
+                    end
+                else
+                    -- Not in visual mode, use normal highlighting
+                    if relnum == 0 then
+                        return hl_str(highlighted, line)
+                    else
+                        return hl_str(normal_highlight, line)
+                    end
+                end
             end
 
             return {

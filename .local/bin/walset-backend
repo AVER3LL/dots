@@ -55,7 +55,7 @@ echo "Changing wallpaper..."
 
 # Set the wallpaper using swww - this happens first and doesn't wait
 if $SET_WALLPAPER; then
-    swww img "$IMAGE" --transition-type="any" --transition-duration=2 --transition-step=90 --transition-angle=0 --transition-fps=60 || {
+    swww img "$IMAGE" --transition-type="left" --transition-duration=2 --transition-step=90 --transition-angle=0 --transition-fps=60 || {
         echo "Error: Failed to set wallpaper with swww."
         exit 1
     }

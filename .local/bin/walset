@@ -1,15 +1,17 @@
 #!/bin/bash
-# Wallpaper Selector Script
-# This script provides a rofi interface to select wallpapers from a directory
+# Simple Wallpaper Selector Script with Thumbnail Support
+# Uses C program to build Rofi input for speed
 
 # Configuration
 WALL_DIR="$HOME/wallpaper/"
 BACKEND_CMD="$HOME/.local/bin/walset-backend"
+THUMB_DIR="$HOME/.cache/wallpaper-thumbs"
+BUILD_ROFI_INPUT_CMD="$HOME/.config/averell/bin/build-rofi-input"
 
 # Ensure wallpaper directory path ends with a slash
 [[ "$WALL_DIR" != */ ]] && WALL_DIR="${WALL_DIR}/"
 
-# Check if wallpaper directory exists
+# Check if wallpaper directory exists (can be done in C, but good to have here too)
 if [ ! -d "$WALL_DIR" ]; then
     notify-send "Wallpaper Selector" "Error: Wallpaper directory not found: $WALL_DIR"
     echo "Error: Wallpaper directory not found: $WALL_DIR"
@@ -29,39 +31,22 @@ if [ ! -x "$BACKEND_CMD" ]; then
     exit 1
 fi
 
-# Handle spaces in filenames
-IFS=$'\n'
-
-# Find all supported image files in one go
-# Use find command with absolute paths
-mapfile -t image_files < <(find "$WALL_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.gif" -o -iname "*.webp" -o -iname "*.bmp" \) -printf "%P\n" | shuf)
-
-
-
-# Check if any wallpapers were found
-if [ ${#image_files[@]} -eq 0 ]; then
-    notify-send "Wallpaper Selector" "No wallpapers found in $WALL_DIR"
-    echo "No wallpapers found in $WALL_DIR"
+# Check if the C program is executable
+if [ ! -x "$BUILD_ROFI_INPUT_CMD" ]; then
+    notify-send "Wallpaper Selector" "Error: Rofi input builder not found or not executable: $BUILD_ROFI_INPUT_CMD"
+    echo "Error: Rofi input builder not found or not executable: $BUILD_ROFI_INPUT_CMD"
     exit 1
 fi
 
-# Build the rofi menu with image icons
-rofi_input=""
-for file in "${image_files[@]}"; do
-    rofi_input+="$file\0icon\x1f$WALL_DIR$file\n"
-done
-
-# Show rofi selection dialog
-SELECTED_WALL=$(echo -en "$rofi_input" | rofi -dmenu -theme ~/.config/rofi/wallpaper.rasi -p "" -i)
+# Build the rofi menu with thumbnails by running the C program
+# The C program prints the formatted string to stdout, which is then piped to rofi
+SELECTED_WALL=$("$BUILD_ROFI_INPUT_CMD" | rofi -dmenu -theme ~/.config/rofi/wallpaper.rasi -p "" -i)
 
 # Process the selection
 if [ -n "$SELECTED_WALL" ]; then
     echo "Setting wallpaper: $SELECTED_WALL"
-
-    # Use the absolute path directly
     "$BACKEND_CMD" "$WALL_DIR$SELECTED_WALL"
     exit_status=$?
-
     if [ $exit_status -eq 0 ]; then
         echo "Wallpaper set successfully!"
     else

@@ -12,4 +12,4 @@ if [ "$HYPRGAMEMODE" = 1 ] ; then
     exit
 fi
 hyprctl reload
-~/.config/hypr/scripts/battery.sh
+~/.config/hypr/scripts/checkbattery.sh

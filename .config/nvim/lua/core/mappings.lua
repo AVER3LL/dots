@@ -3,13 +3,7 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 -- Keymap helper function
-local map = function(mode, lhs, rhs, opts)
-    opts = opts or {}
-    opts.noremap = true
-    opts.silent = true
-    vim.keymap.set(mode, lhs, rhs, opts)
-end
-
+local map = require("utils").map
 map("n", "<leader>ll", "<cmd>Lazy<CR>", { desc = "Open Lazy" })
 
 map("n", "<leader><leader>w", function()

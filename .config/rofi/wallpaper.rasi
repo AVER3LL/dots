@@ -9,39 +9,101 @@ configuration {
 }
 
 window {
-  width: 60%;
-  height: 72%;
+  location: south;
+  anchor: south;
+  width: 97%;
+  height: 36%;
+  border: 0px;
+  margin: 0 0 15 0;
+}
+
+// mainbox {
+//     enabled:                     true;
+//     children:                    [ "listview" ];
+//     background-color:            @background;
+// }
+
+* {
+    background: @bg;
+    background-alt: @accent;
+    foreground: @fg;
+    selected: @tertiary;
+    active: #9ece6a;
+    urgent: @error;
 }
 
 /* ---- Imagebox ---- */
 imagebox {
   orientation: vertical;
-  children:
-    [ "entry", "listbox"];
+  children: [ "listbox"];
 }
 
 
+inputbar {
+  enabled: false;
+}
+
 entry {
+  enabled: false;
   expand: false;
   placeholder: "Choose Wallpaper";
 }
 
 /* ---- Listview ---- */
 listview {
-  columns: 4;
-  lines: 3;
+    enabled:                     true;
+    columns:                     6;
+    lines:                       1;
+    spacing:                     30px;
+    padding:                     20px 30px;
+    cycle:                       true;
+    dynamic:                     false;
+    scrollbar:                   false;
+    layout:                      vertical;
+    reverse:                     false;
+    fixed-height:                true;
+    fixed-columns:               true;
+    cursor:                      "default";
+    background-color:            transparent;
 }
 
 /* ---- Element ---- */
 element {
-  orientation: vertical;
-  padding: 0px;
-  spacing: 0px;
-  border-radius: 15px;
+    enabled:                     true;
+    orientation:                 horizontal;
+    spacing:                     0px;
+    padding:                     3px;
+    border-radius:               5px;
+    cursor:                      pointer;
+    background-color:            transparent;
+    text-color:                  @foreground;
+}
+
+@media(max-aspect-ratio: 1.8) {
+    element {
+        orientation:             vertical;
+    }
+}
+
+element selected.normal {
+    background-color:            @primary;
+    text-color:                  @background;
 }
 
 element-icon {
-  size: 20%;
+    horizontal-align:               0.5;
+    border:                         4px solid;
+    border-color:                   transparent;
+    border-radius:                  5px;
+    size:                           25%;
+}
+
+element-icon {
+    border-color:                   @background;
+}
+
+element-icon selected {
+    border-color:                   @primary;
 }
 
 element-text {
@@ -49,4 +111,10 @@ element-text {
   font: "JetBrainsMono Nerd Font 14";
   vertical-align: 0.5;
   horizontal-align: 0.5;
+}
+
+element selected {
+    	background-color: @button;
+    	border-radius: 5px;
+    	text-color: @bg;
 }

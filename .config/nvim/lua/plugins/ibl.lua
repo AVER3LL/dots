@@ -41,7 +41,7 @@ return {
                 },
             },
             -- Toggling it with a keybinding if need be
-            enabled = false,
+            enabled = vim.g.show_indent,
             indent = { char = "│", smart_indent_cap = true },
             scope = { enabled = false, char = "│", show_start = false, show_end = false },
         },

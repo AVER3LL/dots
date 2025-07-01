@@ -1,0 +1,222 @@
+#!/bin/bash
+# Wallpaper Thumbnail Generator
+# Run this script to pre-generate all thumbnails for fast wallpaper selection
+
+# Configuration
+WALL_DIR="$HOME/wallpaper/"
+THUMB_DIR="$HOME/.cache/wallpaper-thumbs"
+THUMB_WIDTH=300
+THUMB_HEIGHT=300
+CONCURRENT_JOBS=8 # Adjust based on your CPU cores
+QUALITY=75        # JPEG quality for thumbnails
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# Ensure wallpaper directory path ends with a slash
+[[ "$WALL_DIR" != */ ]] && WALL_DIR="${WALL_DIR}/"
+
+# Create thumbnail cache directory
+mkdir -p "$THUMB_DIR"
+
+# Check if wallpaper directory exists
+if [ ! -d "$WALL_DIR" ]; then
+    echo -e "${RED}Error: Wallpaper directory not found: $WALL_DIR${NC}"
+    exit 1
+fi
+
+# Check if ImageMagick is installed
+if ! command -v convert &>/dev/null; then
+    echo -e "${RED}Error: ImageMagick (convert) is not installed.${NC}"
+    echo "Install it with: sudo apt install imagemagick"
+    exit 1
+fi
+
+# Function to generate thumbnail
+generate_thumbnail() {
+    local source_file="$1"
+    local thumb_file="$2"
+    local temp_file="${thumb_file}.tmp"
+
+    # Generate thumbnail with error handling
+    if convert "$source_file" \
+        -resize "${THUMB_WIDTH}x${THUMB_HEIGHT}^" \
+        -gravity center \
+        -extent "${THUMB_WIDTH}x${THUMB_HEIGHT}" \
+        -background "#2e2e2e" \
+        -quality $QUALITY \
+        -strip \
+        "$temp_file" 2>/dev/null; then
+
+        # Atomic move to prevent corruption
+        mv "$temp_file" "$thumb_file"
+        return 0
+    else
+        # Clean up failed temp file
+        rm -f "$temp_file"
+        return 1
+    fi
+}
+
+# Function to process a batch of files
+process_batch() {
+    local -n batch_files=$1
+    local batch_num=$2
+    local total_batches=$3
+
+    echo -e "${BLUE}Processing batch $batch_num/$total_batches (${#batch_files[@]} files)${NC}"
+
+    local success_count=0
+    local failed_count=0
+
+    for file_info in "${batch_files[@]}"; do
+        IFS='|' read -r source_file thumb_file relative_path <<<"$file_info"
+
+        if generate_thumbnail "$source_file" "$thumb_file"; then
+            ((success_count++))
+            echo -e "${GREEN}✓${NC} $(basename "$relative_path")"
+        else
+            ((failed_count++))
+            echo -e "${RED}✗${NC} Failed: $(basename "$relative_path")"
+        fi
+    done
+
+    echo -e "${BLUE}Batch $batch_num complete: ${GREEN}$success_count success${NC}, ${RED}$failed_count failed${NC}"
+}
+
+# Function to get safe thumbnail filename
+get_safe_filename() {
+    local input="$1"
+    # Replace problematic characters with underscores
+    echo "$input" | sed 's/[^a-zA-Z0-9._-]/_/g'
+}
+
+# Main execution
+echo -e "${BLUE}=== Wallpaper Thumbnail Generator ===${NC}"
+echo "Wallpaper directory: $WALL_DIR"
+echo "Thumbnail directory: $THUMB_DIR"
+echo "Thumbnail size: ${THUMB_WIDTH}x${THUMB_HEIGHT}"
+echo "Concurrent jobs: $CONCURRENT_JOBS"
+echo
+
+# Find all image files
+echo -e "${YELLOW}Scanning for image files...${NC}"
+IFS=$'\n'
+mapfile -t all_files < <(find "$WALL_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.gif" -o -iname "*.webp" -o -iname "*.bmp" -o -iname "*.tiff" -o -iname "*.tga" \) 2>/dev/null)
+
+total_files=${#all_files[@]}
+echo -e "${YELLOW}Found $total_files image files${NC}"
+
+if [ $total_files -eq 0 ]; then
+    echo -e "${RED}No image files found in $WALL_DIR${NC}"
+    exit 1
+fi
+
+# Check which files need thumbnail generation
+echo -e "${YELLOW}Checking existing thumbnails...${NC}"
+files_to_process=()
+existing_thumbs=0
+updated_files=0
+
+for file in "${all_files[@]}"; do
+    # Get relative path from wallpaper directory
+    relative_path="${file#$WALL_DIR}"
+
+    # Create safe filename for thumbnail
+    safe_name=$(get_safe_filename "$relative_path")
+    thumb_file="$THUMB_DIR/${safe_name}.jpg"
+
+    # Check if thumbnail needs to be generated/updated
+    if [ ! -f "$thumb_file" ]; then
+        files_to_process+=("$file|$thumb_file|$relative_path")
+    elif [ "$file" -nt "$thumb_file" ]; then
+        files_to_process+=("$file|$thumb_file|$relative_path")
+        ((updated_files++))
+    else
+        ((existing_thumbs++))
+    fi
+done
+
+files_to_generate=${#files_to_process[@]}
+
+echo -e "${GREEN}Existing thumbnails: $existing_thumbs${NC}"
+echo -e "${YELLOW}Files to update: $updated_files${NC}"
+echo -e "${BLUE}New thumbnails needed: $((files_to_generate - updated_files))${NC}"
+echo -e "${YELLOW}Total thumbnails to generate: $files_to_generate${NC}"
+
+if [ $files_to_generate -eq 0 ]; then
+    echo -e "${GREEN}All thumbnails are up to date!${NC}"
+    exit 0
+fi
+
+# Estimate processing time (rough estimate: 0.5 seconds per thumbnail)
+estimated_time=$((files_to_generate / 2))
+if [ $estimated_time -gt 60 ]; then
+    echo -e "${YELLOW}Estimated processing time: $((estimated_time / 60)) minutes${NC}"
+else
+    echo -e "${YELLOW}Estimated processing time: $estimated_time seconds${NC}"
+fi
+
+# Ask for confirmation for large batches
+if [ $files_to_generate -gt 1000 ]; then
+    echo
+    read -p "Process $files_to_generate thumbnails? This may take a while. [y/N]: " -n 1 -r
+    echo
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        echo "Cancelled."
+        exit 0
+    fi
+fi
+
+echo
+echo -e "${BLUE}Starting thumbnail generation...${NC}"
+start_time=$(date +%s)
+
+# Process files in batches to manage memory and provide progress updates
+batch_size=$((CONCURRENT_JOBS * 10)) # Process in larger batches for better efficiency
+total_batches=$(((files_to_generate + batch_size - 1) / batch_size))
+current_batch=1
+
+for ((i = 0; i < files_to_generate; i += batch_size)); do
+    batch_files=("${files_to_process[@]:i:batch_size}")
+
+    # Process batch in parallel
+    (
+        process_batch batch_files $current_batch $total_batches
+    ) &
+
+    # Limit concurrent batch processes
+    if (($(jobs -r | wc -l) >= CONCURRENT_JOBS)); then
+        wait -n # Wait for any batch to complete
+    fi
+
+    ((current_batch++))
+done
+
+# Wait for all remaining batches
+wait
+
+end_time=$(date +%s)
+total_time=$((end_time - start_time))
+
+echo
+echo -e "${GREEN}=== Thumbnail Generation Complete ===${NC}"
+echo -e "${GREEN}Total time: ${total_time}s${NC}"
+echo -e "${GREEN}Average: $(echo "scale=2; $total_time / $files_to_generate" | bc 2>/dev/null || echo "N/A")s per thumbnail${NC}"
+
+# Display storage usage
+if command -v du &>/dev/null; then
+    thumb_size=$(du -sh "$THUMB_DIR" 2>/dev/null | cut -f1)
+    echo -e "${BLUE}Thumbnail cache size: $thumb_size${NC}"
+fi
+
+echo
+echo -e "${YELLOW}Tips:${NC}"
+echo "• Run this script periodically to update thumbnails for new wallpapers"
+echo "• Add to crontab for automatic updates: crontab -e"
+echo "• Example cron job (daily at 3 AM): 0 3 * * * $0 >/dev/null 2>&1"
+echo "• Your wallpaper selector will now be lightning fast!"
