@@ -38,12 +38,15 @@ reload_waybar() {
 
     # Restart waybar if running
     if pgrep -x waybar >/dev/null; then
-        pkill waybar
+        killall waybar
+        echo "Killed waybar"
     fi
+
 
     # Start waybar with new theme
     if [[ -x "$LAUNCHER" ]]; then
         "$LAUNCHER"
+        echo "Started waybar with new theme"
     else
         echo "Error: Launcher is not executable: $LAUNCHER" >&2
         return 1
