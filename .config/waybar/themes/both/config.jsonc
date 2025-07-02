@@ -2,6 +2,7 @@
     "layer": "top",
     "position": "top",
     "mod": "dock",
+    "margin-top": 5,
     "exclusive": true,
     "passthrough": false,
     "gtk-layer-shell": true,

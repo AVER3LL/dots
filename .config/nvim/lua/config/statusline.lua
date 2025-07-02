@@ -15,11 +15,11 @@ local HL = {
     error = { "DiagnosticError", icons.diagnostics.error or "●" },
     warn = { "DiagnosticWarn", icons.diagnostics.warn or "●" },
 
-    mode_normal = { "DiagnosticOk", "" },
-    mode_insert = { "DiagnosticError", "" },
-    mode_visual = { "DiagnosticWarn", "" },
-    mode_command = { "DiagnosticInfo", "" },
-    mode_other = { "Comment", "" },
+    mode_normal = { "DiagnosticOk", icons.modes.normal },
+    mode_insert = { "DiagnosticError", icons.modes.insert },
+    mode_visual = { "DiagnosticWarn", icons.modes.visual },
+    mode_command = { "DiagnosticInfo", icons.modes.command },
+    mode_other = { "Comment", icons.modes.other },
 }
 
 local function hl_str(hl, str)

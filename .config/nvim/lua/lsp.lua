@@ -1,7 +1,7 @@
 local ok, border = pcall(require, "config.looks")
 local borderType = ok and border.border_type() or "rounded"
 
-local map = require('utils').map
+local map = require("utils").map
 
 -- LSP Keymappings (inside LspAttach autocmd)
 vim.api.nvim_create_autocmd("LspAttach", {
@@ -17,6 +17,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         map("n", "<leader>h", vim.lsp.buf.signature_help, opts "Show signature help")
         map("n", "<leader>k", vim.lsp.buf.hover, opts "Show documentation")
         map("n", "<leader>rn", vim.lsp.buf.rename, opts "Smart rename")
+        -- map("n", "<leader>rn", require "config.renamer", opts "Smart rename")
         -- map("n", "<leader>D", vim.lsp.buf.type_definition, opts "Go to type definition")
         -- map("n", "]d", vim.diagnostic.jump { count = 1 }, opts "Go to next diagnostic")
         -- map("n", "[d", vim.diagnostic.jump { count = -1 }, opts "Go to previous diagnostic")

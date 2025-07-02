@@ -16,6 +16,14 @@ M.arrows = {
     down = "",
 }
 
+M.modes = {
+    normal = "", --󰗚
+    insert = "", --󰉉
+    visual = "", --󰉊
+    command = "", --
+    other = ""
+}
+
 --- LSP symbol kinds.
 M.symbol_kinds = {
     Namespace = "󰌗",

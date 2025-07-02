@@ -14,6 +14,7 @@ local CONSTANTS = {
     DEBOUNCE_MS = 50,
     DEFAULT_PADDING = 2,
     CACHE_SIZE_LIMIT = 100, -- Prevent unlimited cache growth
+    MIN_WINDOW_WIDTH = 20, -- Minimum window width to show winbar
 }
 
 --- @class Config
@@ -25,6 +26,7 @@ local CONSTANTS = {
 --- @field ignore_filetypes string[]
 --- @field ignore_buftypes string[]
 --- @field cache_size_limit integer
+--- @field min_window_width integer
 
 --- @type Config
 M.config = {
@@ -37,6 +39,7 @@ M.config = {
 
     min_padding = CONSTANTS.DEFAULT_PADDING,
     cache_size_limit = CONSTANTS.CACHE_SIZE_LIMIT,
+    min_window_width = CONSTANTS.MIN_WINDOW_WIDTH,
 
     ignore_filetypes = {
         "help",
@@ -107,6 +110,15 @@ local function should_ignore_buffer()
     local buftype = vim.bo.buftype
 
     return contains(M.config.ignore_filetypes, filetype) or contains(M.config.ignore_buftypes, buftype)
+end
+
+-- Function to check if window is too small for winbar
+local function is_window_too_small()
+    local win_width = vim.api.nvim_win_get_width(0)
+    local win_height = vim.api.nvim_win_get_height(0)
+
+    -- Skip very small windows (like popups, input dialogs, etc.)
+    return win_width < M.config.min_window_width or win_height < 2
 end
 
 -- Function to get file icon and color using nvim-web-devicons with caching
@@ -200,7 +212,7 @@ local function truncate_text(text, max_width)
         return text
     end
 
-    local ellipsis = "…"
+    local ellipsis = require("icons").misc.ellipsis
     local ellipsis_width = vim.fn.strdisplaywidth(ellipsis)
     local target_width = max_width - ellipsis_width
 
@@ -290,8 +302,8 @@ end
 function M.update_winbar(is_active)
     local filename = vim.fn.expand "%:t"
 
-    -- Early exit for ignored buffers
-    if filename == "" or should_ignore_buffer() then
+    -- Early exit for ignored buffers or small windows
+    if filename == "" or should_ignore_buffer() or is_window_too_small() then
         vim.wo.winbar = ""
         return
     end
@@ -334,8 +346,26 @@ function M.update_winbar(is_active)
     local final_content = table.concat(content_parts)
     local plain_content = table.concat(plain_parts)
 
-    -- Calculate padding and set winbar
+    -- Calculate padding and set winbar with safety checks
     local content_width = vim.fn.strdisplaywidth(plain_content)
+
+    -- If content is wider than window, truncate or hide winbar
+    if content_width >= win_width then
+        -- Try to show just the filename if it fits
+        local filename_only = icon .. " " .. filename
+        local filename_width = vim.fn.strdisplaywidth(filename_only)
+
+        if filename_width < win_width then
+            local padding = math.max(math.floor((win_width - filename_width) / 2), 0)
+            vim.wo.winbar = string.rep(" ", padding) .. filename_only
+        else
+            -- Even filename doesn't fit, hide winbar
+            vim.wo.winbar = ""
+        end
+        return
+    end
+
+    -- Normal case: content fits with padding
     local padding = math.max(math.floor((win_width - content_width) / 2), 0)
     vim.wo.winbar = string.rep(" ", padding) .. final_content
 end
@@ -422,7 +452,7 @@ function M.setup(user_config)
     autocmd({ "TextChanged", "InsertEnter", "InsertLeave" }, {
         group = group,
         callback = function()
-            if not should_ignore_buffer() then
+            if not should_ignore_buffer() and not is_window_too_small() then
                 debounced_update(true)
             else
                 vim.wo.winbar = ""
@@ -443,7 +473,7 @@ function M.setup(user_config)
     }, {
         group = group,
         callback = function()
-            if not should_ignore_buffer() then
+            if not should_ignore_buffer() and not is_window_too_small() then
                 M.update_winbar(true)
             else
                 vim.wo.winbar = ""
@@ -455,7 +485,7 @@ function M.setup(user_config)
     autocmd("WinLeave", {
         group = group,
         callback = function()
-            if not should_ignore_buffer() then
+            if not should_ignore_buffer() and not is_window_too_small() then
                 M.update_winbar(false)
             else
                 vim.wo.winbar = ""

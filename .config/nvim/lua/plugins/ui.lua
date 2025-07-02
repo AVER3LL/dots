@@ -6,6 +6,14 @@ return {
     },
 
     {
+        "r0nsha/multinput.nvim",
+        enabled = false,
+        opts = {
+            -- Your custom configuration goes here
+        },
+    },
+
+    {
         "kevinhwang91/nvim-hlslens",
         enabled = false,
         config = function()
