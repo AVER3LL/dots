@@ -14,6 +14,12 @@ return {
             input = {
                 enabled = true,
                 prompt_pos = "title",
+                win = {
+                    relative = "cursor",
+                    row = -3,
+                    col = 0,
+                    border = bt,
+                }
             },
             picker = {
                 enabled = true,

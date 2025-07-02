@@ -125,6 +125,8 @@ autocmd("ColorScheme", {
             comment = gethl(0, { name = "Comment" }).fg,
 
             pmenu = gethl(0, { name = "Pmenu" }).bg,
+            fun = gethl(0, { name = "Function" }).fg,
+            str = gethl(0, { name = "String" }).fg,
 
             parenthesis = (vim.o.background == "dark") and "#39ff14" or "#ff007f",
         }
@@ -173,7 +175,6 @@ autocmd("ColorScheme", {
             sethl(0, "BlinkCmpSignatureHelpBorder", { bg = colors.pmenu, fg = colors.pmenu })
             -- sethl(0, "BlinkCmpSignatureHelpActiveParameter", { bg = colors.pmenu })
 
-            sethl(0, "BlinkCmpMenuSelection", { bg = adjust_brightness(colors.pmenu, 0.8), bold = true })
             sethl(0, "BlinkCmpMenu", { bg = colors.pmenu })
             sethl(0, "BlinkCmpDoc", { bg = colors.pmenu })
 
@@ -189,8 +190,6 @@ autocmd("ColorScheme", {
                 "BlinkCmpSignatureHelpBorder",
                 { bg = colors.background, fg = adjust_brightness(colors.foreground, 0.5) }
             )
-            sethl(0, "BlinkCmpMenuSelection", { bg = adjust_brightness(colors.pmenu, 0.8), bold = true })
-
             sethl(0, "BlinkCmpMenu", { bg = colors.background })
             sethl(0, "BlinkCmpDoc", { bg = colors.background })
             sethl(0, "BlinkCmpSignatureHelp", { bg = colors.background })
@@ -206,6 +205,9 @@ autocmd("ColorScheme", {
         sethl(0, "StatusLineNC", { bg = colors.background })
 
         sethl(0, "FloatTitle", { bg = colors.background })
+
+        sethl(0, "BlinkCmpMenuSelection", { bg = colors.fun, bold = true, fg = colors.background })
+        sethl(0, "LspSignatureActiveParameter", { bg = colors.str, bold = true, fg = colors.background })
 
         sethl(0, "Comment", { fg = "#008c7d", italic = true })
 
@@ -237,7 +239,6 @@ autocmd("ColorScheme", {
         sethl(0, "@lsp.type.type", { link = "@type" })
         sethl(0, "@lsp.type.typeParamater", { link = "TypeDef" })
         sethl(0, "@lsp.type.variable", { link = "@variable" })
-
     end,
 })
 

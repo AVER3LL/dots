@@ -127,7 +127,7 @@ end, { desc = "Light Dark Toggle" })
 map({ "n", "v" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, desc = "Move up" })
 map({ "n", "v" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, desc = "Move down" })
 map({ "n", "v" }, "$", "v:count == 0 ? 'g$' : '$'", { expr = true, silent = true, desc = "Move to end of line" })
-map({ "n", "v" }, "0", "v:count == 0 ? 'g0' : '0'", { expr = true, silent = true, desc = "Move to beginning of line" })
+-- map({ "n", "v" }, "0", "v:count == 0 ? 'g0' : '0'", { expr = true, silent = true, desc = "Move to beginning of line" })
 map(
     { "n", "v" },
     "_",
