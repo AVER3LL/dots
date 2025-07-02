@@ -1,6 +1,16 @@
 #!/usr/bin/env bash
 # Battery monitor: continuously checks battery and adjusts Hyprland settings
 
+# Use flock to prevent multiple instances
+LOCK_FILE="/tmp/battery_monitor.lock"
+
+# Try to acquire exclusive lock
+exec 200>"$LOCK_FILE"
+if ! flock -n 200; then
+    echo "Battery monitor is already running"
+    exit 1
+fi
+
 # Wait for acpi and swaync to load
 sleep 3
 
@@ -16,3 +26,5 @@ while true; do
     ~/.config/hypr/scripts/checkbattery.sh
     sleep 60
 done
+
+# Lock is automatically released when script exits

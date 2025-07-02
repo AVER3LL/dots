@@ -1,4 +1,15 @@
 #!/usr/bin/env bash
+# Battery check script with lock protection
+
+# Lock file to prevent multiple instances
+LOCK_FILE="/tmp/checkbattery.lock"
+
+# Use flock to prevent multiple instances running simultaneously
+exec 200>"$LOCK_FILE"
+if ! flock -n 200; then
+    # Another instance is running, exit silently
+    exit 0
+fi
 
 # Get battery info
 level=$(acpi | grep -oP '\d+%' | tr -d '%')
@@ -6,7 +17,7 @@ status=$(acpi | grep -oP 'Charging|Discharging')
 
 if [ -z "$level" ] || [ -z "$status" ]; then
     echo "Could not determine battery level or status."
-    exit 1 # Changed from 'return' to 'exit 1'
+    exit 1
 fi
 
 flag="/tmp/hypr_battery_low"
@@ -61,7 +72,6 @@ else
             notify-send -t 5000 -i battery-good-symbolic "Battery Normal" \
                 "Battery at ${level}%. Settings restored."
         fi
-
         rm "$flag"
     fi
 
@@ -78,3 +88,5 @@ else
         [ -f "$charge_flag" ] && rm "$charge_flag"
     fi
 fi
+
+# Lock is automatically released when script exits
