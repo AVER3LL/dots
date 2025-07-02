@@ -1,0 +1,15 @@
+@define-color background rgba(21, 18, 27, 0);
+
+@define-color foreground #f6f7fc;
+
+@define-color tooltip_background #e7e7ec;
+
+@define-color tooltip_foreground #2b2b2c;
+
+@define-color workspace_active_background #a6e3a1;
+
+@define-color workspace_active_foreground #000000;
+
+@define-color workspace_hover_background #11111b;
+
+@define-color workspace_hover_foreground #cdddf4;

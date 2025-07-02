@@ -206,7 +206,7 @@ autocmd("ColorScheme", {
 
         sethl(0, "FloatTitle", { bg = colors.background })
 
-        sethl(0, "BlinkCmpMenuSelection", { bg = colors.fun, bold = true, fg = colors.background })
+        sethl(0, "BlinkCmpMenuSelection", { bg = colors.fun, fg = colors.background })
         sethl(0, "LspSignatureActiveParameter", { bg = colors.str, bold = true, fg = colors.background })
 
         sethl(0, "Comment", { fg = "#008c7d", italic = true })

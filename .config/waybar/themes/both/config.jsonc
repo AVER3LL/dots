@@ -1,0 +1,46 @@
+{
+    "layer": "top",
+    "position": "top",
+    "mod": "dock",
+    "exclusive": true,
+    "passthrough": false,
+    "gtk-layer-shell": true,
+    "reload_style_on_change": true,
+    "height": 20,
+
+    "include": ["${HOME}/.config/waybar/modules.jsonc"],
+
+    "modules-left": [
+        "custom/wlogout",
+        "hyprland/workspaces#no-persist"
+    ],
+
+    "modules-center": [
+        "clock#no-icon"
+    ],
+
+    "modules-right": [
+        "idle_inhibitor#switch",
+        "custom/notification",
+        "tray",
+        "battery"
+    ],
+
+    "battery": {
+        "interval": 1,
+        "full-at": 80,
+        "states": {
+            "good": 95,
+            "warning": 30,
+            "critical": 20,
+        },
+        "format": "{icon} {capacity}%",
+        "format-charging": " {capacity}%",
+        "format-plugged": " {capacity}%",
+        // "format-charging": "󰂄  {capacity}%",
+        "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+        "format-full": " Full",
+        "tooltip-format": "Battery is at {capacity}%",
+    },
+
+}

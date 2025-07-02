@@ -1,0 +1,138 @@
+@import 'colors.css';
+
+* {
+    border: none;
+    border-radius: 0;
+    font-family: 'JetBrainsMono Nerd Font Propo';
+    font-weight: bold;
+    font-size: 16px;
+    min-height: 0;
+}
+
+window#waybar {
+    background: @background;
+    color: @foreground;
+}
+
+tooltip {
+    background: @tooltip_background;
+    opacity: 0.8;
+    border-radius: 10px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #11111b;
+}
+
+tooltip label {
+    color: @tooltip_foreground;
+}
+
+#workspaces button {
+    padding: 5px;
+    color: @foreground;
+    margin-right: 5px;
+}
+
+#workspaces button.active {
+    color: @workspace_active_foreground;
+    background: @workspace_active_background;
+    border-radius: 10px;
+}
+
+#workspaces button:hover {
+    background: @workspace_hover_background;
+    color: @workspace_hover_foreground;
+    border-radius: 10px;
+}
+
+#custom-launch_rofi,
+#custom-launch_firefox,
+#custom-launch_thunderbird,
+#custom-launch_thunar,
+#custom-launch_kitty,
+#custom-lock_screen,
+#custom-light_dark,
+#custom-wlogout,
+#custom-power_profile,
+#custom-weather,
+#custom-myhyprv,
+#custom-notification,
+#window,
+#cpu,
+#disk,
+#custom-updates,
+#memory,
+#clock,
+#battery,
+#pulseaudio,
+#network,
+#tray,
+#temperature,
+#workspaces,
+#idle_inhibitor,
+#backlight {
+    background: rgba(21, 18, 27, 0);
+    opacity: 0.8;
+    padding: 0px 8px;
+    margin: 0px 3px;
+    border: 0px;
+}
+
+#backlight-slider slider,
+#pulseaudio-slider slider {
+    background-color: transparent;
+    box-shadow: none;
+}
+
+#backlight-slider trough,
+#pulseaudio-slider trough {
+    min-height: 6px;
+    min-width: 60px;
+    border-radius: 4px;
+    margin: 4px 0;
+}
+
+#backlight-slider highlight,
+#pulseaudio-slider highlight {
+    border-radius: 4px;
+}
+
+#temperature.critical {
+    color: #e92d4d;
+}
+
+#workspaces {
+    padding-right: 0px;
+    padding-left: 5px;
+}
+
+#window {
+    border-radius: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+#custom-launch_firefox,
+#custom-launch_thunderbird,
+#custom-launch_thunar,
+#custom-launch_rofi,
+#custom-launch_kitty,
+#custom-weather {
+    margin-left: 0px;
+    border-right: 0px;
+    font-size: 24px;
+    margin-right: 20px;
+}
+
+#custom-launch_firefox,
+#custom-launch_kitty {
+    font-size: 20px;
+}
+
+.modules-right {
+    margin-right: 12px;
+}
+
+.modules-left {
+    margin-left: 12px;
+}

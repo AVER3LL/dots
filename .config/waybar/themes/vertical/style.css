@@ -1,4 +1,4 @@
-@import 'colors.css';
+@import '../../colors.css';
 @define-color active @color6;
 
 * {

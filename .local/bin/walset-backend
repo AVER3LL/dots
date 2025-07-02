@@ -71,9 +71,11 @@ threshold=130
 if ((brightness > threshold)); then
     # Light background - use primary color for border
     sed -i 's/^\$hyprborder = .*/\$hyprborder = rgba({{colors.primary.default.hex_stripped}}ff)/' ~/.config/matugen/templates/hyprland-colors.conf
+    sed -i 's/\(@define-color background rgba(21, 18, 27, \)0)/\10.7)/'  ~/.config/waybar/themes/both/colors.css
 else
     # Dark background - use fixed dark color for border
     sed -i 's/^\$hyprborder = .*/\$hyprborder = rgba(3e4142ff)/' ~/.config/matugen/templates/hyprland-colors.conf
+    sed -i 's/\(@define-color background rgba(21, 18, 27, \)0\.7)/\10)/' ~/.config/waybar/themes/both/colors.css
 fi
 
 # Define cache directory and files

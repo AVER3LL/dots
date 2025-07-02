@@ -17,7 +17,8 @@ return {
                 win = {
                     relative = "cursor",
                     row = -3,
-                    col = 0,
+                    col = -1,
+                    width = 20,
                     border = bt,
                 }
             },

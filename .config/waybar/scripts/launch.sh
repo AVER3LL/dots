@@ -4,4 +4,4 @@ killall waybar
 pkill waybar
 sleep 0.5
 
-waybar &
+~/.config/waybar/launch.sh

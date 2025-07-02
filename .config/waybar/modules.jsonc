@@ -54,6 +54,14 @@
         },
     },
 
+    "idle_inhibitor#switch": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "",
+            "deactivated": "",
+        },
+    },
+
     "custom/pacman": {
         "format": "  {}",
         "interval": "once",
@@ -102,13 +110,13 @@
             {
                 "type": "screenshare",
                 "tooltip": true,
-                "tooltip-icon-size": 24
+                "tooltip-icon-size": 24,
             },
             {
                 "type": "audio-in",
                 "tooltip": true,
-                "tooltip-icon-size": 24
-            }
+                "tooltip-icon-size": 24,
+            },
         ],
     },
 
@@ -213,6 +221,12 @@
         "tooltip-format": "Date: {:%Y-%m-%d}",
     },
 
+    "clock#no-icon": {
+        "format": "{:%B %d  %R}",
+        "format-alt": "󰥔  {:%a, %d. %b  %R}",
+        "tooltip-format": "Date: {:%Y-%m-%d}",
+    },
+
     "network": {
         "interface": "wlo1",
         "format": "{ifname}",
@@ -264,6 +278,25 @@
         "persistent-workspaces": {
             "*": 6, // 5 workspaces by default on every monitor
         },
+        "sort-by-number": true,
+    },
+
+    "hyprland/workspaces#no-persist": {
+        "format": "{icon}",
+        "on-click": "activate",
+        "format-icons": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4",
+            "5": "5",
+            "6": "6",
+            "7": "7",
+            "8": "8",
+            "9": "9",
+            "10": "10",
+        },
+        "persistent-workspaces": { },
         "sort-by-number": true,
     },
 
