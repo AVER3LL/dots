@@ -14,7 +14,7 @@ local CONSTANTS = {
     DEBOUNCE_MS = 50,
     DEFAULT_PADDING = 2,
     CACHE_SIZE_LIMIT = 100, -- Prevent unlimited cache growth
-    MIN_WINDOW_WIDTH = 20, -- Minimum window width to show winbar
+    MIN_WINDOW_WIDTH = 30, -- Increased minimum window width
 }
 
 --- @class Config
@@ -74,6 +74,16 @@ local update_timer = nil
 -- Store original highlight state to restore later
 local original_highlights = {}
 
+local function cleanup_window_highlights(win_id)
+    local hl_name = "WinBarFileIcon" .. win_id
+    if highlight_cache[hl_name] then
+        -- Properly clear the highlight group
+        vim.api.nvim_set_hl(0, hl_name, {})
+        highlight_cache[hl_name] = nil
+        original_highlights[hl_name] = nil
+    end
+end
+
 -- Utility functions
 local function contains(table, value)
     for _, v in ipairs(table) do
@@ -124,7 +134,7 @@ local function is_window_too_small()
     local win_height = vim.api.nvim_win_get_height(0)
 
     -- Skip very small windows (like popups, input dialogs, etc.)
-    return win_width < M.config.min_window_width or win_height < 2
+    return win_width < M.config.min_window_width or win_height < 3
 end
 
 -- Function to check if we're in a popup or floating window
@@ -149,9 +159,43 @@ local function get_file_icon()
 
     local filename = vim.fn.expand "%:t"
     local extension = vim.fn.expand "%:e"
-    local icon, color = devicons.get_icon_color(filename, extension)
 
-    local result = { icon or "", color or "" }
+    -- Try multiple methods to get icon and color
+    local icon, color
+
+    -- Method 1: Try with filename
+    if filename ~= "" then
+        icon, color = devicons.get_icon_color(filename, extension)
+    end
+
+    -- Method 2: If that fails, try with extension only
+    if (not icon or not color) and extension ~= "" then
+        icon, color = devicons.get_icon_color("file." .. extension, extension)
+    end
+
+    -- Method 3: Try the get_icon method as fallback
+    if not icon and filename ~= "" then
+        icon = devicons.get_icon(filename, extension)
+    end
+
+    -- Method 4: Try to get color from extension if we have icon but no color
+    if icon and not color and extension ~= "" then
+        local _, ext_color = devicons.get_icon_color("." .. extension, extension)
+        color = ext_color
+    end
+
+    -- Ensure we have valid strings
+    icon = icon or ""
+    color = color or ""
+
+    -- Final fallback: if we still don't have a color but have an icon,
+    -- use the normal text color
+    if icon ~= "" and color == "" then
+        local normal_hl = vim.api.nvim_get_hl(0, { name = "Normal" })
+        color = normal_hl.fg and string.format("#%06x", normal_hl.fg) or "#FFFFFF"
+    end
+
+    local result = { icon, color }
     icon_cache[bufnr] = result
 
     -- Manage cache size
@@ -259,7 +303,8 @@ end
 
 -- Create window-specific icon highlight with better handling
 local function create_icon_highlight(win_id, icon_color, force_refresh)
-    if not icon_color or icon_color == "" then
+    -- Don't create highlight if no color or if color is invalid
+    if not icon_color or icon_color == "" or not icon_color:match "^#[0-9a-fA-F]+$" then
         return ""
     end
 
@@ -272,8 +317,16 @@ local function create_icon_highlight(win_id, icon_color, force_refresh)
             original_highlights[icon_hl_name] = icon_color
         end
 
-        vim.api.nvim_set_hl(0, icon_hl_name, { fg = icon_color })
-        highlight_cache[icon_hl_name] = icon_color
+        -- Safely set highlight with error handling
+        local ok = pcall(vim.api.nvim_set_hl, 0, icon_hl_name, { fg = icon_color })
+        if ok then
+            highlight_cache[icon_hl_name] = icon_color
+        else
+            -- If setting highlight fails, clear the cache and return empty
+            highlight_cache[icon_hl_name] = nil
+            original_highlights[icon_hl_name] = nil
+            return ""
+        end
     end
 
     return icon_hl_name
@@ -288,7 +341,17 @@ local function restore_highlights()
     end
 end
 
--- Build winbar components
+-- Calculate available space for components
+local function calculate_available_space(win_width, filename, icon)
+    local base_content = icon .. " " .. filename
+    local base_width = vim.fn.strdisplaywidth(base_content)
+    local padding = M.config.min_padding * 2
+    local available_space = win_width - base_width - padding * 2
+
+    return math.max(available_space, 0)
+end
+
+-- Build winbar components with better space management
 local function build_components(
     is_active,
     win_width,
@@ -306,22 +369,50 @@ local function build_components(
     local icon_hl_name = create_icon_highlight(win_id, icon_color, force_refresh)
     local colored_icon = (icon_hl_name ~= "") and ("%#" .. icon_hl_name .. "#" .. icon .. "%*") or icon
 
-    -- Handle path component
+    -- Calculate available space
+    local available_space = calculate_available_space(win_width, filename, icon)
+
+    -- Handle path component with better space management
     local path_component, path_for_width = "", ""
-    if (is_active or M.config.show_path_when_inactive) and file_path ~= "" then
-        local available_space = win_width - M.config.min_padding * 2
-        local truncated_path = truncate_text(file_path, math.max(available_space, 0))
-        if vim.fn.strdisplaywidth(truncated_path) > 0 then
-            path_component = ("%%#WinBarPath#%s%%*"):format(truncated_path)
-            path_for_width = truncated_path
+    if (is_active or M.config.show_path_when_inactive) and file_path ~= "" and available_space > 10 then
+        -- Reserve space for diagnostics and modified indicator
+        local reserved_space = 0
+        if plain_diagnostics ~= "" then
+            reserved_space = reserved_space + vim.fn.strdisplaywidth(plain_diagnostics)
         end
+        if plain_modified ~= "" then
+            reserved_space = reserved_space + vim.fn.strdisplaywidth(plain_modified)
+        end
+
+        local path_space = available_space - reserved_space - (M.config.min_padding * 2)
+        if path_space > 5 then -- Minimum space for meaningful path
+            local truncated_path = truncate_text(file_path, path_space)
+            if vim.fn.strdisplaywidth(truncated_path) > 0 then
+                path_component = ("%%#WinBarPath#%s%%*"):format(truncated_path)
+                path_for_width = truncated_path
+            end
+        end
+    end
+
+    -- Only show diagnostics if there's space
+    local diag_component, diag_plain = "", ""
+    if diagnostics ~= "" and available_space > 15 then
+        diag_component = diagnostics
+        diag_plain = plain_diagnostics
+    end
+
+    -- Only show modified if there's space
+    local mod_component, mod_plain = "", ""
+    if modified ~= "" and available_space > 5 then
+        mod_component = modified
+        mod_plain = plain_modified
     end
 
     return {
         { content = colored_icon .. " " .. filename, plain = icon .. " " .. filename },
-        { content = modified, plain = plain_modified },
+        { content = mod_component, plain = mod_plain },
         { content = path_component, plain = path_for_width },
-        { content = diagnostics, plain = plain_diagnostics },
+        { content = diag_component, plain = diag_plain },
     }
 end
 
@@ -360,14 +451,14 @@ function M.update_winbar(is_active, force_refresh)
     -- Build final content
     local content_parts, plain_parts = {}, {}
     for _, comp in ipairs(components) do
-        if comp.plain and comp.plain ~= "" then
+        if comp.content and comp.content ~= "" then
             if #content_parts > 0 then
                 local spacing = string.rep(" ", M.config.min_padding)
                 table.insert(content_parts, spacing)
                 table.insert(plain_parts, spacing)
             end
             table.insert(content_parts, comp.content)
-            table.insert(plain_parts, comp.plain)
+            table.insert(plain_parts, comp.plain or "")
         end
     end
 
@@ -377,17 +468,21 @@ function M.update_winbar(is_active, force_refresh)
     -- Calculate padding and set winbar with safety checks
     local content_width = vim.fn.strdisplaywidth(plain_content)
 
-    -- If content is wider than window, truncate or hide winbar
-    if content_width >= win_width then
-        -- Try to show just the filename if it fits
-        local filename_only = icon .. " " .. filename
-        local filename_width = vim.fn.strdisplaywidth(filename_only)
+    -- If content is still too wide, show minimal version
+    if content_width >= win_width - 4 then
+        -- Try to show just the filename with icon
+        local minimal_content = icon .. " " .. filename
+        local minimal_width = vim.fn.strdisplaywidth(minimal_content)
 
-        if filename_width < win_width then
-            local padding = math.max(math.floor((win_width - filename_width) / 2), 0)
-            vim.wo.winbar = string.rep(" ", padding) .. filename_only
+        if minimal_width < win_width - 4 then
+            local icon_hl_name = create_icon_highlight(vim.api.nvim_get_current_win(), icon_color, force_refresh)
+            local colored_minimal = (icon_hl_name ~= "") and ("%#" .. icon_hl_name .. "#" .. icon .. "%*") or icon
+            colored_minimal = colored_minimal .. " " .. filename
+
+            local padding = math.max(math.floor((win_width - minimal_width) / 2), 0)
+            vim.wo.winbar = string.rep(" ", padding) .. colored_minimal
         else
-            -- Even filename doesn't fit, hide winbar
+            -- Even minimal doesn't fit, hide winbar
             vim.wo.winbar = ""
         end
         return
@@ -398,20 +493,17 @@ function M.update_winbar(is_active, force_refresh)
     vim.wo.winbar = string.rep(" ", padding) .. final_content
 end
 
--- Clear caches
+-- Clear caches with better cleanup
 local function clear_icon_cache(bufnr)
     if bufnr and icon_cache[bufnr] then
         icon_cache[bufnr] = nil
     end
-end
 
-local function cleanup_window_highlights(win_id)
-    local hl_name = "WinBarFileIcon" .. win_id
-    if highlight_cache[hl_name] then
-        -- Properly clear the highlight group
-        vim.api.nvim_set_hl(0, hl_name, {})
-        highlight_cache[hl_name] = nil
-        original_highlights[hl_name] = nil
+    -- Also clear any related highlights for this buffer
+    if bufnr then
+        for win_id, _ in pairs(vim.api.nvim_list_wins()) do
+            cleanup_window_highlights(win_id)
+        end
     end
 end
 
@@ -420,13 +512,13 @@ local function set_highlights()
     local sethl = vim.api.nvim_set_hl
     local gethl = vim.api.nvim_get_hl
 
-    -- Get diagnostic colors
+    -- Get diagnostic colors with fallbacks
     local colors = {
-        error = gethl(0, { name = "DiagnosticError" }).fg,
-        warn = gethl(0, { name = "DiagnosticWarn" }).fg,
-        info = gethl(0, { name = "DiagnosticInfo" }).fg,
-        hint = gethl(0, { name = "DiagnosticHint" }).fg,
-        pmenu = gethl(0, { name = "Pmenu" }).fg,
+        error = gethl(0, { name = "DiagnosticError" }).fg or "#FF6B6B",
+        warn = gethl(0, { name = "DiagnosticWarn" }).fg or "#FFD93D",
+        info = gethl(0, { name = "DiagnosticInfo" }).fg or "#6BCF7F",
+        hint = gethl(0, { name = "DiagnosticHint" }).fg or "#A8A8A8",
+        pmenu = gethl(0, { name = "Pmenu" }).fg or "#FFFFFF",
     }
 
     -- Set highlight groups
@@ -452,11 +544,20 @@ function M.setup(user_config)
     local autocmd = vim.api.nvim_create_autocmd
     local group = vim.api.nvim_create_augroup("CustomWinBar", { clear = true })
 
-    -- Cache management
-    autocmd({ "BufDelete", "BufFilePost" }, {
+    -- Cache management with better cleanup
+    autocmd({ "BufDelete", "BufFilePost", "BufWritePost" }, {
         group = group,
         callback = function(args)
             clear_icon_cache(args.buf)
+        end,
+    })
+
+    -- Also clear cache when file is renamed or moved
+    autocmd("BufFilePost", {
+        group = group,
+        callback = function(_)
+            -- Clear all caches since filename/extension might have changed
+            icon_cache = {}
         end,
     })
 

@@ -147,7 +147,7 @@ autocmd("ColorScheme", {
         sethl(0, "DiagnosticSignInfo", { bg = "NONE" })
         sethl(0, "DiagnosticSignHint", { bg = "NONE" })
 
-        -- sethl(0, "NonText", { bg = colors.background, fg = colors.foreground })
+        -- sethl(0, "NonText", { bg = colors.background })
 
         -- Cleans tinyInlineDiagnostic
         sethl(0, "TinyInlineDiagnosticVirtualTextArrow", { bg = "NONE" })

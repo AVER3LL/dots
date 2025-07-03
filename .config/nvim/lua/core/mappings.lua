@@ -4,6 +4,7 @@ vim.g.maplocalleader = " "
 
 -- Keymap helper function
 local map = require("utils").map
+
 map("n", "<leader>ll", "<cmd>Lazy<CR>", { desc = "Open Lazy" })
 
 map("n", "<leader><leader>w", function()

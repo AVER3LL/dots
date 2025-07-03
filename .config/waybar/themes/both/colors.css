@@ -1,5 +1,7 @@
 @define-color background rgba(21, 18, 27, 0);
 
+/* @define-color foreground #f6f7fc; */
+
 @define-color foreground #f6f7fc;
 
 @define-color tooltip_background #e7e7ec;
