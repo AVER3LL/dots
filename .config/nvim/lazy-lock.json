@@ -46,6 +46,7 @@
   "mini.surround": { "branch": "main", "commit": "1a2b59c77a0c4713a5bd8972da322f842f4821b1" },
   "mini.trailspace": { "branch": "main", "commit": "13e3fcdac308ae2072a015456be88e1ecb7836d3" },
   "monokai-pro.nvim": { "branch": "master", "commit": "31bad737610ec211de086d373c73025f39de93cb" },
+  "multicursor.nvim": { "branch": "1.0", "commit": "9eedebdd395bbbc4711081e33b0606c079e054c3" },
   "multinput.nvim": { "branch": "master", "commit": "ffe8e832c955f24c3563e08fdfc164b6e651a6fa" },
   "neogen": { "branch": "main", "commit": "b2e78708876f4da507839726816010a68e33fec8" },
   "neorg": { "branch": "main", "commit": "e206c9642f4a115cd836e76c98ef785623d335bc" },

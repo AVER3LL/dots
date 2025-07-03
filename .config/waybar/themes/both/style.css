@@ -136,3 +136,11 @@ tooltip label {
 .modules-left {
     margin-left: 12px;
 }
+
+#battery.critical:not(.charging):not(.plugged) {
+    color: #e92d4d;
+}
+
+#battery.warning:not(.charging) {
+    color: #fba922;
+}

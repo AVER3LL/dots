@@ -204,6 +204,16 @@ autocmd("ColorScheme", {
         sethl(0, "StatusLine", { bg = colors.background })
         sethl(0, "StatusLineNC", { bg = colors.background })
 
+        sethl(0, "MultiCursorCursor", { reverse = true })
+        sethl(0, "MultiCursorVisual", { link = "Visual" })
+        sethl(0, "MultiCursorSign", { link = "SignColumn" })
+        sethl(0, "MultiCursorMatchPreview", { link = "Search" })
+        sethl(0, "MultiCursorDisabledCursor", { reverse = true })
+        sethl(0, "MultiCursorDisabledVisual", { link = "Visual" })
+        sethl(0, "MultiCursorDisabledSign", { link = "SignColumn" })
+
+        sethl(0, "GitSignsCurrentLineBlame", { fg = adjust_brightness(colors.foreground, 0.7) })
+
         sethl(0, "FloatTitle", { bg = colors.background })
 
         sethl(0, "BlinkCmpMenuSelection", { bg = colors.fun, fg = colors.background })
