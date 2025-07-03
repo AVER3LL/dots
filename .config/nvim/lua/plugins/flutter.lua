@@ -1,3 +1,5 @@
+local icons = require("icons")
+
 return {
     "nvim-flutter/flutter-tools.nvim",
     ft = "dart",
@@ -15,7 +17,7 @@ return {
                     enabled = true,
                     background = false,
                     virtual_text = false, -- show the highlight using virtual text
-                    virtual_text_str = "󱓻", -- the virtual text character to highlight
+                    virtual_text_str = icons.misc.squircle, -- the virtual text character to highlight
                 },
             },
         }

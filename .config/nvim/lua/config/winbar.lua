@@ -53,6 +53,9 @@ M.config = {
         "notify",
         "toggleterm",
         "lazyterm",
+        "TelescopePrompt",
+        "TelescopeResults",
+        "telescope",
     },
     ignore_buftypes = {
         "nofile",
@@ -67,6 +70,9 @@ M.config = {
 local icon_cache = {}
 local highlight_cache = {}
 local update_timer = nil
+
+-- Store original highlight state to restore later
+local original_highlights = {}
 
 -- Utility functions
 local function contains(table, value)
@@ -119,6 +125,12 @@ local function is_window_too_small()
 
     -- Skip very small windows (like popups, input dialogs, etc.)
     return win_width < M.config.min_window_width or win_height < 2
+end
+
+-- Function to check if we're in a popup or floating window
+local function is_popup_or_floating_window()
+    local win_config = vim.api.nvim_win_get_config(0)
+    return win_config.relative ~= ""
 end
 
 -- Function to get file icon and color using nvim-web-devicons with caching
@@ -245,21 +257,35 @@ local function debounced_update(is_active)
     )
 end
 
--- Create window-specific icon highlight
-local function create_icon_highlight(win_id, icon_color)
+-- Create window-specific icon highlight with better handling
+local function create_icon_highlight(win_id, icon_color, force_refresh)
     if not icon_color or icon_color == "" then
         return ""
     end
 
     local icon_hl_name = "WinBarFileIcon" .. win_id
 
-    -- Cache the highlight to avoid repeated API calls
-    if not highlight_cache[icon_hl_name] or highlight_cache[icon_hl_name] ~= icon_color then
+    -- Force refresh highlights if needed (e.g., after popup closes)
+    if force_refresh or not highlight_cache[icon_hl_name] or highlight_cache[icon_hl_name] ~= icon_color then
+        -- Store original if not already stored
+        if not original_highlights[icon_hl_name] then
+            original_highlights[icon_hl_name] = icon_color
+        end
+
         vim.api.nvim_set_hl(0, icon_hl_name, { fg = icon_color })
         highlight_cache[icon_hl_name] = icon_color
     end
 
     return icon_hl_name
+end
+
+-- Restore highlight groups (called when popups close)
+local function restore_highlights()
+    for hl_name, color in pairs(original_highlights) do
+        if highlight_cache[hl_name] then
+            vim.api.nvim_set_hl(0, hl_name, { fg = color })
+        end
+    end
 end
 
 -- Build winbar components
@@ -273,10 +299,11 @@ local function build_components(
     diagnostics,
     plain_diagnostics,
     modified,
-    plain_modified
+    plain_modified,
+    force_refresh
 )
     local win_id = vim.api.nvim_get_current_win()
-    local icon_hl_name = create_icon_highlight(win_id, icon_color)
+    local icon_hl_name = create_icon_highlight(win_id, icon_color, force_refresh)
     local colored_icon = (icon_hl_name ~= "") and ("%#" .. icon_hl_name .. "#" .. icon .. "%*") or icon
 
     -- Handle path component
@@ -299,11 +326,11 @@ local function build_components(
 end
 
 -- Update the winbar
-function M.update_winbar(is_active)
+function M.update_winbar(is_active, force_refresh)
     local filename = vim.fn.expand "%:t"
 
-    -- Early exit for ignored buffers or small windows
-    if filename == "" or should_ignore_buffer() or is_window_too_small() then
+    -- Early exit for ignored buffers, small windows, or popups
+    if filename == "" or should_ignore_buffer() or is_window_too_small() or is_popup_or_floating_window() then
         vim.wo.winbar = ""
         return
     end
@@ -326,7 +353,8 @@ function M.update_winbar(is_active)
         diagnostics,
         plain_diagnostics,
         modified,
-        plain_modified
+        plain_modified,
+        force_refresh
     )
 
     -- Build final content
@@ -383,6 +411,7 @@ local function cleanup_window_highlights(win_id)
         -- Properly clear the highlight group
         vim.api.nvim_set_hl(0, hl_name, {})
         highlight_cache[hl_name] = nil
+        original_highlights[hl_name] = nil
     end
 end
 
@@ -407,6 +436,9 @@ local function set_highlights()
     sethl(0, "WinBarDiagHint", { fg = colors.hint })
     sethl(0, "WinBarPath", { fg = "#888888", italic = true })
     sethl(0, "WinBarModified", { fg = colors.error, bold = true })
+
+    -- Restore any cached highlights
+    restore_highlights()
 end
 
 -- Setup function
@@ -433,6 +465,7 @@ function M.setup(user_config)
         group = group,
         callback = function()
             highlight_cache = {} -- Clear highlight cache on colorscheme change
+            original_highlights = {} -- Clear original highlights
             set_highlights()
         end,
     })
@@ -448,11 +481,44 @@ function M.setup(user_config)
         end,
     })
 
+    -- Handle popup/telescope closing - restore highlights
+    autocmd("BufLeave", {
+        group = group,
+        pattern = "*",
+        callback = function()
+            local ft = vim.bo.filetype
+            -- Check if we're leaving a telescope or popup buffer
+            if ft == "TelescopePrompt" or ft == "TelescopeResults" or ft == "telescope" then
+                vim.schedule(function()
+                    -- Restore highlights after popup closes
+                    restore_highlights()
+                    -- Force refresh all visible winbars
+                    for _, win in ipairs(vim.api.nvim_list_wins()) do
+                        if vim.api.nvim_win_is_valid(win) then
+                            local bufnr = vim.api.nvim_win_get_buf(win)
+                            if vim.api.nvim_buf_is_valid(bufnr) then
+                                vim.api.nvim_win_call(win, function()
+                                    if
+                                        not should_ignore_buffer()
+                                        and not is_window_too_small()
+                                        and not is_popup_or_floating_window()
+                                    then
+                                        M.update_winbar(vim.api.nvim_get_current_win() == win, true)
+                                    end
+                                end)
+                            end
+                        end
+                    end
+                end)
+            end
+        end,
+    })
+
     -- Debounced updates for frequent events
     autocmd({ "TextChanged", "InsertEnter", "InsertLeave" }, {
         group = group,
         callback = function()
-            if not should_ignore_buffer() and not is_window_too_small() then
+            if not should_ignore_buffer() and not is_window_too_small() and not is_popup_or_floating_window() then
                 debounced_update(true)
             else
                 vim.wo.winbar = ""
@@ -473,7 +539,7 @@ function M.setup(user_config)
     }, {
         group = group,
         callback = function()
-            if not should_ignore_buffer() and not is_window_too_small() then
+            if not should_ignore_buffer() and not is_window_too_small() and not is_popup_or_floating_window() then
                 M.update_winbar(true)
             else
                 vim.wo.winbar = ""
@@ -485,7 +551,7 @@ function M.setup(user_config)
     autocmd("WinLeave", {
         group = group,
         callback = function()
-            if not should_ignore_buffer() and not is_window_too_small() then
+            if not should_ignore_buffer() and not is_window_too_small() and not is_popup_or_floating_window() then
                 M.update_winbar(false)
             else
                 vim.wo.winbar = ""
@@ -501,6 +567,7 @@ end
 function M.clear_caches()
     icon_cache = {}
     highlight_cache = {}
+    original_highlights = {}
     if update_timer then
         update_timer:stop()
         update_timer = nil

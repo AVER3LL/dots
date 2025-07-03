@@ -31,6 +31,22 @@ return {
             local function my_on_attach(bufnr)
                 local api = require "nvim-tree.api"
 
+                local function newFile()
+                    local core = require "nvim-tree.core"
+                    local node = core.get_explorer():get_node_at_cursor()
+                    if node.name == ".." then
+                        -- root
+                        require("nvim-newfile")._show_input_dialog()
+                        return
+                    end
+
+                    if node.type == "file" then
+                        node = node.parent
+                    end
+
+                    require("nvim-newfile")._show_input_dialog(node.absolute_path)
+                end
+
                 local function opts(desc)
                     return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
                 end
@@ -40,6 +56,9 @@ return {
 
                 -- custom mappings
                 vim.keymap.set("n", "l", api.node.open.edit, opts "Open")
+                if package.loaded["nvim-newfile"] then
+                    vim.keymap.set("n", "a", newFile, opts "Open")
+                end
                 vim.keymap.set("n", "s", api.node.open.vertical, opts "Open in vertical split")
                 vim.keymap.set("n", "H", api.tree.toggle_hidden_filter, opts "Toggle Dotfiles")
             end
