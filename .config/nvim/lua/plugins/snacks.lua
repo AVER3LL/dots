@@ -20,7 +20,7 @@ return {
                     col = -1,
                     width = 20,
                     border = bt,
-                }
+                },
             },
             picker = {
                 enabled = true,
@@ -45,18 +45,18 @@ return {
                             row = 5,
                             width = 0.4,
                             min_width = 80,
-                            height = 0.4,
-                            border = "none",
+                            height = 0.7,
+                            border = "single",
                             box = "vertical",
                             {
                                 win = "input",
                                 height = 1,
-                                border = "rounded",
+                                border = "vpad",
                                 title = "{title} {live} {flags}",
                                 title_pos = "center",
                             },
-                            { win = "list", border = "hpad" },
-                            { win = "preview", title = "{preview}", border = "rounded" },
+                            { win = "list", border = "none" },
+                            { win = "preview", title = "{preview}", border = "none" },
                         },
                     },
                     custom_layout = {
@@ -172,7 +172,28 @@ return {
             {
                 "<leader>ff",
                 function()
-                    Snacks.picker.files()
+                    local vscode = {
+                        preview = false,
+                        layout = {
+                            backdrop = false,
+                            row = 1,
+                            width = 0.4,
+                            min_width = 80,
+                            height = 0.4,
+                            border = "none",
+                            box = "vertical",
+                            {
+                                win = "input",
+                                height = 1,
+                                border = "rounded",
+                                title = "{title} {live} {flags}",
+                                title_pos = "center",
+                            },
+                            { win = "list", border = "hpad" },
+                            { win = "preview", title = "{preview}", border = "rounded" },
+                        },
+                    }
+                    Snacks.picker.files { layout = "vscode" }
                 end,
                 desc = "Find files",
             },
@@ -186,7 +207,7 @@ return {
             {
                 "<leader>fg",
                 function()
-                    Snacks.picker.git_files()
+                    Snacks.picker.git_files { layout = "vscode" }
                 end,
                 desc = "Find git files",
             },

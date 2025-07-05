@@ -13,7 +13,8 @@ fi
 
 # Check if required tools are installed
 check_dependencies() {
-    local critical_deps=(swww matugen wallust)
+    # local critical_deps=(swww matugen wallust)
+    local critical_deps=(hyprpaper matugen wallust)
     local missing_deps=()
     for cmd in "${critical_deps[@]}"; do
         command -v "$cmd" >/dev/null 2>&1 || missing_deps+=("$cmd")
@@ -55,8 +56,13 @@ echo "Changing wallpaper..."
 
 # Set the wallpaper using swww - this happens first and doesn't wait
 if $SET_WALLPAPER; then
-    swww img "$IMAGE" --transition-type="left" --transition-duration=2 --transition-step=90 --transition-angle=0 --transition-fps=60 || {
-        echo "Error: Failed to set wallpaper with swww."
+    # swww img "$IMAGE" --transition-type="left" --transition-duration=2 --transition-step=255 --transition-angle=0 --transition-fps=60 || {
+    #     echo "Error: Failed to set wallpaper with swww."
+    #     exit 1
+    # }
+
+    hyprctl hyprpaper reload ,"$IMAGE" || {
+        echo "Error: Failed to set wallpaper with hyprpaper."
         exit 1
     }
 fi
@@ -72,13 +78,17 @@ if ((brightness > threshold)); then
     # Light background - use primary color for border
     sed -i 's/^\$hyprborder = .*/\$hyprborder = rgba({{colors.primary.default.hex_stripped}}ff)/' ~/.config/matugen/templates/hyprland-colors.conf
     # sed -i 's/\(@define-color background rgba(21, 18, 27, \)0)/\10.7)/'  ~/.config/waybar/themes/both/colors.css
-    sed -i 's/@define-color foreground #f6f7fc;/@define-color foreground #000000;/' ~/.config/waybar/themes/both/colors.css
+    sed -i 's/@define-color fg #f6f7fc;/@define-color fg #000000;/' ~/.config/waybar/themes/both/colors.css
+
+    sed -i 's/@define-color tray_background rgba(21, 18, 27, 0);/@define-color tray_background rgba(21, 18, 27, 0.7);/' ~/.config/waybar/themes/both/colors.css
 
 else
     # Dark background - use fixed dark color for border
     sed -i 's/^\$hyprborder = .*/\$hyprborder = rgba(3e4142ff)/' ~/.config/matugen/templates/hyprland-colors.conf
     # sed -i 's/\(@define-color background rgba(21, 18, 27, \)0\.7)/\10)/' ~/.config/waybar/themes/both/colors.css
-    sed -i 's/@define-color foreground #000000;/@define-color foreground #f6f7fc;/' ~/.config/waybar/themes/both/colors.css
+    sed -i 's/@define-color fg #000000;/@define-color fg #f6f7fc;/' ~/.config/waybar/themes/both/colors.css
+
+    sed -i 's/@define-color tray_background rgba(21, 18, 27, 0.7);/@define-color tray_background rgba(21, 18, 27, 0);/' ~/.config/waybar/themes/both/colors.css
 fi
 
 # Define cache directory and files

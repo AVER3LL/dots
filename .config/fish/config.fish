@@ -1,14 +1,15 @@
-# config.fish - Minimal, organized configuration
+# config.fish — Minimal, organized configuration
 
 # Skip if not in interactive shell
 if not status is-interactive
     return 0
 end
 
-### ENVIRONMENT VARIABLES ###
-# Editor
 set -x VISUAL nvim
 set -x EDITOR $VISUAL
+
+# Disable fish greeting
+set -U fish_greeting
 
 # Man page formatting
 set -x MANROFFOPT "-c"
@@ -53,20 +54,20 @@ end
 # Functions for !! and !$ history substitution
 function __history_previous_command
     switch (commandline -t)
-    case "!"
-        commandline -t $history[1]; commandline -f repaint
-    case "*"
-        commandline -i !
+        case "!"
+            commandline -t $history[1]; commandline -f repaint
+        case "*"
+            commandline -i !
     end
 end
 
 function __history_previous_command_arguments
     switch (commandline -t)
-    case "!"
-        commandline -t ""
-        commandline -f history-token-search-backward
-    case "*"
-        commandline -i '$'
+        case "!"
+            commandline -t ""
+            commandline -f history-token-search-backward
+        case "*"
+            commandline -i '$'
     end
 end
 
@@ -79,7 +80,7 @@ else
 end
 
 ### UTILITIES ###
-# Enhanced history command
+# Enhanced history with timestamp
 function history
     builtin history --show-time='%F %T '
 end
@@ -89,23 +90,12 @@ function backup --argument filename
     cp $filename $filename.bak
 end
 
-# Empty greeting (comment out if you want no greeting)
-function fish_greeting
-    # Uncomment one of these if you want a greeting
-    # fastfetch
-    # echo "hello there"
-end
-
 ### EXTERNAL TOOLS ###
-# Load aliases from separate file
+# Load aliases
 source ~/.config/fish/aliases.fish
 
-# Initialize tools
-# function starship_transient_prompt_func
-#   starship module character
-# end
+# Prompt and directory tools
 starship init fish | source
-# enable_transience
 zoxide init fish | source
 fzf --fish | source
 

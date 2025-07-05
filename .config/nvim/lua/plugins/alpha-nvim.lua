@@ -170,7 +170,7 @@ return {
             dashboard.section.buttons.val = {
                 dashboard.button("e", "   New File", "<cmd>ene<CR>"),
                 dashboard.button("SPC e", "   File Explorer", "<cmd>NvimTreeFocus<CR>"),
-                dashboard.button("SPC f f", "󰱼   Find File", "<cmd>lua Snacks.picker.files()<CR>"),
+                dashboard.button("SPC f f", "󰱼   Find File", "<cmd>lua Snacks.picker.files({ layout = 'vscode' })<CR>"),
                 dashboard.button("SPC f w", "   Find Word", "<cmd>lua Snacks.picker.grep()<CR>"),
                 dashboard.button("SPC w r", "󰁯   Restore Session", "<cmd>SessionRestore<CR>"),
                 -- dashboard.button("SPC w r", "󰁯   Restore Session", "<cmd>lua require('persistence').load() <CR>"),

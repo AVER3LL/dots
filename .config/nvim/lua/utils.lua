@@ -50,6 +50,22 @@ M.toggle_diagnostic_icons = function()
     }
 end
 
+M.toggle_numbers = function()
+    if vim.wo.number then
+        vim.g.show_line_number = false
+        vim.opt.number = false
+        vim.opt.relativenumber = false
+        vim.opt.foldcolumn = "0"
+        M.toggle_diagnostic_icons()
+    else
+        vim.g.show_line_number = true
+        vim.opt.number = true
+        vim.opt.relativenumber = vim.g.show_relative_line_number
+        vim.opt.foldcolumn = "1"
+        M.toggle_diagnostic_icons()
+    end
+end
+
 --- @param mode string | table
 --- @param lhs string
 --- @param rhs string | fun()

@@ -10,8 +10,8 @@
 }
 
 window#waybar {
-    background: @background;
-    color: @foreground;
+    background: @bg;
+    color: @fg;
 }
 
 tooltip {
@@ -29,7 +29,7 @@ tooltip label {
 
 #workspaces button {
     padding: 5px;
-    color: @foreground;
+    color: @fg;
     margin-right: 5px;
 }
 
@@ -95,6 +95,7 @@ tooltip label {
 #backlight-slider highlight,
 #pulseaudio-slider highlight {
     border-radius: 4px;
+    background: @slider_through;
 }
 
 #temperature.critical {
@@ -124,6 +125,11 @@ tooltip label {
     margin-right: 20px;
 }
 
+#backlight,
+#pulseaudio {
+    font-size: 21px;
+}
+
 #custom-launch_firefox,
 #custom-launch_kitty {
     font-size: 20px;
@@ -135,6 +141,12 @@ tooltip label {
 
 .modules-left {
     margin-left: 12px;
+}
+
+#tray {
+    background-color: @tray_background;
+    padding: 0 4px;
+    border-radius: 10px;
 }
 
 #battery.critical:not(.charging):not(.plugged) {

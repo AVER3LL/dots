@@ -244,7 +244,7 @@ local function venv_widget()
 
     local str
     if env and env ~= "" then
-        str = string.format("[.venv: %s]  ", fn.fnamemodify(env, ":t"))
+        str = string.format("[%s]  ", fn.fnamemodify(env, ":t"))
         return hl_str("Comment", str)
     end
 

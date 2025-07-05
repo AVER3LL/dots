@@ -18,23 +18,7 @@ map("n", "<leader><leader>w", function()
     end
 end, { desc = "Toggle statusline" })
 
-map("n", "<leader><leader>l", function()
-    local toggleSigns = require("utils").toggle_diagnostic_icons
-    -- Deactivate line numbers
-    if vim.wo.number then
-        vim.g.show_line_number = false
-        vim.opt.number = false
-        vim.opt.relativenumber = false
-        vim.opt.foldcolumn = "0"
-        toggleSigns()
-    else
-        vim.g.show_line_number = true
-        vim.opt.number = true
-        vim.opt.relativenumber = false
-        vim.opt.foldcolumn = "1"
-        toggleSigns()
-    end
-end, { desc = "Toggle line numbers" })
+map("n", "<leader><leader>l", require("utils").toggle_numbers, { desc = "Toggle line numbers" })
 
 local M = {}
 

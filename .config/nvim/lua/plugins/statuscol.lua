@@ -162,7 +162,8 @@ return {
                     },
                     -- Space between line numbers and buffer
                     {
-                        text = { " │" },
+                        -- text = { " │" },
+                        text = { " " },
                         hl = "LineNr",
                         condition = {
                             function(args)

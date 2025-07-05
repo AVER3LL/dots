@@ -2,7 +2,9 @@
 vim.g.codeium_disable_bindings = 1
 vim.g.codeium_enabled = true
 vim.g.fold_indicator = true
+
 vim.g.show_line_number = false
+vim.g.show_relative_line_number = true
 
 --- @type "flat" | "clear"
 vim.g.style = "clear"
@@ -38,7 +40,7 @@ vim.opt.showmode = false
 
 -- Line Numbers
 vim.opt.number = vim.g.show_line_number
-vim.opt.relativenumber = false
+vim.opt.relativenumber = vim.g.show_line_number and vim.g.show_relative_line_number
 vim.opt.numberwidth = 2
 vim.opt.ruler = false
 

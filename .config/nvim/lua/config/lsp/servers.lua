@@ -30,6 +30,7 @@ M.default = {
     "kotlin_language_server",
     "lua_ls",
     "tailwindcss",
+    'gopls',
     "taplo", -- markdown
     "texlab",
     -- "rust_analyzer",
@@ -51,9 +52,9 @@ end
 
 M.lspconfig = vim.tbl_extend("force", process_default_lsps(), {
 
-    qmlls = {
-        cmd = { "qml-lsp", "-E" },
-    },
+    -- qmlls = {
+    --     cmd = { "qml-lsp", "-E" },
+    -- },
 
     basedpyright = {
         settings = {
@@ -162,20 +163,20 @@ M.lspconfig = vim.tbl_extend("force", process_default_lsps(), {
         },
     },
 
-    gopls = {
-        filetypes = { "go", "gohtmltmpl", "gomod", "gotexttmpl", "gotmpl", "gowork" },
-        settings = {
-            gopls = {
-                analyses = {
-                    fieldalignment = true,
-                    unusedparams = true,
-                },
-                staticcheck = true,
-                completeUnimported = true,
-                usePlaceholders = true,
-            },
-        },
-    },
+    -- gopls = {
+    --     filetypes = { "go", "gohtmltmpl", "gomod", "gotexttmpl", "gotmpl", "gowork" },
+    --     settings = {
+    --         gopls = {
+    --             analyses = {
+    --                 fieldalignment = true,
+    --                 unusedparams = true,
+    --             },
+    --             staticcheck = true,
+    --             completeUnimported = true,
+    --             usePlaceholders = true,
+    --         },
+    --     },
+    -- },
 })
 
 return M

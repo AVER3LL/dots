@@ -5,7 +5,7 @@
 }
 
 #taskbar button.active {
-  background: @workspace_active_background;
+  background: @primary;
   margin: 3px;
   padding: 0 12px;
   transition: all 0.4s cubic-bezier(0.55, -0.68, 0.48, 1.682);

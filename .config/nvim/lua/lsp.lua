@@ -59,8 +59,8 @@ local hover = vim.lsp.buf.hover
 vim.lsp.buf.hover = function()
     return hover {
         border = float.border,
-        max_width = float.max_width,
-        max_height = 15,
+        max_width = math.floor(vim.o.columns * 0.5),
+        max_height = math.floor(vim.o.lines * 0.5),
         focusable = true,
         silent = float.silent,
     }
@@ -71,8 +71,8 @@ local signature = vim.lsp.buf.signature_help
 vim.lsp.buf.signature_help = function()
     return signature {
         border = float.border,
-        max_width = float.max_width,
-        max_height = 7,
+        max_width = math.floor(vim.o.columns * 0.6),
+        max_height = math.floor(vim.o.lines * 0.5),
         focusable = false,
         silent = float.silent,
     }

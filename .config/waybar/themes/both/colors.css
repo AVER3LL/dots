@@ -1,17 +1,25 @@
-@define-color background rgba(21, 18, 27, 0);
+@import '../../colors.css';
 
-/* @define-color foreground #f6f7fc; */
+@define-color bg rgba(21, 18, 27, 0);
 
-@define-color foreground #f6f7fc;
+/* @define-color foreground #000000; */
+
+@define-color fg #f6f7fc;
+
+@define-color slider_through @primary;
 
 @define-color tooltip_background #e7e7ec;
 
 @define-color tooltip_foreground #2b2b2c;
 
-@define-color workspace_active_background #a6e3a1;
+/* @define-color workspace_active_background #a6e3a1; */
+
+@define-color workspace_active_background @primary;
 
 @define-color workspace_active_foreground #000000;
 
 @define-color workspace_hover_background #11111b;
 
 @define-color workspace_hover_foreground #cdddf4;
+
+@define-color tray_background rgba(21, 18, 27, 0);

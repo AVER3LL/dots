@@ -1,5 +1,6 @@
 import Quickshell
 import Quickshell.Io
+import Quickshell.Hyprland
 import QtQuick
 
 Scope {
@@ -21,6 +22,17 @@ Scope {
 
             Clock {
                 anchors.centerIn: parent
+            }
+
+            Workspaces {
+
+                anchors {
+                    left: parent.left
+                    verticalCenter: parent.verticalCenter
+                    leftMargin: 16
+                }
+
+                spacing: 8
             }
 
         }
