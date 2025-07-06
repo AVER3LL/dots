@@ -35,6 +35,7 @@ return {
                     files = {
                         hidden = true,
                         ignored = true,
+                        exclude = { "node_modules", ".git", ".__pycache__", ".mypy_cache" },
                     },
                 },
                 layouts = {
