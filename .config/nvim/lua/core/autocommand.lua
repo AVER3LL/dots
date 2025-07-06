@@ -95,19 +95,110 @@ autocmd("TextYankPost", {
 --- Function written solely by an AI. The purpose was to get
 --- a color that could be used for borders no matter the theme
 local function adjust_brightness(color, amount)
-    -- Extract RGB components
-    local r = bit.rshift(color, 16) % 256
-    local g = bit.rshift(color, 8) % 256
-    local b = color % 256
+    -- Input validation and sanitization
+    if type(color) ~= "number" then
+        -- Try to convert string hex to number
+        if type(color) == "string" then
+            -- Handle hex strings like "#ffffff" or "ffffff"
+            local hex_str = color:gsub("#", ""):gsub("0x", "")
+            local converted = tonumber(hex_str, 16)
+            if converted then
+                color = converted
+            else
+                -- Fallback to black if conversion fails
+                color = 0x000000
+            end
+        else
+            -- Fallback to black for any other type
+            color = 0x000000
+        end
+    end
 
-    -- Apply brightness adjustment directly
-    -- Positive amount brightens, negative darkens
-    r = math.min(255, math.max(0, math.floor(r * amount)))
-    g = math.min(255, math.max(0, math.floor(g * amount)))
-    b = math.min(255, math.max(0, math.floor(b * amount)))
+    -- Ensure color is within valid range
+    color = math.max(0, math.min(0xFFFFFF, math.floor(color)))
 
-    -- Convert back to hex
-    return bit.bor(bit.lshift(r, 16), bit.lshift(g, 8), b)
+    -- Validate and sanitize amount
+    if type(amount) ~= "number" or amount ~= amount then -- Check for NaN
+        amount = 1.0 -- Default to no change
+    end
+
+    -- Clamp amount to reasonable range to prevent overflow
+    amount = math.max(0, math.min(10, amount))
+
+    -- Safe bit operations with fallbacks
+    local function safe_rshift(value, shift)
+        if not bit or not bit.rshift then
+            return math.floor(value / (2 ^ shift))
+        end
+        return bit.rshift(value, shift)
+    end
+
+    local function safe_lshift(value, shift)
+        if not bit or not bit.lshift then
+            return value * (2 ^ shift)
+        end
+        return bit.lshift(value, shift)
+    end
+
+    local function safe_bor(...)
+        if not bit or not bit.bor then
+            local result = 0
+            for i = 1, select("#", ...) do
+                result = result + select(i, ...)
+            end
+            return result
+        end
+        return bit.bor(...)
+    end
+
+    -- Extract RGB components with error handling
+    local r, g, b
+
+    -- Protected extraction
+    local success, _ = pcall(function()
+        r = safe_rshift(color, 16) % 256
+        g = safe_rshift(color, 8) % 256
+        b = color % 256
+        return true
+    end)
+
+    if not success then
+        -- Fallback extraction
+        r = math.floor(color / 65536) % 256
+        g = math.floor(color / 256) % 256
+        b = color % 256
+    end
+
+    -- Ensure components are valid numbers
+    r = math.max(0, math.min(255, math.floor(r or 0)))
+    g = math.max(0, math.min(255, math.floor(g or 0)))
+    b = math.max(0, math.min(255, math.floor(b or 0)))
+
+    -- Apply brightness adjustment with overflow protection
+    local function adjust_component(component, adj)
+        local result = component * adj
+        return math.min(255, math.max(0, math.floor(result)))
+    end
+
+    r = adjust_component(r, amount)
+    g = adjust_component(g, amount)
+    b = adjust_component(b, amount)
+
+    -- Convert back to hex with error handling
+    local final_color
+    local success2, result2 = pcall(function()
+        return safe_bor(safe_lshift(r, 16), safe_lshift(g, 8), b)
+    end)
+
+    if success2 then
+        final_color = result2
+    else
+        -- Manual fallback calculation
+        final_color = r * 65536 + g * 256 + b
+    end
+
+    -- Final validation
+    return math.max(0, math.min(0xFFFFFF, math.floor(final_color or 0)))
 end
 
 autocmd("ColorScheme", {
@@ -173,6 +264,10 @@ autocmd("ColorScheme", {
             sethl(0, "BlinkCmpDocSeparator", { bg = colors.pmenu, fg = adjust_brightness(colors.foreground, 0.7) })
             sethl(0, "BlinkCmpSignatureHelp", { bg = colors.pmenu })
             sethl(0, "BlinkCmpSignatureHelpBorder", { bg = colors.pmenu, fg = colors.pmenu })
+            sethl(0, "BlinkCmpLabelDescription", { bg = colors.pmenu, fg = adjust_brightness(colors.foreground, 0.5) })
+
+            -- sethl(0, "SnacksPickerNormal", { bg = colors.pmenu, fg = adjust_brightness(colors.foreground, 0.5) })
+
             -- sethl(0, "BlinkCmpSignatureHelpActiveParameter", { bg = colors.pmenu })
 
             sethl(0, "BlinkCmpMenu", { bg = colors.pmenu })
@@ -193,6 +288,11 @@ autocmd("ColorScheme", {
             sethl(0, "BlinkCmpMenu", { bg = colors.background })
             sethl(0, "BlinkCmpDoc", { bg = colors.background })
             sethl(0, "BlinkCmpSignatureHelp", { bg = colors.background })
+            sethl(
+                0,
+                "BlinkCmpLabelDescription",
+                { bg = colors.background, fg = adjust_brightness(colors.foreground, 0.5) }
+            )
 
             sethl(0, "LspInfoBorder", { bg = colors.background })
             sethl(0, "NormalFloat", { bg = colors.background })
@@ -216,7 +316,8 @@ autocmd("ColorScheme", {
 
         sethl(0, "FloatTitle", { bg = colors.background })
 
-        sethl(0, "BlinkCmpMenuSelection", { bg = colors.fun, fg = colors.background })
+        sethl(0, "BlinkCmpMenuSelection", { bg = adjust_brightness(colors.fun, 0.4) })
+        -- sethl(0, "BlinkCmpMenuSelection", { bg = colors.fun, fg = colors.background })
         sethl(0, "LspSignatureActiveParameter", { bg = colors.str, bold = true, fg = colors.background })
 
         sethl(0, "Comment", { fg = "#008c7d", italic = true })
