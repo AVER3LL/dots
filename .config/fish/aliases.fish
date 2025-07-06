@@ -36,6 +36,9 @@ alias cleare='clear'
 alias cler='clear'
 alias clar='clear'
 
+alias i='yay -S'
+alias s='yay -Ss'
+
 # git helpers
 alias ga='git add'
 alias gap='git add --patch'

@@ -2,6 +2,22 @@
 
 command_timeout = 2000
 
+palette = 'colors'
+
+[palettes.colors]
+mustard = '#af8700'                                  # example
+error = '#E06C75'
+success = '#A6E3A1'
+color1 = '#bccac4'
+color2 = '#27332f'
+color3 = '#c3c8c4'
+color4 = '#1f201f'
+color5 = '#27332f'
+color6 = '#131313'
+color7 = '#131313'
+color8 = '#bccac4'
+color9 = '#dac1bc'
+
 # add_newline = true
 
 [time]
@@ -11,8 +27,8 @@ time_format = '%H:%M'
 
 [character]
 # success_symbol = "[0 ❯](bold green)"
-success_symbol = "[0 ➜](bold green)"
-error_symbol = "[➜](bold red)"
+success_symbol = "[0 ➜](bold success)"
+error_symbol = "[➜](bold error)"
 
 [directory]
 truncation_symbol = '.../'
@@ -43,7 +59,7 @@ disabled = false
 disabled = true
 
 [status]
-format = '[$status]($style) '
+format = '[$status](color1) '
 disabled = false
 
 [aws]

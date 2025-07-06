@@ -13,10 +13,7 @@ M.toggle_diagnostic_icons = function()
     vim.diagnostic.config {
         title = false,
         virtual_text = false,
-        -- virtual_text = {
-        --     prefix = "",
-        -- },
-        -- virtual_lines = true,
+        virtual_lines = false,
         signs = {
             text = {
                 [vim.diagnostic.severity.ERROR] = vim.g.show_line_number and "" or diagnostic_icons.ERROR,

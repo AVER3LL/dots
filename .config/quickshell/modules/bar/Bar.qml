@@ -1,3 +1,5 @@
+import "../../shared"
+
 import Quickshell
 import Quickshell.Io
 import Quickshell.Hyprland
@@ -11,6 +13,7 @@ Scope {
         PanelWindow {
             property var modelData
             screen: modelData
+            color: "transparent"
 
             anchors {
                 top: true
@@ -18,21 +21,37 @@ Scope {
                 right: true
             }
 
-            implicitHeight: 30
+            implicitHeight: 40
 
-            Clock {
-                anchors.centerIn: parent
+            margins {
+                top: 5
+                left: 12
+                right: 12
             }
 
-            Workspaces {
+            Rectangle {
+                id: bar
+                anchors.fill: parent
+                color: Colors.surfaceContainer
+                radius: 5
+                border.color: Colors.outline
+                border.width: 1
 
-                anchors {
-                    left: parent.left
-                    verticalCenter: parent.verticalCenter
-                    leftMargin: 16
+                Clock {
+                    anchors.centerIn: parent
                 }
 
-                spacing: 8
+                Workspaces {
+
+                    anchors {
+                        left: parent.left
+                        verticalCenter: parent.verticalCenter
+                        leftMargin: 16
+                    }
+
+                    // spacing: 8
+                }
+
             }
 
         }

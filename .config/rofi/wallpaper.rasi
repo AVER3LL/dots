@@ -12,7 +12,7 @@ window {
   location: south;
   anchor: south;
   width: 97%;
-  height: 36%;
+  height: 37%;
   border: 0px;
   margin: 0 0 15 0;
 }
