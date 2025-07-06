@@ -152,7 +152,7 @@ generate_caches() {
 }
 
 generate_caches "$IMAGE" "$WALLPAPER_CACHE_DIR" &
-matugen image "$IMAGE" &
+matugen image "$IMAGE" --type=scheme-fidelity &
 wallust run "$IMAGE" &
 
 echo "Wallpaper processing completed!"
