@@ -23,6 +23,7 @@ return {
             local function custom_lnumfunc(args)
                 local highlighted = "Normal"
                 local normal_highlight = "LineNr"
+
                 -- Get total lines in buffer to determine width needed
                 local total_lines = vim.api.nvim_buf_line_count(args.buf)
                 local width = string.len(tostring(total_lines))
@@ -89,19 +90,49 @@ return {
                 -- Format with proper width (right-aligned)
                 local line = string.format("%" .. width .. "d", number_to_show)
 
+                -- Check for diagnostics on this line
+                local diagnostic_hl = nil
+                local is_normal_mode = mode == "n"
+                if vim.g.show_line_number and is_normal_mode then
+                    local diagnostics = vim.diagnostic.get(args.buf, { lnum = lnum - 1 }) -- 0-based indexing
+                    if #diagnostics > 0 then
+                        -- Get the highest severity diagnostic
+                        local highest_severity = vim.diagnostic.severity.HINT
+                        for _, diag in ipairs(diagnostics) do
+                            if diag.severity < highest_severity then
+                                highest_severity = diag.severity
+                            end
+                        end
+
+                        -- Map severity to highlight group
+                        if highest_severity == vim.diagnostic.severity.ERROR then
+                            diagnostic_hl = "LspDiagnosticsLineNrError"
+                        elseif highest_severity == vim.diagnostic.severity.WARN then
+                            diagnostic_hl = "LspDiagnosticsLineNrWarning"
+                        elseif highest_severity == vim.diagnostic.severity.INFO then
+                            diagnostic_hl = "LspDiagnosticsLineNrInfo"
+                        elseif highest_severity == vim.diagnostic.severity.HINT then
+                            diagnostic_hl = "LspDiagnosticsLineNrHint"
+                        end
+                    end
+                end
+
                 -- Apply highlighting based on visual mode and selection
                 if in_visual_mode then
                     if is_in_selection then
                         return hl_str(highlighted, line)
                     else
-                        return hl_str(normal_highlight, line)
+                        -- Use diagnostic highlight if available, otherwise normal
+                        return hl_str(diagnostic_hl or normal_highlight, line)
                     end
                 else
-                    -- Not in visual mode, use normal highlighting
+                    -- Not in visual mode
                     if relnum == 0 then
-                        return hl_str(highlighted, line)
+                        -- Current line - use diagnostic highlight if available, otherwise highlighted
+                        return hl_str(diagnostic_hl or highlighted, line)
                     else
-                        return hl_str(normal_highlight, line)
+                        -- Other lines - use diagnostic highlight if available, otherwise normal
+                        return hl_str(diagnostic_hl or normal_highlight, line)
                     end
                 end
             end
