@@ -47,12 +47,12 @@ return {
                             width = 0.4,
                             min_width = 80,
                             height = 0.7,
-                            border = "single",
+                            border = bt,
                             box = "vertical",
                             {
                                 win = "input",
                                 height = 1,
-                                border = "vpad",
+                                border = "bottom",
                                 title = "{title} {live} {flags}",
                                 title_pos = "center",
                             },
@@ -173,28 +173,12 @@ return {
             {
                 "<leader>ff",
                 function()
-                    local vscode = {
-                        preview = false,
-                        layout = {
-                            backdrop = false,
-                            row = 1,
-                            width = 0.4,
-                            min_width = 80,
-                            height = 0.4,
-                            border = "none",
-                            box = "vertical",
-                            {
-                                win = "input",
-                                height = 1,
-                                border = "rounded",
-                                title = "{title} {live} {flags}",
-                                title_pos = "center",
-                            },
-                            { win = "list", border = "hpad" },
-                            { win = "preview", title = "{preview}", border = "rounded" },
-                        },
+                    Snacks.picker.files {
+                        layout = "vscode",
+                        -- layout = {
+                        --     preset = "select",
+                        -- },
                     }
-                    Snacks.picker.files { layout = "vscode" }
                 end,
                 desc = "Find files",
             },
