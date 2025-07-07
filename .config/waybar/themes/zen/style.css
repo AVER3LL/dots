@@ -1,0 +1,127 @@
+@import '../../colors.css';
+
+* {
+    font-family: 'JetBrainsMono Nerd Font Propo', sans-serif;
+    font-size: 101%;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+window#waybar {
+    background-color: transparent;
+    color: @foreground;
+}
+
+tooltip {
+    border-radius: 10px;
+}
+
+.modules-right {
+    margin-right: 12px;
+}
+
+/* -----------------------------------------------------
+ * Workspaces
+ * ----------------------------------------------------- */
+
+#workspaces {
+    background-color: @surface_container_low;
+    padding: 0px 15px;
+    margin-left: 12px;
+}
+
+#workspaces button {
+    margin: 14px 5px;
+    font-size: 0px;
+    min-width: 14px;
+    min-height: 14px;
+    background: @tertiary_fixed_dim;
+    border-radius: 100%;
+    padding: 0px 00px;
+    transition:
+        color 0.12s ease,
+        background 0.12s ease,
+        border 0.12s ease,
+        min-width 0.1125s ease;
+}
+
+#workspaces button.urgent {
+    background: @error;
+}
+
+#workspaces button.empty {
+    /* background: @empty; */
+    background-color: @outline_variant;
+}
+
+#workspaces button.visible {
+    background-color: @primary_fixed_dim;
+    min-width: 50px;
+    border-radius: 12px;
+    transition: min-width 0.12s ease;
+}
+
+#workspaces button:hover:not(.visible) {
+    background: @tertiary;
+}
+
+#battery,
+#pulseaudio,
+#backlight,
+#custom-pacman,
+#network,
+#clock,
+#custom-weather,
+#custom-media,
+#window,
+#cpu,
+#memory,
+#disk,
+#tray,
+#custom-launcher,
+#custom-notification,
+#idle_inhibitor,
+#custom-rec_status,
+#privacy,
+#power-profiles-daemon {
+    color: @primary;
+    background-color: @surface_container;
+    padding: 10px 15px 10px 15px;
+    margin: 0 0 0 12px;
+}
+
+#custom-pacman {
+    color: @surface_container;
+    background-color: @primary;
+    border: 1px solid @surface_container;
+}
+
+#window.hidden {
+    opacity: 0;
+    min-width: 0;
+    min-height: 0;
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+
+window#waybar.empty #window {
+    background-color: transparent;
+}
+
+/* Battery Indicator */
+@keyframes blink {
+    to {
+        background-color: @surface_container;
+        color: @primary;
+    }
+}
+
+#battery.critical:not(.charging):not(.plugged) {
+    animation: blink 0.5s linear infinite alternate;
+    color: @on_error;
+}
+
+#battery.warning:not(.charging) {
+    color: @error;
+}
