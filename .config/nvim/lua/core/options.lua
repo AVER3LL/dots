@@ -9,7 +9,7 @@ vim.g.show_relative_line_number = true
 --- @type "flat" | "clear"
 vim.g.style = "clear"
 
-require("config.looks").set_border "square"
+require("config.looks").set_border "rounded"
 
 vim.g.enable_signature = true
 

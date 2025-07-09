@@ -1,9 +1,16 @@
 # Replace ls with eza
-alias ls='lsd' # preferred listing
-alias la='ls -a'  # all files and dirs
-alias ll='ls -alFh'  # long format
-alias sl='ls'
-alias l='ls'
+# alias ls='lsd' # preferred listing
+# alias la='ls -a'  # all files and dirs
+# alias ll='ls -alFh'  # long format
+# alias sl='ls'
+# alias l='ls'
+
+alias ls='eza --icons --color=always --group-directories-first'
+alias la='eza -a --icons --color=always --group-directories-first'
+alias ll='eza -alFh --icons --color=always --group-directories-first'
+alias sl='eza --icons --color=always --group-directories-first'
+alias l='eza --icons --color=always --group-directories-first'
+
 
 alias lazy='NVIM_APPNAME=LazyVim nvim'
 alias yayf="yay -Slq | fzf --multi --preview 'yay -Sii {1}' --preview-window=down:75% | xargs -ro yay -S"
@@ -36,7 +43,7 @@ alias cleare='clear'
 alias cler='clear'
 alias clar='clear'
 
-alias i='yay -S'
+alias install='yay -S --needed'
 alias s='yay -Ss'
 
 # git helpers

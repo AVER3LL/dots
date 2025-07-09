@@ -20,16 +20,6 @@ return {
     },
 
     {
-        "baliestri/aura-theme",
-        enabled = false,
-        lazy = false,
-        priority = 1000,
-        config = function(plugin)
-            vim.opt.rtp:append(plugin.dir .. "/packages/neovim")
-        end,
-    },
-
-    {
         "rose-pine/neovim",
         priority = 1000,
         name = "rose-pine",
@@ -86,7 +76,7 @@ return {
         "loctvl842/monokai-pro.nvim",
         lazy = false,
         priority = 1000,
-        opts = { },
+        opts = {},
     },
 
     {

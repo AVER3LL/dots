@@ -8,7 +8,7 @@ import "./modules/onScreenDisplay"
 
 Scope {
   property bool enableBar: true
-  property bool enableOnScreenDisplayVolume: false
+  property bool enableOnScreenDisplayVolume: true
 
   LazyLoader { active: enableBar; component: Bar {} }
   LazyLoader { active: enableOnScreenDisplayVolume; component: OnScreenDisplayVolume {} }

@@ -11,6 +11,7 @@ return {
                 pattern = {
                     "fzf",
                     "lazyterm",
+                    "mason",
                 },
                 command = "call highlighturl#disable_local()",
             })

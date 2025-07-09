@@ -35,7 +35,7 @@ tooltip {
     font-size: 0px;
     min-width: 14px;
     min-height: 14px;
-    background: @tertiary_fixed_dim;
+    background: alpha(@primary_fixed, 0.7);
     border-radius: 100%;
     padding: 0px 00px;
     transition:

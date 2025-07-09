@@ -42,6 +42,15 @@ set fish_cursor_default block
 set fish_cursor_insert block
 set fish_cursor_replace_one underscore
 
+function go_to_sub_dir
+    set -l selection (fd --type d --hidden --exclude .cache --exclude .git --exclude node_modules --exclude .local --exclude go --exclude Qt --exclude Android --exclude .cargo \
+        | fzf --preview 'ls -la {}' --preview-window=right:50%)
+
+    if test -n "$selection"
+        cd "$selection"
+    end
+end
+
 function fish_user_key_bindings
     bind -M insert \e\[3~ delete-char
     bind -M insert \e\[3\;5~ kill-word
@@ -49,6 +58,7 @@ function fish_user_key_bindings
     bind -M insert \e\[1\;5C forward-word
     bind -M insert \e\[1\;5D backward-word
     bind -M insert \cf 'commandline -r "zi"; commandline -f execute'
+    bind -M insert \ce go_to_sub_dir
 end
 
 # Functions for !! and !$ history substitution

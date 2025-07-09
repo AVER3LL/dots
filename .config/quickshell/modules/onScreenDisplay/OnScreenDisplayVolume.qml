@@ -1,4 +1,5 @@
 import "root:/services/"
+import "../../shared"
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
@@ -21,7 +22,7 @@ Scope {
 
     Timer {
         id: osdTimeout
-        interval: 2000
+        interval: 1000
         repeat: false
         running: false
         onTriggered: {
@@ -66,7 +67,27 @@ Scope {
             Rectangle {
                 anchors.fill: parent
                 radius: height / 2
-                color: "#80000000"
+                // color: Colors.surfaceContainer
+                // color: "#80000000"
+                color: "#FF" + Colors.surfaceContainer.toString().slice(1)
+
+                scale: root.showOsdValues ? 1.0 : 0.8
+                opacity: root.showOsdValues ? 1.0 : 0.0
+
+                Behavior on scale {
+                    NumberAnimation {
+                        duration: 200
+                        easing.type: Easing.OutBack
+                        easing.overshoot: 1.2
+                    }
+                }
+
+                Behavior on opacity {
+                    NumberAnimation {
+                        duration: 150
+                        easing.type: Easing.OutQuad
+                    }
+                }
 
                 RowLayout {
                     anchors {
@@ -113,7 +134,7 @@ Scope {
                             // Fixed: Use Audio singleton instead of Pipewire directly
                             implicitWidth: parent.width * (Audio.sink?.audio.volume ?? 0)
                             radius: parent.radius
-                            color: Audio.sink?.audio.muted ? "#ff4444" : "#44ff44"
+                            color: Audio.sink?.audio.muted ? Colors.errorContainer : Colors.primary
                         }
                     }
 
@@ -130,7 +151,7 @@ Scope {
                         text: Audio.ready && Audio.sink?.audio ?
                               Math.round((Audio.sink.audio.volume * 100)) + "%" :
                               "N/A"
-                        color: "white"
+                        color: Colors._onSurface
                         font.pixelSize: 14
                         font.bold: true
                     }
