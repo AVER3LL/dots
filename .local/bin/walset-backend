@@ -2,14 +2,54 @@
 # Wallpaper Manager Script
 # This script sets a wallpaper and creates various cached versions for different uses
 
-# Initialize SET_WALLPAPER flag (default: true)
+# Initialize default values
 SET_WALLPAPER=true
+WALLPAPER_ENGINE="hyprpaper"
+MODE="dark"
 
-# Check if user wants to skip setting wallpaper
-if [ "$1" = "--no-set" ]; then
-    SET_WALLPAPER=false
-    shift # Remove --no-set from arguments
-fi
+# Function to show usage
+show_usage() {
+    echo "Usage: $0 [--no-set] [--mode=<dark|light>] <path-to-image>"
+    echo "Options:"
+    echo "  --no-set         Skip setting the wallpaper"
+    echo "  --mode=<mode>    Set color scheme mode (dark or light, default: dark)"
+    echo "Examples:"
+    echo "  $0 /path/to/image.jpg"
+    echo "  $0 --mode=light /path/to/image.jpg"
+    echo "  $0 --no-set --mode=dark /path/to/image.jpg"
+}
+
+# Parse command line arguments
+while [[ $# -gt 0 ]]; do
+    case $1 in
+    --no-set)
+        SET_WALLPAPER=false
+        shift
+        ;;
+    --mode=*)
+        MODE="${1#*=}"
+        if [[ "$MODE" != "dark" && "$MODE" != "light" ]]; then
+            echo "Error: Invalid mode '$MODE'. Must be 'dark' or 'light'."
+            exit 1
+        fi
+        shift
+        ;;
+    --help | -h)
+        show_usage
+        exit 0
+        ;;
+    -*)
+        echo "Error: Unknown option $1"
+        show_usage
+        exit 1
+        ;;
+    *)
+        # This should be the image path
+        IMAGE="$1"
+        shift
+        ;;
+    esac
+done
 
 # Check if required tools are installed
 check_dependencies() {
@@ -28,16 +68,15 @@ check_dependencies() {
     fi
 }
 
-# Check if the user provided an argument
-if [ "$#" -ne 1 ]; then
-    echo "Usage: $0 [--no-set] <path-to-image>"
+# Check if the user provided an image path
+if [ -z "$IMAGE" ]; then
+    echo "Error: No image path provided."
+    show_usage
     exit 1
 fi
 
 # Run dependency check
 check_dependencies
-
-IMAGE="$1"
 
 # Check if the file exists and is an image
 if [ ! -f "$IMAGE" ]; then
@@ -52,19 +91,21 @@ if ! file "$IMAGE" | grep -qE 'image|bitmap|PNG|JPEG|JPG|GIF|BMP|SVG'; then
 fi
 
 # Send notification to the user
-echo "Changing wallpaper..."
+echo "Changing wallpaper with mode: $MODE"
 
 # Set the wallpaper using swww - this happens first and doesn't wait
 if $SET_WALLPAPER; then
-    # swww img "$IMAGE" --transition-type="left" --transition-duration=2 --transition-step=255 --transition-angle=0 --transition-fps=60 || {
-    #     echo "Error: Failed to set wallpaper with swww."
-    #     exit 1
-    # }
-
-    hyprctl hyprpaper reload ,"$IMAGE" || {
-        echo "Error: Failed to set wallpaper with hyprpaper."
-        exit 1
-    }
+    if [ "$WALLPAPER_ENGINE" = "swww" ]; then
+        swww img "$IMAGE" --transition-type="left" --transition-duration=2 --transition-step=255 --transition-angle=0 --transition-fps=60 || {
+            echo "Error: Failed to set wallpaper with swww."
+            exit 1
+        }
+    else
+        hyprctl hyprpaper reload ,"$IMAGE" || {
+            echo "Error: Failed to set wallpaper with hyprpaper."
+            exit 1
+        }
+    fi
 fi
 
 brightness=$(magick "$IMAGE" -colorspace Gray -resize 1x1\! -format "%[fx:round(255*r)]" info:)
@@ -77,7 +118,6 @@ threshold=130
 if ((brightness > threshold)); then
     # Light background - use primary color for border
     sed -i 's/^\$hyprborder = .*/\$hyprborder = rgba({{colors.primary.default.hex_stripped}}ff)/' ~/.config/matugen/templates/hyprland-colors.conf
-    # sed -i 's/\(@define-color background rgba(21, 18, 27, \)0)/\10.7)/'  ~/.config/waybar/themes/both/colors.css
     sed -i 's/@define-color fg #f6f7fc;/@define-color fg #000000;/' ~/.config/waybar/themes/both/colors.css
 
     sed -i 's/@define-color tray_background rgba(21, 18, 27, 0);/@define-color tray_background rgba(21, 18, 27, 0.7);/' ~/.config/waybar/themes/both/colors.css
@@ -85,7 +125,6 @@ if ((brightness > threshold)); then
 else
     # Dark background - use fixed dark color for border
     sed -i 's/^\$hyprborder = .*/\$hyprborder = rgba(3e4142ff)/' ~/.config/matugen/templates/hyprland-colors.conf
-    # sed -i 's/\(@define-color background rgba(21, 18, 27, \)0\.7)/\10)/' ~/.config/waybar/themes/both/colors.css
     sed -i 's/@define-color fg #000000;/@define-color fg #f6f7fc;/' ~/.config/waybar/themes/both/colors.css
 
     sed -i 's/@define-color tray_background rgba(21, 18, 27, 0.7);/@define-color tray_background rgba(21, 18, 27, 0);/' ~/.config/waybar/themes/both/colors.css
@@ -152,8 +191,8 @@ generate_caches() {
 }
 
 generate_caches "$IMAGE" "$WALLPAPER_CACHE_DIR" &
-matugen image "$IMAGE" --type=scheme-fidelity &
-wallust run "$IMAGE" &
+matugen image "$IMAGE" --type=scheme-fidelity --mode="$MODE" &
+wallust run "$IMAGE" --palette "$MODE" &
 
 echo "Wallpaper processing completed!"
 echo "Cached versions available at: $WALLPAPER_CACHE_DIR"

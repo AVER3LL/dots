@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# Script to toggle between dark and light mode system wide
+
+set -euo pipefail # Exit on error, undefined vars, pipe failures
+
+gnome_schema="org.gnome.desktop.interface"
+config="$HOME/.config/gtk-3.0/settings.ini"
+
+# Check if config file exists
+if [[ ! -f "$config" ]]; then
+    echo "Error: GTK config file not found at $config" >&2
+    exit 1
+fi
+
+# Read current theme preference (0 = light, 1 = dark)
+current_theme=$(grep 'gtk-application-prefer-dark-theme' "$config" | sed 's/.*=\s*//' | tr -d ' ')
+
+# Determine new theme and gsettings values
+if [[ "$current_theme" == "0" ]]; then
+    # Switch to dark mode
+    new_theme="1"
+    gsettings_theme="prefer-dark"
+    walset_mode="dark"
+else
+    # Switch to light mode
+    new_theme="0"
+    gsettings_theme="prefer-light"
+    walset_mode="light"
+fi
+
+# Get current wallpaper
+current_wall="$(readlink ~/.cache/averell/wall.set 2>/dev/null || echo "")"
+
+# Apply GNOME settings
+gsettings set "$gnome_schema" gtk-theme "Adwaita"
+gsettings set "$gnome_schema" color-scheme "$gsettings_theme"
+
+# Apply wallpaper changes if walset-backend exists and wallpaper is set
+if [[ -x ~/.local/bin/walset-backend && -n "$current_wall" ]]; then
+    ~/.local/bin/walset-backend --mode="$walset_mode" "$current_wall"
+fi
+
+# Update the GTK config file
+sed -i "s/^gtk-application-prefer-dark-theme\s*=.*/gtk-application-prefer-dark-theme=$new_theme/" "$config"
+
+echo "Theme switched to $walset_mode mode"
