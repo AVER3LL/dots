@@ -11,6 +11,9 @@
 #define INITIAL_ROFI_INPUT_BUFFER_SIZE (1024 * 10) // Start with 10KB, will realloc
 #define REALLOC_INCREMENT (1024 * 5)              // Increase by 5KB if needed
 
+#define WALLPAPER_THUMBS_DIR "%s/.cache/wallpaper-thumbs"
+#define WALLPAPER_DIR "%s/wallpaper"
+
 // Function to check if a directory exists
 int dir_exists(const char *path) {
     return access(path, F_OK) == 0;
@@ -43,10 +46,10 @@ int main() {
     }
 
     char wall_dir[MAX_PATH];
-    snprintf(wall_dir, sizeof(wall_dir), "%s/wallpaper/", home_dir);
+    snprintf(wall_dir, sizeof(wall_dir), WALLPAPER_DIR, home_dir);
 
     char thumb_dir[MAX_PATH];
-    snprintf(thumb_dir, sizeof(thumb_dir), "%s/.cache/wallpaper-thumbs", home_dir);
+    snprintf(thumb_dir, sizeof(thumb_dir), WALLPAPER_THUMBS_DIR, home_dir);
 
     // Check if wallpaper directory exists
     if (!dir_exists(wall_dir)) {
