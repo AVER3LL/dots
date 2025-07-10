@@ -2,6 +2,7 @@ return {
 
     {
         "nvim-tree/nvim-web-devicons",
+        enabled = false,
         opts = {},
     },
 
@@ -14,52 +15,19 @@ return {
     },
 
     {
-        "kevinhwang91/nvim-hlslens",
-        enabled = false,
-        config = function()
-            require("hlslens").setup()
-
-            local kopts = { noremap = true, silent = true }
-
-            vim.api.nvim_set_keymap(
-                "n",
-                "n",
-                [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]],
-                kopts
-            )
-            vim.api.nvim_set_keymap(
-                "n",
-                "N",
-                [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]],
-                kopts
-            )
-            vim.api.nvim_set_keymap("n", "*", [[*<Cmd>lua require('hlslens').start()<CR>]], kopts)
-            vim.api.nvim_set_keymap("n", "#", [[#<Cmd>lua require('hlslens').start()<CR>]], kopts)
-            vim.api.nvim_set_keymap("n", "g*", [[g*<Cmd>lua require('hlslens').start()<CR>]], kopts)
-            vim.api.nvim_set_keymap("n", "g#", [[g#<Cmd>lua require('hlslens').start()<CR>]], kopts)
+        "echasnovski/mini.icons",
+        opts = {},
+        lazy = true,
+        specs = {
+            { "nvim-tree/nvim-web-devicons", enabled = false, optional = true },
+        },
+        init = function()
+            package.preload["nvim-web-devicons"] = function()
+                require("mini.icons").mock_nvim_web_devicons()
+                return package.loaded["nvim-web-devicons"]
+            end
         end,
     },
-
-    {
-        "sphamba/smear-cursor.nvim",
-        enabled = false,
-        opts = {},
-    },
-
-    -- {
-    --     "echasnovski/mini.icons",
-    --     opts = {},
-    --     lazy = true,
-    --     specs = {
-    --         { "nvim-tree/nvim-web-devicons", enabled = false, optional = true },
-    --     },
-    --     init = function()
-    --         package.preload["nvim-web-devicons"] = function()
-    --             require("mini.icons").mock_nvim_web_devicons()
-    --             return package.loaded["nvim-web-devicons"]
-    --         end
-    --     end,
-    -- },
 
     -- Colored parenthesis
     {

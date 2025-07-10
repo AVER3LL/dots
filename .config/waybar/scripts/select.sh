@@ -13,6 +13,7 @@ declare -A THEME_MAP=(
     ["vertical.png"]="vertical"
     ["bottom.png"]="windows"
     ["zen.png"]="zen"
+    ["both.png"]="both"
 )
 
 # Display menu of available wallpaper images

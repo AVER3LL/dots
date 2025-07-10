@@ -6,7 +6,7 @@ opacity = 1
 # normal = { family = "JetBrainsMono NF" }
 normal = { family = "Maple Mono" }
 size = 15
-offset.y = 14
+offset.y = 8
 
 [general]
 # import = ["~/.config/alacritty/themes/kanagawa_wave.toml"]

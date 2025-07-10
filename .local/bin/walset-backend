@@ -4,8 +4,17 @@
 
 # Initialize default values
 SET_WALLPAPER=true
+
+config="$HOME/.config/gtk-3.0/settings.ini"
+current_theme=$(grep 'gtk-application-prefer-dark-theme' "$config" | sed 's/.*=\s*//' | tr -d ' ')
+
 WALLPAPER_ENGINE="hyprpaper"
 MODE="dark"
+if [[ "$current_theme" == "0" ]]; then
+    MODE="light"
+else
+    MODE="dark"
+fi
 
 # Function to show usage
 show_usage() {

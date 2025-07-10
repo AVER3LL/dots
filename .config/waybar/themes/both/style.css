@@ -80,8 +80,11 @@ tooltip label {
 
 #backlight-slider slider,
 #pulseaudio-slider slider {
-    background-color: transparent;
+    background-color: @primary;
     box-shadow: none;
+    min-width: 2px;
+    min-height: 2px;
+    border-radius: 50%;
 }
 
 #backlight-slider trough,

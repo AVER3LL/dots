@@ -4,7 +4,9 @@
 
 /* @define-color foreground #000000; */
 
-@define-color fg #f6f7fc;
+/* @define-color fg @surface_container; */
+
+@define-color fg #000000;
 
 @define-color slider_through @primary;
 
@@ -22,4 +24,4 @@
 
 @define-color workspace_hover_foreground #cdddf4;
 
-@define-color tray_background rgba(21, 18, 27, 0);
+@define-color tray_background rgba(21, 18, 27, 0.7);

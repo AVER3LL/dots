@@ -49,12 +49,12 @@ autocmd("LspAttach", {
 })
 
 -- make $ part of the keyword for php
-autocmd("FileType", {
-    pattern = "php",
-    callback = function()
-        vim.opt_local.iskeyword:append "$"
-    end,
-})
+-- autocmd("FileType", {
+--     pattern = "php",
+--     callback = function()
+--         vim.opt_local.iskeyword:append "$"
+--     end,
+-- })
 
 -- Don't auto comment new line when pressing o, O or <CR>
 -- autocmd("BufEnter", { command = [[set formatoptions-=cro]] })
@@ -206,17 +206,17 @@ autocmd("ColorScheme", {
     group = augroup "prepare-colors-averell",
     callback = function()
         local colors = {
-            error = gethl(0, { name = "DiagnosticError" }).fg,
-            warn = gethl(0, { name = "DiagnosticWarn" }).fg,
-            info = gethl(0, { name = "DiagnosticInfo" }).fg,
-            hint = gethl(0, { name = "DiagnosticHint" }).fg,
+            error = gethl(0, { name = "DiagnosticError" }).fg or "#E05F6A",
+            warn = gethl(0, { name = "DiagnosticWarn" }).fg or "#E0AF68",
+            info = gethl(0, { name = "DiagnosticInfo" }).fg or "#56B6C2",
+            hint = gethl(0, { name = "DiagnosticHint" }).fg or "#9A9AA1",
 
             background = gethl(0, { name = "Normal" }).bg,
             foreground = gethl(0, { name = "Normal" }).fg,
             comment = gethl(0, { name = "Comment" }).fg,
 
             pmenu = gethl(0, { name = "Pmenu" }).bg,
-            fun = gethl(0, { name = "Function" }).fg,
+            fun = gethl(0, { name = "Function" }).fg or "#375FAD",
             str = gethl(0, { name = "String" }).fg,
 
             parenthesis = (vim.o.background == "dark") and "#39ff14" or "#ff007f",
@@ -316,8 +316,9 @@ autocmd("ColorScheme", {
 
         sethl(0, "FloatTitle", { bg = colors.background })
 
-        sethl(0, "BlinkCmpMenuSelection", { bg = adjust_brightness(colors.fun, 0.4) })
-        -- sethl(0, "BlinkCmpMenuSelection", { bg = colors.fun, fg = colors.background })
+        -- sethl(0, "BlinkCmpMenuSelection", { bg = adjust_brightness(colors.fun, 0.4) })
+        sethl(0, "BlinkCmpMenuSelection", { bg = colors.fun, fg = colors.background })
+
         sethl(0, "LspSignatureActiveParameter", { bg = colors.str, bold = true, fg = colors.background })
 
         sethl(0, "Comment", { fg = "#008c7d", italic = true })

@@ -2,10 +2,11 @@ return {
 
     { -- theme switcher
         "gagbo/circadian.nvim",
+        enabled = false,
         config = function()
             -- local dark_themes = { "tokyonight-night", "moonfly", "gruvbox-material" }
             -- local light_themes = { "palenight", "sonokai", "kanagawa", "monokai-pro-octagon" }
-            local dark_themes = { "gruvbox-material" }
+            local dark_themes = { "everforest" }
             local light_themes = dark_themes
             math.randomseed(os.time())
             local selected_light_theme = light_themes[math.random(#light_themes)]
@@ -14,9 +15,22 @@ return {
                 lat = 6.390192,
                 lon = 2.270412,
                 day = { background = "dark", colorscheme = selected_light_theme },
-                night = { background = "dark", colorscheme = selected_dark_theme },
+                night = { background = "light", colorscheme = selected_dark_theme },
             }
         end,
+    },
+
+    {
+        "nickkadutskyi/jb.nvim",
+        lazy = false,
+        priority = 1000,
+        opts = {
+            snacks = {
+                explorer = {
+                    enabled = true,
+                },
+            },
+        },
     },
 
     {

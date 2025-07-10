@@ -2,7 +2,7 @@
 
 /* Main Colors */
 @define-color background @surface_container;
-@define-color foreground @foreground;
+@define-color foreground @primary;
 @define-color battery-warning-color #ff875a;
 @define-color battery-critical-color #ff4545;
 
@@ -52,7 +52,7 @@ tooltip label {
 }
 
 #workspaces button.persistent {
-    color: alpha(@foreground, 0.1);
+    color: @foreground;
     transition: all 0.1s linear;
 }
 

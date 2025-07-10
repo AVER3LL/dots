@@ -252,6 +252,12 @@ return {
                 end,
             },
             {
+                "<leader>fl",
+                function()
+                    Snacks.picker.lazy()
+                end,
+            },
+            {
                 "<leader>fv",
                 function()
                     Snacks.picker.cliphist()
