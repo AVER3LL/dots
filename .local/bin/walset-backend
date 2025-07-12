@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Wallpaper Manager Script
+# Optimized Wallpaper Manager Script
 # This script sets a wallpaper and creates various cached versions for different uses
 
 # Initialize default values
@@ -60,18 +60,24 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-# Check if required tools are installed
+# Check if required tools are installed (cached check)
 check_dependencies() {
-    # local critical_deps=(swww matugen wallust)
     local critical_deps=(hyprpaper matugen wallust)
     local missing_deps=()
+
+    # Use hash for faster command checking
     for cmd in "${critical_deps[@]}"; do
-        command -v "$cmd" >/dev/null 2>&1 || missing_deps+=("$cmd")
+        hash "$cmd" 2>/dev/null || missing_deps+=("$cmd")
     done
+
+    # Only check for ffmpeg if we're dealing with video files
+    if [[ -n "$IMAGE" ]] && file "$IMAGE" 2>/dev/null | grep -qiE 'MP4|WebM|AVI|MOV|video'; then
+        hash ffmpeg 2>/dev/null || missing_deps+=("ffmpeg")
+    fi
 
     if [ ${#missing_deps[@]} -ne 0 ]; then
         echo "Error: Missing critical dependencies: ${missing_deps[*]}" >&2
-        notify-send "Wallpaper error" "Error: Missing dependencies: ${missing_deps[*]}"
+        notify-send "Wallpaper error" "Error: Missing dependencies: ${missing_deps[*]}" 2>/dev/null || true
         echo "Please install the required tools and try again."
         exit 1
     fi
@@ -84,128 +90,310 @@ if [ -z "$IMAGE" ]; then
     exit 1
 fi
 
-# Run dependency check
-check_dependencies
-
-# Check if the file exists and is an image
+# Check if the file exists first (fastest check)
 if [ ! -f "$IMAGE" ]; then
     echo "Error: '$IMAGE' does not exist."
     exit 1
 fi
 
-# A more robust image check using file command
-if ! file "$IMAGE" | grep -qE 'image|bitmap|PNG|JPEG|JPG|GIF|BMP|SVG'; then
-    echo "Error: '$IMAGE' is not a valid image file."
+# Run dependency check
+check_dependencies
+
+# Get file type once and cache it
+FILE_TYPE=$(file "$IMAGE" 2>/dev/null)
+if [[ -z "$FILE_TYPE" ]]; then
+    echo "Error: Could not determine file type for '$IMAGE'."
     exit 1
 fi
 
-# Send notification to the user
-echo "Changing wallpaper with mode: $MODE"
-
-# Set the wallpaper using swww - this happens first and doesn't wait
-if $SET_WALLPAPER; then
-    if [ "$WALLPAPER_ENGINE" = "swww" ]; then
-        swww img "$IMAGE" --transition-type="left" --transition-duration=2 --transition-step=255 --transition-angle=0 --transition-fps=60 || {
-            echo "Error: Failed to set wallpaper with swww."
-            exit 1
-        }
-    else
-        hyprctl hyprpaper reload ,"$IMAGE" || {
-            echo "Error: Failed to set wallpaper with hyprpaper."
-            exit 1
-        }
-    fi
+# A more robust image/video check using cached file command
+if ! echo "$FILE_TYPE" | grep -qE 'image|bitmap|PNG|JPEG|JPG|GIF|BMP|SVG|video|MP4|WebM|AVI|MOV'; then
+    echo "Error: '$IMAGE' is not a valid image or video file."
+    exit 1
 fi
 
-brightness=$(magick "$IMAGE" -colorspace Gray -resize 1x1\! -format "%[fx:round(255*r)]" info:)
-if [ -z "$brightness" ] || ! [[ "$brightness" =~ ^[0-9]+$ ]]; then
-    echo "Warning: Could not calculate brightness, defaulting to dark theme"
-    brightness=100 # Default to below threshold (dark)
-fi
-threshold=130
-
-if ((brightness > threshold)); then
-    # Light background - use primary color for border
-    sed -i 's/^\$hyprborder = .*/\$hyprborder = rgba({{colors.primary.default.hex_stripped}}ff)/' ~/.config/matugen/templates/hyprland-colors.conf
-    sed -i 's/@define-color fg #f6f7fc;/@define-color fg #000000;/' ~/.config/waybar/themes/both/colors.css
-
-    sed -i 's/@define-color tray_background rgba(21, 18, 27, 0);/@define-color tray_background rgba(21, 18, 27, 0.7);/' ~/.config/waybar/themes/both/colors.css
-
-else
-    # Dark background - use fixed dark color for border
-    sed -i 's/^\$hyprborder = .*/\$hyprborder = rgba(3e4142ff)/' ~/.config/matugen/templates/hyprland-colors.conf
-    sed -i 's/@define-color fg #000000;/@define-color fg #f6f7fc;/' ~/.config/waybar/themes/both/colors.css
-
-    sed -i 's/@define-color tray_background rgba(21, 18, 27, 0.7);/@define-color tray_background rgba(21, 18, 27, 0);/' ~/.config/waybar/themes/both/colors.css
+# Check specifically for animated formats (GIF, MP4, WebM, etc.)
+IS_ANIMATED=false
+if echo "$FILE_TYPE" | grep -qiE 'GIF image data|MP4|WebM|AVI|MOV|video'; then
+    WALLPAPER_ENGINE="swww"
+    IS_ANIMATED=true
 fi
 
 # Define cache directory and files
 WALLPAPER_CACHE_DIR="$HOME/.cache/averell/"
 wallSet="${WALLPAPER_CACHE_DIR}/original.set"
 wallCur="${WALLPAPER_CACHE_DIR}/wall.set"
-wallSqr="${WALLPAPER_CACHE_DIR}/wall.sqre" # Square crop of the wallpaper
-wallTmb="${WALLPAPER_CACHE_DIR}/wall.thmb" # Thumbnail version
-wallBlr="${WALLPAPER_CACHE_DIR}/wall.blur" # Blurred version for backgrounds
+wallStatic="${WALLPAPER_CACHE_DIR}/wall.static" # Static version for hyprpaper
+wallSqr="${WALLPAPER_CACHE_DIR}/wall.sqre"      # Square crop of the wallpaper
+wallTmb="${WALLPAPER_CACHE_DIR}/wall.thmb"      # Thumbnail version
+wallBlr="${WALLPAPER_CACHE_DIR}/wall.blur"      # Blurred version for backgrounds
 wallQad="${WALLPAPER_CACHE_DIR}/wall.quad"
 
 # Ensure cache directory exists
 mkdir -p "$WALLPAPER_CACHE_DIR"
 
 # Save original image path
-ln -sf "$IMAGE" "$wallCur" &       # Background link creation
-printf '%s\n' "$IMAGE" >"$wallSet" # More efficient than echo
+printf '%s\n' "$IMAGE" >"$wallSet"
 
-# Create a function for the background processing
+# Create static version for hyprpaper (always PNG) - optimized
+create_static_version() {
+    if $IS_ANIMATED; then
+        echo "Creating static version from animated file..."
+        if echo "$FILE_TYPE" | grep -qi 'GIF image data'; then
+            # For GIF, extract first frame
+            if hash magick 2>/dev/null; then
+                magick "$IMAGE[0]" -strip -quality 85 "$wallStatic" || {
+                    echo "Error: Failed to create static version from GIF."
+                    return 1
+                }
+            else
+                echo "Error: ImageMagick is required for GIF processing."
+                return 1
+            fi
+        else
+            # For video files, use optimized ffmpeg settings
+            if hash ffmpeg 2>/dev/null; then
+                # Use single optimized command with proper error handling
+                if ! ffmpeg -hide_banner -loglevel error -ss 1 -i "$IMAGE" -vframes 1 -q:v 2 -y "$wallStatic" 2>/dev/null; then
+                    if ! ffmpeg -hide_banner -loglevel error -i "$IMAGE" -vframes 1 -q:v 2 -y "$wallStatic" 2>/dev/null; then
+                        echo "Error: Failed to create static version from video file."
+                        return 1
+                    fi
+                fi
+            else
+                echo "Error: ffmpeg is required for video file processing."
+                return 1
+            fi
+        fi
+        ln -sf "$IMAGE" "$wallCur" # Link to original animated file for swww
+    else
+        # For static images, both links point to the same file
+        ln -sf "$IMAGE" "$wallCur"
+        ln -sf "$IMAGE" "$wallStatic"
+    fi
+}
+
+# Create static version
+create_static_version || exit 1
+
+# Verify that the static version was created successfully
+if [ ! -f "$wallStatic" ]; then
+    echo "Error: Failed to create static version of the wallpaper."
+    exit 1
+fi
+
+# Calculate brightness for theme adjustments (optimized)
+calculate_brightness() {
+    local brightness
+    if hash magick 2>/dev/null; then
+        brightness=$(magick "$wallStatic" -colorspace Gray -resize 1x1\! -format "%[fx:round(255*r)]" info: 2>/dev/null)
+        if [[ -z "$brightness" ]] || ! [[ "$brightness" =~ ^[0-9]+$ ]]; then
+            echo "Warning: Could not calculate brightness, defaulting to dark theme" >&2
+            brightness=100 # Default to below threshold (dark)
+        fi
+    else
+        echo "Warning: ImageMagick not available for brightness calculation" >&2
+        brightness=100
+    fi
+    echo "$brightness"
+}
+
+brightness=$(calculate_brightness)
+threshold=130
+
+# Apply theme adjustments
+apply_theme_adjustments() {
+    local config_files=(
+        "$HOME/.config/matugen/templates/hyprland-colors.conf"
+        "$HOME/.config/waybar/themes/both/colors.css"
+    )
+
+    if ((brightness > threshold)); then
+        # Light background - use primary color for border
+        if [[ -f "${config_files[0]}" ]]; then
+            sed -i 's/^\$hyprborder = .*/\$hyprborder = rgba({{colors.primary.default.hex_stripped}}ff)/' "${config_files[0]}"
+        fi
+        if [[ -f "${config_files[1]}" ]]; then
+            sed -i 's/@define-color fg #f6f7fc;/@define-color fg #000000;/' "${config_files[1]}"
+            sed -i 's/@define-color tray_background rgba(21, 18, 27, 0);/@define-color tray_background rgba(21, 18, 27, 0.7);/' "${config_files[1]}"
+        fi
+    else
+        # Dark background - use fixed dark color for border
+        if [[ -f "${config_files[0]}" ]]; then
+            sed -i 's/^\$hyprborder = .*/\$hyprborder = rgba(3e4142ff)/' "${config_files[0]}"
+        fi
+        if [[ -f "${config_files[1]}" ]]; then
+            sed -i 's/@define-color fg #000000;/@define-color fg #f6f7fc;/' "${config_files[1]}"
+            sed -i 's/@define-color tray_background rgba(21, 18, 27, 0.7);/@define-color tray_background rgba(21, 18, 27, 0);/' "${config_files[1]}"
+        fi
+    fi
+}
+
+apply_theme_adjustments
+
+# Send notification to the user
+echo "Changing wallpaper with mode: $MODE (Engine: $WALLPAPER_ENGINE)"
+
+# Optimized wallpaper setting function
+set_wallpaper() {
+    if ! $SET_WALLPAPER; then
+        return 0
+    fi
+
+    if [ "$WALLPAPER_ENGINE" = "swww" ]; then
+        # Check if hyprpaper is running and stop it first
+        if pgrep -x hyprpaper >/dev/null 2>&1; then
+            echo "Stopping hyprpaper..."
+            pkill hyprpaper
+            sleep 0.3 # Reduced wait time
+        fi
+
+        # Check if swww-daemon is running
+        if ! pgrep -x swww-daemon >/dev/null 2>&1; then
+            echo "Starting swww-daemon..."
+            swww-daemon --format xrgb >/dev/null 2>&1 &
+
+            # Wait for swww-daemon to be ready (optimized)
+            local attempts=0
+            while [ $attempts -lt 15 ]; do
+                if swww query >/dev/null 2>&1; then
+                    break
+                fi
+                sleep 0.2
+                attempts=$((attempts + 1))
+            done
+
+            if [ $attempts -eq 15 ]; then
+                echo "Warning: swww-daemon initialization timeout"
+            fi
+        fi
+
+        echo "Setting wallpaper with swww..."
+        swww img "$IMAGE" --transition-type="left" --transition-duration=1 --transition-step=255 --transition-fps=60 >/dev/null 2>&1 || {
+            echo "Error: Failed to set wallpaper with swww."
+            return 1
+        }
+
+    else
+        # Stop swww-daemon if running
+        if pgrep -x swww-daemon >/dev/null 2>&1; then
+            echo "Stopping swww..."
+            swww kill >/dev/null 2>&1
+            sleep 0.3 # Reduced wait time
+        fi
+
+        # Check if hyprpaper is running
+        if ! pgrep -x hyprpaper >/dev/null 2>&1; then
+            echo "Starting hyprpaper..."
+            hyprpaper >/dev/null 2>&1 &
+
+            # Wait for hyprpaper to be ready (optimized)
+            local attempts=0
+            while [ $attempts -lt 15 ]; do
+                if hyprctl hyprpaper listactive >/dev/null 2>&1; then
+                    break
+                fi
+                sleep 0.2
+                attempts=$((attempts + 1))
+            done
+
+            if [ $attempts -eq 15 ]; then
+                echo "Warning: hyprpaper initialization timeout"
+            fi
+        fi
+
+        echo "Setting wallpaper with hyprpaper..."
+        hyprctl hyprpaper reload ,"$wallStatic" >/dev/null 2>&1 || {
+            echo "Error: Failed to set wallpaper with hyprpaper."
+            return 1
+        }
+    fi
+}
+
+# Set wallpaper
+set_wallpaper || exit 1
+
+# Optimized background cache generation function
 generate_caches() {
     local image="$1"
     local cache_dir="$2"
-
-    local extension="${image##*.}"
-    local extension_lc="$(echo "$extension" | tr '[:upper:]' '[:lower:]')"
     local cache_src="$image"
     local temp_frame=""
 
-    mkdir -p "$cache_dir"
+    # Skip if all cache files already exist and are newer than source
+    if [[ -f "$wallSqr" && -f "$wallTmb" && -f "$wallBlr" && -f "$wallQad" ]]; then
+        if [[ "$wallSqr" -nt "$image" && "$wallTmb" -nt "$image" && "$wallBlr" -nt "$image" && "$wallQad" -nt "$image" ]]; then
+            echo "Cache files are up to date, skipping generation."
+            return 0
+        fi
+    fi
 
-    # If it's a gif, extract first frame
-    if [ "$extension_lc" = "gif" ]; then
+    # Handle animated files
+    if $IS_ANIMATED; then
         temp_frame="${cache_dir}/wall.firstframe.png"
-        magick "$image[0]" "$temp_frame" || {
-            echo "Warning: Failed to extract first frame from GIF."
-        }
+        if echo "$FILE_TYPE" | grep -qi 'GIF image data'; then
+            if hash magick 2>/dev/null; then
+                magick "$image[0]" -strip "$temp_frame" >/dev/null 2>&1 || {
+                    echo "Warning: Failed to extract first frame from GIF."
+                    return 1
+                }
+            else
+                echo "Warning: ImageMagick not available for GIF processing."
+                return 1
+            fi
+        else
+            if hash ffmpeg 2>/dev/null; then
+                ffmpeg -hide_banner -loglevel error -ss 1 -i "$image" -vframes 1 -q:v 2 -y "$temp_frame" 2>/dev/null || {
+                    echo "Warning: Failed to extract first frame from video."
+                    return 1
+                }
+            else
+                echo "Warning: ffmpeg not available for video processing."
+                return 1
+            fi
+        fi
         cache_src="$temp_frame"
     fi
 
-    echo "Processing all outputs in one pass..."
+    echo "Generating optimized cache files..."
 
-    magick "$cache_src" \
-        -strip \
-        \( +clone -thumbnail 500x500^ -gravity center -extent 500x500 -write "$wallSqr" +delete \) \
-        \( +clone -thumbnail 320x180^ -gravity center -extent 320x180 -write "$wallTmb" +delete \) \
-        \( +clone -resize 1920x1080^ -gravity center -extent 1920x1080 -blur 0x8 -write "$wallBlr" +delete \) \
-        null: >/dev/null || echo "Warning: Failed to generate images."
+    # Use optimized ImageMagick processing with reduced quality for speed
+    if hash magick 2>/dev/null; then
+        magick "$cache_src" -strip -quality 85 \
+            \( +clone -thumbnail 500x500^ -gravity center -extent 500x500 -write "$wallSqr" +delete \) \
+            \( +clone -thumbnail 320x180^ -gravity center -extent 320x180 -write "$wallTmb" +delete \) \
+            \( +clone -resize 1920x1080^ -gravity center -extent 1920x1080 -blur 0x6 -write "$wallBlr" +delete \) \
+            null: >/dev/null 2>&1 || {
+            echo "Warning: Failed to generate cache images."
+            return 1
+        }
 
-    # Generate quad from square version
-    if [ -f "$wallSqr" ]; then
-        echo "Generating quad version..."
-        magick "$wallSqr" \
-            \( -size 500x500 xc:white \
-            -fill "rgba(0,0,0,0.7)" -draw "polygon 400,500 500,500 500,0 450,0" \
-            -fill black -draw "polygon 500,500 500,0 450,500" \) \
-            -alpha Off -compose CopyOpacity -composite "$wallQad" ||
-            echo "Warning: Failed to create quad version."
+        # Generate quad from square version (simplified)
+        if [[ -f "$wallSqr" ]]; then
+            magick "$wallSqr" \
+                \( +clone -fill "rgba(0,0,0,0.6)" -draw "polygon 400,500 500,500 500,0 450,0" \) \
+                -composite "$wallQad" >/dev/null 2>&1 || {
+                echo "Warning: Failed to create quad version."
+            }
+        fi
+    else
+        echo "Warning: ImageMagick not available for cache generation."
+        return 1
     fi
 
-    [ -n "$temp_frame" ] && rm -f "$temp_frame"
+    [[ -n "$temp_frame" ]] && rm -f "$temp_frame"
+    return 0
 }
 
-generate_caches "$IMAGE" "$WALLPAPER_CACHE_DIR" &
-matugen image "$IMAGE" --type=scheme-fidelity --mode="$MODE" &
-wallust run "$IMAGE" --palette "$MODE" &
+# Start background processes with proper error handling
+{
+    generate_caches "$IMAGE" "$WALLPAPER_CACHE_DIR"
+    matugen image "$wallStatic" --type=scheme-fidelity --mode="$MODE" >/dev/null 2>&1
+    wallust run "$wallStatic" --palette "$MODE" >/dev/null 2>&1
+} &
 
-echo "Wallpaper processing completed!"
-echo "Cached versions available at: $WALLPAPER_CACHE_DIR"
+echo "Wallpaper set successfully!"
+echo "Cache generation continuing in background..."
+echo "Cached versions will be available at: $WALLPAPER_CACHE_DIR"
 
-# Exit immediately, letting the background processes continue
-echo "Wallpaper set. Additional processing continuing in background."
 exit 0

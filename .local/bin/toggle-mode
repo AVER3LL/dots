@@ -14,7 +14,7 @@ else
     prefer_dark="0"; prefer="prefer-light"; mode="light"; icon="Papirus-Light"
 fi
 
-gsettings set "$gnome_schema" gtk-theme "adw-gtk3" &
+# gsettings set "$gnome_schema" gtk-theme "adw-gtk3" &
 gsettings set "$gnome_schema" color-scheme "$prefer" &
 gsettings set "$gnome_schema" icon-theme "$icon" &
 wait

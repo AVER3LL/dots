@@ -1,5 +1,5 @@
 #!/bin/bash
-# Wallpaper Thumbnail Generator
+# Wallpaper Thumbnail Generator with Video Support
 # Run this script to pre-generate all thumbnails for fast wallpaper selection
 
 # Configuration
@@ -9,6 +9,7 @@ THUMB_WIDTH=300
 THUMB_HEIGHT=300
 CONCURRENT_JOBS=8 # Adjust based on your CPU cores
 QUALITY=75        # JPEG quality for thumbnails
+VIDEO_SEEK_TIME=5 # Seek to 5 seconds into video for thumbnail (avoids black frames)
 
 # Colors for output
 RED='\033[0;31m'
@@ -36,8 +37,34 @@ if ! command -v convert &>/dev/null; then
     exit 1
 fi
 
-# Function to generate thumbnail
-generate_thumbnail() {
+# Check if FFmpeg is installed
+if ! command -v ffmpeg &>/dev/null; then
+    echo -e "${RED}Error: FFmpeg is not installed.${NC}"
+    echo "Install it with: sudo apt install ffmpeg"
+    exit 1
+fi
+
+# Function to detect file type
+get_file_type() {
+    local file="$1"
+    local ext="${file##*.}"
+    ext="${ext,,}" # Convert to lowercase
+
+    case "$ext" in
+    jpg | jpeg | png | gif | webp | bmp | tiff | tga)
+        echo "image"
+        ;;
+    mp4 | avi | mkv | mov | wmv | flv | webm | m4v | 3gp | ogv | mpg | mpeg | ts | m2ts | mts)
+        echo "video"
+        ;;
+    *)
+        echo "unknown"
+        ;;
+    esac
+}
+
+# Function to generate thumbnail from image
+generate_image_thumbnail() {
     local source_file="$1"
     local thumb_file="$2"
     local temp_file="${thumb_file}.tmp"
@@ -62,6 +89,58 @@ generate_thumbnail() {
     fi
 }
 
+# Function to generate thumbnail from video
+generate_video_thumbnail() {
+    local source_file="$1"
+    local thumb_file="$2"
+    local temp_file="${thumb_file}.tmp"
+
+    # First, get video duration to ensure we don't seek past the end
+    local duration
+    duration=$(ffprobe -v quiet -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "$source_file" 2>/dev/null)
+
+    # If we can't get duration or it's shorter than our seek time, use 0
+    local seek_time=$VIDEO_SEEK_TIME
+    if [[ -z "$duration" ]] || (($(echo "$duration < $seek_time" | bc -l 2>/dev/null || echo "1"))); then
+        seek_time=0
+    fi
+
+    # Generate thumbnail from video frame
+    if ffmpeg -y -ss "$seek_time" -i "$source_file" \
+        -vframes 1 \
+        -vf "scale=${THUMB_WIDTH}:${THUMB_HEIGHT}:force_original_aspect_ratio=increase,crop=${THUMB_WIDTH}:${THUMB_HEIGHT}" \
+        -q:v 2 \
+        "$temp_file" 2>/dev/null; then
+
+        # Atomic move to prevent corruption
+        mv "$temp_file" "$thumb_file"
+        return 0
+    else
+        # Clean up failed temp file
+        rm -f "$temp_file"
+        return 1
+    fi
+}
+
+# Function to generate thumbnail (dispatches to appropriate function)
+generate_thumbnail() {
+    local source_file="$1"
+    local thumb_file="$2"
+    local file_type="$3"
+
+    case "$file_type" in
+    image)
+        generate_image_thumbnail "$source_file" "$thumb_file"
+        ;;
+    video)
+        generate_video_thumbnail "$source_file" "$thumb_file"
+        ;;
+    *)
+        return 1
+        ;;
+    esac
+}
+
 # Function to process a batch of files
 process_batch() {
     local -n batch_files=$1
@@ -74,11 +153,13 @@ process_batch() {
     local failed_count=0
 
     for file_info in "${batch_files[@]}"; do
-        IFS='|' read -r source_file thumb_file relative_path <<<"$file_info"
+        IFS='|' read -r source_file thumb_file relative_path file_type <<<"$file_info"
 
-        if generate_thumbnail "$source_file" "$thumb_file"; then
+        if generate_thumbnail "$source_file" "$thumb_file" "$file_type"; then
             ((success_count++))
-            echo -e "${GREEN}✓${NC} $(basename "$relative_path")"
+            local type_icon="🖼️"
+            [[ "$file_type" == "video" ]] && type_icon="🎬"
+            echo -e "${GREEN}✓${NC} $type_icon $(basename "$relative_path")"
         else
             ((failed_count++))
             echo -e "${RED}✗${NC} Failed: $(basename "$relative_path")"
@@ -96,23 +177,28 @@ get_safe_filename() {
 }
 
 # Main execution
-echo -e "${BLUE}=== Wallpaper Thumbnail Generator ===${NC}"
+echo -e "${BLUE}=== Wallpaper Thumbnail Generator with Video Support ===${NC}"
 echo "Wallpaper directory: $WALL_DIR"
 echo "Thumbnail directory: $THUMB_DIR"
 echo "Thumbnail size: ${THUMB_WIDTH}x${THUMB_HEIGHT}"
 echo "Concurrent jobs: $CONCURRENT_JOBS"
+echo "Video seek time: ${VIDEO_SEEK_TIME}s"
 echo
 
-# Find all image files
-echo -e "${YELLOW}Scanning for image files...${NC}"
+# Find all image and video files
+echo -e "${YELLOW}Scanning for image and video files...${NC}"
 IFS=$'\n'
-mapfile -t all_files < <(find "$WALL_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.gif" -o -iname "*.webp" -o -iname "*.bmp" -o -iname "*.tiff" -o -iname "*.tga" \) 2>/dev/null)
+mapfile -t all_files < <(find "$WALL_DIR" -type f \( \
+    -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.gif" -o -iname "*.webp" -o -iname "*.bmp" -o -iname "*.tiff" -o -iname "*.tga" \
+    -o -iname "*.mp4" -o -iname "*.avi" -o -iname "*.mkv" -o -iname "*.mov" -o -iname "*.wmv" -o -iname "*.flv" -o -iname "*.webm" -o -iname "*.m4v" \
+    -o -iname "*.3gp" -o -iname "*.ogv" -o -iname "*.mpg" -o -iname "*.mpeg" -o -iname "*.ts" -o -iname "*.m2ts" -o -iname "*.mts" \
+    \) 2>/dev/null)
 
 total_files=${#all_files[@]}
-echo -e "${YELLOW}Found $total_files image files${NC}"
+echo -e "${YELLOW}Found $total_files media files${NC}"
 
 if [ $total_files -eq 0 ]; then
-    echo -e "${RED}No image files found in $WALL_DIR${NC}"
+    echo -e "${RED}No media files found in $WALL_DIR${NC}"
     exit 1
 fi
 
@@ -121,10 +207,26 @@ echo -e "${YELLOW}Checking existing thumbnails...${NC}"
 files_to_process=()
 existing_thumbs=0
 updated_files=0
+image_count=0
+video_count=0
 
 for file in "${all_files[@]}"; do
     # Get relative path from wallpaper directory
     relative_path="${file#$WALL_DIR}"
+
+    # Detect file type
+    file_type=$(get_file_type "$file")
+
+    if [ "$file_type" == "unknown" ]; then
+        continue
+    fi
+
+    # Count file types
+    if [ "$file_type" == "image" ]; then
+        ((image_count++))
+    elif [ "$file_type" == "video" ]; then
+        ((video_count++))
+    fi
 
     # Create safe filename for thumbnail
     safe_name=$(get_safe_filename "$relative_path")
@@ -132,9 +234,9 @@ for file in "${all_files[@]}"; do
 
     # Check if thumbnail needs to be generated/updated
     if [ ! -f "$thumb_file" ]; then
-        files_to_process+=("$file|$thumb_file|$relative_path")
+        files_to_process+=("$file|$thumb_file|$relative_path|$file_type")
     elif [ "$file" -nt "$thumb_file" ]; then
-        files_to_process+=("$file|$thumb_file|$relative_path")
+        files_to_process+=("$file|$thumb_file|$relative_path|$file_type")
         ((updated_files++))
     else
         ((existing_thumbs++))
@@ -143,6 +245,7 @@ done
 
 files_to_generate=${#files_to_process[@]}
 
+echo -e "${GREEN}Found: $image_count images, $video_count videos${NC}"
 echo -e "${GREEN}Existing thumbnails: $existing_thumbs${NC}"
 echo -e "${YELLOW}Files to update: $updated_files${NC}"
 echo -e "${BLUE}New thumbnails needed: $((files_to_generate - updated_files))${NC}"
@@ -153,8 +256,17 @@ if [ $files_to_generate -eq 0 ]; then
     exit 0
 fi
 
-# Estimate processing time (rough estimate: 0.5 seconds per thumbnail)
-estimated_time=$((files_to_generate / 2))
+# Estimate processing time (rough estimate: 0.5s per image, 2s per video)
+estimated_time=0
+for file_info in "${files_to_process[@]}"; do
+    IFS='|' read -r source_file thumb_file relative_path file_type <<<"$file_info"
+    if [ "$file_type" == "video" ]; then
+        estimated_time=$((estimated_time + 2))
+    else
+        estimated_time=$((estimated_time + 1))
+    fi
+done
+
 if [ $estimated_time -gt 60 ]; then
     echo -e "${YELLOW}Estimated processing time: $((estimated_time / 60)) minutes${NC}"
 else
@@ -162,7 +274,7 @@ else
 fi
 
 # Ask for confirmation for large batches
-if [ $files_to_generate -gt 1000 ]; then
+if [ $files_to_generate -gt 500 ]; then
     echo
     read -p "Process $files_to_generate thumbnails? This may take a while. [y/N]: " -n 1 -r
     echo
@@ -177,7 +289,7 @@ echo -e "${BLUE}Starting thumbnail generation...${NC}"
 start_time=$(date +%s)
 
 # Process files in batches to manage memory and provide progress updates
-batch_size=$((CONCURRENT_JOBS * 10)) # Process in larger batches for better efficiency
+batch_size=$((CONCURRENT_JOBS * 5)) # Smaller batches for videos
 total_batches=$(((files_to_generate + batch_size - 1) / batch_size))
 current_batch=1
 
@@ -219,4 +331,6 @@ echo -e "${YELLOW}Tips:${NC}"
 echo "• Run this script periodically to update thumbnails for new wallpapers"
 echo "• Add to crontab for automatic updates: crontab -e"
 echo "• Example cron job (daily at 3 AM): 0 3 * * * $0 >/dev/null 2>&1"
+echo "• Video thumbnails are extracted from ${VIDEO_SEEK_TIME}s into the video"
 echo "• Your wallpaper selector will now be lightning fast!"
+echo "• Supports: Images (JPG, PNG, GIF, WebP, BMP, TIFF, TGA) and Videos (MP4, AVI, MKV, MOV, etc.)"
