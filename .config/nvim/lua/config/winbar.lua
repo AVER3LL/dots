@@ -379,6 +379,24 @@ function M.update_winbar(is_active)
     vim.wo.winbar = string.rep(" ", padding) .. final_content
 end
 
+-- Function to update all windows displaying the same buffer
+local function update_all_windows_for_buffer(bufnr)
+    local current_win = api.nvim_get_current_win()
+
+    for _, win in ipairs(api.nvim_list_wins()) do
+        if api.nvim_win_is_valid(win) and api.nvim_win_get_buf(win) == bufnr then
+            local is_current = win == current_win
+            api.nvim_win_call(win, function()
+                if not should_ignore_buffer() and not is_window_too_small() and not is_popup_or_floating_window() then
+                    M.update_winbar(is_current)
+                else
+                    vim.wo.winbar = ""
+                end
+            end)
+        end
+    end
+end
+
 -- Set up highlight groups
 local function set_highlights()
     local sethl = api.nvim_set_hl
@@ -387,7 +405,7 @@ local function set_highlights()
     -- Get diagnostic colors with fallbacks
     local colors = {
         error = gethl(0, { name = "DiagnosticError" }).fg or "#FF6B6B",
-        warn = gethl(0, { name = "DiagnosticWarn" }).fg or "#FFD93D",
+        warn = gethl(0, { name = "DiagnosticWarn" }).fg or "#E0AF68",
         info = gethl(0, { name = "DiagnosticInfo" }).fg or "#6BCF7F",
         hint = gethl(0, { name = "DiagnosticHint" }).fg or "#A8A8A8",
 
@@ -460,6 +478,17 @@ function M.setup(user_config)
         end,
     })
 
+    -- Special handling for DiagnosticChanged to update all windows with the same buffer
+    autocmd("DiagnosticChanged", {
+        group = group,
+        callback = function(args)
+            local bufnr = args.buf
+            if bufnr and api.nvim_buf_is_valid(bufnr) then
+                update_all_windows_for_buffer(bufnr)
+            end
+        end,
+    })
+
     -- Debounced updates for frequent events
     autocmd({ "TextChanged", "InsertEnter", "InsertLeave" }, {
         group = group,
@@ -472,13 +501,12 @@ function M.setup(user_config)
         end,
     })
 
-    -- Immediate updates for other events
+    -- Immediate updates for other events (excluding DiagnosticChanged which is handled separately)
     autocmd({
         "BufEnter",
         "BufFilePost",
         "BufWinEnter",
         "BufWritePost",
-        "DiagnosticChanged",
         "VimResized",
         "WinEnter",
         "WinResized",

@@ -316,7 +316,7 @@ autocmd("ColorScheme", {
         sethl(0, "MultiCursorDisabledSign", { link = "SignColumn" })
 
         sethl(0, "GitSignsCurrentLineBlame", { fg = adjust_brightness(colors.foreground, 0.7) })
-        sethl(0, "Usage", { fg = adjust_brightness(colors.foreground, 0.5) })
+        sethl(0, "Usage", { fg = adjust_brightness(colors.foreground, 0.55) })
         sethl(0, "SnacksPickerDir", { fg = adjust_brightness(colors.foreground, 0.6) })
 
         sethl(0, "FloatTitle", { bg = colors.background })

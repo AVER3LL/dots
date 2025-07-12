@@ -9,8 +9,8 @@ return {
         ft = "lua", -- only load on lua files
         opts = {
             library = {
-                -- { path = "${3rd}/luv/library", words = { "vim%.uv" } },
-                -- { path = "luvit-meta/library", words = { "vim%.uv" } },
+                { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+                { path = "luvit-meta/library", words = { "vim%.uv" } },
                 { path = "snacks.nvim", words = { "Snacks" } },
             },
         },
@@ -22,7 +22,7 @@ return {
         dependencies = {
             cmp_plugin,
             -- { "antosha417/nvim-lsp-file-operations", opts = {} },
-            -- { "Bilal2453/luvit-meta", lazy = true },
+            { "Bilal2453/luvit-meta", lazy = true },
         },
         config = function()
             local on_init = require("config.lsp-requirements").on_init

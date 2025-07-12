@@ -29,25 +29,6 @@ map("n", "<S-tab>", ":bprevious<CR>", { desc = "Go to previous buffer" })
 map("v", "<", "<gv")
 map("v", ">", ">gv")
 
-M.bufferlin = function()
-    -- Go to next or last buffer
-    map("n", "<tab>", ":BufferLineCycleNex<CR>", { desc = "Go to next buffer" })
-    map("n", "<S-tab>", ":BufferLineCyclePre<CR>", { desc = "Go to previous buffer" })
-
-    map("n", "<leader>b", "<cmd>BufferLinePic<CR>", { desc = "Pick buffer" })
-
-    -- Re-order to previous/next
-    map("n", "<leader>gp", ":BufferLineMovePrev<CR>", { silent = true })
-    map("n", "<leader>gn", ":BufferLineMoveNext<CR>", { silent = true })
-    -- map("n", "<leader>cba", "<cmd>BufferLineCloseOthers<CR>", {
-    --     desc = "Close all buffers but the current one",
-    -- })
-
-    map("n", "&", "<cmd>BufferLineGoToBuffer 1<cr>")
-    map("n", "é", "<cmd>BufferLineGoToBuffer 2<cr>")
-    map("n", '"', "<cmd>BufferLineGoToBuffer 3<cr>")
-end
-
 M.debugger = function()
     map("n", "<leader>db", "<cmd>lua require'dap'.toggle_breakpoint()<CR>", { desc = "Toggle breakpoint" })
     map("n", "<leader>dc", "<cmd>lua require'dap'.continue()<CR>", { desc = "Continue" })
