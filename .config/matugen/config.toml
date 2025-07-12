@@ -47,6 +47,11 @@ input_path = '~/.config/matugen/templates/colors.css'
 output_path = '~/.config/swaync/colors.css'
 post_hook = 'pkill swaync; swaync >/dev/null 2>&1 & disown'
 
+[templates.swayosd]
+input_path = '~/.config/matugen/templates/colors.css'
+output_path = '~/.config/swayosd/colors.css'
+post_hook = 'killall swayosd-server; swayosd-server >/dev/null 2>&1 & disown'
+
 [templates.alacritty]
 input_path = '~/.config/matugen/templates/alacritty.toml'
 output_path = '~/.config/alacritty/colors.toml'

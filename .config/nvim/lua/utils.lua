@@ -65,7 +65,7 @@ end
 
 --- @param mode string | table
 --- @param lhs string
---- @param rhs string | fun()
+--- @param rhs string | fun(): string?
 --- @param opts? table
 M.map = function(mode, lhs, rhs, opts)
     opts = opts or {}

@@ -7,7 +7,7 @@ return {
 
             if symbol.references then
                 local usage = symbol.references == 1 and "reference" or "references"
-                table.insert(res, { ("󰌹  %s %s"):format(symbol.references, usage), "LspCodeLens" })
+                table.insert(res, { ("󰌹  %s %s"):format(symbol.references, usage), "Usage" })
             end
 
             return res

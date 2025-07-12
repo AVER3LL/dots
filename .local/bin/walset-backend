@@ -70,11 +70,6 @@ check_dependencies() {
         hash "$cmd" 2>/dev/null || missing_deps+=("$cmd")
     done
 
-    # Only check for ffmpeg if we're dealing with video files
-    if [[ -n "$IMAGE" ]] && file "$IMAGE" 2>/dev/null | grep -qiE 'MP4|WebM|AVI|MOV|video'; then
-        hash ffmpeg 2>/dev/null || missing_deps+=("ffmpeg")
-    fi
-
     if [ ${#missing_deps[@]} -ne 0 ]; then
         echo "Error: Missing critical dependencies: ${missing_deps[*]}" >&2
         notify-send "Wallpaper error" "Error: Missing dependencies: ${missing_deps[*]}" 2>/dev/null || true
@@ -106,15 +101,15 @@ if [[ -z "$FILE_TYPE" ]]; then
     exit 1
 fi
 
-# A more robust image/video check using cached file command
-if ! echo "$FILE_TYPE" | grep -qE 'image|bitmap|PNG|JPEG|JPG|GIF|BMP|SVG|video|MP4|WebM|AVI|MOV'; then
-    echo "Error: '$IMAGE' is not a valid image or video file."
+# A more robust image check using cached file command
+if ! echo "$FILE_TYPE" | grep -qE 'image|bitmap|PNG|JPEG|JPG|GIF|BMP|SVG'; then
+    echo "Error: '$IMAGE' is not a valid image file."
     exit 1
 fi
 
-# Check specifically for animated formats (GIF, MP4, WebM, etc.)
+# Check specifically for GIF format
 IS_ANIMATED=false
-if echo "$FILE_TYPE" | grep -qiE 'GIF image data|MP4|WebM|AVI|MOV|video'; then
+if echo "$FILE_TYPE" | grep -qi 'GIF image data'; then
     WALLPAPER_ENGINE="swww"
     IS_ANIMATED=true
 fi
@@ -138,34 +133,18 @@ printf '%s\n' "$IMAGE" >"$wallSet"
 # Create static version for hyprpaper (always PNG) - optimized
 create_static_version() {
     if $IS_ANIMATED; then
-        echo "Creating static version from animated file..."
-        if echo "$FILE_TYPE" | grep -qi 'GIF image data'; then
-            # For GIF, extract first frame
-            if hash magick 2>/dev/null; then
-                magick "$IMAGE[0]" -strip -quality 85 "$wallStatic" || {
-                    echo "Error: Failed to create static version from GIF."
-                    return 1
-                }
-            else
-                echo "Error: ImageMagick is required for GIF processing."
+        echo "Creating static version from GIF..."
+        # For GIF, extract first frame
+        if hash magick 2>/dev/null; then
+            magick "$IMAGE[0]" -strip -quality 85 "$wallStatic" || {
+                echo "Error: Failed to create static version from GIF."
                 return 1
-            fi
+            }
         else
-            # For video files, use optimized ffmpeg settings
-            if hash ffmpeg 2>/dev/null; then
-                # Use single optimized command with proper error handling
-                if ! ffmpeg -hide_banner -loglevel error -ss 1 -i "$IMAGE" -vframes 1 -q:v 2 -y "$wallStatic" 2>/dev/null; then
-                    if ! ffmpeg -hide_banner -loglevel error -i "$IMAGE" -vframes 1 -q:v 2 -y "$wallStatic" 2>/dev/null; then
-                        echo "Error: Failed to create static version from video file."
-                        return 1
-                    fi
-                fi
-            else
-                echo "Error: ffmpeg is required for video file processing."
-                return 1
-            fi
+            echo "Error: ImageMagick is required for GIF processing."
+            return 1
         fi
-        ln -sf "$IMAGE" "$wallCur" # Link to original animated file for swww
+        ln -sf "$IMAGE" "$wallCur" # Link to original GIF file for swww
     else
         # For static images, both links point to the same file
         ln -sf "$IMAGE" "$wallCur"
@@ -328,29 +307,17 @@ generate_caches() {
         fi
     fi
 
-    # Handle animated files
+    # Handle animated GIFs
     if $IS_ANIMATED; then
         temp_frame="${cache_dir}/wall.firstframe.png"
-        if echo "$FILE_TYPE" | grep -qi 'GIF image data'; then
-            if hash magick 2>/dev/null; then
-                magick "$image[0]" -strip "$temp_frame" >/dev/null 2>&1 || {
-                    echo "Warning: Failed to extract first frame from GIF."
-                    return 1
-                }
-            else
-                echo "Warning: ImageMagick not available for GIF processing."
+        if hash magick 2>/dev/null; then
+            magick "$image[0]" -strip "$temp_frame" >/dev/null 2>&1 || {
+                echo "Warning: Failed to extract first frame from GIF."
                 return 1
-            fi
+            }
         else
-            if hash ffmpeg 2>/dev/null; then
-                ffmpeg -hide_banner -loglevel error -ss 1 -i "$image" -vframes 1 -q:v 2 -y "$temp_frame" 2>/dev/null || {
-                    echo "Warning: Failed to extract first frame from video."
-                    return 1
-                }
-            else
-                echo "Warning: ffmpeg not available for video processing."
-                return 1
-            fi
+            echo "Warning: ImageMagick not available for GIF processing."
+            return 1
         fi
         cache_src="$temp_frame"
     fi

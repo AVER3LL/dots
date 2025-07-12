@@ -96,12 +96,11 @@ map("n", "<leader>tl", function()
 
     -- Handle monokai-pro variants
     if string.match(vim.g.colors_name or "", "^monokai%-pro") then
-        if vim.g.colors_name == "monokai-pro-light" then
-            vim.cmd "colorscheme monokai-pro-octagon"
+        if vim.o.background == "light" then
+            vim.cmd.colorscheme "monokai-pro-spectrum"
         else
-            vim.cmd "colorscheme monokai-pro-light"
+            vim.cmd.colorscheme "monokai-pro-light"
         end
-        return
     end
 
     -- Default light/dark toggle behavior

@@ -91,7 +91,14 @@ return {
         "loctvl842/monokai-pro.nvim",
         lazy = false,
         priority = 1000,
-        opts = {},
+        opts = {
+            filter = "spectrum",
+            day_night = {
+                enable = false, -- turn off by default
+                day_filter = "pro", -- classic | octagon | pro | machine | ristretto | spectrum
+                night_filter = "spectrum", -- classic | octagon | pro | machine | ristretto | spectrum
+            },
+        },
     },
 
     {
