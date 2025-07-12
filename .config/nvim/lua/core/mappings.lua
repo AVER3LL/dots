@@ -231,11 +231,6 @@ map("n", "<A-l>", "dawwP", { desc = "Move word right" })
 map("v", "<A-h>", "<Left>dvhP`[v`]", { desc = "Move selection left" })
 map("v", "<A-l>", "<Right>dp`[v`]", { desc = "Move selection right" })
 
--- Formatting
-map({ "n", "v" }, "<leader>fm", function()
-    require("conform").format { async = true, lsp_format = "fallback" }
-end, { desc = "Format files" })
-
 -- File Tree
 map("n", "<C-n>", "<cmd>NvimTreeToggle<CR>", { desc = "Nvimtree toggle window" })
 map("n", "<leader>e", "<cmd>NvimTreeFocus<CR>", { desc = "Nvimtree focus window" })
@@ -269,10 +264,6 @@ map("n", "<leader>e", "<cmd>NvimTreeFocus<CR>", { desc = "Nvimtree focus window"
 -- map("n", "<leader>fk", "<cmd>Telescope keymaps<CR>", { desc = "Telescope find keymaps" })
 -- map("n", "<leader>th", "<cmd>Telescope colorscheme<CR>", { desc = "Telescope colorscheme" })
 -- map("n", "<leader>fy", ":Yazi toggle<cr>", { desc = "Open yazi" })
-
--- Session Management
-map("n", "<leader>ws", "<cmd>SessionSave<CR>", { desc = "Save session" })
-map("n", "<leader>wr", "<cmd>SessionRestore<CR>", { desc = "Restore session" })
 
 local terminal = require "floaterminal"
 map("n", toggle_terminal_mapping, function()

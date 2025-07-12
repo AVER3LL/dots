@@ -112,7 +112,7 @@ return {
             notifier = { enabled = true },
             quickfile = { enabled = true },
             dashboard = {
-                enabled = false,
+                enabled = true,
                 sections = {
                     { section = "header" },
                     -- {

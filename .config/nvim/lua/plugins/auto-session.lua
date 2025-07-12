@@ -1,6 +1,9 @@
 return {
     {
         "rmagatti/auto-session",
+        keys = {
+            { "<leader>wr", "<cmd>SessionRestore<CR>", desc = "Session search" },
+        },
         config = function()
             local auto_session = require "auto-session"
 

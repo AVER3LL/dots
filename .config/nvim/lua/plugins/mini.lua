@@ -9,4 +9,11 @@ return {
         "echasnovski/mini.trailspace",
         opts = {},
     },
+
+    {
+        "echasnovski/mini.sessions",
+        enabled = false,
+        opts = {},
+        version = "*",
+    },
 }

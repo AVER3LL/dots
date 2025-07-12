@@ -5,7 +5,7 @@ return {
         "lukas-reineke/indent-blankline.nvim",
         enabled = true,
         event = "VeryLazy",
-        dependencies = "tpope/vim-sleuth",
+        -- dependencies = "tpope/vim-sleuth",
         main = "ibl",
         keys = {
             {
@@ -15,6 +15,8 @@ return {
                 desc = "Toggle indent lines",
             },
         },
+        ---@module "ibl"
+        ---@type ibl.config
         opts = {
             exclude = {
                 filetypes = {

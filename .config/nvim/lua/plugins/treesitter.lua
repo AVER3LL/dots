@@ -1,4 +1,10 @@
 return {
+    {
+        "nvim-treesitter/nvim-treesitter-context",
+        enabled = false,
+        opts = {},
+    },
+
     -- Syntax highlighting
     {
         "nvim-treesitter/nvim-treesitter",
@@ -23,20 +29,6 @@ return {
         },
         config = function()
             local treesitter = require "nvim-treesitter.configs"
-
-            -- Attempt to fix blade syntax highlighting being broken
-            -- local parsers = require("nvim-treesitter.parsers").get_parser_configs()
-            -- vim.print(parsers.php)
-            -- parsers.php = {
-            --     install_info = {
-            --         url = "https://github.com/tree-sitter/tree-sitter-php",
-            --         files = { "src/parser.c", "src/scanner.c" },
-            --         location = "php",
-            --         branch = "master",
-            --         revision = "f3a19ab3217a6e838870fc7142fa492d1fd7a7c9",
-            --     },
-            --     filetype = "php",
-            -- }
 
             -- configure treesitter
             treesitter.setup {

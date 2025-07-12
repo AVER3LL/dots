@@ -4,6 +4,7 @@ local symbol_map = require("icons").symbol_kinds
 return {
     {
         "saghen/blink.cmp",
+        event = "VimEnter",
         enabled = vim.g.use_blink,
         dependencies = { "rafamadriz/friendly-snippets" },
         version = "*",

@@ -35,6 +35,7 @@ return {
 
     {
         "rose-pine/neovim",
+        enabled = false,
         priority = 1000,
         name = "rose-pine",
         opts = {
@@ -136,6 +137,7 @@ return {
 
     {
         "sponkurtus2/angelic.nvim",
+        enabled = false,
         lazy = false,
         priority = 1000,
         opts = {},
@@ -143,6 +145,7 @@ return {
 
     { -- poimandres
         "olivercederborg/poimandres.nvim",
+        enabled = false,
         lazy = false,
         priority = 1000,
         opts = {

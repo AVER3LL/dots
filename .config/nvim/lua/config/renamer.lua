@@ -1,5 +1,6 @@
 local lsp = vim.lsp
 local api = vim.api
+local bt = require("config.looks").border_type()
 
 local function get_text_at_range(range, position_encoding)
     return api.nvim_buf_get_text(
@@ -60,7 +61,7 @@ return function()
         local winopts = {
             height = 1,
             style = "minimal",
-            border = "single",
+            border = bt,
             row = 1,
             col = 1,
             relative = "cursor",

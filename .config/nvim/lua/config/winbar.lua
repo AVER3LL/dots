@@ -46,6 +46,7 @@ M.config = {
         "notify",
         "toggleterm",
         "lazyterm",
+        "snacks_dashboard",
         "TelescopePrompt",
         "TelescopeResults",
         "telescope",

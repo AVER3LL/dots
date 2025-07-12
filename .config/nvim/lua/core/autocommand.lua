@@ -297,12 +297,15 @@ autocmd("ColorScheme", {
             sethl(0, "LspInfoBorder", { bg = colors.background })
             sethl(0, "NormalFloat", { bg = colors.background })
             sethl(0, "FloatBorder", { fg = adjust_brightness(colors.foreground, 0.5), bg = colors.background })
+            -- sethl(0, "@spell.markdown", { fg = adjust_brightness(colors.foreground, 0.5), bg = colors.background })
         end
 
         sethl(0, "WinBar", { bg = colors.background })
         sethl(0, "WinBarNC", { bg = colors.background })
         sethl(0, "StatusLine", { bg = colors.background })
         sethl(0, "StatusLineNC", { bg = colors.background })
+
+        sethl(0, "@markup.raw.block.markdown", { bg = "NONE" })
 
         sethl(0, "MultiCursorCursor", { reverse = true })
         sethl(0, "MultiCursorVisual", { link = "Visual" })
@@ -317,7 +320,7 @@ autocmd("ColorScheme", {
         sethl(0, "FloatTitle", { bg = colors.background })
 
         -- sethl(0, "BlinkCmpMenuSelection", { bg = adjust_brightness(colors.fun, 0.4) })
-        sethl(0, "BlinkCmpMenuSelection", { bg = colors.fun, fg = colors.background })
+        sethl(0, "BlinkCmpMenuSelection", { bg = colors.fun, fg = colors.background, bold = true })
 
         sethl(0, "LspSignatureActiveParameter", { bg = colors.str, bold = true, fg = colors.background })
 
