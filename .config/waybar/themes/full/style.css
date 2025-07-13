@@ -17,7 +17,7 @@
 
 /* Window Styling */
 window#waybar {
-    background: @background;
+    background-color: @background;
     border-radius: 5px;
     color: @foreground;
     border-color: #3E4142;

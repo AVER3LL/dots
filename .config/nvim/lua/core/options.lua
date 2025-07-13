@@ -1,62 +1,65 @@
--- Plugin Settings
-vim.g.codeium_disable_bindings = 1
-vim.g.codeium_enabled = true
-vim.g.fold_indicator = true
+local o, g, opt = vim.o, vim.g, vim.opt
 
-vim.g.show_line_number = false
-vim.g.show_relative_line_number = true
+-- Plugin Settings
+g.codeium_disable_bindings = 1
+g.codeium_enabled = true
+
+g.fold_indicator = true
+
+g.show_line_number = false
+g.show_relative_line_number = true
 
 --- @type "flat" | "clear"
-vim.g.style = "clear"
+g.style = "clear"
 
 require("config.looks").set_border "square"
 
-vim.g.enable_signature = true
+g.enable_signature = true
 
-vim.g.show_indent = false
-vim.g.use_blink = true
-vim.g.markdown_recommended_style = 0
+g.show_indent = false
+g.use_blink = true
+g.markdown_recommended_style = 0
 
-vim.o.conceallevel = 2
+o.conceallevel = 2
 
 -- Enable the mouse
-vim.o.mouse = "a"
+o.mouse = "a"
 
 -- Disable horizontal scrolling
-vim.o.mousescroll = "ver:3,hor:0"
-vim.o.cmdheight = 0
+o.mousescroll = "ver:3,hor:0"
+o.cmdheight = 0
 
 -- Core UI and Appearance
-vim.opt.background = "dark"
-vim.opt.termguicolors = true
-vim.opt.cursorline = true
-vim.opt.cursorlineopt = "number"
-vim.opt.signcolumn = "yes"
-vim.opt.laststatus = 0
--- vim.opt.statusline = " %f %m %= %l:%c ♥ "
-vim.opt.statusline = " %<%f %h%m%r %= %y [%{&fileformat}] %l:%c %P ♥ "
-vim.opt.showmode = false
--- vim.opt.colorcolumn = { 81, 121 }
+opt.background = "dark"
+o.termguicolors = true
+o.cursorline = true
+o.cursorlineopt = "number"
+o.signcolumn = "yes"
+o.laststatus = 0
+-- opt.statusline = " %f %m %= %l:%c ♥ "
+o.statusline = " %<%f %h%m%r %= %y [%{&fileformat}] %l:%c %P ♥ "
+o.showmode = false
+-- opt.colorcolumn = { 81, 121 }
 
 -- Line Numbers
-vim.opt.number = vim.g.show_line_number
-vim.opt.relativenumber = vim.g.show_line_number and vim.g.show_relative_line_number
-vim.opt.numberwidth = 2
-vim.opt.ruler = false
+o.number = g.show_line_number
+o.relativenumber = g.show_line_number and g.show_relative_line_number
+o.numberwidth = 2
+o.ruler = false
 
 -- Special Characters and Formatting
-vim.opt.list = true
-vim.opt.jumpoptions = "view"
-vim.opt.listchars = {
+o.list = true
+o.jumpoptions = "view"
+opt.listchars = {
     nbsp = "⦸",
     tab = "  ",
     extends = "»",
     precedes = "«",
     trail = "·",
-    -- eol = "↴", -- ⏎, ¬, ↴
+    eol = "↴", -- ⏎, ¬, ↴
 }
-vim.opt.showbreak = "↳ " -- Cool character on line wrap
-vim.opt.fillchars = {
+o.showbreak = "↳ " -- Cool character on line wrap
+opt.fillchars = {
     eob = " ", -- Suppress ~ at EndOfBuffer
     fold = " ", -- Hide trailing folding characters
     diff = "╱",
@@ -66,20 +69,20 @@ vim.opt.fillchars = {
 }
 
 -- Indentation and Formatting
-vim.opt.tabstop = 4
-vim.opt.shiftwidth = 4
-vim.opt.softtabstop = 4
-vim.opt.expandtab = true
-vim.opt.smarttab = true
+o.tabstop = 4
+o.shiftwidth = 4
+o.softtabstop = 4
+o.expandtab = true
+o.smarttab = true
 
-vim.opt.copyindent = true
-vim.opt.smartindent = true
-vim.opt.autoindent = true
+o.copyindent = true
+o.smartindent = true
+o.autoindent = true
 
-vim.opt.wrap = true
-vim.opt.linebreak = true
-vim.opt.breakindent = true
-vim.opt.formatoptions = table.concat {
+o.wrap = true
+o.linebreak = true
+o.breakindent = true
+opt.formatoptions = table.concat {
     "2", -- Use the second line's indent vale when indenting (allows indented first line)
     "q", -- Formatting comments with gq
     "w", -- Trailing whitespace indicates a paragraph
@@ -89,49 +92,49 @@ vim.opt.formatoptions = table.concat {
 }
 
 -- Search
-vim.opt.ignorecase = true
-vim.opt.smartcase = true
-vim.opt.inccommand = "nosplit" -- preview incremental substitute
+o.ignorecase = true
+o.smartcase = true
+o.inccommand = "nosplit" -- preview incremental substitute
 
 -- Split and Window Behavior
-vim.opt.splitright = true
-vim.opt.splitbelow = true
-vim.opt.scrolloff = 10
-vim.opt.sidescrolloff = 8
-vim.opt.backspace = "indent,eol,start"
+o.splitright = true
+o.splitbelow = true
+o.scrolloff = 10
+o.sidescrolloff = 8
+o.backspace = "indent,eol,start"
 
 -- Performance and Updates
-vim.opt.updatetime = 250
-vim.opt.timeoutlen = 300
-vim.opt.ttimeoutlen = 10
+o.updatetime = 250
+o.timeoutlen = 300
+o.ttimeoutlen = 10
 
 -- History and Persistence
-vim.opt.undofile = true
-vim.opt.undolevels = 1000
-vim.opt.undoreload = 10000
-vim.opt.shada = { "!", "'1000", "<50", "s10", "h" }
-vim.opt.confirm = true
+o.undofile = true
+o.undolevels = 1000
+o.undoreload = 10000
+opt.shada = { "!", "'1000", "<50", "s10", "h" }
+o.confirm = true
 
 -- Folding (Treesitter)
-vim.opt.foldcolumn = vim.g.show_line_number and "1" or "0"
-vim.opt.foldlevel = 99
-vim.opt.foldlevelstart = 99
-vim.opt.foldenable = true
-vim.opt.foldtext = ""
+o.foldcolumn = g.show_line_number and "1" or "0"
+o.foldlevel = 99
+o.foldlevelstart = 99
+o.foldenable = true
+o.foldtext = ""
 
 -- Session Management
-vim.opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 
 -- Netrw Configuration
 vim.cmd "let g:netrw_liststyle = 3"
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
+g.loaded_netrw = 1
+g.loaded_netrwPlugin = 1
 
 -- Disable Default Providers
-vim.g.loaded_node_provider = 0
-vim.g.loaded_python3_provider = 0
-vim.g.loaded_perl_provider = 0
-vim.g.loaded_ruby_provider = 0
+g.loaded_node_provider = 0
+g.loaded_python3_provider = 0
+g.loaded_perl_provider = 0
+g.loaded_ruby_provider = 0
 
 -- UI Polish
-vim.opt.shortmess:append "sI"
+opt.shortmess:append "sI"

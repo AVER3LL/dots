@@ -100,6 +100,7 @@ return {
                         local highest_severity = vim.diagnostic.severity.HINT
                         for _, diag in ipairs(diagnostics) do
                             if diag.severity < highest_severity then
+                                ---@diagnostic disable-next-line: cast-local-type
                                 highest_severity = diag.severity
                             end
                         end
@@ -159,9 +160,12 @@ return {
                 -- override the default list of segments with:
                 -- number-less fold indicator, then signs, then line number & separator
                 segments = {
+                    -- Space only when line numbers are hidden
+                    -- so the icons do not stick to the terminal left side
                     {
                         text = { " " },
                         condition = {
+                            -- not vim.g.show_line_number
                             function(args)
                                 local is_num = vim.wo[args.win].number
                                 local is_relnum = vim.wo[args.win].relativenumber
@@ -170,6 +174,7 @@ return {
                             end,
                         },
                     },
+                    -- Other plugin signs like todo-comments
                     {
                         sign = {
                             name = { ".*" },
@@ -179,6 +184,7 @@ return {
                         },
                         click = "v:lua.ScSa",
                     },
+                    -- Line numbers when wanted
                     {
                         text = { custom_lnumfunc },
                         condition = {
@@ -191,7 +197,7 @@ return {
                         },
                         click = "v:lua.ScLa",
                     },
-                    -- Space between line numbers and buffer
+                    -- Space between line numbers and gitsign
                     {
                         -- text = { " │" },
                         text = { " " },
@@ -205,6 +211,7 @@ return {
                             end,
                         },
                     },
+                    -- Gitsign
                     {
                         sign = {
                             namespace = { "gitsigns" },
@@ -217,6 +224,15 @@ return {
                         },
                         condition = { true, builtin.not_empty },
                         click = "v:lua.ScSa",
+                    },
+                    -- Space only when line numbers are shown
+                    {
+                        text = { " " },
+                        condition = {
+                            function(args)
+                                return vim.wo[args.win].number
+                            end,
+                        },
                     },
                 },
             }

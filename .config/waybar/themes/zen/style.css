@@ -9,6 +9,7 @@
 
 window#waybar {
     background-color: transparent;
+    /* background-color: @surface_container; */
     color: @foreground;
 }
 

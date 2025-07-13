@@ -7,6 +7,7 @@ end
 
 set -x VISUAL nvim
 set -x EDITOR $VISUAL
+set -x BROWSER firefox
 
 # Disable fish greeting
 set -U fish_greeting

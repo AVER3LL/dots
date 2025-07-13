@@ -299,14 +299,6 @@ generate_caches() {
     local cache_src="$image"
     local temp_frame=""
 
-    # Skip if all cache files already exist and are newer than source
-    if [[ -f "$wallSqr" && -f "$wallTmb" && -f "$wallBlr" && -f "$wallQad" ]]; then
-        if [[ "$wallSqr" -nt "$image" && "$wallTmb" -nt "$image" && "$wallBlr" -nt "$image" && "$wallQad" -nt "$image" ]]; then
-            echo "Cache files are up to date, skipping generation."
-            return 0
-        fi
-    fi
-
     # Handle animated GIFs
     if $IS_ANIMATED; then
         temp_frame="${cache_dir}/wall.firstframe.png"

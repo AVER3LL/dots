@@ -7,7 +7,7 @@
 
 alias ls='eza --icons --color=always --group-directories-first'
 alias la='eza -a --icons --color=always --group-directories-first'
-alias ll='eza -alFh --icons --color=always --group-directories-first'
+alias ll='eza -alfh --icons --color=always --group-directories-first'
 alias sl='eza --icons --color=always --group-directories-first'
 alias l='eza --icons --color=always --group-directories-first'
 

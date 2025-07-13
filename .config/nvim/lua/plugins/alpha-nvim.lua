@@ -4,7 +4,7 @@ return {
     -- Greeter
     {
         "goolord/alpha-nvim",
-        enabled = false,
+        enabled = true,
         priority = 900,
         event = "VimEnter",
         config = function()
