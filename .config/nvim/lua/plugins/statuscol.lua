@@ -92,6 +92,7 @@ return {
 
                 -- Check for diagnostics on this line
                 local diagnostic_hl = nil
+                local cursor_diagnostic_hl = nil
                 local is_normal_mode = mode == "n"
                 if vim.g.show_line_number and is_normal_mode then
                     local diagnostics = vim.diagnostic.get(args.buf, { lnum = lnum - 1 }) -- 0-based indexing
@@ -108,15 +109,22 @@ return {
                         -- Map severity to highlight group
                         if highest_severity == vim.diagnostic.severity.ERROR then
                             diagnostic_hl = "LspDiagnosticsLineNrError"
+                            cursor_diagnostic_hl = "LspCursorLineNrError"
                         elseif highest_severity == vim.diagnostic.severity.WARN then
                             diagnostic_hl = "LspDiagnosticsLineNrWarning"
+                            cursor_diagnostic_hl = "LspCursorLineNrWarning"
                         elseif highest_severity == vim.diagnostic.severity.INFO then
                             diagnostic_hl = "LspDiagnosticsLineNrInfo"
+                            cursor_diagnostic_hl = "LspCursorLineNrInformation"
                         elseif highest_severity == vim.diagnostic.severity.HINT then
                             diagnostic_hl = "LspDiagnosticsLineNrHint"
+                            cursor_diagnostic_hl = "LspCursorLineNrHint"
                         end
                     end
                 end
+
+                -- Check if we should use CursorLineNr for current line
+                local use_cursorline_nr = vim.o.cursorlineopt == "both"
 
                 -- Apply highlighting based on visual mode and selection
                 if in_visual_mode then
@@ -129,8 +137,14 @@ return {
                 else
                     -- Not in visual mode
                     if relnum == 0 then
-                        -- Current line - use diagnostic highlight if available, otherwise highlighted
-                        return hl_str(diagnostic_hl or highlighted, line)
+                        -- Current line - use cursor diagnostic highlight if available and cursorlineopt is "both",
+                        -- otherwise use CursorLineNr if cursorlineopt is "both",
+                        -- otherwise use diagnostic highlight if available, otherwise highlighted
+                        if use_cursorline_nr then
+                            return hl_str(cursor_diagnostic_hl or "CursorLineNr", line)
+                        else
+                            return hl_str(diagnostic_hl or highlighted, line)
+                        end
                     else
                         -- Other lines - use diagnostic highlight if available, otherwise normal
                         return hl_str(diagnostic_hl or normal_highlight, line)

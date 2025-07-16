@@ -215,12 +215,19 @@ autocmd("ColorScheme", {
             foreground = gethl(0, { name = "Normal" }).fg,
             comment = gethl(0, { name = "Comment" }).fg,
 
+            cursorline = gethl(0, { name = "CursorLineNr" }).bg,
+
             pmenu = gethl(0, { name = "Pmenu" }).bg,
             fun = gethl(0, { name = "Function" }).fg or "#375FAD",
             str = gethl(0, { name = "String" }).fg,
 
             parenthesis = (vim.o.background == "dark") and "#39ff14" or "#ff007f",
         }
+
+        sethl(0, "LspCursorLineNrError", { bg = colors.cursorline, fg = colors.error })
+        sethl(0, "LspCursorLineNrWarning", { bg = colors.cursorline, fg = colors.warn })
+        sethl(0, "LspCursorLineNrInformation", { bg = colors.cursorline, fg = colors.info })
+        sethl(0, "LspCursorLineNrHint", { bg = colors.cursorline, fg = colors.hint })
 
         -- Highlight line numbers with diagnostics
         sethl(0, "LspDiagnosticsLineNrError", { fg = colors.error })
@@ -333,13 +340,15 @@ autocmd("ColorScheme", {
         sethl(0, "MatchParen", { bg = "NONE", fg = colors.parenthesis })
 
         -- Remove background color from line numbers
-        sethl(0, "CursorLineNr", { bg = "NONE" })
-        sethl(0, "CursorLineSign", { bg = "NONE" })
-        sethl(0, "CursorLineFold", { bg = "NONE" })
-        sethl(0, "FoldColumn", { bg = "NONE", fg = colors.comment })
-        sethl(0, "SignColumn", { bg = "NONE" })
-        sethl(0, "ColorColumn", { bg = "NONE" })
-        sethl(0, "CursorColumn", { bg = "NONE" })
+        if vim.o.cursorlineopt == "number" then
+            sethl(0, "CursorLineNr", { bg = "NONE" })
+            sethl(0, "CursorLineSign", { bg = "NONE" })
+            sethl(0, "CursorLineFold", { bg = "NONE" })
+            sethl(0, "FoldColumn", { bg = "NONE", fg = colors.comment })
+            sethl(0, "SignColumn", { bg = "NONE" })
+            sethl(0, "ColorColumn", { bg = "NONE" })
+            sethl(0, "CursorColumn", { bg = "NONE" })
+        end
 
         -- treesitter highlights
         sethl(0, "@lsp.type.class", { link = "Structure" })

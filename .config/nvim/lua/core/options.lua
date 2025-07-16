@@ -33,7 +33,7 @@ o.cmdheight = 0
 opt.background = "dark"
 o.termguicolors = true
 o.cursorline = true
-o.cursorlineopt = "number"
+o.cursorlineopt = "both"
 o.signcolumn = "yes"
 o.laststatus = 0
 -- opt.statusline = " %f %m %= %l:%c ♥ "
