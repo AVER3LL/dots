@@ -1,4 +1,4 @@
-local map = require("utils").map
+local map = tools.map
 
 map("n", "<leader>fe", ":FlutterEmulators<CR>", { desc = "Flutter show emulators" })
 map("n", "<leader>fd", ":FlutterDevices<CR>", { desc = "Flutter show devices" })

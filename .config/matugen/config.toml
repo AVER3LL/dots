@@ -1,5 +1,14 @@
 [config]
 
+[config.custom_colors]
+red = { color = "#ff0000", blend = true }
+green = { color = "#00ff00", blend = true }
+yellow = { color = "#ffff00", blend = true }
+blue = { color = "#0000ff", blend = true }
+magenta = { color = "#ff00ff", blend = true }
+cyan = { color = "#00ffff", blend = true }
+white = { color = "#ffffff", blend = true }
+
 [templates.waybar]
 input_path = '~/.config/matugen/templates/colors.css'
 output_path = '~/.config/waybar/colors.css'
@@ -10,6 +19,11 @@ input_path = '~/.config/matugen/templates/hyprland-colors.conf'
 output_path = '~/.config/hypr/colors.conf'
 post_hook = 'hyprctl reload ; ~/.config/hypr/scripts/checkbattery.sh & disown'
 
+[templates.kitty]
+input_path = '~/.config/matugen/templates/kitty-colors.conf'
+output_path = '~/.config/kitty/theme/colors-matugen.conf'
+# post_hook = 'pkill -SIGUSR1 kitty'
+
 [templates.quickshell]
 input_path = '~/.config/matugen/templates/quickshell-colors.qml'
 output_path = '~/.config/quickshell/shared/Colors.qml'
@@ -18,10 +32,6 @@ output_path = '~/.config/quickshell/shared/Colors.qml'
 input_path = '~/.config/matugen/templates/rofi-colors.rasi'
 output_path = '~/.config/rofi/material-colors.rasi'
 
-[templates.kitty]
-input_path = '~/.config/matugen/templates/kitty-colors.conf'
-output_path = '~/.config/kitty/colors-matugen.conf'
-
 [templates.gtk3]
 input_path = '~/.config/matugen/templates/gtk-colors.css'
 output_path = '~/.config/gtk-3.0/colors.css'
@@ -29,6 +39,10 @@ output_path = '~/.config/gtk-3.0/colors.css'
 [templates.gtk4]
 input_path = '~/.config/matugen/templates/gtk-colors.css'
 output_path = '~/.config/gtk-4.0/colors.css'
+
+[templates.fabric]
+input_path = '~/.config/matugen/templates/fabric.css'
+output_path = '~/.config/fabric/styles/colors.css'
 
 [templates.qt5ct]
 input_path = '~/.config/matugen/templates/qtct-colors.conf'

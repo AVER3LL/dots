@@ -2,7 +2,7 @@ return {
     {
         "ricardoramirezr/blade-nav.nvim",
         dependencies = {
-            "hrsh7th/nvim-cmp",
+            "saghen/blink.cmp",
         },
         ft = { "blade", "php" },
         opts = {

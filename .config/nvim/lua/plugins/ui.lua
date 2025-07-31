@@ -1,22 +1,6 @@
 return {
-
-    {
-        "nvim-tree/nvim-web-devicons",
-        enabled = false,
-        opts = {},
-    },
-
-    {
-        "r0nsha/multinput.nvim",
-        enabled = false,
-        opts = {
-            -- Your custom configuration goes here
-        },
-    },
-
     {
         "echasnovski/mini.icons",
-        opts = {},
         lazy = true,
         specs = {
             { "nvim-tree/nvim-web-devicons", enabled = false, optional = true },
@@ -27,6 +11,15 @@ return {
                 return package.loaded["nvim-web-devicons"]
             end
         end,
+        opts = {
+            default = {
+                file = { glyph = "󰈚" },
+            },
+            extension = {
+                js = { glyph = "" },
+                ts = { glyph = "󰛦" },
+            },
+        },
     },
 
     -- Colored parenthesis
@@ -51,25 +44,5 @@ return {
                 },
             },
         },
-    },
-
-    -- Lsp messages on the top right like Helix
-    {
-        "dgagn/diagflow.nvim",
-        enabled = false,
-        event = "LspAttach", -- This is what I use personnally and it works great
-        config = function()
-            local excluded_filetypes = {
-                "lazy",
-                "mason",
-            }
-            require("diagflow").setup {
-                scope = "line",
-                padding_right = 2,
-                enable = function()
-                    return not vim.tbl_contains(excluded_filetypes, vim.bo.filetype)
-                end,
-            }
-        end,
     },
 }

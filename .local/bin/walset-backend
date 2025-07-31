@@ -348,9 +348,10 @@ generate_caches() {
 {
     generate_caches "$IMAGE" "$WALLPAPER_CACHE_DIR"
     matugen image "$wallStatic" --type=scheme-fidelity --mode="$MODE" >/dev/null 2>&1
-    wallust run "$wallStatic" --palette "$MODE" >/dev/null 2>&1
+    # wallust run "$wallStatic" --palette "$MODE" >/dev/null 2>&1
 } &
 
+pkill -SIGUSR1 kitty
 echo "Wallpaper set successfully!"
 echo "Cache generation continuing in background..."
 echo "Cached versions will be available at: $WALLPAPER_CACHE_DIR"

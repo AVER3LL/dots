@@ -1,7 +1,7 @@
 @import '../../colors.css';
 
 /* Main Colors */
-@define-color background @surface_container;
+@define-color background @surface;
 @define-color foreground @primary;
 @define-color battery-warning-color #ff875a;
 @define-color battery-critical-color #ff4545;
@@ -109,6 +109,7 @@ tooltip label {
 #custom-swaync,
 #custom-wlogout,
 #custom-wallpaper_change,
+#custom-notification,
 #custom-menu,
 #custom-separator,
 #window,

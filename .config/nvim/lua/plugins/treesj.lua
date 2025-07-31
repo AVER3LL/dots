@@ -2,6 +2,9 @@ return {
     -- Splits line into multiple ones
     {
         "Wansmer/treesj",
+        version = "*",
+        dependencies = { "nvim-treesitter/nvim-treesitter" },
+        cmd = { "TSJToggle" },
         keys = {
             {
                 "<leader>m",
@@ -10,13 +13,10 @@ return {
                 mode = "n",
             },
         },
-        cmd = { "TSJToggle" },
-        dependencies = { "nvim-treesitter/nvim-treesitter" },
         config = function()
             require("treesj").setup {
                 use_default_keymaps = false,
             }
         end,
-        version = "*",
     },
 }

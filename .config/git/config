@@ -6,6 +6,7 @@
     compression = 9
     whitespace = error
     preloadindex = true
+    pager = delta
 
 [advice]
     addEmptyPathspec = false
@@ -18,8 +19,15 @@
     showUntrackedFiles = all
 
 [interactive]
-    diffFilter = diff-so-fancy --patch
+    # diffFilter = diff-so-fancy --patch
+    diffFilter = delta --color-only
     singlekey = true
+
+[merge]
+    conflictstyle = zdiff3
+
+[delta]
+    navigate = true  # use n and N to move between diff sections
 
 [push]
     autoSetupRemote = true

@@ -1,5 +1,3 @@
-local border = require("config.looks").border_type()
-
 return {
     {
         "lewis6991/gitsigns.nvim",
@@ -12,11 +10,18 @@ return {
 
                     -- Mappings.
                     ---@param lhs string
-                    ---@param rhs function
+                    ---@param rhs function|string
                     ---@param desc string
                     local function nmap(lhs, rhs, desc)
                         vim.keymap.set("n", lhs, rhs, { desc = desc, buffer = bufnr })
                     end
+                    nmap("<leader>gb", ":Gitsigns blame_line<CR>", "Git blame the current line")
+                    nmap("<leader>gd", ":Gitsigns preview_hunk <CR>", "Git diff the current hunk")
+                    nmap(
+                        "<leader>gg",
+                        ":lua require('gitsigns').diffthis(nil, { vertical = true }) <CR>",
+                        "Git diff the current file"
+                    )
 
                     nmap("<leader>go", function()
                         gitlinker.get_buf_range_url(
@@ -28,8 +33,9 @@ return {
                     nmap("]g", gs.next_hunk, "Next hunk")
                 end,
                 preview_config = {
-                    border = border,
+                    border = tools.border,
                 },
+                culhl = true,
                 current_line_blame = true,
                 current_line_blame_opts = {
                     virt_text = true,
@@ -40,22 +46,14 @@ return {
                     use_focus = true,
                 },
                 diff_opts = {
-                    vertival = false,
+                    vertical = false,
                 },
                 -- signs = {
-                --     add = { text = bar },
-                --     change = { text = bar },
-                --     delete = { text = delete },
-                --     topdelete = { text = delete },
-                --     changedelete = { text = bar },
-                --     untracked = { text = bar },
-                -- },
-                -- signs_staged = {
-                --     add = { text = bar },
-                --     change = { text = bar },
-                --     delete = { text = delete },
-                --     topdelete = { text = delete },
-                --     changedelete = { text = bar },
+                --     add = { text = "+" },
+                --     change = { text = "~" },
+                --     delete = { text = "_" },
+                --     topdelete = { text = "‾" },
+                --     changedelete = { text = "~" },
                 -- },
             }
         end,

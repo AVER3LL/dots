@@ -1,4 +1,4 @@
 require "core.options"
 require "core.mappings"
-require "core.autocommand"
-require "core.neovide"
+require "core.autocommands"
+require "core.lazy"

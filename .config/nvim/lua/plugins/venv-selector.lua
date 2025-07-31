@@ -16,7 +16,7 @@ local search_with_snacks = function()
                 return self.results
             end,
             layout = {
-                preset = "select",
+                preset = "vscode",
             },
             format = function(item, picker)
                 return {
@@ -61,7 +61,6 @@ return {
         "neovim/nvim-lspconfig",
         { "mfussenegger/nvim-dap" },
         { "mfussenegger/nvim-dap-python" }, --optional
-        { "nvim-telescope/telescope.nvim" },
     },
     branch = "regexp", -- This is the regexp branch, use this for the new version
     keys = {

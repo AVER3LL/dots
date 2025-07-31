@@ -3,104 +3,192 @@
 # Configuration
 readonly WAYBAR_DIR="$HOME/.config/waybar"
 readonly LAUNCHER="$WAYBAR_DIR/toggle.sh"
-readonly ASSETS="$WAYBAR_DIR/assets"
 readonly THEMES="$WAYBAR_DIR/themes"
 
-# Theme mappings: image_name -> theme_directory
+# Theme definitions with descriptions
 declare -A THEME_MAP=(
-    ["main.png"]="main"
-    ["top.png"]="full"
-    ["vertical.png"]="vertical"
-    ["bottom.png"]="windows"
-    ["zen.png"]="zen"
-    ["both.png"]="both"
+    ["main"]="main"
+    ["full"]="full"
+    ["vertical"]="vertical"
+    ["windows"]="windows"
+    ["zen"]="zen"
+    ["both"]="both"
 )
 
-# Display menu of available wallpaper images
+# Theme descriptions for better user experience
+declare -A THEME_DESC=(
+    ["main"]="Default horizontal bar layout"
+    ["full"]="Complete top bar with all modules"
+    ["vertical"]="Side-mounted vertical bar"
+    ["windows"]="Bottom bar Windows-style layout"
+    ["zen"]="Minimal clean interface"
+    ["both"]="Dual bar setup (top + bottom)"
+)
+
+# Theme icons for visual appeal in rofi
+declare -A THEME_ICONS=(
+    ["main"]="󰕰"
+    ["full"]="󰍹"
+    # ["vertical"]="󰘴"
+    ["vertical"]=""
+    ["windows"]="󰖟"
+    ["zen"]="󱎴"
+    ["both"]="󰍺"
+)
+
+# Display menu of available themes
 show_menu() {
-    find "$ASSETS" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.gif" \) |
-        awk '{print "img:"$0}' 2>/dev/null
+    local menu_items=""
+
+    for theme in "${!THEME_MAP[@]}"; do
+        local icon="${THEME_ICONS[$theme]:-󰚀}"
+        local desc="${THEME_DESC[$theme]:-No description}"
+        menu_items+="  $icon  $theme - $desc\n"
+    done
+
+    echo -e "$menu_items"
+}
+
+# Get current active theme (optional - shows current selection)
+get_current_theme() {
+    if [[ -f "$LAUNCHER" ]]; then
+        # Try to determine current theme by checking which theme's toggle.sh matches
+        for theme in "${!THEME_MAP[@]}"; do
+            local theme_launcher="$THEMES/${THEME_MAP[$theme]}/toggle.sh"
+            if [[ -f "$theme_launcher" ]] && cmp -s "$LAUNCHER" "$theme_launcher"; then
+                echo "$theme"
+                return
+            fi
+        done
+    fi
+    echo "unknown"
 }
 
 # Reload waybar with selected theme
 reload_waybar() {
     local theme_launcher="$1"
+    local theme_name="$2"
 
     if [[ ! -f "$theme_launcher" ]]; then
+        notify-send "Waybar Theme Error" "Theme launcher not found: $theme_name" -u critical
         echo "Error: Theme launcher not found: $theme_launcher" >&2
         return 1
     fi
 
     # Copy theme launcher to active config
     if ! cp "$theme_launcher" "$LAUNCHER"; then
+        notify-send "Waybar Theme Error" "Failed to copy theme launcher" -u critical
         echo "Error: Failed to copy theme launcher" >&2
         return 1
     fi
 
+    # Make launcher executable
+    chmod +x "$LAUNCHER"
+
     # Restart waybar if running
     if pgrep -x waybar >/dev/null; then
         killall waybar
+        sleep 0.5 # Give waybar time to fully close
         echo "Killed waybar"
     fi
 
-
     # Start waybar with new theme
     if [[ -x "$LAUNCHER" ]]; then
-        "$LAUNCHER"
-        echo "Started waybar with new theme"
+        "$LAUNCHER" &
+        notify-send "Waybar Theme" "Applied theme: $theme_name" -t 2000
+        echo "Started waybar with theme: $theme_name"
     else
+        notify-send "Waybar Theme Error" "Launcher is not executable" -u critical
         echo "Error: Launcher is not executable: $LAUNCHER" >&2
         return 1
     fi
 }
 
+# Validate theme directories
+validate_themes() {
+    local missing_themes=()
+
+    for theme in "${!THEME_MAP[@]}"; do
+        local theme_dir="$THEMES/${THEME_MAP[$theme]}"
+        local theme_launcher="$theme_dir/toggle.sh"
+
+        if [[ ! -d "$theme_dir" ]]; then
+            missing_themes+=("$theme (directory missing)")
+        elif [[ ! -f "$theme_launcher" ]]; then
+            missing_themes+=("$theme (toggle.sh missing)")
+        fi
+    done
+
+    if [[ ${#missing_themes[@]} -gt 0 ]]; then
+        echo "Warning: Some themes are not properly configured:" >&2
+        printf "  - %s\n" "${missing_themes[@]}" >&2
+        return 1
+    fi
+
+    return 0
+}
+
 # Main function
 main() {
     # Check if required directories exist
-    for dir in "$WAYBAR_DIR" "$ASSETS" "$THEMES"; do
+    for dir in "$WAYBAR_DIR" "$THEMES"; do
         if [[ ! -d "$dir" ]]; then
+            notify-send "Waybar Theme Error" "Directory not found: $dir" -u critical
             echo "Error: Directory not found: $dir" >&2
             exit 1
         fi
     done
 
+    # Validate theme configurations
+    validate_themes
+
+    # Get current theme for highlighting (optional)
+    local current_theme
+    current_theme=$(get_current_theme)
+
+    # Create rofi prompt with current theme info
+    local prompt="  Select Waybar Theme"
+    if [[ "$current_theme" != "unknown" ]]; then
+        prompt+=" (Current: $current_theme)"
+    fi
+
     # Show menu and get user selection
     local choice
-    choice=$(show_menu | wofi \
-        -c ~/.config/wofi/waybar \
-        -s ~/.config/wofi/style-waybar.css \
-        --show dmenu \
-        --prompt "  Select Waybar Theme (Scroll with Arrows)" \
-        -n)
+    choice=$(show_menu | rofi \
+        -dmenu \
+        -i \
+        -p "$prompt" \
+        -theme ~/.config/rofi/waybar.rasi \
+        -no-custom \
+        -format 's')
 
-    # Exit if no selection made
+    # Exit if no selection made or ESC pressed
     if [[ -z "$choice" ]]; then
         echo "No theme selected"
         exit 0
     fi
 
-    # Extract wallpaper path from selection
-    local selected_wallpaper
-    selected_wallpaper=$(echo "$choice" | sed 's/^img://')
+    # Extract theme name from selection (get first word after icon)
+    local selected_theme
+    selected_theme=$(echo "$choice" | awk '{print $2}')
 
-    # Get just the filename for lookup
-    local image_name
-    image_name=$(basename "$selected_wallpaper")
-
-    echo "Selected: $selected_wallpaper"
+    echo "Selected theme: $selected_theme"
 
     # Find matching theme
-    if [[ -n "${THEME_MAP[$image_name]}" ]]; then
-        local theme_dir="${THEME_MAP[$image_name]}"
+    if [[ -n "${THEME_MAP[$selected_theme]}" ]]; then
+        local theme_dir="${THEME_MAP[$selected_theme]}"
         local theme_launcher="$THEMES/$theme_dir/toggle.sh"
 
         echo "Loading theme: $theme_dir"
-        reload_waybar "$theme_launcher"
+        reload_waybar "$theme_launcher" "$selected_theme"
     else
-        echo "Error: No theme mapping found for: $image_name" >&2
+        notify-send "Waybar Theme Error" "No theme mapping found for: $selected_theme" -u critical
+        echo "Error: No theme mapping found for: $selected_theme" >&2
         exit 1
     fi
 }
 
-# Run main function
-main "$@"
+# Run main function if script is executed directly
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    main "$@"
+fi

@@ -29,6 +29,7 @@
         "custom/separator#blank_1",
         "battery",
         "custom/separator#blank_1",
+        "custom/notification",
         "custom/wallpaper_change",
         "idle_inhibitor",
         "custom/wlogout",

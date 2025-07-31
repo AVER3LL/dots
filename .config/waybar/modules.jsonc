@@ -28,6 +28,7 @@
         "format": "",
         "on-click": "~/.config/rofi/launchers/type-1/launcher.sh",
         "tooltip-format": "Launch your favorite apps",
+        "signal": 1,
     },
 
     "custom/lock_screen": {
@@ -64,7 +65,7 @@
 
     "custom/pacman": {
         "format": "  {}",
-        "interval": "once",
+        "interval": 3600,
         "exec": "count=$(checkupdates | wc -l); [ \"$count\" -eq 0 ] && echo '' || echo \"$count\"",
         "on-click": "kitty -e sh -c 'sudo pacman -Syu; pkill -SIGRTMIN+8 waybar'",
         "signal": 8,

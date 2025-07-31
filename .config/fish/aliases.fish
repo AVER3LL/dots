@@ -14,6 +14,7 @@ alias l='eza --icons --color=always --group-directories-first'
 
 alias lazy='NVIM_APPNAME=LazyVim nvim'
 alias chad='NVIM_APPNAME=NvChad nvim'
+alias neovim='NVIM_APPNAME=Neovim nvim'
 alias yayf="yay -Slq | fzf --multi --preview 'yay -Sii {1}' --preview-window=down:75% | xargs -ro yay -S"
 
 alias cp 'advcp -g'

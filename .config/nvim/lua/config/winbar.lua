@@ -134,8 +134,16 @@ local function get_file_icon()
 end
 
 -- Function to get diagnostic counts with colors
+local insert_mode_modified = false
+
+-- Function to get diagnostic counts with colors
 local function get_diagnostics()
     if not M.config.show_diagnostics then
+        return "", ""
+    end
+
+    -- Hide diagnostics if we've modified text in insert mode
+    if insert_mode_modified then
         return "", ""
     end
 
@@ -527,6 +535,54 @@ function M.setup(user_config)
         callback = function()
             if not should_ignore_buffer() and not is_window_too_small() and not is_popup_or_floating_window() then
                 M.update_winbar(false)
+            else
+                vim.wo.winbar = ""
+            end
+        end,
+    })
+
+    -- Track when text is changed in insert mode
+    autocmd("TextChangedI", {
+        group = group,
+        callback = function()
+            if not should_ignore_buffer() and not is_window_too_small() and not is_popup_or_floating_window() then
+                insert_mode_modified = true
+                debounced_update(true)
+            end
+        end,
+    })
+
+    -- Reset the flag when leaving insert mode
+    autocmd("InsertLeave", {
+        group = group,
+        callback = function()
+            if not should_ignore_buffer() and not is_window_too_small() and not is_popup_or_floating_window() then
+                insert_mode_modified = false
+                debounced_update(true)
+            else
+                vim.wo.winbar = ""
+            end
+        end,
+    })
+
+    -- Reset the flag when entering insert mode (in case we enter insert mode multiple times)
+    autocmd("InsertEnter", {
+        group = group,
+        callback = function()
+            if not should_ignore_buffer() and not is_window_too_small() and not is_popup_or_floating_window() then
+                insert_mode_modified = false
+                debounced_update(true)
+            end
+        end,
+    })
+
+    -- Remove TextChanged and InsertEnter/InsertLeave from the existing debounced updates autocmd
+    -- and replace with just TextChanged
+    autocmd("TextChanged", {
+        group = group,
+        callback = function()
+            if not should_ignore_buffer() and not is_window_too_small() and not is_popup_or_floating_window() then
+                debounced_update(true)
             else
                 vim.wo.winbar = ""
             end

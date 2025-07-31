@@ -2,6 +2,14 @@ return {
 
     {
         "shortcuts/no-neck-pain.nvim",
+        keys = {
+            {
+                "<leader><leader>n",
+                "<cmd>NoNeckPain<CR>",
+                mode = "n",
+                desc = "Center windows",
+            },
+        },
         cmd = "NoNeckPain",
         version = "*",
         opts = {

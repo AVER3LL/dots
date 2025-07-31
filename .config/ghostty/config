@@ -28,6 +28,9 @@ adw-toolbar-style = flat
 window-theme = ghostty
 gtk-titlebar = false
 
+gtk-single-instance = true
+clipboard-trim-trailing-spaces = true
+
 # background-opacity = 0.95
 
 # Colors
