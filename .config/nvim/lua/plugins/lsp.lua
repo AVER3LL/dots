@@ -38,9 +38,19 @@ return {
         config = function()
             local capabilities = require("blink.cmp").get_lsp_capabilities()
 
+            local vue_language_server_path = vim.fn.stdpath "data"
+                .. "/mason/packages/vue-language-server/node_modules/@vue/language-server"
+            local vue_plugin = {
+                name = "@vue/typescript-plugin",
+                location = vue_language_server_path,
+                languages = { "vue" },
+                configNamespace = "typescript",
+            }
+
             local servers = {
 
                 lua_ls = {},
+                -- ts_ls = {},
                 bashls = {},
                 clangd = {},
                 cssls = {},
@@ -52,16 +62,35 @@ return {
                 texlab = {},
 
                 basedpyright = {
-                    settings = {
-                        basedpyright = {
-                            typeCheckingMode = "basic", -- or "off"
-                            diagnosticSeverityOverrides = {
-                                reportUnknownVariableType = "none",
-                                reportMissingTypeStubs = "none",
-                            },
-                        },
+                    analysis = {
+                        typeCheckingMode = "strict",
+                        autoSearchPaths = true,
+                        diagnosticMode = "workspace",
+                        useLibraryCodeForTypes = true,
                     },
                 },
+
+                -- vtsls = {
+                --     filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue" },
+                --     settings = {
+                --         vtsls = {
+                --             tsserver = {
+                --                 globalPlugins = {
+                --                     {
+                --                         configNamespace = "typescript",
+                --                         enableForWorkspaceTypeScriptVersions = true,
+                --                         languages = { "vue" },
+                --                         location = vim.fn.stdpath "data"
+                --                             .. "/mason/packages/vue-language-server/node_modules/@vue/language-server",
+                --                         name = "@vue/typescript-plugin",
+                --                     },
+                --                 },
+                --             },
+                --         },
+                --     },
+                -- },
+
+                vue_ls = {},
 
                 html = {
                     filetypes = { "html", "templ" },
@@ -122,6 +151,9 @@ return {
 
             vim.list_extend(ensure_installed, {
                 "jdtls",
+                -- "ts_ls",
+                "rust_analyzer",
+                "vue_ls",
             })
 
             require("mason-lspconfig").setup {

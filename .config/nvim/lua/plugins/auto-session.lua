@@ -1,7 +1,7 @@
 return {
     {
         "rmagatti/auto-session",
-        event = "VeryLazy",
+        event = "VimEnter",
         keys = {
             "<leader>wr",
             "<cmd>SessionRestore<CR>",

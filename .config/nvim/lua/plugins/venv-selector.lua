@@ -54,6 +54,7 @@ local search_with_snacks = function()
 
     require("venv-selector.search").run_search(M.new(), nil)
 end
+
 return {
     "linux-cultist/venv-selector.nvim",
     ft = "python",
@@ -71,19 +72,6 @@ return {
             mode = "n",
         },
     },
-    config = function()
-        require("venv-selector").setup {
-            settings = {
-                search = {
-                    custom_search = {
-                        command = [[fd '(python|python3)$' . .. ../.. -H --full-path --color never]],
-                    },
-                },
-                options = {
-                    -- Enable this to see debug information
-                    debug = false,
-                },
-            },
-        }
-    end,
+    ---@type venv-selector.Config
+    opts = {},
 }

@@ -1,7 +1,7 @@
 @import '../../colors.css';
 
 /* Main Colors */
-@define-color background @surface;
+@define-color background @surface_container;
 @define-color foreground @primary;
 @define-color battery-warning-color #ff875a;
 @define-color battery-critical-color #ff4545;
@@ -20,7 +20,7 @@ window#waybar {
     background-color: @background;
     border-radius: 5px;
     color: @foreground;
-    border-color: #3E4142;
+    border-color: #3e4142;
     transition-property: background-color;
     transition-duration: 0.5s;
 }
@@ -129,6 +129,15 @@ tooltip label {
     opacity: 1;
     padding: 10px 5px 10px 5px;
     margin: 0 0 0 12px;
+}
+
+#custom-notification:hover,
+#custom-wallpaper_change:hover,
+#idle_inhibitor:hover,
+#custom-wlogout:hover {
+    color: @tertiary;
+    transition-property: color;
+    transition-duration: 0.3s;
 }
 
 #custom-separator {

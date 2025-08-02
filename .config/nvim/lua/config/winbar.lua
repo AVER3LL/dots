@@ -62,21 +62,11 @@ M.config = {
 
 local update_timer = nil
 
--- Utility functions
-local function contains(table, value)
-    for _, v in ipairs(table) do
-        if v == value then
-            return true
-        end
-    end
-    return false
-end
-
 -- Function to check if current buffer should be ignored
 local function should_ignore_buffer()
     local filetype = bo.filetype
     local buftype = bo.buftype
-    return contains(M.config.ignore_filetypes, filetype) or contains(M.config.ignore_buftypes, buftype)
+    return vim.list_contains(M.config.ignore_filetypes, filetype) or vim.tbl_contains(M.config.ignore_buftypes, buftype)
 end
 
 -- Function to check if window is too small for winbar

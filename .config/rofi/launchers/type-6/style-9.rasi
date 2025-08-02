@@ -67,8 +67,8 @@ mainbox {
 
 imagebox {
     padding:                     20px;
-    margin:			 5px;
-    border-radius:		 15px 0 0 15px;
+    margin:			             5px;
+    border-radius:		         10px 7px 7px 10px;
     background-color:            transparent;
     // background-image:            url("~/.config/rofi/images/i.jpg", height);
     background-image:            url("~/.cache/averell/wall.sqre", height);

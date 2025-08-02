@@ -14,7 +14,7 @@ return {
 
                 php = { "phpstan" },
 
-                -- kotlin = { "ktlint" },
+                kotlin = { "ktlint" },
 
                 htmldjango = { "djlint" },
             }

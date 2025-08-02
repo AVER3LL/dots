@@ -42,7 +42,7 @@ end
 
 tools.resolve_hl = function(name)
     local hl = vim.api.nvim_get_hl(0, { name = name })
-    if hl.link then
+    if not hl.fg and hl.link then
         -- If it's a link, resolve recursively
         return tools.resolve_hl(hl.link)
     else

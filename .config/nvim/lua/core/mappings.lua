@@ -31,7 +31,6 @@ map("n", "<leader>tx", "<cmd>tabclose<CR>", { desc = "Close tab" })
 map("n", "<leader>tn", "<cmd>tabn<CR>", { desc = "Go to next tab" })
 map("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Go to previous tab" })
 
-
 -- Clear Highlights
 map({ "i", "s" }, "<esc>", function()
     if require("luasnip").expand_or_jumpable() then
@@ -48,6 +47,12 @@ map("n", "<C-h>", "<C-w>h", { desc = "Move to left split" })
 map("n", "<C-j>", "<C-w>j", { desc = "Move to bottom split" })
 map("n", "<C-k>", "<C-w>k", { desc = "Move to top split" })
 map("n", "<C-l>", "<C-w>l", { desc = "Move to right split" })
+
+-- Split Resizing
+map("n", "<C-Up>", "<C-W>+", { desc = "Split increase height" })
+map("n", "<C-Down>", "<C-W>-", { desc = "Split decrease height" })
+map("n", "<C-Right>", "<C-W><", { desc = "Split decrease width" })
+map("n", "<C-Left>", "<C-W>>", { desc = "Split increase width" })
 
 -- Wrapped lines navigation
 map({ "n", "v" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, desc = "Move up" })
@@ -69,6 +74,8 @@ map("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
 -- Clipboard Operations
 map({ "n", "v" }, "<leader>y", [["+y]], { desc = "Yank to clipboard" })
 map({ "n", "v" }, "<leader>p", [["+p]], { desc = "Paste from clipboard" })
+map("v", "p", '"_dp')
+map("v", "P", '"_dP')
 
 -- Centering
 map("n", "<C-d>", "<C-d>zz")
