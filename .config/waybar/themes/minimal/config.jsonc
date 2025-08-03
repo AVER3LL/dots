@@ -1,0 +1,70 @@
+{
+    "reload_style_on_change": true,
+    "layer": "top",
+    "position": "top",
+
+    // "margin-top": 6,
+    // "margin-bottom": 0,
+    // "margin-left": 13,
+    // "margin-right": 13,
+
+    "height": 45,
+
+    "include": ["${HOME}/.config/waybar/modules.jsonc"],
+
+    "modules-left": ["custom/separator#blank_1", "custom/launcher", "custom/separator#blank_2", "hyprland/workspaces"],
+
+    "modules-center": ["clock"],
+
+    "modules-right": [
+        "custom/rec_status",
+        "privacy",
+        "tray",
+        "custom/swaync",
+        "custom/separator#blank_1",
+        "battery",
+        "custom/separator#blank_1",
+        "pulseaudio",
+        "custom/notification",
+        "idle_inhibitor",
+        "custom/wlogout",
+        "custom/right",
+    ],
+
+    "group/sys_info": {
+        "orientation": "inherit",
+        "drawer": {
+            "transition-duration": 300,
+            "children-class": "child-sys_info",
+            "transition-left-to-right": true,
+            "click-to-reveal": true,
+        },
+        "modules": ["custom/expand", "pulseaudio", "backlight", "pulseaudio#microphone"],
+    },
+
+    "clock": {
+        "format": "{:%B %d  %R}",
+        "format-alt": "󰥔  {:%a, %d. %b  %R}",
+        "tooltip-format": "Date: {:%Y-%m-%d}",
+    },
+
+    "pulseaudio": {
+        "format": "{icon}",
+        "format-bluetooth": "󰂱",
+        "format-muted": "󰖁",
+        "scroll-step": 1,
+        "on-click": "~/.config/hypr/scripts/volume_hyprdots.sh -o m",
+        "on-click-middle": "pavucontrol",
+        "ignored-sinks": ["Easy Effects Sink"],
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "󰋎",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["󰖀", "󰕾"],
+        },
+        "tooltip-format": "Volume: {volume}%",
+    },
+}

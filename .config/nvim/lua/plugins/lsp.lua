@@ -34,23 +34,16 @@ return {
             "mason-org/mason.nvim",
             "mason-org/mason-lspconfig.nvim",
             "saghen/blink.cmp",
+            { "antosha417/nvim-lsp-file-operations", dependencies = "nvim-tree/nvim-tree.lua", opts = {} },
         },
         config = function()
             local capabilities = require("blink.cmp").get_lsp_capabilities()
-
-            local vue_language_server_path = vim.fn.stdpath "data"
-                .. "/mason/packages/vue-language-server/node_modules/@vue/language-server"
-            local vue_plugin = {
-                name = "@vue/typescript-plugin",
-                location = vue_language_server_path,
-                languages = { "vue" },
-                configNamespace = "typescript",
-            }
+            capabilities =
+                vim.tbl_deep_extend("force", capabilities, require("lsp-file-operations").default_capabilities())
 
             local servers = {
 
                 lua_ls = {},
-                -- ts_ls = {},
                 bashls = {},
                 clangd = {},
                 cssls = {},
@@ -70,31 +63,9 @@ return {
                     },
                 },
 
-                -- vtsls = {
-                --     filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue" },
-                --     settings = {
-                --         vtsls = {
-                --             tsserver = {
-                --                 globalPlugins = {
-                --                     {
-                --                         configNamespace = "typescript",
-                --                         enableForWorkspaceTypeScriptVersions = true,
-                --                         languages = { "vue" },
-                --                         location = vim.fn.stdpath "data"
-                --                             .. "/mason/packages/vue-language-server/node_modules/@vue/language-server",
-                --                         name = "@vue/typescript-plugin",
-                --                     },
-                --                 },
-                --             },
-                --         },
-                --     },
-                -- },
-
                 vue_ls = {},
 
-                html = {
-                    filetypes = { "html", "templ" },
-                },
+                html = {},
 
                 intelephense = {
                     filetypes = {
@@ -126,18 +97,20 @@ return {
 
                 emmet_language_server = {
                     filetypes = {
-                        "blade",
+                        "django",
+                        "astro",
                         "css",
                         "eruby",
                         "html",
+                        "htmlangular",
                         "htmldjango",
-                        "javascript",
                         "javascriptreact",
                         "less",
-                        "php",
                         "pug",
                         "sass",
                         "scss",
+                        "svelte",
+                        "templ",
                         "typescriptreact",
                         "vue",
                     },
@@ -151,9 +124,7 @@ return {
 
             vim.list_extend(ensure_installed, {
                 "jdtls",
-                -- "ts_ls",
                 "rust_analyzer",
-                "vue_ls",
             })
 
             require("mason-lspconfig").setup {

@@ -7,6 +7,8 @@
  * Rofi Version: 1.7.3
  **/
 
+@theme "~/.config/rofi/material-colors.rasi"
+
 /*****----- Configuration -----*****/
 configuration {
 	modi:                       "drun,run,filebrowser";
@@ -20,33 +22,43 @@ configuration {
 }
 
 /*****----- Global Properties -----*****/
-@import                          "shared/colors.rasi"
-@import                          "shared/fonts.rasi"
+// @import                          "shared/colors.rasi"
+// @import                          "shared/fonts.rasi"
 
 * {
-    border-colour:               var(selected);
+    font:                        "JetBrains Mono Nerd Font 10";
+
+    // Updated colors to match the second config
+    background:                  @surface-container;
+    background-alt:              @surface-container-low;
+    foreground:                  @inverse-surface;
+    selected:                    @secondary-container;
+    active:                      #E9CC9D;
+    urgent:                      #FEA861;
+
+    border-colour:               @secondary-container;
     handle-colour:               var(foreground);
-    background-colour:           var(background);
+    background-colour:           @surface-container;
     foreground-colour:           var(foreground);
-    alternate-background:        var(background-alt);
-    normal-background:           var(background);
+    alternate-background:        @surface-container-low;
+    normal-background:           @surface-container;
     normal-foreground:           var(foreground);
     urgent-background:           var(urgent);
-    urgent-foreground:           var(background);
+    urgent-foreground:           @surface-container;
     active-background:           var(active);
-    active-foreground:           var(background);
-    selected-normal-background:  var(selected);
-    selected-normal-foreground:  var(background);
+    active-foreground:           @surface-container;
+    selected-normal-background:  @secondary-container;
+    selected-normal-foreground:  @surface-container;
     selected-urgent-background:  var(active);
-    selected-urgent-foreground:  var(background);
+    selected-urgent-foreground:  @surface-container;
     selected-active-background:  var(urgent);
-    selected-active-foreground:  var(background);
-    alternate-normal-background: var(background);
+    selected-active-foreground:  @surface-container;
+    alternate-normal-background: @surface-container;
     alternate-normal-foreground: var(foreground);
     alternate-urgent-background: var(urgent);
-    alternate-urgent-foreground: var(background);
+    alternate-urgent-foreground: @surface-container;
     alternate-active-background: var(active);
-    alternate-active-foreground: var(background);
+    alternate-active-foreground: @surface-container;
 }
 
 /*****----- Main Window -----*****/

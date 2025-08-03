@@ -48,8 +48,8 @@
     "idle_inhibitor": {
         "format": "{icon}",
         "format-icons": {
-            "activated": "󰥔",
-            "deactivated": "",
+            "activated": "󱑂",
+            "deactivated": "",
             // "activated": "",
             // "deactivated": "",
         },
@@ -103,7 +103,7 @@
     },
 
     "privacy": {
-        "orientation": "vertical",
+        "orientation": "inherit",
         "icon-spacing": 5,
         "icon-size": 14,
         "transition-duration": 250,
@@ -115,6 +115,11 @@
             },
             {
                 "type": "audio-in",
+                "tooltip": true,
+                "tooltip-icon-size": 24,
+            },
+            {
+                "type": "audio-out",
                 "tooltip": true,
                 "tooltip-icon-size": 24,
             },
@@ -297,7 +302,7 @@
             "9": "9",
             "10": "10",
         },
-        "persistent-workspaces": { },
+        "persistent-workspaces": {},
         "sort-by-number": true,
     },
 
@@ -436,6 +441,12 @@
     /* -----------------------------------------------------
      * Spacing modules
      * ----------------------------------------------------- */
+
+    "custom/expand": {
+        "format": "",
+        "interval": "once",
+        "tooltip": false,
+    },
 
     "custom/left": {
         "format": " ",

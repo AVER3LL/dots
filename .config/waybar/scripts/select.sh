@@ -13,6 +13,7 @@ declare -A THEME_MAP=(
     ["windows"]="windows"
     ["zen"]="zen"
     ["both"]="both"
+    ["minimal"]="minimal"
 )
 
 # Theme descriptions for better user experience
@@ -23,6 +24,7 @@ declare -A THEME_DESC=(
     ["windows"]="Bottom bar Windows-style layout"
     ["zen"]="Minimal clean interface"
     ["both"]="Dual bar setup (top + bottom)"
+    ["minimal"]="Idk man"
 )
 
 # Theme icons for visual appeal in rofi
@@ -34,6 +36,7 @@ declare -A THEME_ICONS=(
     ["windows"]="󰖟"
     ["zen"]="󱎴"
     ["both"]="󰍺"
+    ["minimal"]="i"
 )
 
 # Display menu of available themes
