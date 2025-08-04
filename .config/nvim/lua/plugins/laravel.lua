@@ -25,7 +25,7 @@ return {
                 keymaps = false,
             }
 
-            tools.map("n", "<leader>la", ":LaravelMake<CR>", { desc = "Laravel Artisan" })
+            tools.map("n", "<leader>la", ":LaravelMake<CR>", { desc = "Laravel Make" })
             tools.map("n", "<leader>lc", ":LaravelController<CR>", { desc = "Laravel Controllers" })
             tools.map("n", "<leader>lr", ":LaravelRoute<CR>", { desc = "Laravel Routes" })
             tools.map("n", "<leader>lm", ":LaravelModel<CR>", { desc = "Laravel Models" })

@@ -36,6 +36,9 @@ autocmd("ColorScheme", {
 
         sethl(0, "HighlightUrl", { underline = true })
 
+        -- sethl(0, "CurrentWord", { bg = "NONE", bold = true })
+        sethl(0, "AlphaButton", { bg = gethl(0, { name = "Number" }).fg, bold = true, fg = colors.background })
+
         sethl(0, "LaravelLogo", { fg = "#F53003" })
 
         -- Highlight line numbers with diagnostics
