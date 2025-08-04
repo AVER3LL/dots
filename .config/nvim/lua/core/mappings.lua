@@ -4,7 +4,7 @@ vim.g.maplocalleader = " "
 
 local map = tools.map
 
-require("config.search-counter").setup { highlight = "Comment" }
+-- require("config.search-counter").setup { highlight = "Comment" }
 
 -- map("n", "<leader><leader>n", "<cmd>NoNeckPain<CR>", { desc = "Center windows" })
 -- map("n", "<leader><leader>l", tools.toggle_numbers)
@@ -32,7 +32,7 @@ map("n", "<leader>tn", "<cmd>tabn<CR>", { desc = "Go to next tab" })
 map("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Go to previous tab" })
 
 -- Clear Highlights
-map({ "i", "s" }, "<esc>", function()
+map({ "n", "i", "s" }, "<esc>", function()
     if require("luasnip").expand_or_jumpable() then
         require("luasnip").unlink_current()
     end

@@ -1,6 +1,7 @@
 return {
     {
         "ricardoramirezr/blade-nav.nvim",
+        enabled = false,
         dependencies = {
             "saghen/blink.cmp",
         },
@@ -11,39 +12,24 @@ return {
     },
 
     {
-        "adalessa/laravel.nvim",
+        "adibhanna/laravel.nvim",
         dependencies = {
-            "tpope/vim-dotenv",
-            -- "nvim-telescope/telescope.nvim",
             "MunifTanjim/nui.nvim",
-            "kevinhwang91/promise-async",
+            "nvim-lua/plenary.nvim",
         },
-        cmd = { "Laravel" },
-        keys = {
-            { "<leader>la", "<cmd>Laravel artisan<cr>", desc = "Laravel artisan command" },
-            { "<leader>lr", "<cmd>Laravel routes<cr>", desc = "Laravel list routes" },
-            { "<leader>lm", "<cmd>Laravel related<cr>", desc = "Laravel related" },
-            {
-                "gf",
-                function()
-                    if require("laravel").app("gf").cursor_on_resource() then
-                        return "<cmd>Laravel gf<CR>"
-                    else
-                        return "gf"
-                    end
-                end,
-                noremap = false,
-                expr = true,
-            },
-        },
-        opts = {
-            lsp_server = "intelephense",
-            features = {
-                pickers = {
-                    enable = true,
-                    provider = "snacks",
-                },
-            },
-        },
+        ft = { "blade", "php" },
+        config = function()
+            require("laravel").setup {
+                notifications = false,
+                debug = false,
+                keymaps = false,
+            }
+
+            tools.map("n", "<leader>la", ":LaravelMake<CR>", { desc = "Laravel Artisan" })
+            tools.map("n", "<leader>lc", ":LaravelController<CR>", { desc = "Laravel Controllers" })
+            tools.map("n", "<leader>lr", ":LaravelRoute<CR>", { desc = "Laravel Routes" })
+            tools.map("n", "<leader>lm", ":LaravelModel<CR>", { desc = "Laravel Models" })
+            tools.map("n", "gf", ":LaravelGoto<CR>", { desc = "Laravel Goto" })
+        end,
     },
 }

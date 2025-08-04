@@ -13,10 +13,8 @@
     "editor.matchBrackets": "never",
     "workbench.tips.enabled": false,
     "editor.colorDecorators": true,
-    "window.menuBarVisibility": "toggle",
 
-    "git.autorefresh": false,
-    "window.customTitleBarVisibility": "never",
+    "git.autorefresh": true,
 
     "editor.copyWithSyntaxHighlighting": false,
     "diffEditor.ignoreTrimWhitespace": false,
@@ -29,7 +27,7 @@
     "editor.detectIndentation": true,
     "files.insertFinalNewline": true,
     "files.trimFinalNewlines": true,
-    "workbench.editor.showTabs": "single",
+    "workbench.editor.showTabs": "multiple",
 
     "editor.lineNumbers": "on",
     "vim.smartRelativeLine": true,
@@ -54,8 +52,8 @@
     "editor.hover.enabled": true,
     "git.decorations.enabled": true,
     "workbench.startupEditor": "none",
-    "editor.lightbulb.enabled": "off",
-    "editor.selectionHighlight": false,
+    "editor.lightbulb.enabled": "onCode",
+    "editor.selectionHighlight": true,
     "editor.renderLineHighlight": "none",
     "editor.occurrencesHighlight": "off",
     "problems.decorations.enabled": false,
@@ -116,7 +114,6 @@
         "asvetliakov.vscode-neovim": 1
     },
     "dart.previewFlutterUiGuides": true,
-    "workbench.activityBar.location": "hidden",
     "editor.scrollbar.horizontal": "hidden",
     "editor.scrollbar.vertical": "hidden",
     "vscode_custom_css.imports": [
@@ -128,7 +125,7 @@
     },
     "vim.foldfix": true,
     "errorLens.scrollbarHackEnabled": true,
-    "workbench.colorTheme": "Gruvbox Light Hard",
+    "workbench.colorTheme": "Ayu Mirage",
     "redhat.telemetry.enabled": false,
     "code-runner.executorMapByFileExtension": {
         ".vb": "cd $dir && vbc /nologo $fileName && $dir$fileNameWithoutExt",
@@ -237,12 +234,18 @@
     "[css]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
-    "editor.cursorBlinking": "smooth",
+    "editor.cursorBlinking": "expand",
     "tailwind-fold.autoFold": true,
     "files.autoSave": "afterDelay",
     "editor.cursorSmoothCaretAnimation": "on",
     "editor.smoothScrolling": true,
     "workbench.statusBar.visible": false,
     "qt-qml.qmlls.useQmlImportPathEnvVar": true,
-    "qt-core.qtInstallationRoot": "/home/averell/Qt"
+    "qt-core.qtInstallationRoot": "/home/averell/Qt",
+    "python.analysis.typeCheckingMode": "standard",
+    "window.menuBarVisibility": "toggle",
+    "workbench.productIconTheme": "fluent-icons",
+    "chat.commandCenter.enabled": false,
+    "window.customTitleBarVisibility": "never",
+    "workbench.secondarySideBar.defaultVisibility": "hidden"
 }

@@ -347,8 +347,7 @@ generate_caches() {
 # Start background processes with proper error handling
 {
     generate_caches "$IMAGE" "$WALLPAPER_CACHE_DIR"
-    matugen image "$wallStatic" --type=scheme-fidelity --mode="$MODE" >/dev/null 2>&1
-    # wallust run "$wallStatic" --palette "$MODE" >/dev/null 2>&1
+    matugen image "$wallStatic" --mode="$MODE" >/dev/null 2>&1
 } &
 
 pkill -SIGUSR1 kitty

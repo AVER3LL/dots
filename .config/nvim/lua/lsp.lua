@@ -14,26 +14,24 @@ vim.api.nvim_create_autocmd("LspAttach", {
             return { buffer = event.buf, desc = "LSP " .. desc }
         end
 
-        -- map("n", "gD", vim.lsp.buf.declaration, opts "Go to declaration")
-        -- map("n", "gd", vim.lsp.buf.definition, opts "Go to definition")
-        -- map("n", "gi", vim.lsp.buf.implementation, opts "Go to implementation")
+        local client = vim.lsp.get_client_by_id(event.data.client_id)
+
         map("n", "gD", Snacks.picker.lsp_declarations, opts "Go to declaration")
         map("n", "gd", Snacks.picker.lsp_definitions, opts "Go to definition")
         map("n", "gi", Snacks.picker.lsp_implementations, opts "Go to implementation")
-        -- map("n", "<leader>h", vim.lsp.buf.signature_help, opts "Show signature help")
         map("n", "<leader>k", vim.lsp.buf.hover, opts "Show documentation")
         map("n", "<leader>rn", vim.lsp.buf.rename, opts "Smart rename")
-        -- map("n", "<leader>rn", require "config.renamer", opts "Smart rename")
-        -- map("n", "<leader>D", vim.lsp.buf.type_definition, opts "Go to type definition")
-        -- map("n", "]d", vim.diagnostic.jump { count = 1 }, opts "Go to next diagnostic")
-        -- map("n", "[d", vim.diagnostic.jump { count = -1 }, opts "Go to previous diagnostic")
         map("n", "<leader>ds", vim.diagnostic.setloclist, opts "Show diagnostic loclist")
         map("n", "<leader>dl", vim.diagnostic.open_float, opts "Show inline diagnostics")
         map("n", "<leader>fs", Snacks.picker.lsp_symbols, opts "Show document symbols")
 
-        map("n", "<leader>dh", function()
-            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(), nil)
-        end, opts "Toggle inlay hints")
+        if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
+            map("n", "<leader>dh", function()
+                vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(), { bufnr = event.buf })
+            end, opts "Toggle inlay hints")
+        end
+
+        -- require("config.lightbulb").attach_lightbulb(event.buf, client.id)
 
         map("n", "<leader>da", "<cmd>Trouble diagnostics<CR>", opts "Show all diagnostics")
 
@@ -44,7 +42,32 @@ vim.api.nvim_create_autocmd("LspAttach", {
         map("n", "gr", function()
             Snacks.picker.lsp_references()
         end, opts "Go to references")
+
         map("i", "<C-x>", vim.lsp.buf.signature_help, opts "Show signature help")
+
+        if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight, event.buf) then
+            local highlight_augroup = vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
+
+            vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+                buffer = event.buf,
+                group = highlight_augroup,
+                callback = vim.lsp.buf.document_highlight,
+            })
+
+            vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+                buffer = event.buf,
+                group = highlight_augroup,
+                callback = vim.lsp.buf.clear_references,
+            })
+
+            vim.api.nvim_create_autocmd("LspDetach", {
+                group = vim.api.nvim_create_augroup("kickstart-lsp-detach", { clear = true }),
+                callback = function(event2)
+                    vim.lsp.buf.clear_references()
+                    vim.api.nvim_clear_autocmds { group = "kickstart-lsp-highlight", buffer = event2.buf }
+                end,
+            })
+        end
     end,
 })
 

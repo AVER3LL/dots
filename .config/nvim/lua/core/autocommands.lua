@@ -25,6 +25,8 @@ autocmd({ "BufRead", "BufNewFile" }, {
     pattern = "*.blade.php",
     callback = function()
         vim.bo.filetype = "php"
+        vim.bo.commentstring = "{{-- %s --}}"
+        vim.bo.comments = "s:{{--,e:--}}"
     end,
 })
 
@@ -58,6 +60,7 @@ autocmd("TextYankPost", {
     end,
 })
 
+-- Do not comment new lines
 autocmd("BufEnter", { command = [[set formatoptions-=cro]] })
 
 autocmd("FileType", {

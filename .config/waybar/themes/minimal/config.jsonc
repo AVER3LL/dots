@@ -3,12 +3,7 @@
     "layer": "top",
     "position": "top",
 
-    // "margin-top": 6,
-    // "margin-bottom": 0,
-    // "margin-left": 13,
-    // "margin-right": 13,
-
-    "height": 45,
+    "height": 40,
 
     "include": ["${HOME}/.config/waybar/modules.jsonc"],
 

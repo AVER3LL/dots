@@ -2,6 +2,7 @@
 
 /* Main Colors */
 @define-color background @surface_container;
+/* @define-color background alpha(@surface_container, 0.95); */
 @define-color foreground @primary;
 @define-color battery-warning-color #ff875a;
 @define-color battery-critical-color #ff4545;
@@ -51,7 +52,6 @@ tooltip label {
 #workspaces {
     padding: 4px 2px;
     opacity: 1;
-    background-color: @background;
 }
 
 #workspaces button {
@@ -66,11 +66,12 @@ tooltip label {
 
 #workspaces button.empty {
     color: @foreground;
-    opacity: 0.3;
+    opacity: 0.5;
 }
 
 #workspaces button.visible {
-    color: alpha(@yellow_value, 0.8);
+    /* color: alpha(@yellow_value, 0.8); */
+    color: @red;
     border-radius: 5px;
     opacity: 1;
     transition: all 0.1s linear;
@@ -125,7 +126,6 @@ tooltip label {
 #pulseaudio,
 #idle_inhibitor,
 #backlight {
-    background: @background;
     opacity: 1;
     padding: 10px 5px 10px 5px;
     margin: 0 0 0 12px;

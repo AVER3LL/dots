@@ -1,5 +1,9 @@
 local symbol_map = require("icons").symbol_kinds
 
+local function is_laravel_source(source_name)
+    return vim.list_contains({ "Blade-nav", "Laravel", "laravel" }, source_name)
+end
+
 return {
     "saghen/blink.cmp",
     event = "VimEnter",
@@ -61,9 +65,15 @@ return {
                     },
                     components = {
                         kind_icon = {
-                            -- Add some space between the label and the icon
                             text = function(ctx)
-                                return "   " .. ctx.kind_icon .. ctx.icon_gap
+                                local icon = is_laravel_source(ctx.source_name) and "" or ctx.kind_icon
+
+                                return "   " .. icon .. ctx.icon_gap
+                            end,
+                            highlight = function(ctx)
+                                local hl = is_laravel_source(ctx.source_name) and "LaravelLogo" or ctx.kind_hl
+
+                                return { { group = hl, priority = 20000 } }
                             end,
                         },
                     },
@@ -90,8 +100,10 @@ return {
                     "lazydev",
                     "lsp",
                     "buffer",
-                    "blade-nav",
+                    "laravel",
+                    -- "blade-nav",
                 }
+
                 local ok, node = pcall(vim.treesitter.get_node)
 
                 if ok and node then
@@ -99,7 +111,7 @@ return {
                         table.insert(sources, "path")
                     end
                     if node:type() ~= "string" then
-                        table.insert(sources, "snippets")
+                        table.insert(sources, 1, "snippets")
                     end
                 end
 
@@ -107,16 +119,20 @@ return {
             end,
 
             providers = {
-                ["blade-nav"] = {
-                    module = "blade-nav.blink",
-                    opts = {
-                        close_tag_on_complete = false, -- default: true,
-                    },
-                },
+                -- ["blade-nav"] = {
+                --     module = "blade-nav.blink",
+                --     opts = {
+                --         close_tag_on_complete = false, -- default: true,
+                --     },
+                -- },
                 lazydev = {
                     name = "LazyDev",
                     module = "lazydev.integrations.blink",
                     score_offset = 100,
+                },
+                laravel = {
+                    name = "laravel",
+                    module = "laravel.blink_source",
                 },
             },
         },

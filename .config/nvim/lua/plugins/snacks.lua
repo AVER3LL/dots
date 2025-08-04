@@ -30,7 +30,7 @@ return {
         picker = {
             enabled = true,
             prompt = search,
-            layout = "vscode",
+            layout = "custom",
             formatters = {
                 file = {
                     truncate = 70,
@@ -115,7 +115,7 @@ return {
         {
             "<leader>ff",
             function()
-                Snacks.picker.files()
+                Snacks.picker.files { layout = "vscode" }
             end,
             desc = "Find files",
         },
@@ -129,14 +129,14 @@ return {
         {
             "<leader>fc",
             function()
-                Snacks.picker.files { cwd = vim.fn.stdpath "config" }
+                Snacks.picker.files { cwd = vim.fn.stdpath "config", layout = "vscode" }
             end,
             desc = "Find config files",
         },
         {
             "<leader>fg",
             function()
-                Snacks.picker.git_files()
+                Snacks.picker.git_files { layout = "vscode" }
             end,
             desc = "Find git files",
         },
@@ -164,14 +164,14 @@ return {
         {
             "<leader>fk",
             function()
-                Snacks.picker.keymaps()
+                Snacks.picker.keymaps { layout = "vscode" }
             end,
             desc = "Find keymaps",
         },
         {
             "<leader>th",
             function()
-                Snacks.picker.colorschemes { layout = "custom" }
+                Snacks.picker.colorschemes { layout = "vscode" }
             end,
             desc = "Find colorschemes",
         },
@@ -185,13 +185,13 @@ return {
         {
             "<leader>fl",
             function()
-                Snacks.picker.lazy()
+                Snacks.picker.lazy { layout = "custom" }
             end,
         },
         {
             "<leader>fhh",
             function()
-                Snacks.picker.help()
+                Snacks.picker.help { layout = "vscode" }
             end,
             desc = "Search the help manual",
         },

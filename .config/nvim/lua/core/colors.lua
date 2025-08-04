@@ -36,6 +36,8 @@ autocmd("ColorScheme", {
 
         sethl(0, "HighlightUrl", { underline = true })
 
+        sethl(0, "LaravelLogo", { fg = "#F53003" })
+
         -- Highlight line numbers with diagnostics
         sethl(0, "LspDiagnosticsLineNrError", { fg = colors.error })
         sethl(0, "LspDiagnosticsLineNrWarning", { fg = colors.warn })
@@ -49,7 +51,7 @@ autocmd("ColorScheme", {
         -- Cleaning the gutter
         sethl(0, "DiagnosticSignError", { bg = "NONE", fg = colors.error })
         sethl(0, "DiagnosticSignWarn", { bg = "NONE", fg = colors.warn })
-        sethl(0, "DiagnosticSignInfo", { bg = "NONE", fg = colors.ingo })
+        sethl(0, "DiagnosticSignInfo", { bg = "NONE", fg = colors.info })
         sethl(0, "DiagnosticSignHint", { bg = "NONE", fg = colors.hint })
 
         -- Doing this because of monokai-pro shenanigans
@@ -124,6 +126,8 @@ autocmd("ColorScheme", {
                 "BlinkCmpLabelDescription",
                 { bg = colors.background, fg = tools.adjust_brightness(colors.foreground, 0.6) }
             )
+
+            sethl(0, "BlinkCmpSource", { bg = "NONE", fg = colors.comment })
 
             sethl(0, "LspInfoBorder", { bg = colors.background })
             sethl(0, "NormalFloat", { bg = colors.background })

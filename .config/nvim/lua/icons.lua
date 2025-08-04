@@ -6,11 +6,6 @@ M.diagnostics = {
     WARN = "󰀪 ",
     HINT = "󰌶 ",
     INFO = "󰋽 ",
-
-    -- ERROR = "󰅙", --󰈸
-    -- WARN = "",
-    -- HINT = "󰌵", --
-    -- INFO = "󰋼", --󰋽
 }
 
 --- For folding.
@@ -93,6 +88,8 @@ M.misc = {
     search = "   ",
     vertical_bar = "│",
     dashed_bar = "┊",
+
+    lightbulb = "💡",
 
     thick_bar = " ▎",
     delete = " ",

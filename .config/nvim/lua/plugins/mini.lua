@@ -11,6 +11,12 @@ return {
     },
 
     {
+        "echasnovski/mini.statusline",
+        enabled = false,
+        opts = {},
+    },
+
+    {
         "echasnovski/mini.misc",
         version = "*",
         config = function()
