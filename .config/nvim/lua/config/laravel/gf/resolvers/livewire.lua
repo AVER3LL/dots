@@ -38,7 +38,6 @@ M.resolve = function(line, laravel_root)
 
     -- Check for Livewire class file
     local class_file = laravel_root .. "/app/Livewire/" .. class_name .. ".php"
-    vim.print(class_file)
     if vim.fn.filereadable(class_file) == 1 then
         table.insert(results, {
             file = class_file,
@@ -49,7 +48,6 @@ M.resolve = function(line, laravel_root)
 
     -- Check for Livewire blade view
     local view_file = laravel_root .. "/resources/views/livewire/" .. view_path .. ".blade.php"
-    vim.print(view_file)
     if vim.fn.filereadable(view_file) == 1 then
         table.insert(results, {
             file = view_file,

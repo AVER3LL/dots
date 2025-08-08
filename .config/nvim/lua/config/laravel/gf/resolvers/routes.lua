@@ -2,41 +2,21 @@
 
 local M = {}
 
+-- Fast recursive PHP file search
 local function find_route_files(directory)
-    local files = {}
     if vim.fn.isdirectory(directory) == 0 then
-        return files
+        return {}
     end
-
-    local entries = vim.fn.readdir(directory)
-    for _, entry in ipairs(entries) do
-        local full_path = directory .. "/" .. entry
-        ---@diagnostic disable-next-line: undefined-field
-        local stat = vim.loop.fs_stat(full_path)
-
-        if stat then
-            if stat.type == "directory" then
-                -- Recursively search subdirectories
-                vim.list_extend(files, find_route_files(full_path))
-            elseif stat.type == "file" and entry:match "%.php$" then
-                -- Add PHP files
-                table.insert(files, full_path)
-            end
-        end
-    end
-
-    return files
+    -- `**/*.php` handled internally by Neovim in C
+    return vim.fn.glob(directory .. "/**/*.php", true, true)
 end
 
--- Helper function to extract route name from route() calls
 local function extract_route_name(line, cursor_pos)
-    -- Find route() calls and extract the quoted content
     local route_patterns = {
         "route%s*%(%s*['\"]([^'\"]*)['\"]",
         "to_route%s*%(%s*['\"]([^'\"]*)['\"]",
         "->routeIs%s*%(%s*['\"]([^'\"]*)['\"]",
     }
-
     for _, pattern in ipairs(route_patterns) do
         local start_pos = 1
         while true do
@@ -44,58 +24,47 @@ local function extract_route_name(line, cursor_pos)
             if not route_start then
                 break
             end
-
-            -- Check if cursor is within this route() call
             if cursor_pos >= route_start and cursor_pos <= route_end then
                 return route_name
             end
             start_pos = route_end + 1
         end
     end
-
-    return nil
 end
 
 M.resolve = function(line, laravel_root)
-    local results = {}
-
     if not (line:match "route%s*%(" or line:match "to_route%s*%(" or line:match "->routeIs%s*%(") then
-        return results
+        return {}
     end
 
-    -- Extract the route name from the current cursor position
     local cursor_pos = vim.api.nvim_win_get_cursor(0)[2] + 1
     local quoted_content = extract_route_name(line, cursor_pos)
-
     if not quoted_content then
-        return results
+        return {}
     end
 
+    local escaped_route = vim.pesc(quoted_content)
     local routes_directory = laravel_root .. "/routes"
     local route_files = find_route_files(routes_directory)
+
     local current_file = vim.api.nvim_buf_get_name(0)
     local current_line_num = vim.api.nvim_win_get_cursor(0)[1]
 
-    for _, route_file in ipairs(route_files) do
-        -- Search for the route name in the file
-        local content = vim.fn.readfile(route_file)
-        for line_num, file_line in ipairs(content) do
-            -- Skip if this is the current file and current line (avoid suggesting the same line we're on)
-            if route_file == current_file and line_num == current_line_num then
-                goto next_file_line
-            end
+    -- Precompile route patterns
+    -- Find routes with the corresponding ->name() or Route::resource() or Route::view()
+    local patterns = {
+        "->name%s*%(%s*['\"]" .. escaped_route .. "['\"]",
+        "Route::[^%(]*%([^,]*,%s*['\"]" .. escaped_route .. "['\"]",
+    }
 
-            -- Enhanced patterns to match various route definitions
-            local patterns = {
-                -- Standard named routes: ->name('route.name')
-                "->name%s*%(%s*['\"]"
-                    .. vim.pesc(quoted_content)
-                    .. "['\"]",
-                -- Route with name as second parameter: Route::get('/path', 'route.name')
-                "Route::[^%(]*%([^,]*,%s*['\"]"
-                    .. vim.pesc(quoted_content)
-                    .. "['\"]",
-            }
+    local results = {}
+    for _, route_file in ipairs(route_files) do
+        local line_num = 0
+        for file_line in io.lines(route_file) do
+            line_num = line_num + 1
+            if route_file == current_file and line_num == current_line_num then
+                goto continue_line
+            end
 
             for _, pattern in ipairs(patterns) do
                 if file_line:match(pattern) then
@@ -108,14 +77,12 @@ M.resolve = function(line, laravel_root)
                         ) .. ")",
                         type = "route",
                     })
-                    goto next_file_line
+                    goto continue_line
                 end
             end
 
-            -- Special handling for Route::resource - check if the route name matches a resource pattern
             local resource_name = file_line:match "Route::resource%s*%(%s*['\"]([^'\"]*)['\"]"
             if resource_name then
-                -- Check if the quoted_content matches THIS specific resource route pattern
                 local resource_routes = {
                     resource_name .. ".index",
                     resource_name .. ".create",
@@ -125,9 +92,8 @@ M.resolve = function(line, laravel_root)
                     resource_name .. ".update",
                     resource_name .. ".destroy",
                 }
-
-                for _, route_name in ipairs(resource_routes) do
-                    if route_name == quoted_content then
+                for _, rn in ipairs(resource_routes) do
+                    if rn == quoted_content then
                         table.insert(results, {
                             file = route_file,
                             line = line_num,
@@ -140,12 +106,12 @@ M.resolve = function(line, laravel_root)
                                 .. ")",
                             type = "route",
                         })
-                        goto next_file_line -- Only match the specific resource, then move to next line
+                        goto continue_line
                     end
                 end
             end
 
-            ::next_file_line::
+            ::continue_line::
         end
     end
 

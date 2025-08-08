@@ -1,258 +1,163 @@
---- Collection of pickers of functions helpful for Laravel
+-- Collection of pickers of functions helpful for Laravel
 local create_picker = require("config.laravel.utils").create_picker
 
 local M = {}
-
 local snacks = require "snacks"
 
-M.find_controllers = function()
-    create_picker("Laravel Controllers", {
-        "app/Http/Controllers/**/*.php",
-        "app/Http/Controllers/*.php",
-    }, function(name)
-        return name ~= "Controller"
-    end, "app/Http/Controllers")
-end
+local pickers = {
+    controllers = {
+        label = "Controllers",
+        patterns = { "app/Http/Controllers/**/*.php" },
+        filter = function(name)
+            return name ~= "Controller"
+        end,
+        truncate = "app/Http/Controllers",
+    },
 
-M.find_models = function()
-    create_picker("Laravel Models", {
-        "app/Models/*.php",
-        "app/*.php",
-    }, nil, "app/Models")
-end
+    models = {
+        label = "Models",
+        patterns = { "app/Models/**/*.php", "app/*.php" },
+        filter = nil,
+        truncate = "app/Models",
+    },
 
-M.find_migrations = function()
-    create_picker("Laravel Migrations", {
-        "database/migrations/*.php",
-    }, nil, "database/migrations")
-end
+    migrations = {
+        label = "Migrations",
+        patterns = { "database/migrations/**/*.php" },
+        truncate = "database/migrations",
+    },
 
-M.find_views = function()
-    create_picker("Blade Views", {
-        "resources/views/**/*.blade.php",
-    }, nil, "resources/views")
-end
+    views = {
+        label = "Views",
+        patterns = { "resources/views/**/*.blade.php" },
+        truncate = "resources/views",
+    },
 
-M.find_routes = function()
-    create_picker("Routes Files", {
-        "routes/*.php",
-    }, nil, "routes")
-end
+    routes = {
+        label = "Route Files",
+        patterns = { "routes/**/*.php" },
+        truncate = "routes",
+    },
 
-M.find_commands = function()
-    create_picker("Custom Artisan Commands", {
-        "app/Console/Commands/*.php",
-    }, nil, "app/Console/Commands")
-end
+    commands = {
+        label = "Artisan Commands",
+        patterns = { "app/Console/Commands/**/*.php" },
+        truncate = "app/Console/Commands",
+    },
 
-M.find_middleware = function()
-    create_picker("Middleware", {
-        "app/Http/Middleware/*.php",
-    }, nil, "app/Http/Middleware")
-end
+    middleware = {
+        label = "Middleware",
+        patterns = { "app/Http/Middleware/**/*.php" },
+        truncate = "app/Http/Middleware",
+    },
 
-M.find_requests = function()
-    create_picker("Form Requests", {
-        "app/Http/Requests/**/*.php",
-        "app/Http/Requests/*.php",
-    }, nil, "app/Http/Requests")
-end
+    requests = {
+        label = "Form Requests",
+        patterns = { "app/Http/Requests/**/*.php" },
+        truncate = "app/Http/Requests",
+    },
 
-M.find_resources = function()
-    create_picker("API Resources", {
-        "app/Http/Resources/**/*.php",
-        "app/Http/Resources/*.php",
-    }, nil, "app/Http/Resources")
-end
+    resources = {
+        label = "API Resources",
+        patterns = { "app/Http/Resources/**/*.php" },
+        truncate = "app/Http/Resources",
+    },
 
-M.find_jobs = function()
-    create_picker("Queue Jobs", {
-        "app/Jobs/*.php",
-    }, nil, "app/Jobs")
-end
+    jobs = {
+        label = "Jobs",
+        patterns = { "app/Jobs/**/*.php" },
+        truncate = "app/Jobs",
+    },
 
-M.find_events = function()
-    create_picker("Events", {
-        "app/Events/*.php",
-    }, nil, "app/Events")
-end
+    events = {
+        label = "Events",
+        patterns = { "app/Events/**/*.php" },
+        truncate = "app/Events",
+    },
 
-M.find_listeners = function()
-    create_picker("Event Listeners", {
-        "app/Listeners/*.php",
-    }, nil, "app/Listeners")
-end
+    listeners = {
+        label = "Event Listeners",
+        patterns = { "app/Listeners/**/*.php" },
+        truncate = "app/Listeners",
+    },
 
-M.find_policies = function()
-    create_picker("Policies", {
-        "app/Policies/*.php",
-    }, nil, "app/Policies")
-end
+    policies = {
+        label = "Policies",
+        patterns = { "app/Policies/**/*.php" },
+        truncate = "app/Policies",
+    },
 
-M.find_providers = function()
-    create_picker("Service Providers", {
-        "app/Providers/*.php",
-    }, nil, "app/Providers")
-end
+    providers = {
+        label = "Service Providers",
+        patterns = { "app/Providers/**/*.php" },
+        truncate = "app/Providers",
+    },
 
-M.find_config = function()
-    create_picker("Configuration Files", {
-        "config/*.php",
-    }, nil, "config")
-end
+    config = {
+        label = "Configuration Files",
+        patterns = { "config/*.php" },
+        truncate = "config",
+    },
 
-M.find_lang = function()
-    create_picker(
-        "Language Files",
-        {
-            "lang/**/*.php",
-            "resources/lang/**/*.php",
-        },
-        nil,
-        function(path)
+    lang = {
+        label = "Language Files",
+        patterns = { "lang/**/*.php", "resources/lang/**/*.php" },
+        truncate = function(path)
             if path:match "^lang/" then
                 return "lang"
             else
                 return "resources/lang"
             end
-        end
-    )
-end
+        end,
+    },
 
-M.find_factories = function()
-    create_picker("Model Factories", {
-        "database/factories/*.php",
-    }, nil, "database/factories")
-end
+    factories = {
+        label = "Factories",
+        patterns = { "database/factories/**/*.php" },
+        truncate = "database/factories",
+    },
 
-M.find_seeders = function()
-    create_picker("Database Seeders", {
-        "database/seeders/*.php",
-    }, nil, "database/seeders")
+    seeders = {
+        label = "Seeders",
+        patterns = { "database/seeders/**/*.php" },
+        truncate = "database/seeders",
+    },
+
+    tests = {
+        label = "Tests",
+        patterns = { "tests/**/*.php" },
+        truncate = "tests",
+    },
+}
+
+for key, cfg in pairs(pickers) do
+    M["find_" .. key] = function()
+        create_picker(cfg.label, cfg.patterns, cfg.filter, cfg.truncate)
+    end
 end
 
 M.find_all = function()
-    local pickers = {
-        {
-            name = "Commands",
-            fn = function()
-                M.find_commands()
-            end,
-            text = "Commands",
-            search_key = "Commands",
-        },
-        {
-            name = "Config",
-            fn = function()
-                M.find_config()
-            end,
-            text = "Config",
-            search_key = "Config",
-        },
-        {
-            name = "Controllers",
-            fn = function()
-                M.find_controllers()
-            end,
-            text = "Controllers",
-            search_key = "Controllers",
-        },
-        {
-            name = "Jobs",
-            fn = function()
-                M.find_jobs()
-            end,
-            text = "Jobs",
-            search_key = "Jobs",
-        },
-        {
-            name = "Middleware",
-            fn = function()
-                M.find_middleware()
-            end,
-            text = "Middleware",
-            search_key = "Middleware",
-        },
-        {
-            name = "Migrations",
-            fn = function()
-                M.find_migrations()
-            end,
-            text = "Migrations",
-            search_key = "Migrations",
-        },
-        {
-            name = "Models",
-            fn = function()
-                M.find_models()
-            end,
-            text = "Models",
-            search_key = "Models",
-        },
-        {
-            name = "Requests",
-            fn = function()
-                M.find_requests()
-            end,
-            text = "Requests",
-            search_key = "Requests",
-        },
-        {
-            name = "Resources",
-            fn = function()
-                M.find_resources()
-            end,
-            text = "Resources",
-            search_key = "Resources",
-        },
-        {
-            name = "Routes",
-            fn = function()
-                M.find_routes()
-            end,
-            text = "Routes",
-            search_key = "Routes",
-        },
-        {
-            name = "Seeders",
-            fn = function()
-                M.find_seeders()
-            end,
-            text = "Seeders",
-            search_key = "Seeders",
-        },
-        {
-            name = "Tests",
-            fn = function()
-                M.find_tests()
-            end,
-            text = "Tests",
-            search_key = "Tests",
-        },
-        {
-            name = "Views",
-            fn = function()
-                M.find_views()
-            end,
-            text = "Views",
-            search_key = "Views",
-        },
-    }
+    local items = {}
+    for key, cfg in pairs(pickers) do
+        table.insert(items, {
+            name = cfg.label,
+            fn = M["find_" .. key],
+            text = cfg.label,
+            search_key = cfg.label,
+        })
+    end
 
     snacks.picker.pick {
         name = "Laravel File Types",
         layout = "vscode",
-        items = pickers,
+        items = items,
         format = function(item)
             return { { item.text, "SnacksPickerFile" } }
         end,
         confirm = function(picker, item)
             if item then
                 picker:close()
-                -- Small delay to ensure the picker is fully closed before opening the next one
-                vim.defer_fn(function()
-                    item.fn()
-                end, 10)
+                vim.defer_fn(item.fn, 10)
             end
         end,
     }

@@ -2,7 +2,7 @@ local M = {}
 
 local snacks = require "snacks"
 M.is_laravel_project = function()
-    return vim.fn.filereadable "artisan" == 1
+    return vim.loop.fs_stat "artisan" ~= nil -- faster than filereadable
 end
 
 M.get_laravel_root = function()
@@ -20,45 +20,51 @@ M.create_picker = function(title, patterns, file_filter, strip_prefix)
     end
 
     local laravel_root = M.get_laravel_root()
+
+    -- Combine all patterns into one big glob (less syscalls)
+    local all_files = {}
+    for _, pattern in ipairs(patterns) do
+        local matched = vim.fn.globpath(laravel_root, pattern, true, true)
+        for _, file in ipairs(matched) do
+            table.insert(all_files, file)
+        end
+    end
+
     local files = {}
     local name_to_entries = {}
+    local prefix_len = strip_prefix and #strip_prefix or 0
 
-    for _, pattern in ipairs(patterns) do
-        local full_pattern = laravel_root .. "/" .. pattern
-        local matched = vim.fn.glob(full_pattern, false, true)
-        for _, file in ipairs(matched) do
-            local base = vim.fn.fnamemodify(file, ":t:r")
-            local rel_path = vim.fn.fnamemodify(file, ":~:.")
-            local relative_dir = vim.fn.fnamemodify(rel_path, ":h")
+    for _, file in ipairs(all_files) do
+        local base = file:match "([^/]+)%.php$"
+        if base and (not file_filter or file_filter(base)) then
+            local rel_path = file:sub(#laravel_root + 2) -- relative to project root
+            local relative_dir = rel_path:match "(.+)/[^/]+$"
 
-            -- Strip prefix from relative_dir
-            if strip_prefix and relative_dir:find(strip_prefix, 1, true) == 1 then
-                relative_dir = relative_dir:sub(#strip_prefix + 1)
+            -- Strip prefix quickly
+            if strip_prefix and relative_dir and relative_dir:sub(1, prefix_len) == strip_prefix then
+                relative_dir = relative_dir:sub(prefix_len + 1)
                 if relative_dir:sub(1, 1) == "/" then
                     relative_dir = relative_dir:sub(2)
                 end
             end
 
-            if relative_dir == "" or relative_dir == "." then
+            if relative_dir == "" then
                 relative_dir = nil
             end
 
-            if not file_filter or file_filter(base) then
-                table.insert(files, {
-                    name = base,
-                    path = relative_dir,
-                    file = file,
-                })
+            table.insert(files, {
+                name = base,
+                path = relative_dir,
+                file = file,
+            })
 
-                name_to_entries[base] = (name_to_entries[base] or 0) + 1
-            end
+            name_to_entries[base] = (name_to_entries[base] or 0) + 1
         end
     end
 
-    -- Add formatted text and sort key
+    -- Second pass: formatting & sorting
     for _, item in ipairs(files) do
-        local needs_disambiguation = name_to_entries[item.name] > 1
-        if needs_disambiguation and item.path then
+        if name_to_entries[item.name] > 1 and item.path then
             item.text = item.name .. " (" .. item.path .. ")"
         else
             item.text = item.name
@@ -81,7 +87,7 @@ M.create_picker = function(title, patterns, file_filter, strip_prefix)
         layout = "vscode",
         items = files,
         format = function(item)
-            local name, path = string.match(item.text, "^(.-)%s%((.+)%)$")
+            local name, path = item.text:match "^(.-)%s%((.+)%)$"
             if name and path then
                 return {
                     { name, "SnacksPickerFile" },
