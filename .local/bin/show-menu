@@ -1,0 +1,114 @@
+#!/bin/bash
+
+ROFI_THEME=~/.config/rofi/system.rasi
+AVERELL_BIN=~/.local/bin
+CONFIG=~/.config
+
+menu() {
+    echo -e "$2" | rofi -dmenu -i -theme "$ROFI_THEME" -no-show-icons -format 's' -p "$1..."
+}
+
+terminal() {
+    kitty --class Averell -e $1
+}
+
+edit_in_nvim() {
+    notify-send "Editing config file" "$1"
+    kitty -e nvim "$1"
+}
+
+show_capture_menu() {
+    case $(menu "Capture" "  Screenshot\n  Screenrecord\n󰃉  Color") in
+    *Screenshot*) show_screenshot_menu ;;
+    *Screenrecord*) show_screenrecord_menu ;;
+    *Color*) pkill hyprpicker || sleep 0.1 && hyprpicker -a ;;
+    *) show_main_menu ;;
+    esac
+}
+
+show_screenshot_menu() {
+    case $(menu "Screenshot" "  Screen\n  Region") in
+    *Screen*) grimblast --notify copysave screen ;;
+    *Region*) grimblast --notify copysave area ;;
+    *) show_capture_menu ;;
+    esac
+}
+
+show_screenrecord_menu() {
+    case $(menu "Screenrecord" "  Screen\n  Screen with Audio\n  Region\n  Region with Audio") in
+    *"Screen with Audio"*) $AVERELL_BIN/averell-screenrecord screen audio ;;
+    *Screen*) $AVERELL_BIN/averell-screenrecord screen ;;
+    *"Region with Audio"*) $AVERELL_BIN/averell-screenrecord region audio ;;
+    *Region*) $AVERELL_BIN/averell-screenrecord region ;;
+    *) show_capture_menu ;;
+    esac
+}
+
+show_style_menu() {
+    case $(menu "Style" "󰔎  Toggle light/dark mode\n  Waybar theme\n󰸉  Change wallpaper") in
+    *"Toggle light/dark mode"*) $AVERELL_BIN/toggle-mode ;;
+    *"Waybar theme"*)
+        $HOME/.config/waybar/scripts/select.sh
+        if [ $? -eq 1 ]; then
+            show_style_menu
+        fi
+        ;;
+    *"Change wallpaper"*) $AVERELL_BIN/walset ;;
+    *) show_main_menu ;;
+    esac
+}
+
+show_config_menu() {
+    case $(menu "Config" "  Neovim\n  Kitty\n?  Keybinds\n󰍹  Monitors\n󰗘  Animations\n  Hyprland\n  Waybar\n  Fabric\n  Rofi\n  Swaync\n  Matugen") in
+    *Neovim*) edit_in_nvim ~/dotfiles/.config/nvim ;;
+    *Kitty*) edit_in_nvim ~/dotfiles/.config/kitty ;;
+    *Keybinds*) edit_in_nvim ~/dotfiles/.config/hypr/config/keybinding.conf ;;
+    *Monitors*) edit_in_nvim ~/dotfiles/.config/hypr/config/monitor.conf ;;
+    *Animations*) edit_in_nvim ~/dotfiles/.config/hypr/config/animations.conf ;;
+    *Hyprland*) edit_in_nvim ~/dotfiles/.config/hypr ;;
+    *Waybar*) edit_in_nvim ~/dotfiles/.config/waybar ;;
+    *Fabric*) edit_in_nvim ~/.config/fabric && killall averell-shell && ~/.config/fabric/launch.sh ;;
+    *Rofi*) edit_in_nvim ~/dotfiles/.config/rofi ;;
+    *Swaync*) edit_in_nvim ~/dotfiles/.config/swaync && $AVERELL_BIN/averell-refresh-swaync ;;
+    *Matugen*) edit_in_nvim ~/dotfiles/.config/matugen ;;
+    *) show_main_menu ;;
+    esac
+}
+
+show_toggle_menu() {
+    case $(menu "Toggle" "󰔎  Nightlight\n󱫖  Idle") in
+    *"Nightlight"*) $AVERELL_BIN/averell-toggle-hyprsunset ;;
+    *"Idle"*) $AVERELL_BIN/averell-toggle-idle ;;
+    *) show_main_menu ;;
+    esac
+}
+
+show_main_menu() {
+    case $(menu "Start" "󰀻  Apps\n  Notifications\n  Capture\n  Toggle\n  Style\n  Config") in
+    *Apps*) rofi -show drun -theme ~/.config/rofi/main.rasi ;;
+    *Notifications*) swaync-client -t -sw ;;
+    *Capture*) show_capture_menu ;;
+    *Toggle*) show_toggle_menu ;;
+    *Style*) show_style_menu ;;
+    *Config*) show_config_menu ;;
+    esac
+}
+
+go_to_menu() {
+    case "${1,,}" in
+    *apps*) rofi -show drun -theme ~/.config/rofi/main.rasi ;;
+    *style*) show_style_menu ;;
+    *capture*) show_capture_menu ;;
+    *screenshot*) show_screenshot_menu ;;
+    *screenrecord*) show_screenrecord_menu ;;
+    *toggle*) show_toggle_menu ;;
+    *config*) show_config_menu ;;
+    *notifications*) swaync-client -t -sw ;;
+    esac
+}
+
+if [[ -n "$1" ]]; then
+    go_to_menu "$1"
+else
+    show_main_menu
+fi

@@ -75,7 +75,7 @@ autocmd("ColorScheme", {
         sethl(0, "NvimTreeEndOfBuffer", { bg = gethl(0, { name = "NvimTreeNormal" }).bg })
         sethl(0, "NvimTreeSignColumn", { bg = "NONE" })
 
-        if vim.g.style == "flat" then
+        if tools.style == "flat" then
             sethl(0, "SnacksInputNormal", { bg = colors.pmenu, fg = colors.foreground })
             sethl(0, "SnacksInputBorder", { bg = colors.pmenu, fg = colors.pmenu })
 
@@ -105,7 +105,7 @@ autocmd("ColorScheme", {
             -- sethl(0, "SnacksPickerBorder", { bg = background, fg = adjust_brightness(colors.foreground, 0.3) })
             sethl(0, "NormalFloat", { bg = colors.pmenu })
             sethl(0, "FloatBorder", { fg = colors.pmenu, bg = colors.pmenu })
-        elseif vim.g.style == "clear" then
+        elseif tools.style == "clear" then
             sethl(
                 0,
                 "BlinkCmpMenuBorder",
@@ -136,6 +136,14 @@ autocmd("ColorScheme", {
             sethl(0, "NormalFloat", { bg = colors.background })
             sethl(0, "FloatBorder", { fg = tools.adjust_brightness(colors.foreground, 0.6), bg = colors.background })
             -- sethl(0, "@spell.markdown", { fg = adjust_brightness(colors.foreground, 0.5), bg = colors.background })
+
+            -- Doing this because of tokyonight
+            sethl(0, "WhichKeyNormal", { bg = colors.background })
+            sethl(
+                0,
+                "SnacksPickerInputBorder",
+                { bg = colors.background, fg = gethl(0, { name = "SnacksPickerInputTitle" }).fg }
+            )
         end
 
         sethl(0, "WinBar", { bg = colors.background })
@@ -160,8 +168,7 @@ autocmd("ColorScheme", {
 
         sethl(0, "FloatTitle", { bg = colors.background })
 
-        -- sethl(0, "BlinkCmpMenuSelection", { bg = adjust_brightness(colors.fun, 0.4) })
-        -- sethl(0, "BlinkCmpMenuSelection", { bg = colors.fun, fg = colors.background, bold = true })
+        -- sethl(0, "BlinkCmpMenuSelection", { bg = tools.adjust_brightness(colors.fun, 0.4) })
         sethl(0, "BlinkCmpMenuSelection", { bg = colors.fun, fg = colors.background })
 
         sethl(0, "LspSignatureActiveParameter", { bg = colors.str, bold = true, fg = colors.background })
@@ -185,11 +192,6 @@ autocmd("ColorScheme", {
             sethl(0, "GitSignsAddCul", { bg = colors.cursorline, fg = tools.resolve_hl "GitSignsAdd" })
             sethl(0, "GitSignsChangeCul", { bg = colors.cursorline, fg = tools.resolve_hl "GitSignsChange" })
             sethl(0, "GitSignsDeleteCul", { bg = colors.cursorline, fg = tools.resolve_hl "GitSignsDelete" })
-
-            -- sethl(0, "CursorColumn", { bg = colors.cursorline })
-            -- sethl(0, "ColorColumn", { bg = colors.cursorline })
-            -- sethl(0, "SignColumn", { bg = colors.cursorline })
-            -- sethl(0, "FoldColumn", { bg = colors.cursorline })
         end
 
         -- treesitter highlights

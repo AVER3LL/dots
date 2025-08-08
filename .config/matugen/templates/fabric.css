@@ -3,6 +3,8 @@
   --background: {{colors.background.default.hex}};
   --cursor: {{colors.on_background.default.hex}};
   --primary: {{colors.primary.default.hex}};
+  --source: {{colors.source_color.default.hex}};
+  --primary-fixed: {{colors.primary_fixed.default.hex}};
   --on-primary: {{colors.on_primary.default.hex}};
   --secondary: {{colors.secondary.default.hex}};
   --on-secondary: {{colors.on_secondary.default.hex}};

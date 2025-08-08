@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if pgrep -x swaync >/dev/null; then
+    swaync-client -R -rs -sw
+    notify-send "Reloaded swaync"
+else
+    killall mako && swaync >/dev/null 2>&1 &
+    notify-send "Launched swaync"
+fi

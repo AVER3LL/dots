@@ -52,16 +52,10 @@ return {
                 gopls = {},
                 taplo = {},
                 tailwindcss = {},
+                qmlls = {},
                 texlab = {},
 
-                basedpyright = {
-                    analysis = {
-                        typeCheckingMode = "strict",
-                        autoSearchPaths = true,
-                        diagnosticMode = "workspace",
-                        useLibraryCodeForTypes = true,
-                    },
-                },
+                basedpyright = {},
 
                 vue_ls = {},
 

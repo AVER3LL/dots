@@ -72,7 +72,7 @@ return {
 
         local averell = {
             type = "text",
-            val = " AVER3LL ",
+            val = " AVER3LL- ",
             opts = {
                 position = "center",
                 hl = "Number",

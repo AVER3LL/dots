@@ -20,10 +20,10 @@ return {
             enabled = true,
             prompt_pos = "title",
             win = {
-                relative = "cursor",
-                row = -3,
-                col = -1,
-                width = 20,
+                relative = "editor",
+                row = 10,
+                -- col = 5,
+                width = 0,
                 border = tools.border,
             },
         },
@@ -40,7 +40,7 @@ return {
                 files = {
                     hidden = true,
                     ignored = true,
-                    exclude = { "node_modules", ".git", "__pycache__", ".mypy_cache" },
+                    exclude = { "node_modules", ".git", "__pycache__", ".mypy_cache", "venv", ".venv" },
                 },
             },
             layouts = {
@@ -171,7 +171,7 @@ return {
         {
             "<leader>th",
             function()
-                Snacks.picker.colorschemes { layout = "vscode" }
+                Snacks.picker.colorschemes { layout = "custom" }
             end,
             desc = "Find colorschemes",
         },

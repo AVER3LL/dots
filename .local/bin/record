@@ -27,7 +27,7 @@ fi
 echo $ >"$LOCKFILE"
 
 # Use rofi to select recording mode
-CHOICE=$(echo -e "Record Full Screen\nRecord Full Screen with Audio\nRecord Selected Area\nRecord Selected Area with Audio" | rofi -dmenu -theme ~/.config/rofi/material-you.rasi -p "Recording Mode :" -i)
+CHOICE=$(echo -e "Record Full Screen\nRecord Full Screen with Audio\nRecord Selected Area\nRecord Selected Area with Audio" | rofi -dmenu -theme ~/.config/rofi/system.rasi -p "Recording Mode..." -i)
 
 # If no choice was made (user pressed escape), exit
 if [ -z "$CHOICE" ]; then

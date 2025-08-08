@@ -1,6 +1,3 @@
---- @type "flat" | "clear"
-vim.g.style = "clear"
-
 vim.g.enable_signature = true
 
 vim.o.conceallevel = 2
@@ -32,7 +29,7 @@ vim.opt.listchars = {
     extends = "»",
     precedes = "«",
     trail = "·",
-    eol = "↴", -- ⏎, ¬, ↴
+    -- eol = "↴", -- ⏎, ¬, ↴
 }
 vim.o.showbreak = "↳ " -- Cool character on line wrap
 vim.opt.fillchars = {

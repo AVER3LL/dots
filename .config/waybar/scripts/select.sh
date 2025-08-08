@@ -24,29 +24,40 @@ declare -A THEME_DESC=(
     ["windows"]="Bottom bar Windows-style layout"
     ["zen"]="Minimal clean interface"
     ["both"]="Dual bar setup (top + bottom)"
-    ["minimal"]="Idk man"
+    ["minimal"]="Top bar with no gap"
 )
 
 # Theme icons for visual appeal in rofi
 declare -A THEME_ICONS=(
     ["main"]="󰕰"
     ["full"]="󰍹"
-    # ["vertical"]="󰘴"
     ["vertical"]=""
     ["windows"]="󰖟"
     ["zen"]="󱎴"
     ["both"]="󰍺"
-    ["minimal"]="i"
+    ["minimal"]="󰘴"
 )
 
 # Display menu of available themes
 show_menu() {
     local menu_items=""
+    local themes=("${!THEME_MAP[@]}")
+    local last_index=$((${#themes[@]} - 1))
+    local current_theme
+    current_theme=$(get_current_theme)
 
-    for theme in "${!THEME_MAP[@]}"; do
+    for i in "${!themes[@]}"; do
+        local theme="${themes[$i]}"
         local icon="${THEME_ICONS[$theme]:-󰚀}"
         local desc="${THEME_DESC[$theme]:-No description}"
-        menu_items+="  $icon  $theme - $desc\n"
+
+        # If it's the current theme, append [selected]
+        if [[ "$theme" == "$current_theme" ]]; then
+            desc+=" <span foreground='gold'><b><i>[selected]</i></b></span>"
+        fi
+
+        menu_items+="$icon  $theme - $desc"
+        [[ $i -ne $last_index ]] && menu_items+="\n"
     done
 
     echo -e "$menu_items"
@@ -150,10 +161,7 @@ main() {
     current_theme=$(get_current_theme)
 
     # Create rofi prompt with current theme info
-    local prompt="  Select Waybar Theme"
-    if [[ "$current_theme" != "unknown" ]]; then
-        prompt+=" (Current: $current_theme)"
-    fi
+    local prompt="Waybar Theme..."
 
     # Show menu and get user selection
     local choice
@@ -161,14 +169,14 @@ main() {
         -dmenu \
         -i \
         -p "$prompt" \
-        -theme ~/.config/rofi/waybar.rasi \
-        -no-custom \
-        -format 's')
+        -theme ~/.config/rofi/system.rasi \
+        -no-show-icons \
+        -markup-rows -format 's')
 
     # Exit if no selection made or ESC pressed
     if [[ -z "$choice" ]]; then
         echo "No theme selected"
-        exit 0
+        exit 1
     fi
 
     # Extract theme name from selection (get first word after icon)

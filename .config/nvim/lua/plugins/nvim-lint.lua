@@ -10,7 +10,7 @@ return {
 
                 lua = { "luacheck" },
 
-                python = { "mypy" },
+                -- python = { "mypy" },
 
                 php = { "phpstan" },
 

@@ -54,4 +54,5 @@ if [ -n "$SELECTED_WALL" ]; then
     fi
 else
     echo "Wallpaper selection cancelled"
+    exit A
 fi

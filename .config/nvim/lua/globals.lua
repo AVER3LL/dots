@@ -3,6 +3,9 @@ _G.tools = {}
 --- @type "rounded" | "single" | "solid" | "none" | "bold" | "double" | "shadow"
 tools.border = "single"
 
+--- @type "flat" | "clear"
+tools.style = "clear"
+
 --- @param mode string | table
 --- @param lhs string
 --- @param rhs string | fun(): string?

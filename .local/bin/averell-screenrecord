@@ -1,0 +1,167 @@
+#!/usr/bin/env bash
+
+# Create a temporary lockfile to track if we're in countdown
+LOCKFILE="/tmp/screen_recorder_countdown.lock"
+
+show_usage() {
+    echo "Usage: $0 [screen|region] [audio]"
+    echo ""
+    echo "Examples:"
+    echo "  $0 screen         # Record full screen without audio"
+    echo "  $0 screen audio   # Record full screen with audio"
+    echo "  $0 region         # Record selected region without audio"
+    echo "  $0 region audio   # Record selected region with audio"
+    echo "  $0 audio screen   # Same as 'screen audio' (order doesn't matter)"
+    echo "  $0 stop           # Stop current recording"
+    echo ""
+    exit 1
+}
+
+# Function to stop recording or cancel countdown
+stop_recording() {
+    if pgrep -x "wf-recorder" >/dev/null; then
+        pkill -INT -x wf-recorder
+        echo "✓ Recording stopped"
+        exit 0
+    elif [ -f "$LOCKFILE" ]; then
+        # Get PID of the script that's in countdown
+        COUNTDOWN_PID=$(cat "$LOCKFILE")
+        # Check if the PID exists and is a screen recorder script
+        if ps -p "$COUNTDOWN_PID" >/dev/null && grep -q "screen.*record" "/proc/$COUNTDOWN_PID/cmdline" 2>/dev/null; then
+            kill "$COUNTDOWN_PID"
+            rm -f "$LOCKFILE"
+            echo "✓ Countdown cancelled"
+            exit 0
+        else
+            # Stale lockfile, remove it
+            rm -f "$LOCKFILE"
+        fi
+    else
+        echo "No recording in progress"
+        exit 1
+    fi
+}
+
+# Function to show countdown
+countdown_notify() {
+    # Clean, minimal countdown with smooth transitions
+    notify-send -h string:wf-recorder:countdown -t 1000 -u low \
+        "Recording starts in" \
+        "<span color='#f38ba8' font='JetBrains Mono 18' weight='300'>3</span>"
+    sleep 1
+
+    notify-send -h string:wf-recorder:countdown -t 1000 -u low \
+        "Recording starts in" \
+        "<span color='#fab387' font='JetBrains Mono 18' weight='300'>2</span>"
+    sleep 1
+
+    notify-send -h string:wf-recorder:countdown -t 950 -u low \
+        "Recording starts in" \
+        "<span color='#f9e2af' font='JetBrains Mono 18' weight='300'>1</span>"
+    sleep 1
+
+    # Final notification with recording dot
+    notify-send -h string:wf-recorder:countdown -t 2000 -u normal \
+        "Recording" \
+        "<span color='#f38ba8' font='JetBrains Mono 18'>● REC</span>"
+}
+
+# Parse arguments
+MODE=""
+AUDIO=""
+STOP=false
+
+# Loop through all arguments
+for arg in "$@"; do
+    case "$arg" in
+    "screen" | "region")
+        if [ -n "$MODE" ]; then
+            echo "Error: Multiple modes specified ($MODE and $arg)"
+            show_usage
+        fi
+        MODE="$arg"
+        ;;
+    "audio")
+        AUDIO="--audio"
+        ;;
+    "stop")
+        STOP=true
+        ;;
+    *)
+        echo "Error: Invalid argument '$arg'"
+        show_usage
+        ;;
+    esac
+done
+
+# Handle stop command
+if [ "$STOP" = true ]; then
+    stop_recording
+fi
+
+# Check if mode was specified
+if [ -z "$MODE" ]; then
+    echo "Error: No recording mode specified"
+    show_usage
+fi
+
+# Check if already recording or in countdown, if so stop everything
+if pgrep -x "wf-recorder" >/dev/null; then
+    echo "Recording already in progress. Stopping..."
+    stop_recording
+elif [ -f "$LOCKFILE" ]; then
+    # Get PID of the script that's in countdown
+    COUNTDOWN_PID=$(cat "$LOCKFILE")
+    # Check if the PID exists and is a screen recorder script
+    if ps -p "$COUNTDOWN_PID" >/dev/null && grep -q "screen.*record" "/proc/$COUNTDOWN_PID/cmdline" 2>/dev/null; then
+        kill "$COUNTDOWN_PID"
+        rm -f "$LOCKFILE"
+        echo "✓ Countdown cancelled"
+        exit 0
+    else
+        # Stale lockfile, remove it
+        rm -f "$LOCKFILE"
+    fi
+fi
+
+# Register this script as being in countdown mode
+echo $$ >"$LOCKFILE"
+
+# Output file name based on current date and time
+dateTime=$(date +%m-%d-%Y-%H:%M:%S)
+output_file="$HOME/Videos/$dateTime.mp4"
+
+# Ensure Videos directory exists
+mkdir -p "$HOME/Videos"
+
+# Start recording based on selected mode
+case "$MODE" in
+"screen")
+    if [ -n "$AUDIO" ]; then
+        echo "🎬 Recording full screen with audio..."
+    else
+        echo "🎬 Recording full screen..."
+    fi
+    countdown_notify
+    wf-recorder --bframes max_b_frames $AUDIO -f "$output_file"
+    ;;
+"region")
+    if [ -n "$AUDIO" ]; then
+        echo "🎬 Select area to record with audio..."
+    else
+        echo "🎬 Select area to record..."
+    fi
+    GEOM=$(slurp 2>/dev/null) || {
+        rm -f "$LOCKFILE"
+        echo "❌ Area selection cancelled"
+        exit 1
+    }
+    countdown_notify
+    wf-recorder --bframes max_b_frames $AUDIO -g "$GEOM" -f "$output_file"
+    ;;
+esac
+
+# Remove the lockfile when the script is done with the countdown
+rm -f "$LOCKFILE"
+
+echo "💾 Recording saved to: $output_file"

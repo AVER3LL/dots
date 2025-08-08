@@ -73,5 +73,13 @@ return {
         },
     },
     ---@type venv-selector.Config
-    opts = {},
+    opts = {
+        ---@diagnostic disable-next-line: missing-fields
+        -- options = {
+        --     on_venv_activate_callback = function()
+        --         vim.cmd "LspRestart basedpyright"
+        --     end,
+        --     notify_user_on_venv_activation = true,
+        -- },
+    },
 }

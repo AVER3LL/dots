@@ -28,8 +28,26 @@ return {
 
             -- custom mappings
             vim.keymap.set("n", "l", api.node.open.edit, opts "Open")
+            vim.keymap.set("n", "y", api.fs.copy.node, opts "Copy")
             vim.keymap.set("n", "s", api.node.open.vertical, opts "Open in vertical split")
             vim.keymap.set("n", "H", api.tree.toggle_hidden_filter, opts "Toggle Dotfiles")
+            -- vim.keymap.set("n", "<Tab>", api.node.open.preview, opts "Open Preview")
+            vim.keymap.set("n", "d", api.fs.trash, opts "Trash")
+            vim.keymap.set("n", "D", api.fs.remove, opts "Remove")
+
+            vim.keymap.set("n", ".", function()
+                local core = require "nvim-tree.core"
+
+                local explorer = core.get_explorer()
+
+                if not explorer then
+                    return
+                end
+
+                local path = explorer["get_node_at_cursor"](explorer).absolute_path
+
+                require("config.floaterminal").put_command(path, "start")
+            end, opts "Run Command on file")
         end
         require("nvim-tree").setup {
             on_attach = my_on_attach,

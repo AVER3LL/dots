@@ -1,0 +1,606 @@
+local M = {}
+local snacks = require "snacks"
+
+-- Helper function to check if we're in a Laravel project
+local function is_laravel_project()
+    return vim.fn.filereadable "artisan" == 1
+end
+
+-- Helper function to get Laravel project root
+local function get_laravel_root()
+    local artisan_path = vim.fn.findfile("artisan", ".;")
+    if artisan_path ~= "" then
+        return vim.fn.fnamemodify(artisan_path, ":h")
+    end
+    return vim.fn.getcwd()
+end
+
+local function create_picker(title, patterns, file_filter, strip_prefix, extra_info_fn, parent_fn)
+    if not is_laravel_project() then
+        vim.notify("Not in a Laravel project", vim.log.levels.WARN)
+        return
+    end
+
+    local laravel_root = get_laravel_root()
+    local files = {}
+    local name_to_entries = {}
+
+    for _, pattern in ipairs(patterns) do
+        -- Make patterns relative to Laravel root
+        local full_pattern = laravel_root .. "/" .. pattern
+        local matched = vim.fn.glob(full_pattern, false, true)
+        for _, file in ipairs(matched) do
+            local base = vim.fn.fnamemodify(file, ":t:r")
+            local rel_path = vim.fn.fnamemodify(file, ":~:.")
+            local relative_dir = vim.fn.fnamemodify(rel_path, ":h")
+
+            -- Strip prefix from relative_dir
+            if strip_prefix and relative_dir:find(strip_prefix, 1, true) == 1 then
+                relative_dir = relative_dir:sub(#strip_prefix + 1)
+                if relative_dir:sub(1, 1) == "/" then
+                    relative_dir = relative_dir:sub(2)
+                end
+            end
+            if relative_dir == "" or relative_dir == "." then
+                relative_dir = nil
+            end
+
+            if not file_filter or file_filter(base, file) then
+                local item = {
+                    name = base,
+                    path = relative_dir,
+                    file = file,
+                }
+
+                -- Add extra info if function provided
+                if extra_info_fn then
+                    item.extra_info = extra_info_fn(file, base)
+                end
+
+                table.insert(files, item)
+                name_to_entries[base] = (name_to_entries[base] or 0) + 1
+            end
+        end
+    end
+
+    -- Add formatted text and sort key
+    for _, item in ipairs(files) do
+        local needs_disambiguation = name_to_entries[item.name] > 1
+        if needs_disambiguation and item.path then
+            item.text = item.name .. " (" .. item.path .. ")"
+        else
+            item.text = item.name
+        end
+        item.search_key = item.name
+        item.sort_key = item.name
+    end
+
+    table.sort(files, function(a, b)
+        return a.sort_key < b.sort_key
+    end)
+
+    if #files == 0 then
+        vim.notify("No matching files found in " .. title, vim.log.levels.WARN)
+        return
+    end
+
+    local picker_config = {
+        name = title,
+        layout = "vscode",
+        items = files,
+        format = function(item)
+            local name, path = string.match(item.text, "^(.-)%s%((.+)%)$")
+            local result = {}
+
+            if name and path then
+                table.insert(result, { name, "SnacksPickerFile" })
+                table.insert(result, { " (" .. path .. ")", "Comment" })
+            else
+                table.insert(result, { item.text, "SnacksPickerFile" })
+            end
+
+            -- Add extra info if available
+            if item.extra_info then
+                table.insert(result, { " " .. item.extra_info, "SnacksPickerDetail" })
+            end
+
+            return result
+        end,
+        confirm = function(picker, item)
+            if item then
+                picker:close()
+                vim.cmd("edit " .. item.file)
+            end
+        end,
+    }
+
+    -- Add custom keymaps if there's a parent function
+    if parent_fn then
+        -- picker_config.win.input.keys = {
+        --     {
+        --         key = "<C-o>",
+        --         action = function(picker)
+        --             vim.print("hi")
+        --             picker:close()
+        --             vim.defer_fn(function()
+        --                 parent_fn()
+        --             end, 10)
+        --         end,
+        --         mode = { "n" },
+        --     },
+        -- }
+
+        picker_config.win = {
+            input = {
+                keys = {
+                    {
+                        key = "<Esc>",
+                        action = function(picker)
+                            vim.print "hi"
+                            picker:close()
+                            vim.defer_fn(function()
+                                parent_fn()
+                            end, 10)
+                        end,
+                        mode = { "n" },
+                    },
+                },
+            },
+        }
+    end
+
+    snacks.picker.pick(picker_config)
+end
+
+-- Enhanced functions with better filtering and extra info
+M.find_controllers = function(parent_fn)
+    create_picker(
+        "Laravel Controllers",
+        {
+            "app/Http/Controllers/**/*.php",
+            "app/Http/Controllers/*.php",
+        },
+        function(name, file)
+            return name ~= "Controller"
+        end,
+        "app/Http/Controllers",
+        function(file, name)
+            -- Extract namespace or check if it's a resource controller
+            local content = vim.fn.readfile(file, "", 5)
+            for _, line in ipairs(content) do
+                if line:match "extends.*Controller" then
+                    if line:match "Resource" then
+                        return "[Resource]"
+                    elseif line:match "API" then
+                        return "[API]"
+                    end
+                end
+            end
+            return ""
+        end,
+        parent_fn
+    )
+end
+
+M.find_models = function(parent_fn)
+    create_picker(
+        "Laravel Models",
+        {
+            "app/Models/*.php",
+            "app/*.php",
+        },
+        function(name, file)
+            -- Filter out non-model files in app directory
+            if file:match "app/[^/]+%.php$" then
+                local content = vim.fn.readfile(file, "", 10)
+                for _, line in ipairs(content) do
+                    if line:match "extends.*Model" or line:match "use.*Model" then
+                        return true
+                    end
+                end
+                return false
+            end
+            return true
+        end,
+        "app/Models",
+        function(file, name)
+            -- Check if model has specific traits
+            local content = vim.fn.readfile(file, "", 20)
+            local traits = {}
+            for _, line in ipairs(content) do
+                if line:match "use.*SoftDeletes" then
+                    table.insert(traits, "SoftDeletes")
+                elseif line:match "use.*HasFactory" then
+                    table.insert(traits, "Factory")
+                elseif line:match "use.*Notifiable" then
+                    table.insert(traits, "Notifiable")
+                end
+            end
+            return #traits > 0 and "[" .. table.concat(traits, ",") .. "]" or ""
+        end,
+        parent_fn
+    )
+end
+
+M.find_migrations = function(parent_fn)
+    create_picker(
+        "Laravel Migrations",
+        {
+            "database/migrations/*.php",
+        },
+        nil,
+        "database/migrations",
+        function(file, name)
+            -- Extract date from migration filename
+            local date_match = name:match "^(%d%d%d%d_%d%d_%d%d_%d+)"
+            return date_match and "[" .. date_match:gsub("_", "-"):sub(1, 10) .. "]" or ""
+        end,
+        parent_fn
+    )
+end
+
+M.find_views = function(parent_fn)
+    create_picker("Blade Views", {
+        "resources/views/**/*.blade.php",
+    }, nil, "resources/views", nil, parent_fn)
+end
+
+M.find_routes = function(parent_fn)
+    create_picker("Routes Files", {
+        "routes/*.php",
+    }, nil, "routes", nil, parent_fn)
+end
+
+M.find_commands = function(parent_fn)
+    create_picker("Custom Artisan Commands", {
+        "app/Console/Commands/*.php",
+    }, nil, "app/Console/Commands", nil, parent_fn)
+end
+
+-- New additions
+M.find_middleware = function(parent_fn)
+    create_picker("Middleware", {
+        "app/Http/Middleware/*.php",
+    }, nil, "app/Http/Middleware", nil, parent_fn)
+end
+
+M.find_requests = function(parent_fn)
+    create_picker("Form Requests", {
+        "app/Http/Requests/**/*.php",
+        "app/Http/Requests/*.php",
+    }, nil, "app/Http/Requests", nil, parent_fn)
+end
+
+M.find_resources = function(parent_fn)
+    create_picker("API Resources", {
+        "app/Http/Resources/**/*.php",
+        "app/Http/Resources/*.php",
+    }, nil, "app/Http/Resources", nil, parent_fn)
+end
+
+M.find_jobs = function(parent_fn)
+    create_picker("Queue Jobs", {
+        "app/Jobs/*.php",
+    }, nil, "app/Jobs", nil, parent_fn)
+end
+
+M.find_events = function(parent_fn)
+    create_picker("Events", {
+        "app/Events/*.php",
+    }, nil, "app/Events", nil, parent_fn)
+end
+
+M.find_listeners = function(parent_fn)
+    create_picker("Event Listeners", {
+        "app/Listeners/*.php",
+    }, nil, "app/Listeners", nil, parent_fn)
+end
+
+M.find_policies = function(parent_fn)
+    create_picker("Policies", {
+        "app/Policies/*.php",
+    }, nil, "app/Policies", nil, parent_fn)
+end
+
+M.find_providers = function(parent_fn)
+    create_picker("Service Providers", {
+        "app/Providers/*.php",
+    }, nil, "app/Providers", nil, parent_fn)
+end
+
+M.find_tests = function(parent_fn)
+    create_picker(
+        "Tests",
+        {
+            "tests/Feature/**/*.php",
+            "tests/Unit/**/*.php",
+            "tests/Feature/*.php",
+            "tests/Unit/*.php",
+        },
+        nil,
+        "tests",
+        function(file, name)
+            if file:match "tests/Feature/" then
+                return "[Feature]"
+            elseif file:match "tests/Unit/" then
+                return "[Unit]"
+            end
+            return ""
+        end,
+        parent_fn
+    )
+end
+
+M.find_config = function(parent_fn)
+    create_picker("Configuration Files", {
+        "config/*.php",
+    }, nil, "config", nil, parent_fn)
+end
+
+M.find_lang = function(parent_fn)
+    create_picker(
+        "Language Files",
+        {
+            "lang/**/*.php",
+            "resources/lang/**/*.php",
+        },
+        nil,
+        function(path)
+            if path:match "^lang/" then
+                return "lang"
+            else
+                return "resources/lang"
+            end
+        end,
+        nil,
+        parent_fn
+    )
+end
+
+M.find_factories = function(parent_fn)
+    create_picker("Model Factories", {
+        "database/factories/*.php",
+    }, nil, "database/factories", nil, parent_fn)
+end
+
+M.find_seeders = function(parent_fn)
+    create_picker("Database Seeders", {
+        "database/seeders/*.php",
+    }, nil, "database/seeders", nil, parent_fn)
+end
+
+-- Utility function to find related files
+M.find_related = function()
+    local current_file = vim.fn.expand "%:p"
+    local laravel_root = get_laravel_root()
+
+    if not current_file:find(laravel_root, 1, true) then
+        vim.notify("Current file is not in Laravel project", vim.log.levels.WARN)
+        return
+    end
+
+    local relative_path = current_file:sub(#laravel_root + 2) -- +2 to skip the slash
+    local related_files = {}
+
+    -- Controller -> Model, Views, Routes
+    if relative_path:match "app/Http/Controllers/.*%.php$" then
+        local controller_name = vim.fn.fnamemodify(current_file, ":t:r")
+        local model_name = controller_name:gsub("Controller$", "")
+
+        -- Find related model
+        local model_patterns = {
+            laravel_root .. "/app/Models/" .. model_name .. ".php",
+            laravel_root .. "/app/" .. model_name .. ".php",
+        }
+
+        for _, pattern in ipairs(model_patterns) do
+            if vim.fn.filereadable(pattern) == 1 then
+                table.insert(related_files, {
+                    name = "Model: " .. model_name,
+                    file = pattern,
+                    type = "model",
+                })
+                break
+            end
+        end
+
+        -- Find related views
+        local view_dir = laravel_root .. "/resources/views/" .. model_name:lower()
+        if vim.fn.isdirectory(view_dir) == 1 then
+            local view_files = vim.fn.glob(view_dir .. "/*.blade.php", false, true)
+            for _, view_file in ipairs(view_files) do
+                table.insert(related_files, {
+                    name = "View: " .. vim.fn.fnamemodify(view_file, ":t:r"),
+                    file = view_file,
+                    type = "view",
+                })
+            end
+        end
+    end
+
+    -- Model -> Controller, Migration, Factory
+    if relative_path:match "app/Models/.*%.php$" or relative_path:match "app/[^/]+%.php$" then
+        local model_name = vim.fn.fnamemodify(current_file, ":t:r")
+
+        -- Find related controller
+        local controller_file = laravel_root .. "/app/Http/Controllers/" .. model_name .. "Controller.php"
+        if vim.fn.filereadable(controller_file) == 1 then
+            table.insert(related_files, {
+                name = "Controller: " .. model_name .. "Controller",
+                file = controller_file,
+                type = "controller",
+            })
+        end
+
+        -- Find related migration
+        local migration_files = vim.fn.glob(
+            laravel_root .. "/database/migrations/*_create_" .. model_name:lower() .. "s_table.php",
+            false,
+            true
+        )
+        if #migration_files == 0 then
+            migration_files =
+                vim.fn.glob(laravel_root .. "/database/migrations/*_" .. model_name:lower() .. "*.php", false, true)
+        end
+
+        for _, migration_file in ipairs(migration_files) do
+            table.insert(related_files, {
+                name = "Migration: " .. vim.fn.fnamemodify(migration_file, ":t:r"),
+                file = migration_file,
+                type = "migration",
+            })
+        end
+
+        -- Find related factory
+        local factory_file = laravel_root .. "/database/factories/" .. model_name .. "Factory.php"
+        if vim.fn.filereadable(factory_file) == 1 then
+            table.insert(related_files, {
+                name = "Factory: " .. model_name .. "Factory",
+                file = factory_file,
+                type = "factory",
+            })
+        end
+    end
+
+    if #related_files == 0 then
+        vim.notify("No related files found", vim.log.levels.INFO)
+        return
+    end
+
+    snacks.picker.pick {
+        name = "Related Files",
+        layout = "vscode",
+        items = related_files,
+        format = function(item)
+            return { { item.name, "SnacksPickerFile" } }
+        end,
+        confirm = function(picker, item)
+            if item then
+                picker:close()
+                vim.cmd("edit " .. item.file)
+            end
+        end,
+    }
+end
+
+-- Quick access function for all Laravel files
+M.find_all = function()
+    local pickers = {
+        {
+            name = "Controllers",
+            fn = function()
+                M.find_controllers(M.find_all)
+            end,
+            text = "Controllers",
+            search_key = "Controllers",
+        },
+        {
+            name = "Models",
+            fn = function()
+                M.find_models(M.find_all)
+            end,
+            text = "Models",
+            search_key = "Models",
+        },
+        {
+            name = "Views",
+            fn = function()
+                M.find_views(M.find_all)
+            end,
+            text = "Views",
+            search_key = "Views",
+        },
+        {
+            name = "Routes",
+            fn = function()
+                M.find_routes(M.find_all)
+            end,
+            text = "Routes",
+            search_key = "Routes",
+        },
+        {
+            name = "Migrations",
+            fn = function()
+                M.find_migrations(M.find_all)
+            end,
+            text = "Migrations",
+            search_key = "Migrations",
+        },
+        {
+            name = "Commands",
+            fn = function()
+                M.find_commands(M.find_all)
+            end,
+            text = "Commands",
+            search_key = "Commands",
+        },
+        {
+            name = "Middleware",
+            fn = function()
+                M.find_middleware(M.find_all)
+            end,
+            text = "Middleware",
+            search_key = "Middleware",
+        },
+        {
+            name = "Requests",
+            fn = function()
+                M.find_requests(M.find_all)
+            end,
+            text = "Requests",
+            search_key = "Requests",
+        },
+        {
+            name = "Resources",
+            fn = function()
+                M.find_resources(M.find_all)
+            end,
+            text = "Resources",
+            search_key = "Resources",
+        },
+        {
+            name = "Jobs",
+            fn = function()
+                M.find_jobs(M.find_all)
+            end,
+            text = "Jobs",
+            search_key = "Jobs",
+        },
+        {
+            name = "Tests",
+            fn = function()
+                M.find_tests(M.find_all)
+            end,
+            text = "Tests",
+            search_key = "Tests",
+        },
+        {
+            name = "Config",
+            fn = function()
+                M.find_config(M.find_all)
+            end,
+            text = "Config",
+            search_key = "Config",
+        },
+    }
+
+    snacks.picker.pick {
+        name = "Laravel File Types",
+        layout = "vscode",
+        items = pickers,
+        format = function(item)
+            return { { item.text, "SnacksPickerFile" } }
+        end,
+        confirm = function(picker, item)
+            if item then
+                picker:close()
+                -- Small delay to ensure the picker is fully closed before opening the next one
+                vim.defer_fn(function()
+                    item.fn()
+                end, 10)
+            end
+        end,
+    }
+end
+
+return M
