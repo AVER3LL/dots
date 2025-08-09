@@ -297,7 +297,7 @@ scrollbar slider {
     background: var(--bg-primary);
     color: var(--text-primary);
     border-radius: 2px;
-    border-bottom: 1px solid var(--border-color);
+    /* border-bottom: 1px solid var(--border-color); */
     border-left: 1px solid var(--border-color);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
     /* border: 1px solid var(--border-color); */

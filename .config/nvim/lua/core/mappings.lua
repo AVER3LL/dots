@@ -75,8 +75,8 @@ map("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
 map({ "n", "v" }, "<leader>y", [["+y]], { desc = "Yank to clipboard" })
 map({ "n", "v" }, "<leader>p", [["+p]], { desc = "Paste from clipboard" })
 
-map("v", "p", '"_d<LEFT>p')
-map("v", "P", '"_d<LEFT>P')
+-- map("v", "p", '"_d<LEFT>p')
+-- map("v", "P", '"_d<LEFT>P')
 
 -- Centering
 map("n", "<C-d>", "<C-d>zz")
