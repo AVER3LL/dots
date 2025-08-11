@@ -20,20 +20,14 @@ set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
 set -x PHP_INI_SCAN_DIR "$HOME/.config/herd-lite/bin:$PHP_INI_SCAN_DIR"
 
 ### PATH MANAGEMENT ###
-# Helper function to add directories to PATH if they exist and aren't already included
-function add_to_path_if_needed --argument path
-    if test -d $path; and not contains -- $path $PATH
-        set -p PATH $path
-    end
-end
 
 # PATH additions (prepend in order)
-add_to_path_if_needed $HOME/.config/herd-lite/bin
-add_to_path_if_needed $HOME/development/flutter/bin
-add_to_path_if_needed $HOME/.local/bin
-add_to_path_if_needed $HOME/Applications/depot_tools
-add_to_path_if_needed $HOME/.cargo/bin
-add_to_path_if_needed $JAVA_HOME/bin
+fish_add_path $HOME/.config/herd-lite/bin
+fish_add_path $HOME/development/flutter/bin
+fish_add_path $HOME/.local/bin
+fish_add_path $HOME/Applications/depot_tools
+fish_add_path $HOME/.cargo/bin
+fish_add_path $JAVA_HOME/bin
 
 ### KEY BINDINGS ###
 # Set vi key bindings

@@ -35,7 +35,7 @@ return {
                 preview_config = {
                     border = tools.border,
                 },
-                culhl = true,
+                culhl = vim.o.cursorlineopt == "both",
                 current_line_blame = true,
                 current_line_blame_opts = {
                     virt_text = true,

@@ -4,7 +4,7 @@ vim.g.maplocalleader = " "
 
 local map = tools.map
 
--- require("config.search-counter").setup { highlight = "Comment" }
+require("config.search-counter").setup { highlight = "Comment" }
 
 -- map("n", "<leader><leader>n", "<cmd>NoNeckPain<CR>", { desc = "Center windows" })
 -- map("n", "<leader><leader>l", tools.toggle_numbers)
@@ -37,6 +37,7 @@ map({ "n", "i", "s" }, "<esc>", function()
         require("luasnip").unlink_current()
     end
     vim.cmd "noh"
+    require("config.search-counter").clear_counter()
     return "<esc>"
 end, { desc = "Escape, clear hlsearch, and stop snippet session", expr = true })
 
@@ -75,8 +76,7 @@ map("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
 map({ "n", "v" }, "<leader>y", [["+y]], { desc = "Yank to clipboard" })
 map({ "n", "v" }, "<leader>p", [["+p]], { desc = "Paste from clipboard" })
 
--- map("v", "p", '"_d<LEFT>p')
--- map("v", "P", '"_d<LEFT>P')
+map("v", "p", '"_dP') -- Replace visual selection without copying it
 
 -- Centering
 map("n", "<C-d>", "<C-d>zz")

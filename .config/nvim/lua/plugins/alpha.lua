@@ -2,8 +2,14 @@
 --- @param txt string
 --- @param keybind string? optional
 --- @param hl_shortcut string? optional
-local function button(sc, txt, keybind, hl_shortcut)
+--- @param hl_icon string? optional - new parameter for icon highlighting
+local function button(sc, txt, keybind, hl_shortcut, hl_icon)
     local sc_ = sc:gsub("%s", ""):gsub("SPC", "<leader>")
+
+    -- Extract icon and text parts
+    local icon = txt:match "^(%S+)" -- First non-whitespace sequence (the icon)
+    local text_part = txt:match "^%S+%s*(.*)" -- Everything after the icon and spaces
+
     local opts = {
         position = "center",
         shortcut = " " .. sc .. " ",
@@ -11,8 +17,17 @@ local function button(sc, txt, keybind, hl_shortcut)
         width = 50,
         align_shortcut = "right",
         hl_shortcut = hl_shortcut or "AlphaButton",
-        hl = "String",
+        hl = "Normal",
     }
+
+    -- If icon highlight is specified, create highlighted text
+    if hl_icon and icon and text_part then
+        opts.hl = {
+            { hl_icon, 0, #icon }, -- Highlight icon with custom highlight group
+            { "Normal", #icon, -1 }, -- Highlight rest with default
+        }
+    end
+
     local keybind_opts
     if keybind then
         keybind_opts = { noremap = true, silent = true, nowait = true }
@@ -51,9 +66,15 @@ return {
         local buttons = {
             type = "group",
             val = {
-                button("SPC f f", "󰱼   Find File", "<cmd>lua Snacks.picker.files({ layout = 'vscode' })<CR>"),
-                button("SPC w r", "󰁯   Restore Session", "<cmd>SessionRestore<CR>"),
-                button("q", "   Quit NVIM", "<cmd>qa<CR>"),
+                button(
+                    "SPC f f",
+                    "󰱼   Find File",
+                    "<cmd>lua Snacks.picker.files({ layout = 'vscode' })<CR>",
+                    nil,
+                    "AlphaIconBlue"
+                ),
+                button("SPC w r", "󰁯   Restore Session", "<cmd>SessionRestore<CR>", nil, "AlphaIconGreen"),
+                button("q", "   Quit NVIM", "<cmd>qa<CR>", nil, "AlphaIconRed"),
             },
             opts = {
                 position = "center",
@@ -79,15 +100,19 @@ return {
             },
         }
 
+        -- Define custom highlight groups for icons
+        vim.api.nvim_set_hl(0, "AlphaIconBlue", { fg = "#61afef" }) -- Blue for file icon
+        vim.api.nvim_set_hl(0, "AlphaIconGreen", { fg = "#98c379" }) -- Green for restore icon
+        vim.api.nvim_set_hl(0, "AlphaIconRed", { fg = "#e06c75" }) -- Red for quit icon
+
         vim.api.nvim_create_autocmd("UIEnter", {
             callback = function()
                 local stats = require("lazy").stats()
                 local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
-                loaded.val = "  Loaded " .. stats.loaded .. "/" .. stats.count .. " plugins in " .. ms .. " ms"
+                loaded.val = "  Loaded " .. stats.loaded .. "/" .. stats.count .. " plugins in " .. ms .. " ms"
                 pcall(vim.cmd.AlphaRedraw)
             end,
         })
-
         local layout = {
             { type = "padding", val = 1 },
             heading,
@@ -97,14 +122,11 @@ return {
             { type = "padding", val = 4 },
             loaded,
         }
-
         local config = {
             layout = layout,
             opts = { margin = 10 },
         }
-
         alpha.setup(config)
-
         -- Disable folding on alpha buffer
         vim.cmd [[autocmd FileType alpha setlocal nofoldenable]]
     end,

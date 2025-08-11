@@ -29,6 +29,11 @@ autocmd("ColorScheme", {
             parenthesis = (vim.o.background == "dark") and "#39ff14" or "#ff007f",
         }
 
+        -- Change the color of the cursor
+        sethl(0, "Cursor", { bg = colors.foreground })
+        -- if vim.o.background == "light" then
+        -- end
+
         sethl(0, "LspCursorLineNrError", { bg = colors.cursorline, fg = colors.error })
         sethl(0, "LspCursorLineNrWarning", { bg = colors.cursorline, fg = colors.warn })
         sethl(0, "LspCursorLineNrInformation", { bg = colors.cursorline, fg = colors.info })
@@ -37,7 +42,13 @@ autocmd("ColorScheme", {
         sethl(0, "HighlightUrl", { underline = true })
 
         -- sethl(0, "CurrentWord", { bg = "NONE", bold = true })
-        sethl(0, "AlphaButton", { bg = gethl(0, { name = "Number" }).fg, bold = true, fg = colors.background })
+        -- sethl(0, "AlphaButton", { bg = gethl(0, { name = "Number" }).fg, bold = true, fg = colors.background })
+
+        sethl(0, "AlphaButton", {
+            bg = gethl(0, { name = "Constant" }).fg,
+            bold = true,
+            fg = colors.background,
+        })
 
         sethl(0, "LaravelLogo", { fg = "#F53003" })
 
@@ -102,7 +113,6 @@ autocmd("ColorScheme", {
             sethl(0, "BlinkCmpDoc", { bg = colors.pmenu })
 
             sethl(0, "LspInfoBorder", { bg = colors.pmenu })
-            -- sethl(0, "SnacksPickerBorder", { bg = background, fg = adjust_brightness(colors.foreground, 0.3) })
             sethl(0, "NormalFloat", { bg = colors.pmenu })
             sethl(0, "FloatBorder", { fg = colors.pmenu, bg = colors.pmenu })
         elseif tools.style == "clear" then
@@ -135,7 +145,7 @@ autocmd("ColorScheme", {
             sethl(0, "LspInfoBorder", { bg = colors.background })
             sethl(0, "NormalFloat", { bg = colors.background })
             sethl(0, "FloatBorder", { fg = tools.adjust_brightness(colors.foreground, 0.6), bg = colors.background })
-            -- sethl(0, "@spell.markdown", { fg = adjust_brightness(colors.foreground, 0.5), bg = colors.background })
+            -- sethl(0, "@spell.markdown", { fg = tools.adjust_brightness(colors.foreground, 0.5), bg = colors.background })
 
             -- Doing this because of tokyonight
             sethl(0, "WhichKeyNormal", { bg = colors.background })
@@ -188,6 +198,11 @@ autocmd("ColorScheme", {
             sethl(0, "ColorColumn", { bg = "NONE" })
             sethl(0, "CursorColumn", { bg = "NONE" })
         else
+            sethl(0, "CursorLineNr", {
+                bg = gethl(0, { name = "CursorLine" }).bg,
+                fg = gethl(0, { name = "Constant" }).fg,
+                bold = true,
+            })
             -- When a line does not have a sign, we dont have a background for the gitsign part
             sethl(0, "GitSignsAddCul", { bg = colors.cursorline, fg = tools.resolve_hl "GitSignsAdd" })
             sethl(0, "GitSignsChangeCul", { bg = colors.cursorline, fg = tools.resolve_hl "GitSignsChange" })

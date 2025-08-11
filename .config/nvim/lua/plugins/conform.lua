@@ -31,7 +31,11 @@ return {
                     jsonc = { "prettier" },
                     lua = { "stylua" },
                     -- python = { "isort", "black" },
-                    python = { "ruff_organize_imports", "ruff_format" },
+                    python = {
+                        "ruff_fix",
+                        "ruff_format",
+                        "ruff_organize_imports",
+                    },
                     -- python = { "autopep8" },
                     htmldjango = { "djlint" },
                     c = { "clang-format" },

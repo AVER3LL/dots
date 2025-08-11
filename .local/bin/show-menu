@@ -45,8 +45,7 @@ show_screenrecord_menu() {
 }
 
 show_style_menu() {
-    case $(menu "Style" "󰔎  Toggle light/dark mode\n  Waybar theme\n󰸉  Change wallpaper") in
-    *"Toggle light/dark mode"*) $AVERELL_BIN/toggle-mode ;;
+    case $(menu "Style" "Waybar theme\n󰸉  Change wallpaper") in
     *"Waybar theme"*)
         $HOME/.config/waybar/scripts/select.sh
         if [ $? -eq 1 ]; then
@@ -76,7 +75,8 @@ show_config_menu() {
 }
 
 show_toggle_menu() {
-    case $(menu "Toggle" "󰔎  Nightlight\n󱫖  Idle") in
+    case $(menu "Toggle" "󰔎  Nightlight\n󱫖  Idle\n󰔎  Dark mode") in
+    *"Dark mode"*) $AVERELL_BIN/toggle-mode ;;
     *"Nightlight"*) $AVERELL_BIN/averell-toggle-hyprsunset ;;
     *"Idle"*) $AVERELL_BIN/averell-toggle-idle ;;
     *) show_main_menu ;;

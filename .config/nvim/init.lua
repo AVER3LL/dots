@@ -6,4 +6,6 @@ require "lsp"
 
 require("config.winbar").setup()
 
-vim.cmd.colorscheme "everforest"
+-- require "config.statusline"
+
+vim.cmd.colorscheme "bamboo"

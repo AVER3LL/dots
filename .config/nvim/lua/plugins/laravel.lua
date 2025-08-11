@@ -81,36 +81,17 @@ return {
                 { desc = "Pick Laravel Views", silent = true }
             )
 
-            vim.keymap.set(
-                "n",
-                "gf",
-                require("config.laravel").gf,
-                { desc = "Pick Laravel Views", silent = true }
-            )
+            vim.keymap.set("n", "gf", require("config.laravel").gf, { desc = "Pick Laravel Views", silent = true })
+
+            vim.keymap.set("n", "<leader>li", require("config.laravel").find_related, {
+                desc = "Pick related files",
+                silent = true,
+            })
+
+            vim.keymap.set("n", "<leader>lo", require("config.laravel").run_ide_helper, {
+                desc = "Run ide helper",
+                silent = true,
+            })
         end,
     },
-
-    --[[ {
-        "adibhanna/laravel.nvim",
-        enabled = false,
-        dependencies = {
-            "MunifTanjim/nui.nvim",
-            "nvim-lua/plenary.nvim",
-        },
-        ft = { "blade", "php" },
-        config = function()
-            require("laravel").setup {
-                notifications = false,
-                debug = false,
-                keymaps = false,
-            }
-
-            tools.map("n", "<leader>la", ":LaravelMake<CR>", { desc = "Laravel Make" })
-            tools.map("n", "<leader>lA", ":Artisan ", { desc = "Artisan" })
-            tools.map("n", "<leader>lc", ":LaravelController<CR>", { desc = "Laravel Controllers" })
-            tools.map("n", "<leader>lr", ":LaravelRoute<CR>", { desc = "Laravel Routes" })
-            tools.map("n", "<leader>lm", ":LaravelModel<CR>", { desc = "Laravel Models" })
-            tools.map("n", "gf", ":LaravelGoto<CR>", { desc = "Laravel Goto" })
-        end,
-    }, ]]
 }

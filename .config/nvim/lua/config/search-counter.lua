@@ -158,12 +158,12 @@ local function setup_mappings()
     end, { desc = "Search word under cursor backward with counter" })
 
     -- Map Esc to clear search highlights and counter
-    vim.keymap.set("n", "<Esc>", function()
-        vim.cmd "nohlsearch"
-        api.nvim_buf_clear_namespace(0, ns_id, 0, -1)
-        last_match_line = nil
-        last_match_count = nil
-    end, { desc = "Clear search highlights and counter" })
+    -- vim.keymap.set("n", "<Esc>", function()
+    --     vim.cmd "nohlsearch"
+    --     api.nvim_buf_clear_namespace(0, ns_id, 0, -1)
+    --     last_match_line = nil
+    --     last_match_count = nil
+    -- end, { desc = "Clear search highlights and counter" })
 end
 
 -- Setup function to initialize everything

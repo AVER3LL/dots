@@ -10,6 +10,36 @@ return {
         end,
     },
 
+    {
+        "ribru17/bamboo.nvim",
+        priority = 1000,
+        opts = {},
+    },
+
+    {
+        "navarasu/onedark.nvim",
+        priority = 1000, -- make sure to load this before all the other start plugins
+        config = function()
+            require("onedark").setup {
+                style = "darker",
+            }
+        end,
+    },
+
+    {
+        "marko-cerovac/material.nvim",
+        enabled = false,
+        priority = 1000,
+        opts = {},
+    },
+
+    -- Jetbrains theme
+    {
+        "nickkadutskyi/jb.nvim",
+        priority = 1000,
+        opts = {},
+    },
+
     { -- kanagawa
         "rebelot/kanagawa.nvim",
         name = "kanagawa",
