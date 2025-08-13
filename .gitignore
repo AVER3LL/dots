@@ -14,6 +14,7 @@
 /.config/swayosd/colors.css
 /.config/waybar/colors.css
 /.config/wlogout/colors.css
+/.config/fabric/styles/colors.css
 
 __pycache__/
 *.py[cod]
