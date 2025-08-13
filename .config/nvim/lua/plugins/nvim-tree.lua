@@ -16,6 +16,8 @@ return {
         },
     },
     config = function()
+        local TREE_WIDTH = 32
+
         local function my_on_attach(bufnr)
             local api = require "nvim-tree.api"
 
@@ -59,23 +61,51 @@ return {
             },
             disable_netrw = true,
             hijack_cursor = true,
-            sync_root_with_cwd = true,
+            sync_root_with_cwd = false,
+            prefer_startup_root = true,
             git = {
                 enable = true,
                 ignore = false,
                 timeout = 500,
             },
+            live_filter = {
+                prefix = "[FILTER]: ",
+                always_show_folders = false,
+            },
             update_focused_file = {
                 enable = true,
-                update_root = false,
+                update_root = {
+                    enable = false,
+                },
             },
             view = {
-                width = 32,
+                width = TREE_WIDTH,
                 preserve_window_proportions = false,
                 signcolumn = "no",
             },
+            actions = {
+                change_dir = {
+                    enable = false,
+                    global = false,
+                    restrict_above_cwd = true,
+                },
+            },
             renderer = {
-                root_folder_label = false,
+                root_folder_label = function(path)
+                    --- Truncates the path if possible ans center it
+                    path = path:gsub(os.getenv "HOME", "~", 1)
+                    local padding = TREE_WIDTH - #path
+
+                    if #path > TREE_WIDTH then
+                        -- Show only the project folder name
+                        path = vim.fn.fnamemodify(path, ":t")
+                    end
+
+                    local left = math.floor(padding / 2)
+                    local right = padding - left
+
+                    return string.rep(" ", left) .. path .. string.rep(" ", right)
+                end,
                 highlight_git = true,
                 indent_markers = { enable = false },
                 icons = {

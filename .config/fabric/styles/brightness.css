@@ -1,0 +1,29 @@
+/* An example of how you could style the new container */
+.brightness-container {
+    margin: 13px 8px;
+    padding: 1px;
+    border-radius: 10px;
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.brightness-container.hovered {
+    background-color: var(--primary);
+}
+
+.brightness-container.hovered .brightness-text {
+    color: var(--background);
+}
+
+/* .brightness-container.hovered .overlay-icon { */
+/*     color: var(--surface); */
+/* } */
+
+#brightness {
+    transition: all 0.7s ease;
+    transition: width 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.brightness-text {
+    padding: 0 10px;
+    transition: color 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}

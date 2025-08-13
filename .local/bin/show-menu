@@ -83,14 +83,21 @@ show_toggle_menu() {
     esac
 }
 
+show_fix_menu() {
+    case $(menu "Fix" "i  Launch swaync") in
+    *"Launch swaync"*) killall mako && swaync & ;;
+    esac
+}
+
 show_main_menu() {
-    case $(menu "Start" "󰀻  Apps\n  Notifications\n  Capture\n  Toggle\n  Style\n  Config") in
+    case $(menu "Start" "󰀻  Apps\n  Notifications\n  Capture\n  Toggle\n  Style\n  Config\n󰁨  Fix") in
     *Apps*) rofi -show drun -theme ~/.config/rofi/main.rasi ;;
     *Notifications*) swaync-client -t -sw ;;
     *Capture*) show_capture_menu ;;
     *Toggle*) show_toggle_menu ;;
     *Style*) show_style_menu ;;
     *Config*) show_config_menu ;;
+    *Fix*) show_fix_menu ;;
     esac
 }
 

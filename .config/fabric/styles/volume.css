@@ -1,0 +1,40 @@
+/* An example of how you could style the new container */
+.volume-container {
+    margin: 13px 8px;
+    padding: 1px;
+    border-radius: 10px;
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.volume-container.hovered {
+    background-color: var(--primary);
+}
+
+.volume-container.hovered .volume-text {
+    color: var(--background);
+}
+
+#volume {
+    transition: all 0.7s ease;
+    transition: width 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.volume-text {
+    padding: 0 10px;
+    transition: color 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.overlay-progress-bar {
+    color: transparent;
+    background-color: transparent;
+    border-color: var(--surface-bright);
+}
+
+.overlay-icon {
+    color: var(--foreground);
+    font-size: 18px;
+}
+
+.panel-box {
+    transition: all 0.3s ease;
+}

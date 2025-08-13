@@ -1,7 +1,7 @@
 @import '../../colors.css';
 
 /* Main Colors */
-@define-color background @surface_container;
+/* @define-color background @surface_container; */
 /* @define-color background alpha(@surface_container, 0.95); */
 @define-color foreground @primary;
 @define-color battery-warning-color #ff875a;

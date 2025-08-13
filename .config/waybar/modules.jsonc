@@ -26,7 +26,7 @@
 
     "custom/launcher": {
         "format": "",
-        "on-click": "~/.config/rofi/launchers/type-1/launcher.sh",
+        "on-click": "~/.config/rofi/launcher-vert.sh",
         "tooltip-format": "Launch your favorite apps",
         "signal": 3,
         "interval": "once",

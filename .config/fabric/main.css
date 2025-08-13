@@ -1,0 +1,23 @@
+@import url('./styles/colors.css');
+@import url('./styles/bar.css');
+@import url('./styles/systemtray.css');
+@import url("styles/workspaces.css");
+@import url("styles/date.css");
+@import url('./styles/volume.css');
+@import url('./styles/brightness.css');
+
+* {
+    all: unset;
+    font-family: 'JetBrainsMono Nerd Font Propo', monospace;
+    font-size: unset;
+    font-weight: bold;
+}
+
+#corner {
+    background-color: var(--background);
+    border-radius: 0;
+}
+
+#corner.bottom {
+    background-color: black;
+}

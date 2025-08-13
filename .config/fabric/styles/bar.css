@@ -1,0 +1,61 @@
+#status-bar {
+    background-color: var(--background);
+    /* border-bottom: 1px solid alpha(var(--outline), 0.6); */
+    color: var(--primary);
+    border-radius: 0px;
+    font-size: 15px;
+}
+
+#time {
+    font-weight: 900;
+}
+
+#battery,
+#hypridle,
+.volume-container,
+.brightness-container,
+#systray {
+    margin: 0 8px;
+}
+
+#bar-icon {
+    margin-left: 25px;
+}
+
+#hypridle {
+    /* margin: 12px 10px; */
+    border-radius: 100%;
+    padding: 0 5px;
+    font-size: 20px;
+    color: var(--foreground);
+}
+
+#hypridle:not(.active) {
+    color: var(--primary);
+}
+
+#battery {
+    margin-right: 25px;
+}
+
+tooltip {
+    border: solid 1px;
+    border-color: var(--surface);
+    background-color: var(--shadow);
+    animation: tooltipShow 0.25s cubic-bezier(0.5, 0.25, 0, 1);
+}
+
+@keyframes tooltipShow {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+tooltip > * {
+    padding: 6px 10px;
+    border-radius: 10px;
+}

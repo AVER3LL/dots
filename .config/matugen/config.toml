@@ -66,6 +66,10 @@ input_path = '~/.config/matugen/templates/colors.css'
 output_path = '~/.config/swaync/colors.css'
 post_hook = 'swaync-client -rs & disown'
 
+[templates.papirus-folder]
+input_path = '~/.config/matugen/templates/folder-color.txt'
+output_path = '~/.cache/averell/papirus-folder.txt'
+
 [templates.swayosd]
 input_path = '~/.config/matugen/templates/colors.css'
 output_path = '~/.config/swayosd/colors.css'
@@ -78,3 +82,7 @@ output_path = '~/.config/alacritty/colors.toml'
 [templates.starship]
 input_path = '~/.config/matugen/templates/starship.toml'
 output_path = '~/.config/starship.toml'
+
+[templates.fish]
+input_path = '~/.config/matugen/templates/colors.fish'
+output_path = '~/.config/fish/themes/Matugen.colors'

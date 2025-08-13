@@ -1,0 +1,47 @@
+#systray {
+    /* margin-right: 25px; */
+    background-color: var(--background);
+    padding: 0 8px;
+    margin: 10px 8px;
+}
+
+#systray.invert {
+    background-color: var(--surface);
+    border-radius: 12px;
+}
+
+menu {
+    border: solid 1px;
+    border-radius: 5px;
+    border-color: var(--surface);
+    background-color: var(--surface-container);
+    padding: 6px;
+    transition: all 100ms ease-in-out;
+}
+
+menu > separator {
+    background-color: var(--outline);
+    margin: 10px 70px;
+    /* min-height: 1px; */
+}
+
+/* Make all menu items rounded and padded, even in submenus */
+menu menuitem {
+    border-radius: 3px;
+    padding: 6px 10px;
+}
+
+/* Hover effect for all menu items, nested included */
+menu menuitem:hover {
+    background-color: var(--primary);
+}
+
+/* Label color change on hover for all levels */
+menu menuitem:hover > label {
+    color: var(--shadow);
+}
+
+/* Style labels in all menuitems */
+menu menuitem label {
+    font-weight: bold;
+}

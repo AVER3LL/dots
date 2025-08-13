@@ -7,7 +7,7 @@
     --bg-button-hover: #5e5e5e;
     --text-primary: @primary;
     --text-disabled: #5c554a;
-    --border-color: @outline;
+    --border-color: alpha(@outline, 0.6);
     --priority-low: #ebdbb2;
     --priority-normal: #83a598;
     --priority-critical: #fb4934;
