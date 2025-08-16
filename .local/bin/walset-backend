@@ -371,7 +371,10 @@ apply_theme() {
     fi
 
     restart_desktop_services
-    update_folder_colors
+
+    if [[ "$SET_WALLPAPER" == true ]]; then
+        update_folder_colors
+    fi
 }
 
 #==============================================================================

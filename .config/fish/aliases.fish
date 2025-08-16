@@ -69,6 +69,7 @@ alias wip='git add . && git commit -m "wip" && git push'
 # laravel helpers
 alias hey='php artisan'
 alias run='composer run dev'
+alias mfs='php artisan migrate:fresh --seed'
 
 # continue download
 alias wget="wget -c"

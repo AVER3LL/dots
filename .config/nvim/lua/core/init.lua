@@ -1,5 +1,6 @@
 require "core.options"
 require "core.mappings"
 require "core.autocommands"
+require "core.signals"
 require "core.colors"
 require "core.lazy"

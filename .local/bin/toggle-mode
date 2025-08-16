@@ -22,6 +22,8 @@ wait
 wall=$(readlink ~/.cache/averell/wall.set 2>/dev/null || :)
 [[ -x ~/.local/bin/walset-backend && -n "$wall" ]] && ~/.local/bin/walset-backend --mode="$mode" "$wall"
 
+pkill -USR1 -x nvim || true
+
 sed -i \
     -e "s/^gtk-application-prefer-dark-theme\s*=.*/gtk-application-prefer-dark-theme=$prefer_dark/" \
     -e "s/^gtk-icon-theme-name\s*=.*/gtk-icon-theme-name=$icon/" \

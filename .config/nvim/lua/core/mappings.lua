@@ -49,6 +49,11 @@ map("n", "<C-j>", "<C-w>j", { desc = "Move to bottom split" })
 map("n", "<C-k>", "<C-w>k", { desc = "Move to top split" })
 map("n", "<C-l>", "<C-w>l", { desc = "Move to right split" })
 
+map("n", "<C-S-Left>", "<C-w>H")
+map("n", "<C-S-Right>", "<C-w>L")
+map("n", "<C-S-Up>", "<C-w>K")
+map("n", "<C-S-Down>", "<C-w>J")
+
 -- Split Resizing
 map("n", "<C-Up>", "<C-W>+", { desc = "Split increase height" })
 map("n", "<C-Down>", "<C-W>-", { desc = "Split decrease height" })
@@ -67,10 +72,10 @@ map("i", "<C-j>", "<Down>", { desc = "Move down" })
 map("i", "<C-k>", "<Up>", { desc = "Move up" })
 
 -- Line Movement
-map("n", "<A-j>", ":m .+1<CR>==", { desc = "Move line down" })
-map("n", "<A-k>", ":m .-2<CR>==", { desc = "Move line up" })
-map("v", "<A-j>", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
-map("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
+map("n", "<A-S-j>", ":m .+1<CR>==", { desc = "Move line down" })
+map("n", "<A-S-k>", ":m .-2<CR>==", { desc = "Move line up" })
+map("v", "<A-S-j>", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
+map("v", "<A-S-k>", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
 
 -- Clipboard Operations
 map({ "n", "v" }, "<leader>y", [["+y]], { desc = "Yank to clipboard" })

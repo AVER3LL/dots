@@ -23,6 +23,14 @@ local function install_ide_helper(laravel_root)
     vim.fn.jobstart(install_cmd, {
         on_exit = function(_, exit_code)
             if exit_code == 0 then
+                local git_ignore_file = laravel_root .. "/.gitignore"
+                local file = io.open(git_ignore_file, "a")
+                if file then
+                    file:write "_ide_helper.php\n"
+                    file:write ".phpstorm.meta.php\n"
+                    file:close()
+                end
+
                 vim.notify("IDE Helper package installed successfully!", vim.log.levels.INFO)
                 -- After successful installation, run the generation commands
                 M.generate_ide_helpers()

@@ -16,7 +16,7 @@ return {
         },
     },
     config = function()
-        local TREE_WIDTH = 32
+        local TREE_WIDTH = 35
 
         local function my_on_attach(bufnr)
             local api = require "nvim-tree.api"
@@ -80,8 +80,10 @@ return {
             },
             view = {
                 width = TREE_WIDTH,
+                adaptive_size = true,
                 preserve_window_proportions = false,
                 signcolumn = "no",
+                side = "right",
             },
             actions = {
                 change_dir = {
@@ -91,21 +93,22 @@ return {
                 },
             },
             renderer = {
-                root_folder_label = function(path)
-                    --- Truncates the path if possible ans center it
-                    path = path:gsub(os.getenv "HOME", "~", 1)
-                    local padding = TREE_WIDTH - #path
-
-                    if #path > TREE_WIDTH then
-                        -- Show only the project folder name
-                        path = vim.fn.fnamemodify(path, ":t")
-                    end
-
-                    local left = math.floor(padding / 2)
-                    local right = padding - left
-
-                    return string.rep(" ", left) .. path .. string.rep(" ", right)
-                end,
+                root_folder_label = false,
+                -- root_folder_label = function(path)
+                --     --- Truncates the path if possible ans center it
+                --     path = path:gsub(os.getenv "HOME", "~", 1)
+                --
+                --     if #path > TREE_WIDTH then
+                --         -- Show only the project folder name
+                --         path = vim.fn.fnamemodify(path, ":t")
+                --     end
+                --
+                --     local padding = TREE_WIDTH - #path
+                --     local left = math.floor(padding / 2)
+                --     local right = padding - left
+                --
+                --     return string.rep(" ", left) .. path .. string.rep(" ", right)
+                -- end,
                 highlight_git = true,
                 indent_markers = { enable = false },
                 icons = {

@@ -2,7 +2,7 @@ return {
     -- Automatically closes html tags
     {
         "windwp/nvim-ts-autotag",
-        ft = { "php", "html", "blade" },
+        ft = { "php", "html", "blade", "vue" },
         config = function()
             ---@diagnostic disable-next-line: missing-fields
             require("nvim-ts-autotag").setup {

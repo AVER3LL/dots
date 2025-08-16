@@ -45,7 +45,7 @@ show_screenrecord_menu() {
 }
 
 show_style_menu() {
-    case $(menu "Style" "Waybar theme\n󰸉  Change wallpaper") in
+    case $(menu "Style" "Waybar theme\n󰸉  Change wallpaper\ni  Change shell") in
     *"Waybar theme"*)
         $HOME/.config/waybar/scripts/select.sh
         if [ $? -eq 1 ]; then
@@ -53,6 +53,7 @@ show_style_menu() {
         fi
         ;;
     *"Change wallpaper"*) $AVERELL_BIN/walset ;;
+    *"Change shell"*) $AVERELL_BIN/change-shell ;;
     *) show_main_menu ;;
     esac
 }

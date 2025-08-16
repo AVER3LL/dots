@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if pgrep -x averell-shell; then
+    killall averell-shell
+    ~/.config/waybar/toggle.sh
+    exit 0
+fi
+
+if pgrep -x waybar; then
+    killall waybar
+    ~/.config/fabric/launch.sh
+    exit 0
+fi
+
+~/.config/fabric/launch.sh

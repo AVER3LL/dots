@@ -120,13 +120,7 @@ return {
                         prepend_args = {
                             "--tab-width",
                             "4",
-                            "--print-width",
-                            "120",
                             "--single-quote",
-                            "--html-whitespace-sensitivity",
-                            "ignore",
-                            "--single-attribute-per-line",
-                            "false",
                         },
                     },
                 },

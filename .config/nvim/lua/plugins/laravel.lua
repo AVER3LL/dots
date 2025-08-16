@@ -92,6 +92,26 @@ return {
                 desc = "Run ide helper",
                 silent = true,
             })
+
+            vim.keymap.set("n", "<leader>lfm", require("config.laravel.pickers").find_migrations, {
+                desc = "FInd migrations",
+                silent = true,
+            })
+
+            vim.keymap.set("n", "<leader>lff", require("config.laravel.pickers").find_factories, {
+                desc = "Find factories",
+                silent = true,
+            })
+
+            vim.keymap.set("n", "<leader>lfs", require("config.laravel.pickers").find_seeders, {
+                desc = "Find seeders",
+                silent = true,
+            })
+
+            vim.keymap.set("n", "<leader>lfr", require("config.laravel.pickers").find_routes, {
+                desc = "Find routes",
+                silent = true,
+            })
         end,
     },
 }
