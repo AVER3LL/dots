@@ -1,6 +1,7 @@
 #status-bar {
     background-color: var(--background);
-    /* border-bottom: 1px solid alpha(var(--outline), 0.6); */
+    border-bottom: 1px solid alpha(var(--outline), 0.6);
+    /* @apply bar-border(); */
     color: var(--primary);
     border-radius: 0px;
     font-size: 15px;

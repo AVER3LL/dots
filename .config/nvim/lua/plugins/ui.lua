@@ -25,12 +25,12 @@ return {
     -- Colored parenthesis
     {
         "HiPhish/rainbow-delimiters.nvim",
-        event = "VeryLazy",
+        -- event = "VeryLazy",
     },
 
     {
         "rachartier/tiny-inline-diagnostic.nvim",
-        event = "VeryLazy",
+        -- event = "VeryLazy",
         priority = 1000, -- needs to be loaded in first
         opts = {
             preset = "simple",

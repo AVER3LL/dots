@@ -3,11 +3,10 @@ return {
     -- Automatically closes brackets
     {
         "windwp/nvim-autopairs",
-        enabled = true,
         event = "InsertEnter",
         opts = {
             check_ts = true,
-            ts_config = { java = false },
+            ts_config = { java = false, lua = { "string" } },
             disable_filetype = { "TelescopePrompt", "vim" },
         },
         config = function(_, opts)

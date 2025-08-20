@@ -156,10 +156,8 @@ autocmd("ColorScheme", {
             )
         end
 
-        sethl(0, "WinBar", { bg = colors.background })
-        sethl(0, "WinBarNC", { bg = colors.background })
-        -- sethl(0, "StatusLine", { bg = colors.background })
-        -- sethl(0, "StatusLineNC", { bg = colors.background })
+        sethl(0, "WinBar", { bg = tools.adjust_brightness(colors.background, 0.75) })
+        sethl(0, "WinBarNC", { bg = tools.adjust_brightness(colors.background, 0.90) })
 
         sethl(0, "@markup.raw.block.markdown", { bg = "NONE" })
 

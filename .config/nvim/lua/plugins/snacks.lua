@@ -20,10 +20,6 @@ return {
             enabled = true,
             prompt_pos = "title",
             win = {
-                relative = "editor",
-                row = 10,
-                -- col = 5,
-                width = 0,
                 border = tools.border,
             },
         },
@@ -31,6 +27,10 @@ return {
             enabled = true,
             prompt = search,
             layout = "custom",
+            matcher = {
+                frecency = true,
+                cwd_bonus = true,
+            },
             formatters = {
                 file = {
                     truncate = 70,

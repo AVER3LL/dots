@@ -62,6 +62,13 @@ return {
 
             vim.keymap.set(
                 "n",
+                "<leader>lu",
+                require("config.laravel").generate_gf_cache,
+                { desc = "Generate gf cache", silent = true }
+            )
+
+            vim.keymap.set(
+                "n",
                 "<leader>lm",
                 require("config.laravel.pickers").find_models,
                 { desc = "Pick Laravel Models", silent = true }

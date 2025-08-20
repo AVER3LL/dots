@@ -3,7 +3,7 @@ return {
     -- Helps manage keymaps
     {
         "folke/which-key.nvim",
-        event = "VeryLazy",
+        -- event = "VeryLazy",
         opts = {
             -- classic, modern, helix
             preset = "helix",

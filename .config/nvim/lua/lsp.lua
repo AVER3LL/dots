@@ -33,7 +33,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
         -- require("config.lightbulb").attach_lightbulb(event.buf, client.id)
 
-        map("n", "<leader>da", "<cmd>Trouble diagnostics<CR>", opts "Show all diagnostics")
+        -- map("n", "<leader>da", "<cmd>Trouble diagnostics<CR>", opts "Show all diagnostics")
 
         map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts "Code action")
         map({ "n", "v" }, "<leader>cc", vim.lsp.codelens.run, opts "Run Codelens")
@@ -45,29 +45,30 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
         map("i", "<C-x>", vim.lsp.buf.signature_help, opts "Show signature help")
 
-        if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight, event.buf) then
-            local highlight_augroup = vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
-
-            vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-                buffer = event.buf,
-                group = highlight_augroup,
-                callback = vim.lsp.buf.document_highlight,
-            })
-
-            vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-                buffer = event.buf,
-                group = highlight_augroup,
-                callback = vim.lsp.buf.clear_references,
-            })
-
-            vim.api.nvim_create_autocmd("LspDetach", {
-                group = vim.api.nvim_create_augroup("kickstart-lsp-detach", { clear = true }),
-                callback = function(event2)
-                    vim.lsp.buf.clear_references()
-                    vim.api.nvim_clear_autocmds { group = "kickstart-lsp-highlight", buffer = event2.buf }
-                end,
-            })
-        end
+        -- if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight, event.buf) then
+        --     local highlight_augroup = vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
+        --
+        --     vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+        --         buffer = event.buf,
+        --         group = highlight_augroup,
+        --         callback = vim.lsp.buf.document_highlight,
+        --     })
+        --
+        --     vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+        --         buffer = event.buf,
+        --         group = highlight_augroup,
+        --         callback = vim.lsp.buf.clear_references,
+        --     })
+        --
+        --     vim.api.nvim_create_autocmd("LspDetach", {
+        --         group = vim.api.nvim_create_augroup("kickstart-lsp-detach", { clear = true }),
+        --         callback = function(event2)
+        --             vim.lsp.buf.clear_references()
+        --             vim.api.nvim_clear_autocmds { group = "kickstart-lsp-highlight", buffer = event2.buf }
+        --         end,
+        --     })
+        --
+        -- end
     end,
 })
 

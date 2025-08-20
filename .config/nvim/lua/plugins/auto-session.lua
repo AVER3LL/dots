@@ -12,7 +12,7 @@ return {
             auto_create = true,
             auto_restore = false,
             lazy_support = true,
-            suppressed_dirs = { "~/", "~/Dev/", "~/Downloads", "~/Documents", "~/Desktop/" },
+            suppressed_dirs = { "~/", "~/Projects/", "~/Downloads", "~/Documents", "~/Desktop/" },
         },
     },
 }

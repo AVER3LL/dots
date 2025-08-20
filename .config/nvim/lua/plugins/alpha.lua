@@ -113,6 +113,7 @@ return {
                 pcall(vim.cmd.AlphaRedraw)
             end,
         })
+
         local layout = {
             { type = "padding", val = 1 },
             heading,
@@ -122,10 +123,12 @@ return {
             { type = "padding", val = 4 },
             loaded,
         }
+
         local config = {
             layout = layout,
             opts = { margin = 10 },
         }
+
         alpha.setup(config)
         -- Disable folding on alpha buffer
         vim.cmd [[autocmd FileType alpha setlocal nofoldenable]]

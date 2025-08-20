@@ -7,7 +7,10 @@ return {
 
     {
         "echasnovski/mini.trailspace",
-        opts = {},
+        event = { "BufReadPost", "BufNewFile" },
+        opts = {
+            only_in_normal_buffers = true,
+        },
     },
 
     {
@@ -28,7 +31,7 @@ return {
 
     {
         "echasnovski/mini.ai",
-        event = "VeryLazy",
+        -- event = "VeryLazy",
         dependencies = "nvim-treesitter/nvim-treesitter-textobjects",
         opts = function()
             local miniai = require "mini.ai"

@@ -134,11 +134,6 @@ return {
 
                 {
                     text = { " " },
-                    -- condition = {
-                    --     function()
-                    --         return not (vim.wo.number or vim.wo.relativenumber)
-                    --     end,
-                    -- },
                 },
             },
         }

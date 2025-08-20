@@ -4,7 +4,7 @@ return {
     {
         "lukas-reineke/indent-blankline.nvim",
         enabled = true,
-        event = "VeryLazy",
+        -- event = "VeryLazy",
         -- dependencies = "tpope/vim-sleuth",
         main = "ibl",
         keys = {

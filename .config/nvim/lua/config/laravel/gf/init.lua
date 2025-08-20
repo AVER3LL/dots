@@ -9,30 +9,30 @@ local M = {}
 local cache = {
     laravel_root = nil,
     resolvers = nil,
-    last_check = 0,
-    ttl = 5000, -- 5 seconds cache TTL
 }
 
 -- Lazy load resolvers only once
+---@return table
 local function get_resolvers()
-    if cache.resolvers then
-        return cache.resolvers
+    if not cache.resolvers then
+        cache.resolvers = require "config.laravel.gf.resolvers"
     end
-
-    cache.resolvers = require "config.laravel.gf.resolvers"
     return cache.resolvers
+end
+
+-- Function to generate all caches upfront
+M.generate_all_caches = function()
+    cache.laravel_root = utils.get_laravel_root()
+    cache.resolvers = require "config.laravel.gf.resolvers"
+
+    vim.notify("Cache generated", vim.log.levels.INFO)
 end
 
 -- Cache Laravel root to avoid repeated filesystem checks
 local function get_laravel_root_cached()
-    local current_time = vim.loop.hrtime() / 1000000
-
-    if cache.laravel_root and (current_time - cache.last_check) < cache.ttl then
-        return cache.laravel_root
+    if not cache.laravel_root then
+        cache.laravel_root = utils.get_laravel_root()
     end
-
-    cache.laravel_root = utils.get_laravel_root()
-    cache.last_check = current_time
     return cache.laravel_root
 end
 

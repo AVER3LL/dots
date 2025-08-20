@@ -8,7 +8,7 @@ return {
                 function()
                     require("conform").format { async = true, lsp_format = "fallback" }
                 end,
-                mode = "",
+                mode = { "n", "v" },
                 desc = "Format buffer",
             },
         },
@@ -121,6 +121,14 @@ return {
                             "--tab-width",
                             "4",
                             "--single-quote",
+                            "--use-tabs",
+                            "false",
+                            "--html-whitespace-sensitivity",
+                            "strict",
+                            "--single-attribute-per-line",
+                            "true",
+                            "--bracket-same-line",
+                            "false",
                         },
                     },
                 },

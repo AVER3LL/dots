@@ -19,21 +19,42 @@ return {
     {
         "folke/lazydev.nvim",
         ft = "lua", -- only load on lua files
-        opts = {
-            library = {
-                { path = "${3rd}/luv/library", words = { "vim%.uv" } },
-                { path = "luvit-meta/library", words = { "vim%.uv" } },
-                { path = "snacks.nvim", words = { "Snacks" } },
-            },
-        },
+        config = function()
+            local config = require "lazydev.config"
+            config.have_0_11 = vim.fn.has "nvim-0.11" == 1
+
+            local lsp = require "lazydev.lsp"
+
+            lsp.update = function(client)
+                lsp.assert(client)
+                if config.have_0_11 then
+                    client:notify("workspace/didChangeConfiguration", {
+                        settings = { Lua = {} },
+                    })
+                else
+                    client.notify("workspace/didChangeConfiguration", {
+                        settings = { Lua = {} },
+                    })
+                end
+            end
+
+            require("lazydev").setup {
+                library = {
+
+                    { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+                    { path = "luvit-meta/library", words = { "vim%.uv" } },
+                    { path = "snacks.nvim", words = { "Snacks" } },
+                },
+            }
+        end,
     },
 
     {
         "neovim/nvim-lspconfig",
+        event = { "BufReadPre", "BufNewFile" },
         dependencies = {
             "mason-org/mason.nvim",
             "mason-org/mason-lspconfig.nvim",
-            "saghen/blink.cmp",
             { "antosha417/nvim-lsp-file-operations", dependencies = "nvim-tree/nvim-tree.lua", opts = {} },
         },
         config = function()
