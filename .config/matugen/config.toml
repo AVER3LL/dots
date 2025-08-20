@@ -85,4 +85,4 @@ output_path = '~/.config/starship.toml'
 
 [templates.fish]
 input_path = '~/.config/matugen/templates/colors.fish'
-output_path = '~/.config/fish/themes/Matugen.colors'
+output_path = '~/.config/fish/themes/Matugen.theme'

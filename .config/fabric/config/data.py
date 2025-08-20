@@ -12,7 +12,7 @@ USERNAME = os.getlogin()
 HOSTNAME = os.uname().nodename
 HOME_DIR = os.path.expanduser("~")
 
-SHOW_CORNERS = False
+SHOW_CORNERS = True
 
 WALLPAPER_DIR = os.path.expanduser("~/wallpaper/")
 
