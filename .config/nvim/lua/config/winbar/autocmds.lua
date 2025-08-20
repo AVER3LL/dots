@@ -86,6 +86,7 @@ function M.setup_autocmds(config)
                 or ft == "TelescopeResults"
                 or ft == "telescope"
                 or ft == "snacks_picker_input"
+                or ft == "snacks_input"
             then
                 vim.schedule(function()
                     updater.update_all_visible_windows(config)

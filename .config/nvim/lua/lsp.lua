@@ -35,7 +35,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
         -- map("n", "<leader>da", "<cmd>Trouble diagnostics<CR>", opts "Show all diagnostics")
 
-        map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts "Code action")
+        -- map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts "Code action")
+        vim.keymap.set({ "n", "x" }, "<leader>ca", function()
+            require("tiny-code-action").code_action()
+        end, { noremap = true, silent = true })
         map({ "n", "v" }, "<leader>cc", vim.lsp.codelens.run, opts "Run Codelens")
         map({ "n", "v" }, "<leader>cC", vim.lsp.codelens.refresh, opts "Refresh & Display Codelens")
 

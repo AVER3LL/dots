@@ -1,5 +1,6 @@
 return {
     "monaqa/dial.nvim",
+    event = { "BufReadPre", "BufNewFile" },
     opts = function()
         local augend = require "dial.augend"
 

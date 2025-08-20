@@ -30,7 +30,7 @@ return {
 
     {
         "rachartier/tiny-inline-diagnostic.nvim",
-        -- event = "VeryLazy",
+        event = "VeryLazy",
         priority = 1000, -- needs to be loaded in first
         opts = {
             preset = "simple",
@@ -41,6 +41,27 @@ return {
                 multilines = {
                     enabled = false,
                     always_show = false,
+                },
+            },
+        },
+    },
+
+    {
+        "rachartier/tiny-code-action.nvim",
+        event = "LspAttach",
+        opts = {
+            picker = {
+                "buffer",
+                opts = {
+                    hotkeys = true,
+                    -- Use numeric labels.
+                    hotkeys_mode = function(titles)
+                        return vim.iter(ipairs(titles))
+                            :map(function(i)
+                                return tostring(i)
+                            end)
+                            :totable()
+                    end,
                 },
             },
         },

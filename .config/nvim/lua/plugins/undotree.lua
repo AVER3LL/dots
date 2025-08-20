@@ -3,7 +3,7 @@ return {
     keys = {
         {
             "<leader>u",
-            "<cmd>UndotreeToggle<CR>",
+            vim.cmd.UndotreeToggle,
             desc = "Toggle undo tree",
             mode = "n",
         },

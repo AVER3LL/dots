@@ -5,7 +5,7 @@ return {
         keys = {
             {
                 "<leader><leader>n",
-                "<cmd>NoNeckPain<CR>",
+                vim.cmd.NoNeckPain,
                 mode = "n",
                 desc = "Center windows",
             },

@@ -16,7 +16,7 @@ vim.o.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,a:Cursor/Cursor"
 vim.o.cursorline = true
 vim.o.cursorlineopt = "both"
 
-vim.o.signcolumn = "yes"
+vim.wo.signcolumn = "yes"
 vim.o.numberwidth = 2
 
 vim.o.number = false
@@ -48,6 +48,10 @@ vim.o.shiftwidth = 4
 vim.o.softtabstop = 4
 vim.o.expandtab = true
 vim.o.smarttab = true
+
+-- Diff mode settings.
+-- Setting the context to a very large number disables folding.
+vim.opt.diffopt:append "vertical,context:99"
 
 vim.o.copyindent = true
 vim.o.smartindent = true

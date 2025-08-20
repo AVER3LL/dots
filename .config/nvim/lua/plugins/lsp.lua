@@ -1,41 +1,14 @@
 return {
-    -- Added them in the same file here because Kickstart recommended so
-
-    {
-        "mason-org/mason.nvim",
-        lazy = true,
-        opts = {
-            ui = {
-                icons = {
-                    package_pending = " ",
-                    package_installed = " ",
-                    package_uninstalled = " ",
-                },
-            },
-            max_concurrent_installers = 10,
-        },
-    },
-
     {
         "folke/lazydev.nvim",
         ft = "lua", -- only load on lua files
         config = function()
-            local config = require "lazydev.config"
-            config.have_0_11 = vim.fn.has "nvim-0.11" == 1
-
             local lsp = require "lazydev.lsp"
 
             lsp.update = function(client)
-                lsp.assert(client)
-                if config.have_0_11 then
-                    client:notify("workspace/didChangeConfiguration", {
-                        settings = { Lua = {} },
-                    })
-                else
-                    client.notify("workspace/didChangeConfiguration", {
-                        settings = { Lua = {} },
-                    })
-                end
+                client:notify("workspace/didChangeConfiguration", {
+                    settings = { Lua = {} },
+                })
             end
 
             require("lazydev").setup {
@@ -62,97 +35,155 @@ return {
             capabilities =
                 vim.tbl_deep_extend("force", capabilities, require("lsp-file-operations").default_capabilities())
 
+            ---@class LspServersConfig
+            ---@field mason table<string, vim.lsp.Config>
+            ---@field others table<string, vim.lsp.Config>
             local servers = {
 
-                lua_ls = {},
-                bashls = {},
-                clangd = {},
-                cssls = {},
-                hyprls = {},
-                kotlin_language_server = {},
-                gopls = {},
-                taplo = {},
-                tailwindcss = {},
-                qmlls = {},
-                texlab = {},
-
-                basedpyright = {},
-
-                vue_ls = {},
-
-                html = {},
-
-                intelephense = {
-                    filetypes = {
-                        "php",
-                        "blade",
-                        "php_only",
+                mason = {
+                    lua_ls = {},
+                    bashls = {},
+                    clangd = {},
+                    cssls = {},
+                    hyprls = {},
+                    kotlin_language_server = {},
+                    gopls = {},
+                    taplo = {},
+                    tailwindcss = {},
+                    qmlls = {
+                        cmd = { "qmlls", "-E" },
                     },
-                    settings = {
-                        intelephense = {
-                            filetypes = {
-                                "php",
-                                "blade",
-                                "php_only",
+                    texlab = {},
+
+                    basedpyright = {
+                        settings = {
+                            basedpyright = {
+                                analysis = {
+                                    typeCheckingMode = "basic",
+                                    autoSearchPaths = true,
+                                    diagnosticMode = "workspace",
+                                    useLibraryCodeForTypes = true,
+                                    inlayHints = {
+                                        callArgumentNames = true,
+                                    },
+                                    diagnosticSeverityOverrides = {
+                                        reportUnknownVariableType = "none",
+                                        reportUnknownMemberType = "none",
+                                        reportImplicitRelativeImport = "none",
+                                        reportMissingTypeStubs = "none",
+                                        reportAttributeAccessIssue = "none",
+                                    },
+                                },
                             },
-                            files = {
-                                associations = {
-                                    "*.php",
-                                    "*.blade.php",
-                                }, -- Associating .blade.php files as well
-                                maxSize = 5000000,
+                        },
+                    },
+
+                    vue_ls = {
+                        filetypes = {
+                            "javascript",
+                            "javascriptreact",
+                            "typescript",
+                            "typescriptreact",
+                            "vue",
+                        },
+                        settings = {
+                            vtsls = {
+                                tsserver = {
+                                    globalPlugins = {
+                                        {
+                                            configNamespace = "typescript",
+                                            enableForWorkspaceTypeScriptVersions = true,
+                                            languages = { "vue" },
+                                            location = vim.fn.stdpath "data"
+                                                .. "/mason/packages/vue-language-server/node_modules/@vue/language-server",
+                                            name = "@vue/typescript-plugin",
+                                        },
+                                    },
+                                },
                             },
+                        },
+                    },
+
+                    html = {},
+
+                    intelephense = {
+                        filetypes = {
+                            "php",
+                            "blade",
+                            "php_only",
+                        },
+                        settings = {
+                            intelephense = {
+                                filetypes = {
+                                    "php",
+                                    "blade",
+                                    "php_only",
+                                },
+                                files = {
+                                    associations = {
+                                        "*.php",
+                                        "*.blade.php",
+                                    },
+                                    maxSize = 5000000,
+                                },
+                            },
+                        },
+                    },
+
+                    jinja_lsp = {
+                        filetypes = { "jinja", "htmldjango" },
+                    },
+
+                    emmet_language_server = {
+                        filetypes = {
+                            "django",
+                            "astro",
+                            "css",
+                            "eruby",
+                            "html",
+                            "htmlangular",
+                            "htmldjango",
+                            "javascriptreact",
+                            "less",
+                            "pug",
+                            "sass",
+                            "scss",
+                            "svelte",
+                            "templ",
+                            "typescriptreact",
+                            "vue",
                         },
                     },
                 },
 
-                jinja_lsp = {
-                    filetypes = { "jinja", "htmldjango" },
-                },
-
-                emmet_language_server = {
-                    filetypes = {
-                        "django",
-                        "astro",
-                        "css",
-                        "eruby",
-                        "html",
-                        "htmlangular",
-                        "htmldjango",
-                        "javascriptreact",
-                        "less",
-                        "pug",
-                        "sass",
-                        "scss",
-                        "svelte",
-                        "templ",
-                        "typescriptreact",
-                        "vue",
-                    },
-                },
+                others = {},
             }
 
             local ensure_installed = vim.tbl_filter(function(server)
                 local ensure_ignored = { "clangd" }
                 return not vim.tbl_contains(ensure_ignored, server)
-            end, vim.tbl_keys(servers or {}))
+            end, vim.tbl_keys(servers.mason or {}))
 
             vim.list_extend(ensure_installed, {
                 "jdtls",
                 "rust_analyzer",
             })
 
+            for server, config in pairs(vim.tbl_extend("keep", servers.mason, servers.others)) do
+                if not vim.tbl_isempty(config) then
+                    vim.lsp.config(server, config)
+                end
+            end
+
             require("mason-lspconfig").setup {
                 ensure_installed = ensure_installed,
-                automatic_installation = true,
-                handlers = {
-                    function(server_name)
-                        local server = servers[server_name] or {}
-                        server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-                        require("lspconfig")[server_name].setup(server)
-                    end,
-                },
+                automatic_enable = true,
             }
+
+            -- Manually run vim.lsp.enable for all language servers that are *not* installed via Mason
+            if not vim.tbl_isempty(servers.others) then
+                vim.lsp.enable(vim.tbl_keys(servers.others))
+            end
         end,
     },
 }

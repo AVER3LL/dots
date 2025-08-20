@@ -7,7 +7,7 @@ return {
             local res = {}
 
             if symbol.references then
-                local usage = symbol.references == 1 and "reference" or "references"
+                local usage = symbol.references == 1 and "usage" or "usages"
                 table.insert(res, { (" 󰌹 %s %s"):format(symbol.references, usage), "Usage" })
             end
 

@@ -4,7 +4,7 @@ return {
     keys = {
         {
             "<leader>dg",
-            "<cmd>Neogen<CR>",
+            vim.cmd.Neogen,
             desc = "Generate Documentation",
             mode = "n",
         },

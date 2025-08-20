@@ -2,6 +2,7 @@ return {
     -- Better comments somehow
     {
         "echasnovski/mini.comment",
+        event = { "BufReadPre", "BufNewFile" },
         version = false,
         dependencies = {
             "JoosepAlviste/nvim-ts-context-commentstring",
