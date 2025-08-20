@@ -1,16 +1,8 @@
-# Replace ls with eza
-# alias ls='lsd' # preferred listing
-# alias la='ls -a'  # all files and dirs
-# alias ll='ls -alFh'  # long format
-# alias sl='ls'
-# alias l='ls'
-
 alias ls='eza --icons --color=always --group-directories-first'
 alias la='eza -a --icons --color=always --group-directories-first'
 alias ll='eza -alfh --icons --color=always --group-directories-first'
 alias sl='eza --icons --color=always --group-directories-first'
 alias l='eza --icons --color=always --group-directories-first'
-
 
 alias lazy='NVIM_APPNAME=LazyVim nvim'
 alias chad='NVIM_APPNAME=NvChad nvim'
