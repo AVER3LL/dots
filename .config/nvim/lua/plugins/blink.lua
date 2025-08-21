@@ -64,15 +64,15 @@ return {
                         -- left and right padding
                         padding = { 1, 1 },
                         columns = {
+                            { "kind_icon", gap = 2 },
                             { "label", "label_description", gap = 1 },
-                            { "kind_icon", "kind", gap = 2 },
                         },
                         components = {
                             kind_icon = {
                                 text = function(ctx)
                                     local icon = is_laravel_source(ctx.source_name) and "" or ctx.kind_icon
 
-                                    return "   " .. icon .. ctx.icon_gap
+                                    return icon .. ctx.icon_gap .. " "
                                 end,
                                 highlight = function(ctx)
                                     local hl = is_laravel_source(ctx.source_name) and "LaravelLogo" or ctx.kind_hl
@@ -104,8 +104,6 @@ return {
                         "lazydev",
                         "lsp",
                         "buffer",
-                        -- "laravel",
-                        -- "blade-nav",
                     }
 
                     local ok, node = pcall(vim.treesitter.get_node)

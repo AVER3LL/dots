@@ -1,16 +1,23 @@
 return {
     {
+        "nvim-tree/nvim-web-devicons",
+        enabled = true,
+        opts = {},
+    },
+
+    {
         "echasnovski/mini.icons",
+        enabled = false,
         lazy = true,
-        specs = {
-            { "nvim-tree/nvim-web-devicons", enabled = false, optional = true },
-        },
-        init = function()
-            package.preload["nvim-web-devicons"] = function()
-                require("mini.icons").mock_nvim_web_devicons()
-                return package.loaded["nvim-web-devicons"]
-            end
-        end,
+        -- specs = {
+        --     { "nvim-tree/nvim-web-devicons", enabled = false, optional = true },
+        -- },
+        -- init = function()
+        --     package.preload["nvim-web-devicons"] = function()
+        --         require("mini.icons").mock_nvim_web_devicons()
+        --         return package.loaded["nvim-web-devicons"]
+        --     end
+        -- end,
         opts = {
             default = {
                 file = { glyph = "󰈚" },
@@ -30,7 +37,6 @@ return {
 
     {
         "rachartier/tiny-inline-diagnostic.nvim",
-        event = "VeryLazy",
         priority = 1000, -- needs to be loaded in first
         opts = {
             preset = "simple",
@@ -54,6 +60,7 @@ return {
                 "buffer",
                 opts = {
                     hotkeys = true,
+                    winborder = tools.boder,
                     -- Use numeric labels.
                     hotkeys_mode = function(titles)
                         return vim.iter(ipairs(titles))

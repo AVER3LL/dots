@@ -1,6 +1,9 @@
 local autocmd = vim.api.nvim_create_autocmd
 local sethl = vim.api.nvim_set_hl
-local gethl = vim.api.nvim_get_hl
+
+local function gethl(name)
+    return vim.api.nvim_get_hl(0, { name = name })
+end
 
 local function augroup(name)
     return vim.api.nvim_create_augroup(name, { clear = true })
@@ -11,20 +14,20 @@ autocmd("ColorScheme", {
     group = augroup "prepare-colors-averell",
     callback = function()
         local colors = {
-            error = gethl(0, { name = "DiagnosticError" }).fg or "#E05F6A",
-            warn = gethl(0, { name = "DiagnosticWarn" }).fg or "#E0AF68",
-            info = gethl(0, { name = "DiagnosticInfo" }).fg or "#56B6C2",
-            hint = gethl(0, { name = "DiagnosticHint" }).fg or "#9A9AA1",
+            error = gethl("DiagnosticError").fg or "#E05F6A",
+            warn = gethl("DiagnosticWarn").fg or "#E0AF68",
+            info = gethl("DiagnosticInfo").fg or "#56B6C2",
+            hint = gethl("DiagnosticHint").fg or "#9A9AA1",
 
-            background = gethl(0, { name = "Normal" }).bg,
-            foreground = gethl(0, { name = "Normal" }).fg,
-            comment = gethl(0, { name = "Comment" }).fg,
+            background = gethl("Normal").bg,
+            foreground = gethl("Normal").fg,
+            comment = gethl("Comment").fg,
 
-            cursorline = gethl(0, { name = "CursorLine" }).bg,
+            cursorline = gethl("CursorLine").bg,
 
-            pmenu = gethl(0, { name = "Pmenu" }).bg,
-            fun = gethl(0, { name = "Function" }).fg or "#375FAD",
-            str = gethl(0, { name = "String" }).fg,
+            pmenu = gethl("Pmenu").bg,
+            fun = gethl("Function").fg or "#375FAD",
+            str = gethl("String").fg,
 
             parenthesis = (vim.o.background == "dark") and "#39ff14" or "#ff007f",
         }
@@ -45,7 +48,7 @@ autocmd("ColorScheme", {
         -- sethl(0, "AlphaButton", { bg = gethl(0, { name = "Number" }).fg, bold = true, fg = colors.background })
 
         sethl(0, "AlphaButton", {
-            bg = gethl(0, { name = "Constant" }).fg,
+            bg = gethl("Constant").fg,
             bold = true,
             fg = colors.background,
         })
@@ -81,36 +84,41 @@ autocmd("ColorScheme", {
         sethl(0, "DiagnosticUnderlineHint", { undercurl = true, sp = colors.hint })
 
         -- Clean nvim-tree
-        sethl(0, "NvimTreeLineNr", { bg = gethl(0, { name = "NvimTreeNormal" }).bg })
+        sethl(0, "NvimTreeLineNr", { bg = gethl("NvimTreeNormal").bg })
         sethl(0, "NvimTreeWinSeparator", { bg = colors.background, fg = colors.background })
-        sethl(0, "NvimTreeEndOfBuffer", { bg = gethl(0, { name = "NvimTreeNormal" }).bg })
+        sethl(0, "NvimTreeEndOfBuffer", { bg = gethl("NvimTreeNormal").bg })
         sethl(0, "NvimTreeSignColumn", { bg = "NONE" })
 
         if tools.style == "flat" then
             sethl(0, "SnacksInputNormal", { bg = colors.pmenu, fg = colors.foreground })
             sethl(0, "SnacksInputBorder", { bg = colors.pmenu, fg = colors.pmenu })
 
-            sethl(0, "BlinkCmpMenuBorder", { bg = colors.pmenu, fg = colors.pmenu })
-            sethl(0, "BlinkCmpDocBorder", { bg = colors.pmenu, fg = colors.pmenu })
-            sethl(
-                0,
-                "BlinkCmpDocSeparator",
-                { bg = colors.pmenu, fg = tools.adjust_brightness(colors.foreground, 0.7) }
-            )
             sethl(0, "BlinkCmpSignatureHelp", { bg = colors.pmenu })
             sethl(0, "BlinkCmpSignatureHelpBorder", { bg = colors.pmenu, fg = colors.pmenu })
-            sethl(
-                0,
-                "BlinkCmpLabelDescription",
-                { bg = colors.pmenu, fg = tools.adjust_brightness(colors.foreground, 0.5) }
-            )
-
             -- sethl(0, "SnacksPickerNormal", { bg = colors.pmenu, fg = adjust_brightness(colors.foreground, 0.5) })
 
             -- sethl(0, "BlinkCmpSignatureHelpActiveParameter", { bg = colors.pmenu })
 
-            sethl(0, "BlinkCmpMenu", { bg = colors.pmenu })
-            sethl(0, "BlinkCmpDoc", { bg = colors.pmenu })
+            sethl(0, "BlinkCmpMenu", { bg = tools.adjust_brightness(colors.background, 0.75) })
+            sethl(0, "BlinkCmpMenuBorder", {
+                bg = tools.adjust_brightness(colors.background, 0.75),
+                fg = tools.adjust_brightness(colors.background, 0.75),
+            })
+            sethl(0, "BlinkCmpLabelDescription", {
+                bg = tools.adjust_brightness(colors.background, 0.75),
+                fg = tools.adjust_brightness(colors.foreground, 0.4),
+                italic = true,
+            })
+
+            sethl(0, "BlinkCmpDocBorder", {
+                bg = tools.adjust_brightness(colors.background, 0.87),
+                fg = tools.adjust_brightness(colors.background, 0.87),
+            })
+            sethl(0, "BlinkCmpDoc", { bg = tools.adjust_brightness(colors.background, 0.87) })
+            sethl(0, "BlinkCmpDocSeparator", {
+                bg = tools.adjust_brightness(colors.background, 0.87),
+                fg = tools.adjust_brightness(colors.foreground, 0.7),
+            })
 
             sethl(0, "LspInfoBorder", { bg = colors.pmenu })
             sethl(0, "NormalFloat", { bg = colors.pmenu })
@@ -149,11 +157,7 @@ autocmd("ColorScheme", {
 
             -- Doing this because of tokyonight
             sethl(0, "WhichKeyNormal", { bg = colors.background })
-            sethl(
-                0,
-                "SnacksPickerInputBorder",
-                { bg = colors.background, fg = gethl(0, { name = "SnacksPickerInputTitle" }).fg }
-            )
+            sethl(0, "SnacksPickerInputBorder", { bg = colors.background, fg = gethl("SnacksPickerInputTitle").fg })
         end
 
         sethl(0, "WinBar", { bg = tools.adjust_brightness(colors.background, 0.75) })
@@ -197,8 +201,8 @@ autocmd("ColorScheme", {
             sethl(0, "CursorColumn", { bg = "NONE" })
         else
             sethl(0, "CursorLineNr", {
-                bg = gethl(0, { name = "CursorLine" }).bg,
-                fg = gethl(0, { name = "Constant" }).fg,
+                bg = gethl("CursorLine").bg,
+                fg = gethl("Constant").fg,
                 bold = true,
             })
             -- When a line does not have a sign, we dont have a background for the gitsign part

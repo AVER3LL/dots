@@ -1,16 +1,17 @@
 return {
     "nvim-tree/nvim-tree.lua",
+    dependencies = {},
     cmd = { "NvimTreeToggle", "NvimTreeFocus" },
     keys = {
         {
             "<C-n>",
-            "<cmd>NvimTreeToggle<CR>",
+            vim.cmd.NvimTreeToggle,
             mode = "n",
             desc = "Nvimtree toggle window",
         },
         {
             "<leader>e",
-            "<cmd>NvimTreeFocus<CR>",
+            vim.cmd.NvimTreeFocus,
             mode = "n",
             desc = "Nvimtree focus window",
         },
@@ -61,8 +62,7 @@ return {
             },
             disable_netrw = true,
             hijack_cursor = true,
-            sync_root_with_cwd = false,
-            prefer_startup_root = true,
+            sync_root_with_cwd = true,
             git = {
                 enable = true,
                 ignore = false,
@@ -74,14 +74,12 @@ return {
             },
             update_focused_file = {
                 enable = true,
-                update_root = {
-                    enable = false,
-                },
+                update_root = false,
             },
             view = {
                 width = TREE_WIDTH,
                 adaptive_size = true,
-                preserve_window_proportions = false,
+                preserve_window_proportions = true,
                 signcolumn = "no",
                 side = "right",
             },

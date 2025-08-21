@@ -19,6 +19,7 @@ local function debounced_update(config, is_active)
         update_timer:stop()
     end
     update_timer = vim.uv.new_timer()
+    ---@diagnostic disable-next-line: need-check-nil
     update_timer:start(
         config_module.CONSTANTS.DEBOUNCE_MS,
         0,
@@ -48,7 +49,7 @@ local function set_highlights()
     sethl(0, "WinBarDiagInfo", { fg = colors.info, bold = true })
     sethl(0, "WinBarDiagHint", { fg = colors.hint })
     sethl(0, "WinBarPath", { fg = colors.path, italic = true })
-    sethl(0, "WinBarModified", { fg = colors.path, bold = true })
+    -- sethl(0, "WinBarModified", { fg = colors.path, bold = true })
 end
 
 --- Setup all autocommands

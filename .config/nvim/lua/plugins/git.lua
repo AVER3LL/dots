@@ -17,6 +17,7 @@ return {
                     end
                     nmap("<leader>gb", ":Gitsigns blame_line<CR>", "Git blame the current line")
                     nmap("<leader>gd", ":Gitsigns preview_hunk <CR>", "Git diff the current hunk")
+                    nmap("<leader>gr", ":Gitsigns reset_hunk <CR>", "Rest the current hunk")
                     nmap(
                         "<leader>gg",
                         ":lua require('gitsigns').diffthis(nil, { vertical = true }) <CR>",
@@ -56,6 +57,10 @@ return {
                 --     changedelete = { text = "~" },
                 --     untracked = { text = "┆" },
                 -- },
+                signs = {
+                    delete = { text = "󰍵" },
+                    changedelete = { text = "󱕖" },
+                },
             }
         end,
     },

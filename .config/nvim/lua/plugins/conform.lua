@@ -30,13 +30,11 @@ return {
                     json = { "prettier" },
                     jsonc = { "prettier" },
                     lua = { "stylua" },
-                    -- python = { "isort", "black" },
                     python = {
                         "ruff_fix",
                         "ruff_format",
                         "ruff_organize_imports",
                     },
-                    -- python = { "autopep8" },
                     htmldjango = { "djlint" },
                     c = { "clang-format" },
                     cpp = { "clang-format" },
@@ -65,6 +63,7 @@ return {
                         args = { "$FILENAME" },
                         stdin = false,
                     },
+
                     --python
                     black = {
                         prepend_args = {
@@ -72,6 +71,16 @@ return {
                             "--line-length",
                             "79",
                         },
+                    },
+
+                    doctoc = {
+                        condition = function(_, ctx)
+                            for _, line in ipairs(vim.api.nvim_buf_get_lines(ctx.buf, 0, -1, false)) do
+                                if line:find "<!-- toc -->" then
+                                    return true
+                                end
+                            end
+                        end,
                     },
 
                     ["clang-format"] = {

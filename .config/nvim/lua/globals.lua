@@ -4,7 +4,7 @@ _G.tools = {}
 tools.border = "single"
 
 --- @type "flat" | "clear"
-tools.style = "clear"
+tools.style = "flat"
 
 --- @param mode string | table
 --- @param lhs string

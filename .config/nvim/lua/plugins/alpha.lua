@@ -73,8 +73,8 @@ return {
                     nil,
                     "AlphaIconBlue"
                 ),
-                button("SPC w r", "󰁯   Restore Session", "<cmd>SessionRestore<CR>", nil, "AlphaIconGreen"),
-                button("q", "   Quit NVIM", "<cmd>qa<CR>", nil, "AlphaIconRed"),
+                button("SPC w r", "󰁯   Restore Session", vim.cmd.SessionRestore, nil, "AlphaIconGreen"),
+                button("q", "   Quit NVIM", vim.cmd.qa, nil, "AlphaIconRed"),
             },
             opts = {
                 position = "center",

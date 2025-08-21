@@ -12,7 +12,11 @@
       {
         "language": "javascript",
         "path": "./javascript.json"
-      }
+      },
+     {
+        "language": "php",
+        "path": "./php.json"
+     }
     ]
   }
 }

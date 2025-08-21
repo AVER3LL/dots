@@ -1,0 +1,13 @@
+{
+    "method": {
+        "prefix": "met",
+        "body": [
+            "public function ${1:name}()",
+            "{",
+            "    $0",
+            "}",
+            ""
+        ],
+        "description": "Build a public function"
+    }
+}
