@@ -1,6 +1,8 @@
 local diagnostic_icons = require("icons").diagnostics
 local methods = vim.lsp.protocol.Methods
 
+vim.g.inlay_hints = false
+
 --- Sets up LSP keymaps and autocommands for the given buffer.
 ---@param client vim.lsp.Client
 ---@param bufnr integer
@@ -40,7 +42,14 @@ local function on_attach(client, bufnr)
     end
 
     if client:supports_method(methods.textDocument_signatureHelp) then
-        keymap("i", "<C-x>", vim.lsp.buf.signature_help, "Show signature help")
+        keymap("i", "<C-x>", function()
+            -- Close the completion menu first (if open).
+            if require("blink.cmp.completion.windows.menu").win:is_open() then
+                require("blink.cmp").hide()
+            end
+
+            vim.lsp.buf.signature_help()
+        end, "Show signature help")
     end
 
     if client:supports_method(methods.textDocument_references) then
@@ -53,8 +62,38 @@ local function on_attach(client, bufnr)
 
     if client:supports_method(methods.textDocument_inlayHint) then
         keymap("n", "<leader>dh", function()
-            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+            if vim.g.inlay_hints then
+                vim.lsp.inlay_hint.enable(false)
+            else
+                vim.lsp.inlay_hint.enable(true)
+            end
+
+            vim.g.inlay_hints = not vim.g.inlay_hints
         end, "Toggle inlay hints")
+
+        local inlay_hints_group = vim.api.nvim_create_augroup("mariasolos/toggle_inlay_hints", { clear = false })
+
+        vim.api.nvim_create_autocmd("InsertEnter", {
+            group = inlay_hints_group,
+            desc = "Enable inlay hints",
+            buffer = bufnr,
+            callback = function()
+                if vim.g.inlay_hints then
+                    vim.lsp.inlay_hint.enable(false)
+                end
+            end,
+        })
+
+        vim.api.nvim_create_autocmd("InsertLeave", {
+            group = inlay_hints_group,
+            desc = "Disable inlay hints",
+            buffer = bufnr,
+            callback = function()
+                if vim.g.inlay_hints then
+                    vim.lsp.inlay_hint.enable(true)
+                end
+            end,
+        })
     end
 
     if client:supports_method(methods.textDocument_rename) then
@@ -86,6 +125,19 @@ local function on_attach(client, bufnr)
             end,
         })
     end
+end
+
+-- Update mappings when registering dynamic capabilities.
+local register_capability = vim.lsp.handlers[methods.client_registerCapability]
+vim.lsp.handlers[methods.client_registerCapability] = function(err, res, ctx)
+    local client = vim.lsp.get_client_by_id(ctx.client_id)
+    if not client then
+        return
+    end
+
+    on_attach(client, vim.api.nvim_get_current_buf())
+
+    return register_capability(err, res, ctx)
 end
 
 vim.api.nvim_create_autocmd("LspAttach", {

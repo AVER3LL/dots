@@ -6,9 +6,6 @@ local map = tools.map
 
 require("config.search-counter").setup { highlight = "Comment" }
 
--- map("n", "<leader><leader>n", "<cmd>NoNeckPain<CR>", { desc = "Center windows" })
--- map("n", "<leader><leader>l", tools.toggle_numbers)
-
 map("n", "U", "<C-r>", { desc = "Redo" })
 
 map("n", "<leader>nb", "<cmd>enew<CR>", { desc = "Buffer new" })
@@ -112,14 +109,8 @@ vim.api.nvim_create_autocmd("TermOpen", {
         vim.opt.relativenumber = false
         local opts = { buffer = event.buf }
         map("t", "<esc>", [[<C-\><C-n>]], opts)
-        map("t", "<A-i>", [[<C-\><C-n>]], opts)
         map("t", terminal_mapping, function()
             terminal.toggle()
         end, opts)
-        map("t", "<C-h>", [[<Cmd>wincmd h<CR>]], opts)
-        map("t", "<C-j>", [[<Cmd>wincmd j<CR>]], opts)
-        map("t", "<C-k>", [[<Cmd>wincmd k<CR>]], opts)
-        map("t", "<C-l>", [[<Cmd>wincmd l<CR>]], opts)
-        -- map("t", "<C-w>", [[<C-\><C-n><C-w>]], opts)
     end,
 })
