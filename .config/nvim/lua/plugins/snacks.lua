@@ -6,11 +6,30 @@ return {
     lazy = false,
     ---@type snacks.Config
     opts = {
+        styles = {
+            notification = {
+                border = tools.border,
+                zindex = 100,
+                ft = "markdown",
+                wo = {
+                    winblend = 5,
+                    wrap = false,
+                    conceallevel = 2,
+                    colorcolumn = "",
+                },
+                bo = { filetype = "snacks_notif" },
+            },
+        },
+
         toggle = { notify = false },
         bigfile = { enabled = true },
         explorer = { enabled = false },
         image = { enabled = true },
-        notifier = { enabled = true },
+        notifier = {
+            enabled = true,
+            margin = { top = 1, right = 1, bottom = 0 },
+            style = "compact",
+        },
         quickfile = { enabled = true },
         indent = { enabled = false, only_current = true },
         scroll = { enabled = false },

@@ -1,12 +1,14 @@
 fish_color_normal {{colors.on_surface.default.hex_stripped}}
-fish_color_command {{colors.primary.default.hex_stripped}}
+fish_color_command a6e3a1
+# fish_color_command {{colors.primary.default.hex_stripped}}
 fish_color_param {{colors.tertiary.default.hex_stripped}}
 fish_color_keyword {{colors.tertiary_fixed.default.hex_stripped}}
 fish_color_quote {{colors.secondary.default.hex_stripped}}
 fish_color_redirection {{colors.tertiary.default.hex_stripped}}
 fish_color_end {{colors.secondary.default.hex_stripped}}
 fish_color_comment {{colors.outline.default.hex_stripped}}
-fish_color_error {{colors.error.default.hex_stripped}}
+fish_color_error e06c75 --underline --bold
+# fish_color_error {{colors.error.default.hex_stripped}}
 fish_color_gray {{colors.surface_bright.default.hex_stripped}}
 fish_color_selection --background={{colors.inverse_on_surface.default.hex_stripped}}
 fish_color_search_match --background={{colors.inverse_on_surface.default.hex_stripped}}
