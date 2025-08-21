@@ -28,20 +28,29 @@ return {
         dependencies = {
             "mason-org/mason.nvim",
             "mason-org/mason-lspconfig.nvim",
-            { "antosha417/nvim-lsp-file-operations", dependencies = "nvim-tree/nvim-tree.lua", opts = {} },
         },
         config = function()
-            local capabilities = require("blink.cmp").get_lsp_capabilities()
-            capabilities =
-                vim.tbl_deep_extend("force", capabilities, require("lsp-file-operations").default_capabilities())
-
             ---@class LspServersConfig
             ---@field mason table<string, vim.lsp.Config>
             ---@field others table<string, vim.lsp.Config>
             local servers = {
 
                 mason = {
-                    lua_ls = {},
+                    lua_ls = {
+                        settings = {
+                            Lua = {
+                                completion = { callSnippet = "Replace" },
+                                format = { enable = false },
+                                hint = {
+                                    enable = true,
+                                    arrayIndex = "Disable",
+                                },
+                                runtime = {
+                                    version = "LuaJIT",
+                                },
+                            },
+                        },
+                    },
                     bashls = {},
                     clangd = {},
                     cssls = {},

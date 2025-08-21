@@ -56,7 +56,7 @@ return {
 
         local heading = {
             type = "text",
-            val = require("config.banners")["threeskulls_v1"],
+            val = require("config.banners")["modern"],
             opts = {
                 position = "center",
                 hl = "Type",
@@ -117,10 +117,10 @@ return {
         local layout = {
             { type = "padding", val = 1 },
             heading,
-            { type = "padding", val = 4 },
+            { type = "padding", val = 3 },
             averell,
             buttons,
-            { type = "padding", val = 4 },
+            { type = "padding", val = 3 },
             loaded,
         }
 

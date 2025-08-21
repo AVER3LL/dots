@@ -1,77 +1,103 @@
 local diagnostic_icons = require("icons").diagnostics
+local methods = vim.lsp.protocol.Methods
 
-local map = function(mode, lhs, rhs, opts)
-    opts = opts or {}
-    opts.noremap = true
-    opts.silent = true
-    vim.keymap.set(mode, lhs, rhs, opts)
+--- Sets up LSP keymaps and autocommands for the given buffer.
+---@param client vim.lsp.Client
+---@param bufnr integer
+local function on_attach(client, bufnr)
+    ---@param mode? string|string[]
+    ---@param rhs string|function
+    ---@param lhs string
+    ---@param desc string
+    local function keymap(mode, lhs, rhs, desc)
+        mode = mode or "n"
+        vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = "LSP " .. desc })
+    end
+
+    keymap({ "n", "x" }, "<leader>ca", function()
+        ---@diagnostic disable-next-line: missing-parameter
+        require("tiny-code-action").code_action()
+    end, "Display code actions")
+
+    keymap("n", "<leader>dl", vim.diagnostic.open_float, "Show inline diagnostics")
+
+    keymap("n", "<leader>da", "<cmd>Trouble diagnostics<CR>", "Show all diagnostics")
+
+    keymap("n", "<leader>ds", vim.diagnostic.setloclist, "Show diagnostic loclist")
+
+    keymap("n", "<leader>fs", Snacks.picker.lsp_symbols, "Show document symbols")
+
+    if client:supports_method(methods.textDocument_definition) then
+        keymap("n", "gd", Snacks.picker.lsp_definitions, "Go to definition")
+    end
+
+    if client:supports_method(methods.textDocument_declaration) then
+        keymap("n", "gD", Snacks.picker.lsp_declarations, "Go to declaration")
+    end
+
+    if client:supports_method(methods.textDocument_implementation) then
+        keymap("n", "gi", Snacks.picker.lsp_implementations, "Go to implementation")
+    end
+
+    if client:supports_method(methods.textDocument_signatureHelp) then
+        keymap("i", "<C-x>", vim.lsp.buf.signature_help, "Show signature help")
+    end
+
+    if client:supports_method(methods.textDocument_references) then
+        keymap("n", "gr", Snacks.picker.lsp_references, "Go to references")
+    end
+
+    if client:supports_method(methods.textDocument_hover) then
+        keymap("n", "<leader>k", vim.lsp.buf.hover, "Show documentation")
+    end
+
+    if client:supports_method(methods.textDocument_inlayHint) then
+        keymap("n", "<leader>dh", function()
+            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+        end, "Toggle inlay hints")
+    end
+
+    if client:supports_method(methods.textDocument_rename) then
+        keymap("n", "<leader>rn", vim.lsp.buf.rename, "Smart rename")
+    end
+
+    if client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
+        local highlight_augroup = vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
+
+        vim.api.nvim_create_autocmd({ "CursorHold", "InsertLeave" }, {
+            group = highlight_augroup,
+            desc = "Highlight references under cursor",
+            buffer = bufnr,
+            callback = vim.lsp.buf.document_highlight,
+        })
+
+        vim.api.nvim_create_autocmd({ "CursorMoved", "InsertEnter", "BufLeave" }, {
+            group = highlight_augroup,
+            desc = "Clear highlight references",
+            buffer = bufnr,
+            callback = vim.lsp.buf.clear_references,
+        })
+
+        vim.api.nvim_create_autocmd("LspDetach", {
+            group = vim.api.nvim_create_augroup("kickstart-lsp-detach", { clear = true }),
+            callback = function(event)
+                vim.lsp.buf.clear_references()
+                vim.api.nvim_clear_autocmds { group = "kickstart-lsp-highlight", buffer = event.buf }
+            end,
+        })
+    end
 end
 
 vim.api.nvim_create_autocmd("LspAttach", {
     group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
     callback = function(event)
-        local function opts(desc)
-            return { buffer = event.buf, desc = "LSP " .. desc }
-        end
-
         local client = vim.lsp.get_client_by_id(event.data.client_id)
 
-        map("n", "gD", Snacks.picker.lsp_declarations, opts "Go to declaration")
-        map("n", "gd", Snacks.picker.lsp_definitions, opts "Go to definition")
-        map("n", "gi", Snacks.picker.lsp_implementations, opts "Go to implementation")
-        map("n", "<leader>k", vim.lsp.buf.hover, opts "Show documentation")
-        map("n", "<leader>rn", vim.lsp.buf.rename, opts "Smart rename")
-        map("n", "<leader>ds", vim.diagnostic.setloclist, opts "Show diagnostic loclist")
-        map("n", "<leader>dl", vim.diagnostic.open_float, opts "Show inline diagnostics")
-        map("n", "<leader>fs", Snacks.picker.lsp_symbols, opts "Show document symbols")
-
-        if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
-            map("n", "<leader>dh", function()
-                vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(), { bufnr = event.buf })
-            end, opts "Toggle inlay hints")
+        if not client then
+            return
         end
 
-        -- require("config.lightbulb").attach_lightbulb(event.buf, client.id)
-
-        -- map("n", "<leader>da", "<cmd>Trouble diagnostics<CR>", opts "Show all diagnostics")
-
-        -- map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts "Code action")
-        vim.keymap.set({ "n", "x" }, "<leader>ca", function()
-            require("tiny-code-action").code_action()
-        end, { noremap = true, silent = true })
-        map({ "n", "v" }, "<leader>cc", vim.lsp.codelens.run, opts "Run Codelens")
-        map({ "n", "v" }, "<leader>cC", vim.lsp.codelens.refresh, opts "Refresh & Display Codelens")
-
-        map("n", "gr", function()
-            Snacks.picker.lsp_references()
-        end, opts "Go to references")
-
-        map("i", "<C-x>", vim.lsp.buf.signature_help, opts "Show signature help")
-
-        -- if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight, event.buf) then
-        --     local highlight_augroup = vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
-        --
-        --     vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-        --         buffer = event.buf,
-        --         group = highlight_augroup,
-        --         callback = vim.lsp.buf.document_highlight,
-        --     })
-        --
-        --     vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-        --         buffer = event.buf,
-        --         group = highlight_augroup,
-        --         callback = vim.lsp.buf.clear_references,
-        --     })
-        --
-        --     vim.api.nvim_create_autocmd("LspDetach", {
-        --         group = vim.api.nvim_create_augroup("kickstart-lsp-detach", { clear = true }),
-        --         callback = function(event2)
-        --             vim.lsp.buf.clear_references()
-        --             vim.api.nvim_clear_autocmds { group = "kickstart-lsp-highlight", buffer = event2.buf }
-        --         end,
-        --     })
-        --
-        -- end
+        on_attach(client, event.buf)
     end,
 })
 
