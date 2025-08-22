@@ -8,6 +8,7 @@ return {
     ---@module 'render-markdown'
     ---@type render.md.UserConfig
     opts = {
+        -- Disable the plugin in hover windows
         ignore = function(buf)
             local buftype = vim.api.nvim_get_option_value("buftype", { buf = buf })
 

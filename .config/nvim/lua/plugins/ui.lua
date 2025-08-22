@@ -57,10 +57,11 @@ return {
         event = "LspAttach",
         opts = {
             picker = {
+                backend = "vim",
                 "buffer",
                 opts = {
                     hotkeys = true,
-                    winborder = tools.boder,
+                    winborder = tools.border,
                     -- Use numeric labels.
                     hotkeys_mode = function(titles)
                         return vim.iter(ipairs(titles))

@@ -1,12 +1,17 @@
 return {
     "nvim-neo-tree/neo-tree.nvim",
-    enabled = false,
+    enabled = true,
     branch = "v3.x",
-    cmd = "Neotree", -- Load only when `:Neotree` command is used
+    cmd = "Neotree",
     keys = {
         {
             "<C-n>",
-            "<cmd>Neotree filesystem reveal left<cr>"
+            "<cmd>Neotree toggle<cr>",
+            desc = "Neotree toggle"
+        },
+        {
+            "<leader>e",
+            "<cmd>Neotree reveal<cr>",
         }
     },
     dependencies = {
@@ -16,10 +21,19 @@ return {
     },
     config = function()
         require("neo-tree").setup {
-            popup_border_style = "single",
+            popup_border_style = tools.border,
             enable_modified_markers = true,
             default_component_configs = {
+                indent = {
+                    with_expanders = true,
+                    with_markers = false,
+                    indent_size = 3,
+                    padding = 1,
+                    expander_collapsed = "",
+                    expander_expanded = "",
+                },
                 diagnostics = {
+                    enabled = false,
                     symbols = {
                         hint = "",
                         info = "",
@@ -52,8 +66,31 @@ return {
                 },
             },
             window = {
-                position = "left",
-                width = 32,
+                position = "right",
+                width = 35,
+                mappings = {
+                    ["l"] = "open",
+                    ["e"] = "rename_basename",
+                    ["."] = function(state)
+                        local node = state.tree:get_node()
+                        local filepath = node:get_id()
+
+                        require("config.floaterminal").put_command(filepath, "start")
+                    end,
+                    ["gy"] = function(state)
+                        local node = state.tree:get_node()
+                        local filepath = node:get_id()
+
+                        local filename = node.name
+
+                        -- Use system clipboard with proper file URI
+                        local uri = "file://" .. vim.fn.fnamemodify(filepath, ":p")
+                        local cmd = string.format('echo "%s" | wl-copy --type text/uri-list', uri)
+                        os.execute(cmd)
+
+                        vim.notify(filename .. " copied to system clipboard", vim.log.levels.INFO)
+                    end,
+                },
             },
             hide_root_node = true,
             retain_hidden_root_indent = false,

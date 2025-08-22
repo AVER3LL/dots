@@ -56,7 +56,7 @@ local function on_attach(client, bufnr)
         keymap("n", "gr", Snacks.picker.lsp_references, "Go to references")
     end
 
-    if client:supports_method(methods.textDocument_hover) then
+    if client:supports_method(methods.textDocument_hover) or client.name == "dartls" then
         keymap("n", "<leader>k", vim.lsp.buf.hover, "Show documentation")
     end
 
@@ -96,7 +96,7 @@ local function on_attach(client, bufnr)
         })
     end
 
-    if client:supports_method(methods.textDocument_rename) then
+    if client:supports_method(methods.textDocument_rename) or client.name == "dartls" then
         keymap("n", "<leader>rn", vim.lsp.buf.rename, "Smart rename")
     end
 

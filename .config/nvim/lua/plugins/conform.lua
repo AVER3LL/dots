@@ -6,7 +6,11 @@ return {
             {
                 "<leader>fm",
                 function()
-                    require("conform").format { async = true, lsp_format = "fallback" }
+                    require("conform").format {
+                        async = true,
+                        lsp_format = "fallback",
+                        timeout_ms = 1000,
+                    }
                 end,
                 mode = { "n", "v" },
                 desc = "Format buffer",
@@ -19,16 +23,16 @@ return {
             local opts = {
                 notify_on_error = false,
                 formatters_by_ft = {
-                    css = { "prettier" },
-                    html = { "prettier" },
-                    javascript = { "prettier" },
-                    javascriptreact = { "prettier" },
-                    typescript = { "prettier" },
-                    vue = { "prettier" },
-                    typescriptreact = { "prettier" },
-                    markdown = { "doctoc", "prettier" },
-                    json = { "prettier" },
-                    jsonc = { "prettier" },
+                    css = { "biome" },
+                    html = { "biome" },
+                    javascript = { "biome" },
+                    javascriptreact = { "biome" },
+                    typescript = { "biome" },
+                    vue = { "biome" },
+                    typescriptreact = { "biome" },
+                    markdown = { "doctoc", "prettierd" },
+                    json = { "prettierd" },
+                    jsonc = { "prettierd" },
                     lua = { "stylua" },
                     python = {
                         "ruff_fix",
@@ -68,6 +72,8 @@ return {
                                     return true
                                 end
                             end
+
+                            return false
                         end,
                     },
 
@@ -103,6 +109,10 @@ return {
                         },
                     },
 
+                    shfmt = {
+                        prepend_args = { "-i", "4" },
+                    },
+
                     ["google-java-format"] = {
                         inherit = false,
                         command = "google-java-format",
@@ -111,6 +121,15 @@ return {
                             "-",
                         },
                         stdin = true,
+                    },
+
+                    biome = {
+                        append_args = {
+                            "--indent-style",
+                            "space",
+                            "--indent-width",
+                            "4",
+                        },
                     },
 
                     prettier = {

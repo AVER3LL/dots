@@ -85,7 +85,8 @@ autocmd("ColorScheme", {
 
         -- Clean nvim-tree
         sethl(0, "NvimTreeLineNr", { bg = gethl("NvimTreeNormal").bg })
-        sethl(0, "NvimTreeWinSeparator", { bg = colors.background, fg = colors.background })
+        sethl(0, "NvimTreeWinSeparator", { bg = gethl("NvimTreeNormal").bg, fg = gethl("NvimTreeNormal").bg })
+        sethl(0, "NeoTreeWinSeparator", { bg = gethl("NeoTreeNormal").bg, fg = gethl("NeoTreeNormal").bg })
         sethl(0, "NvimTreeEndOfBuffer", { bg = gethl("NvimTreeNormal").bg })
         sethl(0, "NvimTreeSignColumn", { bg = "NONE" })
 

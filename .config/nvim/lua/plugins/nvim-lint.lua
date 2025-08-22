@@ -8,11 +8,17 @@ return {
 
             lint.linters_by_ft = {
 
-                lua = { "luacheck" },
+                -- lua = { "luacheck" },
 
                 -- python = { "mypy" },
 
                 php = { "phpstan" },
+
+                vue = { "biomejs" },
+                javascript = { "biomejs" },
+                typescript = { "biomejs" },
+                javascriptreact = { "biomejs" },
+                typescriptreact = { "biomejs" },
 
                 kotlin = { "ktlint" },
 
@@ -52,6 +58,10 @@ return {
                     end
                 end,
             })
+
+            vim.keymap.set("n", "<leader>lt", function()
+                lint.try_lint()
+            end, { desc = "Trigger linting for current file" })
         end,
     },
 
@@ -61,6 +71,8 @@ return {
             "mason-org/mason.nvim",
             "mfussenegger/nvim-lint",
         },
-        opts = {},
+        opts = {
+            ignore_install = { "biomejs" },
+        },
     },
 }

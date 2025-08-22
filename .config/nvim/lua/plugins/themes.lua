@@ -11,6 +11,12 @@ return {
     },
 
     {
+        "catppuccin/nvim",
+        name = "catppuccin",
+        priority = 1000,
+    },
+
+    {
         "ribru17/bamboo.nvim",
         priority = 1000,
         opts = {
@@ -140,6 +146,12 @@ return {
 
             vim.g.gruvbox_material_better_performance = 1
         end,
+    },
+
+    {
+        "Mofiqul/vscode.nvim",
+        priority = 1000,
+        opts = {},
     },
 
     { -- tokyonight

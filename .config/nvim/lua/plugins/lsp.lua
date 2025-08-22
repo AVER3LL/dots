@@ -65,6 +65,7 @@ return {
                         cmd = { "qmlls", "-E" },
                     },
                     texlab = {},
+                    vtsls = {},
 
                     basedpyright = {
                         settings = {
@@ -89,7 +90,31 @@ return {
                         },
                     },
 
-                    vue_ls = {},
+                    vue_ls = {
+                        filetypes = {
+                            "javascript",
+                            "javascriptreact",
+                            "typescript",
+                            "typescriptreact",
+                            "vue",
+                        },
+                        settings = {
+                            vtsls = {
+                                tsserver = {
+                                    globalPlugins = {
+                                        {
+                                            configNamespace = "typescript",
+                                            enableForWorkspaceTypeScriptVersions = true,
+                                            languages = { "vue" },
+                                            location = vim.fn.stdpath "data"
+                                                .. "/mason/packages/vue-language-server/node_modules/@vue/language-server",
+                                            name = "@vue/typescript-plugin",
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
 
                     html = {},
 

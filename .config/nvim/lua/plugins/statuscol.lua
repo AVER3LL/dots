@@ -17,6 +17,7 @@ return {
                 "Avante",
                 "AvanteInput",
                 "NvimTree",
+                "neo-tree",
                 "alpha",
                 "oil",
             },
