@@ -1,6 +1,7 @@
 local api = vim.api
 
 local buffer_utils = require "config.winbar.utils.buffer"
+local cache = require "config.winbar.cache"
 local config_module = require "config.winbar.config"
 local state_manager = require "config.winbar.state"
 local updater = require "config.winbar.updater"
@@ -70,6 +71,15 @@ function M.setup_autocmds(config)
         end,
     })
 
+    -- Buffer cache cleanup
+    autocmd("BufWipeout", {
+        group = group,
+        pattern = "*",
+        callback = function(args)
+            cache.cleanup_buf_cache(args.buf)
+        end,
+    })
+
     -- Colorscheme updates
     autocmd("ColorScheme", {
         group = group,
@@ -102,6 +112,7 @@ function M.setup_autocmds(config)
         callback = function(args)
             local bufnr = args.buf
             if bufnr and api.nvim_buf_is_valid(bufnr) then
+                cache.invalidate_diagnostics(bufnr)
                 updater.update_all_windows_for_buffer(config, bufnr)
             end
         end,
@@ -116,8 +127,8 @@ function M.setup_autocmds(config)
                 and not window_utils.is_window_too_small(config)
                 and not window_utils.is_popup_or_floating_window()
             then
-                local bufnr = api.nvim_get_current_buf()
-                state_manager.update_state(bufnr, { insert_mode_modified = true })
+                local win_id = api.nvim_get_current_win()
+                state_manager.update_state(win_id, { insert_mode_modified = true })
                 debounced_update(config, true)
             end
         end,
@@ -132,8 +143,8 @@ function M.setup_autocmds(config)
                 and not window_utils.is_window_too_small(config)
                 and not window_utils.is_popup_or_floating_window()
             then
-                local bufnr = api.nvim_get_current_buf()
-                state_manager.update_state(bufnr, { insert_mode_modified = false })
+                local win_id = api.nvim_get_current_win()
+                state_manager.update_state(win_id, { insert_mode_modified = false })
                 debounced_update(config, true)
             else
                 vim.wo.winbar = ""
@@ -149,8 +160,8 @@ function M.setup_autocmds(config)
                 and not window_utils.is_window_too_small(config)
                 and not window_utils.is_popup_or_floating_window()
             then
-                local bufnr = api.nvim_get_current_buf()
-                state_manager.update_state(bufnr, { insert_mode_modified = false })
+                local win_id = api.nvim_get_current_win()
+                state_manager.update_state(win_id, { insert_mode_modified = false })
                 debounced_update(config, true)
             end
         end,
@@ -183,7 +194,10 @@ function M.setup_autocmds(config)
         "WinResized",
     }, {
         group = group,
-        callback = function()
+        callback = function(args)
+            if args.event == "BufWritePost" then
+                cache.invalidate_all_for_buf(args.buf)
+            end
             if
                 not buffer_utils.should_ignore_buffer(config)
                 and not window_utils.is_window_too_small(config)

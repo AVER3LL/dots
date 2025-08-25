@@ -5,6 +5,8 @@ local function is_laravel_source(source_name)
 end
 
 return {
+    ---@module 'lazy'
+    ---@type LazySpec
     {
         "saghen/blink.cmp",
         event = "InsertEnter",
@@ -142,6 +144,8 @@ return {
         },
     },
 
+    ---@module 'lazy'
+    ---@type LazySpec
     {
         "saghen/blink.compat",
         -- use the latest release, via version = '*', if you also use the latest release for blink.cmp

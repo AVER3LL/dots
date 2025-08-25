@@ -108,15 +108,16 @@ local function setup_autocommands()
     })
 
     -- Update counter when using n/N
-    api.nvim_create_autocmd("CursorMoved", {
-        group = group,
-        callback = function()
-            -- Only update if we're in a search context
-            if vim.v.hlsearch == 1 and vim.fn.getreg "/" ~= "" then
-                update_search_counter()
-            end
-        end,
-    })
+
+    -- api.nvim_create_autocmd("CursorMoved", {
+    --     group = group,
+    --     callback = function()
+    --         -- Only update if we're in a search context
+    --         if vim.v.hlsearch == 1 and vim.fn.getreg "/" ~= "" then
+    --             update_search_counter()
+    --         end
+    --     end,
+    -- })
 
     -- Clear counter when search highlighting is turned off
     api.nvim_create_autocmd("OptionSet", {

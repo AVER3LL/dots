@@ -3,6 +3,8 @@ local methods = vim.lsp.protocol.Methods
 
 vim.g.inlay_hints = false
 
+local M = {}
+
 --- Sets up LSP keymaps and autocommands for the given buffer.
 ---@param client vim.lsp.Client
 ---@param bufnr integer
@@ -103,27 +105,29 @@ local function on_attach(client, bufnr)
     if client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
         local highlight_augroup = vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
 
-        vim.api.nvim_create_autocmd({ "CursorHold", "InsertLeave" }, {
-            group = highlight_augroup,
-            desc = "Highlight references under cursor",
-            buffer = bufnr,
-            callback = vim.lsp.buf.document_highlight,
-        })
+        -- PERF: Commented because my laptop is dying
 
-        vim.api.nvim_create_autocmd({ "CursorMoved", "InsertEnter", "BufLeave" }, {
-            group = highlight_augroup,
-            desc = "Clear highlight references",
-            buffer = bufnr,
-            callback = vim.lsp.buf.clear_references,
-        })
-
-        vim.api.nvim_create_autocmd("LspDetach", {
-            group = vim.api.nvim_create_augroup("kickstart-lsp-detach", { clear = true }),
-            callback = function(event)
-                vim.lsp.buf.clear_references()
-                vim.api.nvim_clear_autocmds { group = "kickstart-lsp-highlight", buffer = event.buf }
-            end,
-        })
+        -- vim.api.nvim_create_autocmd({ "CursorHold", "InsertLeave" }, {
+        --     group = highlight_augroup,
+        --     desc = "Highlight references under cursor",
+        --     buffer = bufnr,
+        --     callback = vim.lsp.buf.document_highlight,
+        -- })
+        --
+        -- vim.api.nvim_create_autocmd({ "CursorMoved", "InsertEnter", "BufLeave" }, {
+        --     group = highlight_augroup,
+        --     desc = "Clear highlight references",
+        --     buffer = bufnr,
+        --     callback = vim.lsp.buf.clear_references,
+        -- })
+        --
+        -- vim.api.nvim_create_autocmd("LspDetach", {
+        --     group = vim.api.nvim_create_augroup("kickstart-lsp-detach", { clear = true }),
+        --     callback = function(event)
+        --         vim.lsp.buf.clear_references()
+        --         vim.api.nvim_clear_autocmds { group = "kickstart-lsp-highlight", buffer = event.buf }
+        --     end,
+        -- })
     end
 end
 
@@ -237,3 +241,33 @@ vim.diagnostic.handlers.virtual_text = {
     end,
     hide = hide_handler,
 }
+
+M.capabilities = vim.lsp.protocol.make_client_capabilities()
+
+M.capabilities.textDocument.completion.completionItem = {
+    documentationFormat = { "markdown", "plaintext" },
+    snippetSupport = true,
+    preselectSupport = true,
+    insertReplaceSupport = true,
+    labelDetailsSupport = true,
+    deprecatedSupport = true,
+    commitCharactersSupport = true,
+    tagSupport = { valueSet = { 1 } },
+    resolveSupport = {
+        properties = {
+            "documentation",
+            "detail",
+            "additionalTextEdits",
+        },
+    },
+}
+
+M.capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = false
+
+M.on_init = function(client, _)
+    if client:supports_method "textDocument/semanticTokens" then
+        client.server_capabilities.semanticTokensProvider = nil
+    end
+end
+
+return M

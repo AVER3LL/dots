@@ -1,5 +1,7 @@
 local icons = require("icons").diagnostics
 local fn = vim.fn
+local api = vim.api
+local cache = require("config.winbar.cache")
 
 local M = {}
 
@@ -26,9 +28,10 @@ local function format_diagnostics(diagnostic_configs)
 end
 
 --- Get diagnostic counts and build diagnostic_configs
+--- @param bufnr integer
 --- @return diagnostic_configs[]
-local function get_diagnostic_configs()
-    local counts = vim.diagnostic.count(0)
+local function get_diagnostic_configs(bufnr)
+    local counts = cache.get_diagnostics(bufnr)
 
     return {
         { count = counts[vim.diagnostic.severity.ERROR] or 0, icon = icons.ERROR, hl = "WinBarDiagError" },
@@ -47,7 +50,8 @@ M.calculate_space = function(config, state)
         return 0
     end
 
-    local diagnostic_configs = get_diagnostic_configs()
+    local bufnr = api.nvim_get_current_buf()
+    local diagnostic_configs = get_diagnostic_configs(bufnr)
     local parts = {}
 
     for _, diag_config in ipairs(diagnostic_configs) do
@@ -73,13 +77,14 @@ M.get = function(config, state)
         return "", ""
     end
 
-    local counts = vim.diagnostic.count(0)
+    local bufnr = api.nvim_get_current_buf()
+    local counts = cache.get_diagnostics(bufnr)
 
-    if #counts == 0 then
+    if not counts or vim.tbl_isempty(counts) then
         return "", ""
     end
 
-    local diagnostic_configs = get_diagnostic_configs()
+    local diagnostic_configs = get_diagnostic_configs(bufnr)
     return format_diagnostics(diagnostic_configs)
 end
 

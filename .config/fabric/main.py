@@ -7,11 +7,6 @@ from modules.bar import StatusBar
 from modules.corners import Corners
 from modules.date import DateWidget
 
-
-def bar_border():
-    return f"border-bottom: {'1' if SHOW_CORNERS else '0'}px solid alpha(var(--outline), 0.6);"
-
-
 if __name__ == "__main__":
     setproctitle.setproctitle(APP_NAME)
 
@@ -24,9 +19,6 @@ if __name__ == "__main__":
     def set_css(*_) -> None:
         app.set_stylesheet_from_file(
             get_relative_path("main.css"),
-            # exposed_functions={
-            #     "bar-border": bar_border,
-            # },
         )
 
     style_monitor = monitor_file(get_relative_path("main.css"), set_css)

@@ -1,8 +1,10 @@
 return {
+
+    ---@module 'lazy'
+    ---@type LazySpec
     {
         "mfussenegger/nvim-lint",
-        -- event = { "BufReadPre", "BufNewFile" },
-        lazy = true,
+        event = { "BufReadPre", "BufNewFile" },
         config = function()
             local lint = require "lint"
 
@@ -62,17 +64,18 @@ return {
             vim.keymap.set("n", "<leader>lt", function()
                 lint.try_lint()
             end, { desc = "Trigger linting for current file" })
+
+            require "mason-nvim-lint"
         end,
     },
 
+    ---@module 'lazy'
+    ---@type LazySpec
     {
         "rshkarin/mason-nvim-lint",
-        dependencies = {
-            "mason-org/mason.nvim",
-            "mfussenegger/nvim-lint",
-        },
+        lazy = true,
         opts = {
-            ignore_install = { "biomejs" },
+            ignore_install = { "biomejs", "ktlint" },
         },
     },
 }

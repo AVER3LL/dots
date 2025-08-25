@@ -150,16 +150,15 @@ return {
                 },
             }
 
+            require "mason-conform"
+
             return opts
         end,
     },
 
     {
         "zapling/mason-conform.nvim",
-        dependencies = {
-            "mason-org/mason.nvim",
-            "stevearc/conform.nvim",
-        },
+        lazy = true,
         opts = {},
     },
 }

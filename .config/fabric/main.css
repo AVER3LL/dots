@@ -19,5 +19,5 @@
 }
 
 #corner.bottom {
-    background-color: black;
+    background-color: var(--shadow);
 }

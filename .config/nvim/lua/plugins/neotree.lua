@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-field
 return {
     "nvim-neo-tree/neo-tree.nvim",
     enabled = true,
@@ -7,12 +8,12 @@ return {
         {
             "<C-n>",
             "<cmd>Neotree toggle<cr>",
-            desc = "Neotree toggle"
+            desc = "Neotree toggle",
         },
         {
             "<leader>e",
             "<cmd>Neotree reveal<cr>",
-        }
+        },
     },
     dependencies = {
         { "nvim-lua/plenary.nvim", lazy = true },
@@ -20,9 +21,20 @@ return {
         { "MunifTanjim/nui.nvim", lazy = true },
     },
     config = function()
+        local function on_move(data)
+            Snacks.rename.on_rename_file(data.source, data.destination)
+        end
+
+        local events = require "neo-tree.events"
+
         require("neo-tree").setup {
+            ---@diagnostic disable-next-line: assign-type-mismatch
             popup_border_style = tools.border,
             enable_modified_markers = true,
+            event_handlers = {
+                { event = events.FILE_MOVED, handler = on_move },
+                { event = events.FILE_RENAMED, handler = on_move },
+            },
             default_component_configs = {
                 indent = {
                     with_expanders = true,

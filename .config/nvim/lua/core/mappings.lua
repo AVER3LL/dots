@@ -96,11 +96,11 @@ end)
 
 map("n", "<leader><leader>r", function()
     terminal.run()
-end)
+end, { desc = "Run the current file" })
 
 map("n", "<leader><leader>e", function()
     terminal.put_current_file "start"
-end)
+end, { desc = "Put file path in terminal" })
 
 vim.api.nvim_create_autocmd("TermOpen", {
     group = vim.api.nvim_create_augroup("custom-termopen", { clear = true }),

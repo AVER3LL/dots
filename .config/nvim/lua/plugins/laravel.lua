@@ -63,7 +63,7 @@ return {
             vim.keymap.set(
                 "n",
                 "<leader>lu",
-                require("config.laravel").generate_gf_cache,
+                require("config.laravel.gf").generate_all_caches,
                 { desc = "Generate gf cache", silent = true }
             )
 
@@ -118,6 +118,21 @@ return {
             vim.keymap.set("n", "<leader>lfr", require("config.laravel.pickers").find_routes, {
                 desc = "Find routes",
                 silent = true,
+            })
+
+            -- Add autocommand to update gf cache automatically
+            vim.api.nvim_create_autocmd("BufWritePost", {
+                group = vim.api.nvim_create_augroup("LaravelGfCache", { clear = true }),
+                pattern = "*/routes/**/*.php",
+                callback = function()
+                    if require("config.laravel.utils").is_laravel_project() then
+                        vim.defer_fn(function()
+                            require("config.laravel.gf").generate_all_caches()
+                            vim.notify("Laravel `gf` cache updated.", vim.log.levels.INFO, { title = "Laravel" })
+                        end, 50) -- Defer to not slow down saving
+                    end
+                end,
+                desc = "Update Laravel gf cache on route file changes",
             })
         end,
     },

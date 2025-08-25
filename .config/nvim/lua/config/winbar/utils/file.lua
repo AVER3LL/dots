@@ -2,28 +2,31 @@ local fn, api = vim.fn, vim.api
 
 local M = {}
 
--- Function to get file icon and color using nvim-web-devicons
-M.icon = function()
+--- Function to compute file icon and color for a given buffer
+--- @param bufnr integer
+--- @return string, string
+function M.compute_icon_for_buf(bufnr)
     local ok, devicons = pcall(require, "nvim-web-devicons")
     if not ok then
         return "", ""
     end
 
-    local filename = fn.expand "%:t"
-    local extension = fn.expand "%:e"
+    local filename = vim.fn.bufname(bufnr)
+    local basename = fn.fnamemodify(filename, ":t")
+    local extension = fn.fnamemodify(filename, ":e")
     local icon, color
 
     -- Try multiple methods to get icon and color
-    if filename ~= "" then
-        icon, color = devicons.get_icon_color(filename, extension)
+    if basename ~= "" then
+        icon, color = devicons.get_icon_color(basename, extension)
     end
 
     if (not icon or not color) and extension ~= "" then
         icon, color = devicons.get_icon_color("file." .. extension, extension)
     end
 
-    if not icon and filename ~= "" then
-        icon = devicons.get_icon(filename, extension)
+    if not icon and basename ~= "" then
+        icon = devicons.get_icon(basename, extension)
     end
 
     if icon and not color and extension ~= "" then
@@ -41,6 +44,13 @@ M.icon = function()
     end
 
     return icon, color
+end
+
+-- Function to get file icon and color using the cache
+M.icon = function()
+    local cache = require("config.winbar.cache")
+    local bufnr = api.nvim_get_current_buf()
+    return cache.get_file_icon(bufnr)
 end
 
 M.path = function()

@@ -1,3 +1,5 @@
+---@module 'lazy'
+---@type LazySpec
 return {
     "MeanderingProgrammer/render-markdown.nvim",
     ft = "markdown",
@@ -30,7 +32,8 @@ return {
         },
         checkbox = {
             enabled = true,
-            position = "inline",
+            right_pad = 0,
+            -- position = "inline",
             unchecked = {
                 icon = "   󰄱 ",
                 -- Highlight for the unchecked icon

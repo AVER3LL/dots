@@ -1,8 +1,9 @@
 #systray {
     /* margin-right: 25px; */
-    background-color: var(--background);
+    background-color: inherit;
     padding: 0 8px;
     margin: 10px 8px;
+    color: var(--on-surface);
 }
 
 #systray.invert {
@@ -13,6 +14,7 @@
 menu {
     border: solid 1px;
     border-radius: 5px;
+    color: var(--on-surface);
     border-color: var(--surface);
     background-color: var(--surface-container);
     padding: 6px;
@@ -37,8 +39,9 @@ menu menuitem:hover {
 }
 
 /* Label color change on hover for all levels */
-menu menuitem:hover > label {
-    color: var(--shadow);
+menu menuitem:hover > label,
+menu menuitem:hover > box label {
+    color: var(--surface-container);
 }
 
 /* Style labels in all menuitems */

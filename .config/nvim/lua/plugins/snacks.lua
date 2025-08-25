@@ -176,7 +176,7 @@ return {
         {
             "<leader>fb",
             function()
-                Snacks.picker.buffers { layout = "custom" }
+                Snacks.picker.buffers { layout = "vscode" }
             end,
             desc = "Find buffers",
         },

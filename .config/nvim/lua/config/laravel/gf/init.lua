@@ -9,6 +9,7 @@ local M = {}
 local cache = {
     laravel_root = nil,
     resolvers = nil,
+    routes = nil, -- New: Caches route_name -> {file, line, ...}
 }
 
 -- Lazy load resolvers only once
@@ -20,20 +21,88 @@ local function get_resolvers()
     return cache.resolvers
 end
 
--- Function to generate all caches upfront
-M.generate_all_caches = function()
-    cache.laravel_root = utils.get_laravel_root()
-    cache.resolvers = require "config.laravel.gf.resolvers"
-
-    vim.notify("Cache generated", vim.log.levels.INFO)
-end
-
 -- Cache Laravel root to avoid repeated filesystem checks
 local function get_laravel_root_cached()
     if not cache.laravel_root then
         cache.laravel_root = utils.get_laravel_root()
     end
     return cache.laravel_root
+end
+
+--- Builds a cache of all named and resource routes.
+function M.build_routes_cache()
+    local laravel_root = get_laravel_root_cached()
+    if not laravel_root then
+        return
+    end
+
+    vim.notify("Building Laravel route cache...", vim.log.levels.INFO, { title = "Laravel gf" })
+
+    cache.routes = {}
+    local routes_directory = laravel_root .. "/routes"
+    local route_files = vim.fn.glob(routes_directory .. "/**/*.php", true, true)
+
+    local name_pattern = "->name%s*%(%s*['\"]([^%']+)['\"]%s*%)"
+    local resource_pattern = "Route::resource%s*%(%s*['\"]([^%']*)['\"]"
+
+    for _, route_file in ipairs(route_files) do
+        local line_num = 0
+        local file_handle = io.open(route_file, "r")
+        if file_handle then
+            for file_line in file_handle:lines() do
+                line_num = line_num + 1
+
+                -- Find named routes
+                local route_name = file_line:match(name_pattern)
+                if route_name then
+                    cache.routes[route_name] = {
+                        file = route_file,
+                        line = line_num,
+                        description = "Route: " .. route_name .. " (" .. vim.fn.fnamemodify(route_file, ":t") .. ")",
+                        type = "route",
+                    }
+                end
+
+                -- Find resource routes
+                local resource_name = file_line:match(resource_pattern)
+                if resource_name then
+                    local resource_actions = { "index", "create", "store", "show", "edit", "update", "destroy" }
+                    for _, action in ipairs(resource_actions) do
+                        local full_route_name = resource_name .. "." .. action
+                        cache.routes[full_route_name] = {
+                            file = route_file,
+                            line = line_num,
+                            description = "Resource Route: "
+                                .. full_route_name
+                                .. " ("
+                                .. vim.fn.fnamemodify(route_file, ":t")
+                                .. ")",
+                            type = "route",
+                        }
+                    end
+                end
+            end
+            file_handle:close()
+        end
+    end
+    vim.notify("Route cache built with " .. vim.tbl_count(cache.routes) .. " routes.", vim.log.levels.INFO, { title = "Laravel gf" })
+end
+
+--- Gets the routes cache, building it if it doesn't exist.
+---@return table|nil
+function M.get_routes_cache()
+    if not cache.routes then
+        M.build_routes_cache()
+    end
+    return cache.routes
+end
+
+-- Function to generate all caches upfront
+M.generate_all_caches = function()
+    cache.laravel_root = utils.get_laravel_root()
+    cache.resolvers = require "config.laravel.gf.resolvers"
+    M.build_routes_cache()
+    vim.notify("Laravel caches generated", vim.log.levels.INFO)
 end
 
 M.goto_file_under_cursor = function()
@@ -84,8 +153,7 @@ M.goto_file_under_cursor = function()
     end
 
     snacks.picker.pick {
-        -- name = "Laravel Files" .. (quoted_content and (": " .. quoted_content) or ""),
-        name = "Laravel Files for: " .. quoted_content,
+        name = "Laravel Files for: " .. (quoted_content or ""),
         layout = "vscode",
         items = possible_files,
         format = function(item)

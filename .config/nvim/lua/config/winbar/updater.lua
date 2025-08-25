@@ -12,8 +12,8 @@ local M = {}
 --- @param config Config
 --- @param is_active boolean
 function M.update_winbar(config, is_active)
-    local bufnr = api.nvim_get_current_buf()
-    local win_state = state_manager.get_or_create_state(bufnr, is_active)
+    local win_id = api.nvim_get_current_win()
+    local win_state = state_manager.get_or_create_state(win_id, is_active)
 
     local filename = fn.expand "%:t"
 

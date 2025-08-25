@@ -1,10 +1,13 @@
 return {
+    ---@module 'lazy'
+    ---@type LazySpec
     {
         "folke/lazydev.nvim",
         ft = "lua", -- only load on lua files
         config = function()
             local lsp = require "lazydev.lsp"
 
+            ---@diagnostic disable-next-line: duplicate-set-field
             lsp.update = function(client)
                 client:notify("workspace/didChangeConfiguration", {
                     settings = { Lua = {} },
@@ -22,6 +25,8 @@ return {
         end,
     },
 
+    ---@module 'lazy'
+    ---@type LazySpec
     {
         "neovim/nvim-lspconfig",
         event = { "BufReadPre", "BufNewFile" },
@@ -179,6 +184,11 @@ return {
             vim.list_extend(ensure_installed, {
                 "jdtls",
                 "rust_analyzer",
+            })
+
+            vim.lsp.config("*", {
+                capabilities = require("lsp").capabilities,
+                on_init = require("lsp").on_init,
             })
 
             for server, config in pairs(vim.tbl_extend("keep", servers.mason, servers.others)) do

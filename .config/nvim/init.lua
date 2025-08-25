@@ -1,11 +1,15 @@
-require "globals"
+if vim.g.vscode then
+    require "core.vscode_mappings"
+else
+    require "globals"
 
-require "core"
+    require "core"
 
-require "lsp"
+    require "lsp"
 
-require("config.winbar").setup()
+    require("config.winbar").setup()
 
--- require "config.statusline"
+    -- require "config.statusline"
 
-vim.cmd.colorscheme "bamboo-multiplex"
+    vim.cmd.colorscheme "bamboo-multiplex"
+end

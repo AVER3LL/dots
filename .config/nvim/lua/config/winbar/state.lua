@@ -6,9 +6,9 @@ local M = {}
 --- @field available_space integer
 
 --- @type table<integer, WinBarState>
-local state = {}
+local state = {} -- keyed by win_id
 
---- Create new state for a buffer/window
+--- Create new state for a window
 --- @param is_active boolean
 --- @return WinBarState
 function M.new_state(is_active)
@@ -19,40 +19,40 @@ function M.new_state(is_active)
     }
 end
 
---- Get or create state for a buffer
---- @param bufnr integer
+--- Get or create state for a window
+--- @param win_id integer
 --- @param is_active boolean
 --- @return WinBarState
-function M.get_or_create_state(bufnr, is_active)
-    if not state[bufnr] then
-        state[bufnr] = M.new_state(is_active)
+function M.get_or_create_state(win_id, is_active)
+    if not state[win_id] then
+        state[win_id] = M.new_state(is_active)
     end
-    state[bufnr].is_active = is_active
-    return state[bufnr]
+    state[win_id].is_active = is_active
+    return state[win_id]
 end
 
---- Update state for a buffer
---- @param bufnr integer
+--- Update state for a window
+--- @param win_id integer
 --- @param updates table
-function M.update_state(bufnr, updates)
-    if state[bufnr] then
+function M.update_state(win_id, updates)
+    if state[win_id] then
         for key, value in pairs(updates) do
-            state[bufnr][key] = value
+            state[win_id][key] = value
         end
     end
 end
 
---- Clean up state for a buffer/window
---- @param id integer
-function M.cleanup_state(id)
-    state[id] = nil
+--- Clean up state for a window
+--- @param win_id integer
+function M.cleanup_state(win_id)
+    state[win_id] = nil
 end
 
---- Get state for a buffer (may be nil)
---- @param bufnr integer
+--- Get state for a window (may be nil)
+--- @param win_id integer
 --- @return WinBarState|nil
-function M.get_state(bufnr)
-    return state[bufnr]
+function M.get_state(win_id)
+    return state[win_id]
 end
 
 return M

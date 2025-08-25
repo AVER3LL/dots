@@ -1,7 +1,9 @@
 fish_color_normal {{colors.on_surface.default.hex_stripped}}
-fish_color_command a6e3a1
+# fish_color_command 006d3d --bold
+fish_color_command 00cf3a  --bold
+# fish_color_command a6e3a1 --bold
 # fish_color_command {{colors.primary.default.hex_stripped}}
-fish_color_param {{colors.tertiary.default.hex_stripped}}
+fish_color_param {{colors.on_surface.default.hex_stripped}}
 fish_color_keyword {{colors.tertiary_fixed.default.hex_stripped}}
 fish_color_quote {{colors.secondary.default.hex_stripped}}
 fish_color_redirection {{colors.tertiary.default.hex_stripped}}

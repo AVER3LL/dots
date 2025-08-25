@@ -89,7 +89,7 @@ local function run_artisan_command(cmd, laravel_root, callback)
             if data and #data > 0 then
                 for _, line in ipairs(data) do
                     if line ~= "" then
-                        print("Error: " .. line)
+                        vim.print("Error: " .. line)
                     end
                 end
             end
