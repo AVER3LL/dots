@@ -4,14 +4,23 @@ set -euo pipefail
 
 config="$HOME/.config/gtk-3.0/settings.ini"
 gnome_schema="org.gnome.desktop.interface"
-[[ ! -f "$config" ]] && { echo "Error: GTK config not found" >&2; exit 1; }
+[[ ! -f "$config" ]] && {
+    echo "Error: GTK config not found" >&2
+    exit 1
+}
 
 theme=$(awk -F= '/gtk-application-prefer-dark-theme/{print $2}' "$config" | tr -d ' ')
 
 if [[ "$theme" == "0" ]]; then
-    prefer_dark="1"; prefer="prefer-dark"; mode="dark"; icon="Papirus-Dark"
+    prefer_dark="1"
+    prefer="prefer-dark"
+    mode="dark"
+    icon="Papirus-Dark"
 else
-    prefer_dark="0"; prefer="prefer-light"; mode="light"; icon="Papirus-Light"
+    prefer_dark="0"
+    prefer="prefer-light"
+    mode="light"
+    icon="Papirus-Light"
 fi
 
 # gsettings set "$gnome_schema" gtk-theme "adw-gtk3" &
@@ -20,7 +29,8 @@ gsettings set "$gnome_schema" icon-theme "$icon" &
 wait
 
 wall=$(readlink ~/.cache/averell/wall.set 2>/dev/null || :)
-[[ -x ~/.local/bin/walset-backend && -n "$wall" ]] && ~/.local/bin/walset-backend --mode="$mode" "$wall"
+# [[ -x ~/.local/bin/walset-backend && -n "$wall" ]] && ~/.local/bin/walset-backend --no-set --mode="$mode" "$wall"
+[[ -x "$HOME/Projects/rust/walset-backend/target/release/wallpaper-theme-manager" && -n "$wall" ]] && "$HOME/Projects/rust/walset-backend/target/release/wallpaper-theme-manager" --no-set --mode="$mode" "$wall"
 
 pkill -USR1 -x nvim || true
 

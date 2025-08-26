@@ -37,7 +37,10 @@ class StatusBar(Window):
         )
         self.children = [
             CenterBox(
-                start_children=[Icon(), MyWorkspaces()],
+                start_children=[
+                    # Icon(),
+                    MyWorkspaces()
+                ],
                 end_children=[
                     SystemTray(name="systray", spacing=10, icon_size=20),
                     BrightnessWidget(),
@@ -48,7 +51,7 @@ class StatusBar(Window):
                 center_children=[self.date_time],
                 spacing=5,
                 v_align="center",
-                size=50,
+                size=40,
             )
         ]
 

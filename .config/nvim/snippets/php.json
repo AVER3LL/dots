@@ -4,9 +4,8 @@
         "body": [
             "public function ${1:name}()",
             "{",
-            "    $0",
-            "}",
-            ""
+            "    ${0://Content of function };",
+            "}"
         ],
         "description": "Build a public function"
     }

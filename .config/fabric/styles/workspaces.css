@@ -1,5 +1,6 @@
 #workspaces-container {
-    margin-left: 3rem;
+    margin-left: 25px;
+    /* background-color: red; */
 }
 
 #workspaces > button {

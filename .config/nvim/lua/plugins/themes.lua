@@ -11,6 +11,21 @@ return {
     },
 
     {
+        "kyza0d/xeno.nvim",
+        lazy = false,
+        priority = 1000,
+        config = function()
+            local xeno = require "xeno"
+            xeno.new_theme("xeno-lillypad", {
+                base = "#1E1E1E",
+                accent = "#8CBE8C",
+                contrast = 0.1,
+                transparent = false,
+            })
+        end,
+    },
+
+    {
         "nyoom-engineering/oxocarbon.nvim",
         lazy = false,
         priority = 1000,

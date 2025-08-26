@@ -4,7 +4,7 @@ return {
         event = "VimEnter",
         keys = {
             "<leader>wr",
-            "<cmd>SessionRestore<CR>",
+            "<cmd>AutoSession restore<CR>",
             desc = "Session search",
         },
         opts = {

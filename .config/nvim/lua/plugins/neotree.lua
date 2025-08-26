@@ -1,4 +1,4 @@
----@diagnostic disable: undefined-field
+---@diagnostic disable: undefined-field, missing-fields, assign-type-mismatch
 return {
     "nvim-neo-tree/neo-tree.nvim",
     enabled = true,
@@ -105,10 +105,14 @@ return {
                 },
             },
             hide_root_node = true,
+            git_status_async = true,
             retain_hidden_root_indent = false,
             filesystem = {
                 bind_to_cwd = false,
-                follow_current_file = { enabled = true },
+                follow_current_file = {
+                    enabled = true,
+                    leave_dirs_open = true,
+                },
                 use_libuv_file_watcher = true,
                 hijack_netrw_behavior = "open_current",
                 cwd_target = "current", -- Ensures Neo-tree always opens in the current working directory

@@ -4,7 +4,8 @@
 
 # Configuration
 WALL_DIR="$HOME/wallpaper/"
-BACKEND_CMD="$HOME/.local/bin/walset-backend"
+# BACKEND_CMD="$HOME/.local/bin/walset-backend"
+BACKEND_CMD="$HOME/Projects/rust/walset-backend/target/release/wallpaper-theme-manager"
 THUMB_DIR="$HOME/.cache/wallpaper-thumbs"
 BUILD_ROFI_INPUT_CMD="$HOME/.config/averell/bin/build-rofi-input"
 

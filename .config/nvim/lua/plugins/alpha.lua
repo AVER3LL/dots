@@ -73,7 +73,7 @@ return {
                     nil,
                     "AlphaIconBlue"
                 ),
-                button("SPC w r", "󰁯   Restore Session", vim.cmd.SessionRestore, nil, "AlphaIconGreen"),
+                button("SPC w r", "󰁯   Restore Session", "<cmd>AutoSession restore<cr>", nil, "AlphaIconGreen"),
                 button("q", "   Quit NVIM", vim.cmd.qa, nil, "AlphaIconRed"),
             },
             opts = {

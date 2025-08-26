@@ -390,11 +390,11 @@ main() {
 
     # Setup
     detect_theme_mode
-    setup_cache_files
-    prepare_static_version
 
     # Set wallpaper if requested
     if [[ "$SET_WALLPAPER" == true ]]; then
+        setup_cache_files
+        prepare_static_version
         set_wallpaper
     else
         log_info "Skipping wallpaper setting (--no-set specified)"
@@ -409,7 +409,9 @@ main() {
 
         # Generate caches and apply theme in background
         update_border_colors "$brightness"
-        generate_image_caches
+        if [[ "$SET_WALLPAPER" == true ]]; then
+            generate_image_caches
+        fi
         apply_theme "$scheme"
     } &
 

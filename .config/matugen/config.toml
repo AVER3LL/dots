@@ -16,8 +16,7 @@ white = { color = "#ffffff", blend = true }
 [templates.waybar]
 input_path = '~/.config/matugen/templates/colors.css'
 output_path = '~/.config/waybar/colors.css'
-# post_hook = '~/.config/waybar/scripts/reload.sh'
-post_hook = 'pkill -SIGUSR2 waybar &'
+post_hook = 'pidof waybar && pkill -SIGUSR2 waybar & disown'
 
 [templates.hyprland]
 input_path = '~/.config/matugen/templates/hyprland-colors.conf'
@@ -27,7 +26,7 @@ post_hook = 'hyprctl reload ; ~/.config/hypr/scripts/checkbattery.sh & disown'
 [templates.kitty]
 input_path = '~/.config/matugen/templates/kitty-colors.conf'
 output_path = '~/.config/kitty/theme/colors-matugen.conf'
-post_hook = 'killall -SIGUSR1 kitty &'
+post_hook = 'killall -SIGUSR1 kitty & disown'
 
 [templates.quickshell]
 input_path = '~/.config/matugen/templates/quickshell-colors.qml'

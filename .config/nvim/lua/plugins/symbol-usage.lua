@@ -1,6 +1,6 @@
 return {
     "Wansmer/symbol-usage.nvim",
-    enabled = false,
+    enabled = true,
     event = "LspAttach",
     opts = {
         vt_position = "end_of_line",

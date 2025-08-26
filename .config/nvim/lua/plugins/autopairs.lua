@@ -3,6 +3,7 @@ return {
     -- Automatically closes brackets
     {
         "windwp/nvim-autopairs",
+        enabled = true,
         event = "InsertEnter",
         opts = {
             check_ts = true,
