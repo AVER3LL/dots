@@ -456,6 +456,7 @@ return {
         config = function()
             require("onedark").setup {
                 style = "darker",
+                toggle_style_list = { "light", "darker" },
             }
         end,
     },

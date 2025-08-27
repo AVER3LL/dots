@@ -8,12 +8,7 @@ local sigusr1 = uv.new_signal()
 ---@diagnostic disable-next-line: need-check-nil
 sigusr1:start("sigusr1", function()
     vim.schedule(function()
-        -- Toggle background between 'light' and 'dark'
-        if vim.o.background == "dark" then
-            vim.o.background = "light"
-        else
-            vim.o.background = "dark"
-        end
+        tools.change_background()
         vim.notify("Background toggled to " .. vim.o.background, vim.log.levels.INFO)
     end)
 end)

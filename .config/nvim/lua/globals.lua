@@ -6,6 +6,21 @@ tools.border = "single"
 --- @type "flat" | "clear"
 tools.style = "flat"
 
+tools.change_background = function()
+    if vim.o.background == "dark" then
+        vim.o.background = "light"
+    else
+        vim.o.background = "dark"
+    end
+
+    if vim.g.colors_name == "onedark" then
+        local ok, onedark = pcall(require, "onedark")
+        if ok then
+            onedark.toggle()
+        end
+    end
+end
+
 --- @param mode string | table
 --- @param lhs string
 --- @param rhs string | fun(): string?

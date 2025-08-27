@@ -6,6 +6,7 @@ local map = tools.map
 
 require("config.search-counter").setup { highlight = "Comment" }
 
+map("n", "<leader>tl", tools.change_background, { desc = "Light Dark Toggle" })
 map("n", "U", "<C-r>", { desc = "Redo" })
 
 map("n", "<leader>nb", "<cmd>enew<CR>", { desc = "Buffer new" })

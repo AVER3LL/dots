@@ -235,7 +235,11 @@ return {
             callback = function()
                 Snacks.toggle.line_number():map "<leader><leader>l"
                 Snacks.toggle.option("laststatus", { off = 0, on = 3, name = "Statusline" }):map "<leader><leader>w"
-                Snacks.toggle.option("background", { off = "light", on = "dark", name = "dark mode" }):map "<leader>tl"
+                -- Snacks.toggle.option("background", {
+                --     off = "light",
+                --     on = "dark",
+                --     name = "dark mode",
+                -- }):map "<leader>tl"
                 Snacks.toggle.option("wrap"):map "<leader>ww"
             end,
         })
