@@ -6,4 +6,3 @@ require("xeno").setup({
   transparent = false,
 })
 vim.g.colors_name = "xeno-lillypad"
-  

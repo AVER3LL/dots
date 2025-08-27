@@ -11,7 +11,7 @@ return {
         "saghen/blink.cmp",
         event = "InsertEnter",
         dependencies = {
-            "rafamadriz/friendly-snippets",
+            -- "rafamadriz/friendly-snippets",
             "saghen/blink.compat",
         },
         version = "*",
@@ -101,46 +101,34 @@ return {
             fuzzy = { implementation = "prefer_rust_with_warning" },
 
             sources = {
-                default = function()
-                    local sources = {
-                        "lazydev",
-                        "lsp",
-                        "buffer",
-                    }
-
-                    local ok, node = pcall(vim.treesitter.get_node)
-
-                    if ok and node then
-                        if not vim.tbl_contains({ "comment", "line_comment", "block_comment" }, node:type()) then
-                            table.insert(sources, "path")
-                        end
-                        if node:type() ~= "string" then
-                            table.insert(sources, 1, "snippets")
-                        end
-                    end
-
-                    return sources
-                end,
+                default = { "snippets", "lazydev", "lsp", "path", "buffer" },
 
                 providers = {
-                    -- ["blade-nav"] = {
-                    --     module = "blade-nav.blink",
-                    --     opts = {
-                    --         close_tag_on_complete = false, -- default: true,
-                    --     },
-                    -- },
+                    snippets = {
+                        score_offset = 5,
+                    },
                     lazydev = {
                         name = "LazyDev",
                         module = "lazydev.integrations.blink",
-                        score_offset = 100,
+                        score_offset = 4,
+                    },
+                    lsp = {
+                        score_offset = 3,
+                    },
+                    path = {
+                        score_offset = 2,
+                    },
+                    buffer = {
+                        score_offset = 1,
                     },
                     laravel = {
                         name = "laravel",
                         module = "blink.compat.source",
+                        score_offset = 1,
                     },
                 },
             },
-            -- opts_extend = { "sources.default" },
+            opts_extend = { "sources.default" },
         },
     },
 

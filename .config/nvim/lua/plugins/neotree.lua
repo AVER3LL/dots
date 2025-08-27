@@ -97,8 +97,8 @@ return {
 
                         -- Use system clipboard with proper file URI
                         local uri = "file://" .. vim.fn.fnamemodify(filepath, ":p")
-                        local cmd = string.format('echo "%s" | wl-copy --type text/uri-list', uri)
-                        os.execute(cmd)
+                        -- Pass it to wl-copy safely
+                        vim.fn.system({ "wl-copy", "--type", "text/uri-list" }, uri .. "\n")
 
                         vim.notify(filename .. " copied to system clipboard", vim.log.levels.INFO)
                     end,

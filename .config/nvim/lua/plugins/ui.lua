@@ -36,8 +36,22 @@ return {
     },
 
     {
+        "rachartier/tiny-glimmer.nvim",
+        event = "VeryLazy",
+        priority = 10, -- Needs to be a really low priority, to catch others plugins keybindings.
+        opts = {
+            overwrite = {
+                yank = { enabled = false },
+                undo = { enabled = true },
+                redo = { enabled = true },
+            },
+        },
+    },
+
+    {
         "rachartier/tiny-inline-diagnostic.nvim",
-        priority = 1000, -- needs to be loaded in first
+        event = "LspAttach",
+        priority = 1000,
         opts = {
             preset = "simple",
             hi = {

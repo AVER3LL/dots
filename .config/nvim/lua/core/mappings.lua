@@ -14,8 +14,8 @@ map("n", "<leader>nb", "<cmd>enew<CR>", { desc = "Buffer new" })
 map("v", "<", "<gv")
 map("v", ">", ">gv")
 
-map("n", "<tab>", ":bnext<CR>", { desc = "Go to next buffer" })
-map("n", "<S-tab>", ":bprevious<CR>", { desc = "Go to previous buffer" })
+-- map("n", "<tab>", ":bnext<CR>", { desc = "Go to next buffer" })
+-- map("n", "<S-tab>", ":bprevious<CR>", { desc = "Go to previous buffer" })
 
 -- Window Splits
 map("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" })

@@ -8,5 +8,15 @@
             "}"
         ],
         "description": "Build a public function"
+    },
+    "class": {
+        "prefix": "class",
+        "body": [
+            "class ${1:name}",
+            "{",
+            "    ${0:// Class content };",
+            "}"
+        ],
+        "description": "Build a class"
     }
 }

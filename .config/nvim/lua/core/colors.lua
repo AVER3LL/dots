@@ -21,13 +21,18 @@ autocmd("ColorScheme", {
             background = gethl("Normal").bg,
             foreground = gethl("Normal").fg,
             comment = gethl("Comment").fg,
-            cursorline = gethl("CursorLine").bg,
+            -- cursorline = gethl("CursorLine").bg,
+            cursorline = vim.o.background == "dark" and tools.adjust_brightness(gethl("Normal").bg, 1.25)
+                or tools.adjust_brightness(gethl("Normal").bg, 0.95),
             pmenu = tools.style == "clear" and gethl("Pmenu").bg or tools.adjust_brightness(gethl("Normal").bg, 0.75),
             fun = gethl("Function").fg or "#375FAD",
             str = gethl("String").fg or "#7CA855",
             constant = gethl("Constant").fg,
             parenthesis = vim.o.background == "dark" and "#39ff14" or "#ff007f",
         }
+
+        colors.cursorline = vim.g.colors_name == "vercel" and tools.adjust_brightness(gethl("Normal").bg, 2)
+            or colors.cursorline
 
         -- Basic UI elements
         sethl(0, "Cursor", { bg = colors.foreground })
@@ -127,10 +132,11 @@ autocmd("ColorScheme", {
             sethl(0, "ColorColumn", { bg = "NONE" })
             sethl(0, "CursorColumn", { bg = "NONE" })
         else
-            sethl(0, "CursorLineNr", { bg = colors.cursorline, fg = colors.constant, bold = true })
-            sethl(0, "GitSignsAddCul", { bg = colors.cursorline, fg = tools.resolve_hl "GitSignsAdd" })
-            sethl(0, "GitSignsChangeCul", { bg = colors.cursorline, fg = tools.resolve_hl "GitSignsChange" })
-            sethl(0, "GitSignsDeleteCul", { bg = colors.cursorline, fg = tools.resolve_hl "GitSignsDelete" })
+            sethl(0, "CursorLineNr", { bg = colors.cursorline, fg = colors.constant })
+            sethl(0, "CursorLine", { bg = colors.cursorline })
+            -- sethl(0, "GitSignsAddCul", { bg = colors.cursorline, fg = tools.resolve_hl "GitSignsAdd" })
+            -- sethl(0, "GitSignsChangeCul", { bg = colors.cursorline, fg = tools.resolve_hl "GitSignsChange" })
+            -- sethl(0, "GitSignsDeleteCul", { bg = colors.cursorline, fg = tools.resolve_hl "GitSignsDelete" })
         end
 
         -- Window bars and misc
@@ -153,22 +159,5 @@ autocmd("ColorScheme", {
         sethl(0, "GitSignsCurrentLineBlame", { fg = tools.adjust_brightness(colors.foreground, 0.8), italic = true })
         sethl(0, "Usage", { link = "Comment" })
         sethl(0, "SnacksPickerDir", { fg = tools.adjust_brightness(colors.foreground, 0.6) })
-
-        -- LSP semantic highlights
-        sethl(0, "@lsp.type.class", { link = "Structure" })
-        sethl(0, "@lsp.type.decorator", { link = "Function" })
-        sethl(0, "@lsp.type.enum", { link = "Type" })
-        sethl(0, "@lsp.type.enumMember", { link = "Constant" })
-        sethl(0, "@lsp.type.function", { link = "@function" })
-        sethl(0, "@lsp.type.interface", { link = "Structure" })
-        sethl(0, "@lsp.type.macro", { link = "@macro" })
-        sethl(0, "@lsp.type.method", { link = "@function.method" })
-        sethl(0, "@lsp.type.namespace", { link = "@module" })
-        sethl(0, "@lsp.type.parameter", { link = "@variable.parameter" })
-        sethl(0, "@lsp.type.property", { link = "@property" })
-        sethl(0, "@lsp.type.struct", { link = "Structure" })
-        sethl(0, "@lsp.type.type", { link = "@type" })
-        sethl(0, "@lsp.type.typeParamater", { link = "TypeDef" })
-        sethl(0, "@lsp.type.variable", { link = "@variable" })
     end,
 })

@@ -2,19 +2,22 @@ return {
     -- Splits line into multiple ones
 
     {
-        "echasnovski/mini.splitjoin",
-        enabled = true,
-        opts = {
-            mappings = { toggle = "" },
-        },
+        "Wansmer/treesj",
         keys = {
             {
                 "<leader>m",
-                function()
-                    require("mini.splitjoin").toggle()
-                end,
-                desc = "Join/split code block",
+                vim.cmd.TSJToggle,
+                desc = "Join Toggle",
+                mode = "n",
             },
         },
+        cmd = { "TSJToggle" },
+        dependencies = { "nvim-treesitter/nvim-treesitter" },
+        config = function()
+            require("treesj").setup {
+                use_default_keymaps = false,
+            }
+        end,
+        version = "*",
     },
 }

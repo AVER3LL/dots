@@ -189,6 +189,7 @@ function M.setup_autocmds(config)
         "BufFilePost",
         "BufWinEnter",
         "BufWritePost",
+        "ColorScheme",
         "VimResized",
         "WinEnter",
         "WinResized",

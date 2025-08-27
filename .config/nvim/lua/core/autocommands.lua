@@ -58,6 +58,18 @@ autocmd("TextYankPost", {
     end,
 })
 
+-- autocmd("BufEnter", {
+--     callback = function()
+--         if vim.bo.filetype == "markdown" and vim.bo.buftype == "nofile" then
+--             vim.notify "innit"
+--             vim.cmd [[ setlocal concealcursor=n ]]
+--             vim.cmd [[ setlocal conceallevel=1 ]]
+--             -- vim.wo.conceallevel = 3
+--             -- vim.wo.concealcursor = "n"
+--         end
+--     end,
+-- })
+
 -- Do not comment new lines
 autocmd("BufEnter", { command = [[set formatoptions-=cro]] })
 
