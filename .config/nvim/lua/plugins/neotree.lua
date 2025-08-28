@@ -79,7 +79,7 @@ return {
             },
             window = {
                 position = "right",
-                width = 35,
+                width = 32,
                 mappings = {
                     ["l"] = "open",
                     ["e"] = "rename_basename",

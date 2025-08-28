@@ -6,7 +6,7 @@ return {
     },
 
     {
-        "echasnovski/mini.icons",
+        "nvim-mini/mini.icons",
         enabled = false,
         lazy = true,
         -- specs = {

@@ -101,7 +101,19 @@ return {
             fuzzy = { implementation = "prefer_rust_with_warning" },
 
             sources = {
-                default = { "snippets", "lazydev", "lsp", "path", "buffer" },
+                default = function(ctx)
+                    local success, node = pcall(vim.treesitter.get_node)
+                    if not (success and node) then
+                        return { "snippets", "lazydev", "lsp", "path", "buffer" }
+                    end
+
+                    local t = node:type()
+                    if vim.tbl_contains({ "comment", "line_comment", "block_comment" }, t) then
+                        return { "buffer" }
+                    else
+                        return { "snippets", "lazydev", "lsp", "path", "buffer" }
+                    end
+                end,
 
                 providers = {
                     snippets = {
@@ -128,7 +140,6 @@ return {
                     },
                 },
             },
-            opts_extend = { "sources.default" },
         },
     },
 

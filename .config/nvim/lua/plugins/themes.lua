@@ -585,8 +585,17 @@ return {
         "folke/tokyonight.nvim",
         priority = 1000,
         opts = {
+            -- on_colors = function(colors)
+            --     colors.comment = "#8c98b3"
+            -- end,
             on_highlights = function(hl, c)
                 local prompt = "#2d3149"
+                -- local subtle_color = "#8c98b3"
+                -- hl.LineNr = { fg = subtle_color }
+                -- hl.LineNrAbove = { fg = subtle_color }
+                -- hl.LineNrBelow = { fg = subtle_color }
+
+                hl.Visual = { bg = "#445b9b" }
                 hl.TelescopeNormal = {
                     bg = c.bg_dark,
                     fg = c.fg_dark,
@@ -614,39 +623,6 @@ return {
                     bg = c.bg_dark,
                     fg = c.bg_dark,
                 }
-
-                -- Snacks picker
-                -- hl.SnacksPicker = {
-                --     bg = c.bg_dark,
-                --     fg = c.fg_dark,
-                -- }
-                -- hl.SnacksPickerBorder = {
-                --     bg = c.bg_dark,
-                --     fg = c.bg_dark,
-                -- }
-                -- hl.SnacksPickerInput = {
-                --     bg = prompt,
-                -- }
-                -- hl.SnacksPickerInputBorder = {
-                --     bg = prompt,
-                --     fg = prompt,
-                -- }
-                -- hl.SnacksPickerInputTitle = {
-                --     bg = prompt,
-                --     fg = prompt,
-                -- }
-                -- hl.SnacksPickerPreviewTitle = {
-                --     bg = c.bg_dark,
-                --     fg = c.bg_dark,
-                -- }
-                -- hl.SnacksPickerListTitle = {
-                --     bg = c.bg_dark,
-                --     fg = c.bg_dark,
-                -- }
-                -- hl.SnacksPickerToggle = {
-                --     bg = prompt,
-                --     fg = prompt,
-                -- }
             end,
             plugins = {
                 all = package.loaded.lazy == nil,

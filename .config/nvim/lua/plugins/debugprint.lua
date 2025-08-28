@@ -2,7 +2,7 @@ return {
     "andrewferrier/debugprint.nvim",
 
     dependencies = {
-        "echasnovski/mini.hipatterns",
+        "nvim-mini/mini.hipatterns",
         "folke/snacks.nvim",
     },
 

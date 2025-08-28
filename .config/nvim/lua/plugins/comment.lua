@@ -1,7 +1,7 @@
 return {
     -- Better comments somehow
     {
-        "echasnovski/mini.comment",
+        "nvim-mini/mini.comment",
         event = { "BufReadPre", "BufNewFile" },
         version = false,
         dependencies = {

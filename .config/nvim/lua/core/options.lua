@@ -72,7 +72,7 @@ vim.o.scrolloff = 10
 vim.o.sidescrolloff = 8
 vim.o.backspace = "indent,eol,start"
 
-vim.o.updatetime = 800
+vim.o.updatetime = 250
 vim.o.timeoutlen = 300
 vim.o.ttimeoutlen = 10
 

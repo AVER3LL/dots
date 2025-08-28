@@ -1,12 +1,12 @@
 return {
 
     {
-        "echasnovski/mini.surround",
+        "nvim-mini/mini.surround",
         opts = {},
     },
 
     {
-        "echasnovski/mini.trailspace",
+        "nvim-mini/mini.trailspace",
         event = { "BufReadPost", "BufNewFile" },
         opts = {
             only_in_normal_buffers = true,
@@ -14,7 +14,7 @@ return {
     },
 
     {
-        "echasnovski/mini.misc",
+        "nvim-mini/mini.misc",
         version = "*",
         config = function()
             require("mini.misc").setup()
@@ -24,7 +24,7 @@ return {
     },
 
     {
-        "echasnovski/mini.ai",
+        "nvim-mini/mini.ai",
         event = "BufReadPre",
         dependencies = "nvim-treesitter/nvim-treesitter-textobjects",
         opts = function()

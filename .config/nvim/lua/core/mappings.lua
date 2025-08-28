@@ -6,6 +6,22 @@ local map = tools.map
 
 require("config.search-counter").setup { highlight = "Comment" }
 
+map("n", "<leader><leader>c", function()
+    local filepath = vim.api.nvim_buf_get_name(0)
+    if filepath == "" then
+        vim.notify("No file associated with this buffer", vim.log.levels.WARN)
+        return
+    end
+
+    local filename = vim.fn.fnamemodify(filepath, ":t")
+    local uri = "file://" .. vim.fn.fnamemodify(filepath, ":p")
+
+    -- copy to clipboard using wl-copy
+    vim.fn.system({ "wl-copy", "--type", "text/uri-list" }, uri .. "\n")
+
+    vim.notify(filename .. " copied to system clipboard", vim.log.levels.INFO)
+end, { desc = "Copy current file to clipboard" })
+
 map("n", "<leader>tl", tools.change_background, { desc = "Light Dark Toggle" })
 map("n", "U", "<C-r>", { desc = "Redo" })
 

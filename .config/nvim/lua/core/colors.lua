@@ -18,6 +18,7 @@ autocmd("ColorScheme", {
             warn = gethl("DiagnosticWarn").fg or "#E0AF68",
             info = gethl("DiagnosticInfo").fg or "#56B6C2",
             hint = gethl("DiagnosticHint").fg or "#9A9AA1",
+            folded = gethl "Folded",
             background = gethl("Normal").bg,
             foreground = gethl("Normal").fg,
             comment = gethl("Comment").fg,
@@ -124,6 +125,7 @@ autocmd("ColorScheme", {
 
         -- Cursor line handling
         if vim.o.cursorlineopt == "number" then
+            sethl(0, "CursorLine", { bg = "NONE" })
             sethl(0, "CursorLineNr", { bg = "NONE" })
             sethl(0, "CursorLineSign", { bg = "NONE" })
             sethl(0, "CursorLineFold", { bg = "NONE" })
@@ -134,9 +136,6 @@ autocmd("ColorScheme", {
         else
             sethl(0, "CursorLineNr", { bg = colors.cursorline, fg = colors.constant })
             sethl(0, "CursorLine", { bg = colors.cursorline })
-            -- sethl(0, "GitSignsAddCul", { bg = colors.cursorline, fg = tools.resolve_hl "GitSignsAdd" })
-            -- sethl(0, "GitSignsChangeCul", { bg = colors.cursorline, fg = tools.resolve_hl "GitSignsChange" })
-            -- sethl(0, "GitSignsDeleteCul", { bg = colors.cursorline, fg = tools.resolve_hl "GitSignsDelete" })
         end
 
         -- Window bars and misc

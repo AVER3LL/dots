@@ -139,7 +139,8 @@ vim.lsp.handlers[methods.client_registerCapability] = function(err, res, ctx)
         return
     end
 
-    on_attach(client, vim.api.nvim_get_current_buf())
+    local bufnr = vim.api.nvim_get_current_buf()
+    on_attach(client, bufnr)
 
     return register_capability(err, res, ctx)
 end
@@ -154,6 +155,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
         end
 
         on_attach(client, event.buf)
+
+        local ok, navic = pcall(require, "nvim-navic")
+        if ok then
+            navic.attach(client, event.buf)
+        end
     end,
 })
 
