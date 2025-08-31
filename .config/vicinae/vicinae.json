@@ -1,0 +1,19 @@
+{
+    "faviconService": "twenty",
+    "font": {
+        "normal": "JetBrainsMono Nerd Font Propo",
+        "size": 10
+    },
+    "popToRootOnClose": false,
+    "rootSearch": {
+        "searchFiles": false
+    },
+    "theme": {
+        "name": "matugen.json"
+    },
+    "window": {
+        "csd": true,
+        "opacity": 1,
+        "rounding": 10
+    }
+}

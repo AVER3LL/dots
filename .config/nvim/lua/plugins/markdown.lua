@@ -70,7 +70,6 @@ return {
         },
         completions = {
             blink = { enabled = true },
-            lsp = { enabled = true },
         },
     },
 }

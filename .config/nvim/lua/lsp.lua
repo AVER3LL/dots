@@ -156,6 +156,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
         on_attach(client, event.buf)
 
+        if vim.g.enable_signature then
+            local signatureProvider = client.server_capabilities.signatureHelpProvider
+            if signatureProvider and signatureProvider.triggerCharacters then
+                require("config.signature").setup(client, event.buf)
+            end
+        end
+
         local ok, navic = pcall(require, "nvim-navic")
         if ok then
             navic.attach(client, event.buf)

@@ -4,39 +4,82 @@ set -euo pipefail
 
 config="$HOME/.config/gtk-3.0/settings.ini"
 gnome_schema="org.gnome.desktop.interface"
+
 [[ ! -f "$config" ]] && {
     echo "Error: GTK config not found" >&2
     exit 1
 }
 
+# Parse current mode from config
 theme=$(awk -F= '/gtk-application-prefer-dark-theme/{print $2}' "$config" | tr -d ' ')
-
 if [[ "$theme" == "0" ]]; then
-    prefer_dark="1"
-    prefer="prefer-dark"
-    mode="dark"
-    icon="Papirus-Dark"
+    current_mode="light"
 else
-    prefer_dark="0"
-    prefer="prefer-light"
-    mode="light"
-    icon="Papirus-Light"
+    current_mode="dark"
 fi
 
-# gsettings set "$gnome_schema" gtk-theme "adw-gtk3" &
-gsettings set "$gnome_schema" color-scheme "$prefer" &
-gsettings set "$gnome_schema" icon-theme "$icon" &
-wait
+# --- Argument handling ---
+usage() {
+    echo "Usage: $0 [--toggle|--dark|--light|--current]"
+    exit 1
+}
 
-wall=$(readlink ~/.cache/averell/wall.set 2>/dev/null || :)
-# [[ -x ~/.local/bin/walset-backend && -n "$wall" ]] && ~/.local/bin/walset-backend --no-set --mode="$mode" "$wall"
-[[ -x "$HOME/Projects/rust/walset-backend/target/release/wallpaper-theme-manager" && -n "$wall" ]] && "$HOME/Projects/rust/walset-backend/target/release/wallpaper-theme-manager" --no-set --mode="$mode" "$wall"
+set_mode() {
+    local mode="$1"
+    if [[ "$current_mode" == "$mode" ]]; then
+        echo "Already in $mode mode"
+        exit 0
+    fi
+    if [[ "$mode" == "dark" ]]; then
+        prefer_dark="1"
+        prefer="prefer-dark"
+        icon="Papirus-Dark"
+    else
+        prefer_dark="0"
+        prefer="prefer-light"
+        icon="Papirus-Light"
+    fi
 
-pkill -USR1 -x nvim || true
+    # Apply changes
+    gsettings set "$gnome_schema" color-scheme "$prefer" &
+    gsettings set "$gnome_schema" icon-theme "$icon" &
+    wait
 
-sed -i \
-    -e "s/^gtk-application-prefer-dark-theme\s*=.*/gtk-application-prefer-dark-theme=$prefer_dark/" \
-    -e "s/^gtk-icon-theme-name\s*=.*/gtk-icon-theme-name=$icon/" \
-    "$config"
+    wall=$(readlink ~/.cache/averell/wall.set 2>/dev/null || :)
+    # [[ -x "$HOME/Projects/rust/walset-backend/target/release/wallpaper-theme-manager" && -n "$wall" ]] &&
+    #     "$HOME/Projects/rust/walset-backend/target/release/wallpaper-theme-manager" --no-set --mode="$mode" "$wall" &
+    matugen image --type 'scheme-fidelity' --mode "$mode" "$wall" >/dev/null 2>&1 &
 
-echo "Theme switched to $mode mode"
+    # Hot reload nvim theme
+    pkill -USR1 -x nvim || true
+
+    sed -i \
+        -e "s/^gtk-application-prefer-dark-theme\s*=.*/gtk-application-prefer-dark-theme=$prefer_dark/" \
+        -e "s/^gtk-icon-theme-name\s*=.*/gtk-icon-theme-name=$icon/" \
+        "$config"
+
+    # Persist nvim theme
+    nvim_theme_file="$HOME/.config/nvim/lua/config/system-theme.lua"
+    echo "-- File automatically modified by a script" >"$nvim_theme_file"
+    echo "" >> "$nvim_theme_file"
+    echo "vim.o.background = \"$mode\"" >>"$nvim_theme_file"
+
+    echo "Theme switched to $mode mode"
+}
+
+# --- CLI options ---
+case "${1:-}" in
+--toggle | "")
+    if [[ "$current_mode" == "light" ]]; then
+        set_mode "dark"
+    else
+        set_mode "light"
+    fi
+    ;;
+--dark) set_mode "dark" ;;
+--light) set_mode "light" ;;
+--current)
+    echo "$current_mode"
+    ;;
+*) usage ;;
+esac

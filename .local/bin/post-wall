@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+readonly MATUGEN_SCRIPTS_DIR="$HOME/.config/matugen/scripts"
+VERBOSE=true
+
+log_debug() {
+    [[ "$VERBOSE" == true ]] && echo "[DEBUG] $*" >&2
+}
+
+# Launch vicinae if available
+if command -v vicinae >/dev/null 2>&1; then
+    vicinae vicinae://theme/set/matugen
+else
+    log_debug "vicinae command not found"
+fi
+
+# Update Papirus folder colors
+script="$MATUGEN_SCRIPTS_DIR/update_papirus_folders.sh"
+if [[ -x "$script" ]]; then
+    log_debug "Updating Papirus folder colors"
+    "$script" &
+else
+    log_debug "Papirus folders update script not found: $script"
+fi
+
+# Restart xdg-desktop-portal-gtk if active
+if systemctl --user is-active --quiet "xdg-desktop-portal-gtk" 2>/dev/null; then
+    log_debug "Restarting xdg-desktop-portal-gtk"
+    systemctl --user restart "xdg-desktop-portal-gtk" >/dev/null 2>&1 &
+fi
+
+# Restart polkit authentication agent
+pkill -f "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1" >/dev/null 2>&1 || true
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 >/dev/null 2>&1 &
+log_debug "Restarted polkit authentication agent"

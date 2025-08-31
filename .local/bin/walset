@@ -2,58 +2,44 @@
 # Simple Wallpaper Selector Script with Thumbnail Support
 # Uses C program to build Rofi input for speed
 
-# Configuration
 WALL_DIR="$HOME/wallpaper/"
-# BACKEND_CMD="$HOME/.local/bin/walset-backend"
 BACKEND_CMD="$HOME/Projects/rust/walset-backend/target/release/wallpaper-theme-manager"
 THUMB_DIR="$HOME/.cache/wallpaper-thumbs"
 BUILD_ROFI_INPUT_CMD="$HOME/.config/averell/bin/build-rofi-input"
 
-# Ensure wallpaper directory path ends with a slash
 [[ "$WALL_DIR" != */ ]] && WALL_DIR="${WALL_DIR}/"
 
-# Check if wallpaper directory exists (can be done in C, but good to have here too)
-if [ ! -d "$WALL_DIR" ]; then
-    notify-send "Wallpaper Selector" "Error: Wallpaper directory not found: $WALL_DIR"
-    echo "Error: Wallpaper directory not found: $WALL_DIR"
+[ ! -d "$WALL_DIR" ] && {
+    notify-send "Wallpaper Selector" "Error: Wallpaper directory not found"
+    echo "Error: Wallpaper directory not found"
     exit 1
-fi
-
-# Check if rofi is installed
-if ! command -v rofi &>/dev/null; then
-    echo "Error: rofi is not installed. Please install it and try again."
+}
+command -v rofi &>/dev/null || {
+    echo "Error: rofi not installed"
     exit 1
-fi
-
-# Check if backend command is available
-if [ ! -x "$BACKEND_CMD" ]; then
-    notify-send "Wallpaper Selector" "Error: Backend command not found: $BACKEND_CMD"
-    echo "Error: Backend command not found: $BACKEND_CMD"
+}
+[ ! -x "$BACKEND_CMD" ] && {
+    notify-send "Wallpaper Selector" "Backend not found"
     exit 1
-fi
-
-# Check if the C program is executable
-if [ ! -x "$BUILD_ROFI_INPUT_CMD" ]; then
-    notify-send "Wallpaper Selector" "Error: Rofi input builder not found or not executable: $BUILD_ROFI_INPUT_CMD"
-    echo "Error: Rofi input builder not found or not executable: $BUILD_ROFI_INPUT_CMD"
+}
+[ ! -x "$BUILD_ROFI_INPUT_CMD" ] && {
+    notify-send "Wallpaper Selector" "Rofi input builder not executable"
     exit 1
-fi
+}
 
-# Build the rofi menu with thumbnails by running the C program
-# The C program prints the formatted string to stdout, which is then piped to rofi
 SELECTED_WALL=$("$BUILD_ROFI_INPUT_CMD" | rofi -dmenu -theme ~/.config/rofi/wallpaper.rasi -p "" -i)
 
-# Process the selection
+theme=$("$HOME/.local/bin/toggle-mode" --current)
+
 if [ -n "$SELECTED_WALL" ]; then
     echo "Setting wallpaper: $SELECTED_WALL"
-    "$BACKEND_CMD" "$WALL_DIR$SELECTED_WALL"
-    exit_status=$?
-    if [ $exit_status -eq 0 ]; then
+    if matugen image --type 'scheme-fidelity' --mode "$theme" "$WALL_DIR$SELECTED_WALL"; then
         echo "Wallpaper set successfully!"
     else
-        echo "Failed to set wallpaper. Backend command exited with status $exit_status"
+        echo "Failed to set wallpaper"
+        exit 1
     fi
 else
     echo "Wallpaper selection cancelled"
-    exit A
+    exit 1
 fi

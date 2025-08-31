@@ -59,14 +59,14 @@ return {
                 files = {
                     hidden = true,
                     ignored = true,
-                    exclude = { "node_modules", ".git", "__pycache__", ".mypy_cache", "venv", ".venv" },
+                    exclude = { "node_modules", ".git", "__pycache__", ".mypy_cache", "venv", ".venv", "vendor" },
                 },
             },
             layouts = {
                 vscode = {
                     preview = false,
                     layout = {
-                        backdrop = tools.style == "flat" and { blend = 90 } or false,
+                        backdrop = false,
                         row = 5,
                         width = 0.4,
                         min_width = 80,

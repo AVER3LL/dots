@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+# Image Cache Generator
+# Generates various cached versions of an image for wallpapers
+
+set -euo pipefail
+
+#==============================================================================
+# CONFIGURATION
+#==============================================================================
+
+CACHE_DIR="$HOME/.cache/averell"
+IMAGE="$1"
+
+# Cache file paths
+WALL_CURRENT="$CACHE_DIR/wall.set"
+WALL_STATIC="$CACHE_DIR/wall.static"
+WALL_SQUARE="$CACHE_DIR/wall.sqre"
+WALL_THUMB="$CACHE_DIR/wall.thmb"
+WALL_BLUR="$CACHE_DIR/wall.blur"
+WALL_RECT="$CACHE_DIR/wall.rect"
+
+#==============================================================================
+# UTILITY FUNCTIONS
+#==============================================================================
+
+log_info() { echo "[INFO] $*"; }
+log_warn() { echo "[WARN] $*"; }
+
+command_exists() { command -v "$1" >/dev/null 2>&1; }
+ensure_directory() { [[ -d "$1" ]] || mkdir -p "$1"; }
+
+#==============================================================================
+# CACHE GENERATION
+#==============================================================================
+
+setup_cache_files() {
+    ensure_directory "$CACHE_DIR"
+    ln -sf "$IMAGE" "$WALL_CURRENT"
+    log_info "Created symlink: $WALL_CURRENT -> $IMAGE"
+}
+
+prepare_static_version() {
+    if command_exists magick; then
+        if ! magick "$IMAGE[0]" -strip -quality 85 "$WALL_STATIC" 2>/dev/null; then
+            log_warn "Failed to create static version, using original"
+            ln -sf "$IMAGE" "$WALL_STATIC"
+        else
+            log_info "Static version created: $WALL_STATIC"
+        fi
+    else
+        ln -sf "$IMAGE" "$WALL_STATIC"
+    fi
+}
+
+generate_image_caches() {
+    if ! command_exists magick; then
+        log_warn "ImageMagick not found, skipping cache generation"
+        return
+    fi
+
+    log_info "Generating image caches..."
+    magick "$WALL_STATIC" -strip -quality 80 \
+        \( +clone -thumbnail 500x500^ -gravity center -extent 500x500 +write "$WALL_SQUARE" +delete \) \
+        \( +clone -thumbnail 320x180^ -gravity center -extent 320x180 +write "$WALL_THUMB" +delete \) \
+        \( +clone -thumbnail 1280x720^ -gravity center -extent 1280x720 +write "$WALL_RECT" +delete \) \
+        \( +clone -resize 1920x1080^ -gravity center -extent 1920x1080 -blur 0x8 +write "$WALL_BLUR" +delete \) \
+        null: 2>/dev/null &
+
+    log_info "Cache generation started in background"
+}
+
+#==============================================================================
+# MAIN
+#==============================================================================
+
+[[ -n "$IMAGE" && -f "$IMAGE" ]] || {
+    echo "Usage: $0 <image_file>"
+    exit 1
+}
+
+setup_cache_files
+prepare_static_version
+generate_image_caches

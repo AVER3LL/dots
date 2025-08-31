@@ -1,0 +1,19 @@
+{
+  "version": "1.0.0",
+  "appearance": "dark",
+  "icon": "./catppuccin.png",
+  "name": "Matugen theme",
+  "description": "Trying something with matugen I guess",
+  "palette": {
+    "background": "#141310",
+    "foreground": "#e6e2db",
+    "blue": "#afc6ff",
+    "green": "#f0ffcc",
+    "magenta": "#ffafd6",
+    "orange": "#FAB387",
+    "purple": "#CBA6F7",
+    "red": "#ffb595",
+    "yellow": "#ffffff",
+    "cyan": "#ffffff"
+  }
+}

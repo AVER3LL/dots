@@ -1,0 +1,19 @@
+{
+  "version": "1.0.0",
+  "appearance": "dark",
+  "icon": "./catppuccin.png",
+  "name": "Matugen theme",
+  "description": "Trying something with matugen I guess",
+  "palette": {
+    "background": "{{colors.background.default.hex}}",
+    "foreground": "{{colors.on_background.default.hex}}",
+    "blue": "{{colors.blue.default.hex}}",
+    "green": "{{colors.green.default.hex}}",
+    "magenta": "{{colors.magenta.default.hex}}",
+    "orange": "#FAB387",
+    "purple": "#CBA6F7",
+    "red": "{{colors.red.default.hex}}",
+    "yellow": "{{colors.yellow.default.hex}}",
+    "cyan": "{{colors.cyan.default.hex}}"
+  }
+}

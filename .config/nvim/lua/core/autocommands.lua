@@ -4,21 +4,6 @@ local function augroup(name)
     return vim.api.nvim_create_augroup(name, { clear = true })
 end
 
-if vim.g.enable_signature then
-    autocmd("LspAttach", {
-        callback = function(args)
-            local client = vim.lsp.get_client_by_id(args.data.client_id)
-
-            if client then
-                local signatureProvider = client.server_capabilities.signatureHelpProvider
-                if signatureProvider and signatureProvider.triggerCharacters then
-                    require("config.signature").setup(client, args.buf)
-                end
-            end
-        end,
-    })
-end
-
 -- Autocommand to temporarily change 'blade' filetype to 'php' when opening for LSP server activation
 autocmd({ "BufRead", "BufNewFile" }, {
     group = augroup "lsp_blade_workaround",
@@ -30,6 +15,7 @@ autocmd({ "BufRead", "BufNewFile" }, {
 
 -- Additional autocommand to switch back to 'blade' after LSP has attached
 autocmd("LspAttach", {
+    group = augroup "lsp_blade_workaround",
     pattern = "*.blade.php",
     callback = function(args)
         vim.schedule(function()
@@ -57,18 +43,6 @@ autocmd("TextYankPost", {
         }
     end,
 })
-
--- autocmd("BufEnter", {
---     callback = function()
---         if vim.bo.filetype == "markdown" and vim.bo.buftype == "nofile" then
---             vim.notify "innit"
---             vim.cmd [[ setlocal concealcursor=n ]]
---             vim.cmd [[ setlocal conceallevel=1 ]]
---             -- vim.wo.conceallevel = 3
---             -- vim.wo.concealcursor = "n"
---         end
---     end,
--- })
 
 -- Do not comment new lines
 autocmd("BufEnter", { command = [[set formatoptions-=cro]] })
