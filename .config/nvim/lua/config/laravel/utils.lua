@@ -1,5 +1,29 @@
 local M = {}
 
+M.icons = {
+    model = { icon = "󰆼 ", hl = "Type" }, -- models = core data structures
+    middleware = { icon = " ", hl = "Macro" }, -- sits in between, like filters
+    controller = { icon = "󰺵 ", hl = "Function" }, -- controllers = actions
+    migration = { icon = "󰓫 ", hl = "Number" }, -- versioned files, number-ish
+    factory = { icon = "󰈏 ", hl = "Constructor" }, -- generates models
+    seeder = { icon = " ", hl = "String" }, -- seeds with content
+    listener = { icon = "󰟅 ", hl = "Identifier" }, -- listens for events
+    resource = { icon = "󰥶 ", hl = "Structure" }, -- resources = API structure
+    policy = { icon = "󰒃 ", hl = "Conditional" }, -- allows / denies actions
+    test = { icon = "󰙨 ", hl = "Debug" }, -- testing / debugging
+    request = { icon = " ", hl = "Keyword" }, -- validation layer
+    job = { icon = " ", hl = "Special" }, -- background tasks
+    event = { icon = " ", hl = "Constant" }, -- events = constants triggering flow
+
+    -- 🔥 New ones
+    lang = { icon = "󰂖 ", hl = "String" }, -- language files (JSON/PHP)
+    view = { icon = " ", hl = "LaravelLogo" }, -- Blade templates
+    config = { icon = "󰒓 ", hl = "Constant" }, -- config/*.php
+    provider = { icon = "󰗚 ", hl = "Type" }, -- service providers
+    command = { icon = "󰘳 ", hl = "Function" }, -- artisan commands
+    route = { icon = "󰣖 ", hl = "Keyword" }, -- routes/web.php, api.php
+}
+
 local snacks = require "snacks"
 M.is_laravel_project = function()
     return vim.loop.fs_stat "artisan" ~= nil -- faster than filereadable
@@ -13,7 +37,7 @@ M.get_laravel_root = function()
     return vim.fn.getcwd()
 end
 
-M.create_picker = function(title, patterns, file_filter, strip_prefix)
+M.create_picker = function(title, patterns, file_filter, strip_prefix, key)
     if not M.is_laravel_project() then
         vim.notify("Not in a Laravel project", vim.log.levels.WARN)
         return
@@ -83,18 +107,25 @@ M.create_picker = function(title, patterns, file_filter, strip_prefix)
     end
 
     snacks.picker.pick {
-        name = title,
+        title = title,
         layout = "vscode",
         items = files,
         format = function(item)
+            -- look up pretty icon from the key
+            local pretty = M.icons[key] or { icon = "", hl = "SnacksPickerFile" }
+
             local name, path = item.text:match "^(.-)%s%((.+)%)$"
             if name and path then
                 return {
+                    { pretty.icon .. " ", pretty.hl },
                     { name, "SnacksPickerFile" },
                     { " (" .. path .. ")", "Comment" },
                 }
             else
-                return { { item.text, "SnacksPickerFile" } }
+                return {
+                    { pretty.icon .. " ", pretty.hl },
+                    { item.text, "SnacksPickerFile" },
+                }
             end
         end,
         confirm = function(picker, item)

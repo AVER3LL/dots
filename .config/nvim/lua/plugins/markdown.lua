@@ -10,12 +10,11 @@ return {
     ---@module 'render-markdown'
     ---@type render.md.UserConfig
     opts = {
-        -- Disable the plugin in hover windows
+        -- Disable the plugin in unfocusable windows (hover)
         ignore = function(buf)
             -- Find the window(s) showing this buffer
             for _, win in ipairs(vim.fn.win_findbuf(buf)) do
                 local cfg = vim.api.nvim_win_get_config(win)
-                -- cfg.focusable is a boolean
                 if cfg.focusable then
                     return false
                 end

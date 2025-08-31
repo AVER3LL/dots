@@ -66,7 +66,7 @@ return {
                 vscode = {
                     preview = false,
                     layout = {
-                        backdrop = false,
+                        backdrop = tools.style == "flat" and { blend = 90 } or false,
                         row = 5,
                         width = 0.4,
                         min_width = 80,
@@ -76,12 +76,11 @@ return {
                         {
                             win = "input",
                             height = 1,
-                            border = "bottom",
+                            border = "solid",
                             title = "{title} {live} {flags}",
                             title_pos = "center",
                         },
                         { win = "list", border = "none" },
-                        { win = "preview", title = "{preview}", border = "none" },
                     },
                 },
                 custom = {

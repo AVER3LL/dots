@@ -252,15 +252,19 @@ M.find_related = function()
     end)
 
     snacks.picker.pick {
-        name = "Related Files: " .. file_info.base_name,
+        title = "Related Files: " .. file_info.base_name,
         layout = "vscode",
         items = related_files,
         format = function(item)
             local type_label, name = item.text:match "^(.-):%s(.+)$"
+            local key = type_label:lower()
             if type_label and name then
+                local icon = utils.icons[key] and utils.icons[key].icon or ""
+                local hl = utils.icons[key] and utils.icons[key].hl or "Constant"
                 return {
-                    { type_label .. ":", "Comment" },
-                    { " " .. name, "SnacksPickerFile" },
+                    { icon, hl },
+                    { type_label .. " => ", "Comment" },
+                    { name, "SnacksPickerFile" },
                 }
             else
                 return { { item.text, "SnacksPickerFile" } }

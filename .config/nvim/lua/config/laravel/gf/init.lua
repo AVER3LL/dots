@@ -1,4 +1,4 @@
--- Optimized init.lua preserving the original clean resolver architecture
+-- Enhanced init.lua with improved resolver system and better caching
 local helpers = require "config.laravel.gf.helpers"
 local snacks = require "snacks"
 local utils = require "config.laravel.utils"
@@ -9,7 +9,9 @@ local M = {}
 local cache = {
     laravel_root = nil,
     resolvers = nil,
-    routes = nil, -- New: Caches route_name -> {file, line, ...}
+    routes = nil,
+    components = nil, -- New: Component cache
+    last_cache_build = nil, -- Track when cache was last built
 }
 
 -- Lazy load resolvers only once
@@ -44,6 +46,7 @@ function M.build_routes_cache()
 
     local name_pattern = "->name%s*%(%s*['\"]([^%']+)['\"]%s*%)"
     local resource_pattern = "Route::resource%s*%(%s*['\"]([^%']*)['\"]"
+    local api_resource_pattern = "Route::apiResource%s*%(%s*['\"]([^%']*)['\"]"
 
     for _, route_file in ipairs(route_files) do
         local line_num = 0
@@ -72,12 +75,29 @@ function M.build_routes_cache()
                         cache.routes[full_route_name] = {
                             file = route_file,
                             line = line_num,
-                            description = "Resource Route: "
-                                .. full_route_name
-                                .. " ("
-                                .. vim.fn.fnamemodify(route_file, ":t")
-                                .. ")",
+                            description = "Resource Route: " .. full_route_name .. " (" .. vim.fn.fnamemodify(
+                                route_file,
+                                ":t"
+                            ) .. ")",
                             type = "route",
+                        }
+                    end
+                end
+
+                -- Find API resource routes
+                local api_resource_name = file_line:match(api_resource_pattern)
+                if api_resource_name then
+                    local api_actions = { "index", "store", "show", "update", "destroy" }
+                    for _, action in ipairs(api_actions) do
+                        local full_route_name = api_resource_name .. "." .. action
+                        cache.routes[full_route_name] = {
+                            file = route_file,
+                            line = line_num,
+                            description = "API Resource Route: " .. full_route_name .. " (" .. vim.fn.fnamemodify(
+                                route_file,
+                                ":t"
+                            ) .. ")",
+                            type = "api-route",
                         }
                     end
                 end
@@ -85,16 +105,67 @@ function M.build_routes_cache()
             file_handle:close()
         end
     end
-    vim.notify("Route cache built with " .. vim.tbl_count(cache.routes) .. " routes.", vim.log.levels.INFO, { title = "Laravel gf" })
+
+    cache.last_cache_build = vim.fn.localtime()
+    vim.notify(
+        "Route cache built with " .. vim.tbl_count(cache.routes) .. " routes.",
+        vim.log.levels.INFO,
+        { title = "Laravel gf" }
+    )
 end
 
---- Gets the routes cache, building it if it doesn't exist.
+--- Builds a cache of blade components for faster resolution
+function M.build_components_cache()
+    local laravel_root = get_laravel_root_cached()
+    if not laravel_root then
+        return
+    end
+
+    vim.notify("Building Laravel component cache...", vim.log.levels.INFO, { title = "Laravel gf" })
+
+    cache.components = {}
+    local components_directory = laravel_root .. "/resources/views/components"
+    local component_files = vim.fn.glob(components_directory .. "/**/*.blade.php", true, true)
+
+    for _, component_file in ipairs(component_files) do
+        local relative_path = component_file:gsub(components_directory .. "/", "")
+        local component_name = relative_path:gsub("%.blade%.php$", ""):gsub("/", ".")
+
+        cache.components[component_name] = {
+            file = component_file,
+            description = "Blade component: x-" .. component_name,
+            type = "component",
+        }
+    end
+
+    vim.notify(
+        "Component cache built with " .. vim.tbl_count(cache.components) .. " components.",
+        vim.log.levels.INFO,
+        { title = "Laravel gf" }
+    )
+end
+
+--- Gets the routes cache, building it if it doesn't exist or is stale.
 ---@return table|nil
 function M.get_routes_cache()
-    if not cache.routes then
+    local now = vim.fn.localtime()
+    local cache_age = cache.last_cache_build and (now - cache.last_cache_build) or math.huge
+
+    -- Rebuild cache if it's older than 5 minutes (300 seconds) or doesn't exist
+    if not cache.routes or cache_age > 300 then
         M.build_routes_cache()
     end
+
     return cache.routes
+end
+
+--- Gets the components cache, building it if it doesn't exist.
+---@return table|nil
+function M.get_components_cache()
+    if not cache.components then
+        M.build_components_cache()
+    end
+    return cache.components
 end
 
 -- Function to generate all caches upfront
@@ -102,7 +173,24 @@ M.generate_all_caches = function()
     cache.laravel_root = utils.get_laravel_root()
     cache.resolvers = require "config.laravel.gf.resolvers"
     M.build_routes_cache()
-    vim.notify("Laravel caches generated", vim.log.levels.INFO)
+    M.build_components_cache()
+    vim.notify("All Laravel caches generated", vim.log.levels.INFO, { title = "Laravel gf" })
+end
+
+-- Function to clear all caches (useful for development)
+M.clear_caches = function()
+    cache.laravel_root = nil
+    cache.resolvers = nil
+    cache.routes = nil
+    cache.components = nil
+    cache.last_cache_build = nil
+    vim.notify("Laravel caches cleared", vim.log.levels.INFO, { title = "Laravel gf" })
+end
+
+-- Function to rebuild caches
+M.rebuild_caches = function()
+    M.clear_caches()
+    M.generate_all_caches()
 end
 
 M.goto_file_under_cursor = function()
@@ -126,6 +214,11 @@ M.goto_file_under_cursor = function()
         local success, results = pcall(resolver.resolve, line, laravel_root, quoted_content)
         if success and results and #results > 0 then
             vim.list_extend(possible_files, results)
+        elseif not success then
+            -- Log resolver errors for debugging (only in debug mode)
+            if vim.g.laravel_gf_debug then
+                vim.notify("Resolver error: " .. tostring(results), vim.log.levels.DEBUG, { title = "Laravel gf" })
+            end
         end
     end
 
@@ -138,14 +231,14 @@ M.goto_file_under_cursor = function()
     -- If only one file found, open it directly (fastest path)
     if #possible_files == 1 then
         local file_info = possible_files[1]
-        vim.cmd("edit " .. file_info.file)
+        vim.cmd("edit " .. vim.fn.fnameescape(file_info.file))
         if file_info.line then
             vim.api.nvim_win_set_cursor(0, { file_info.line, 0 })
         end
         return
     end
 
-    -- Multiple files found, show picker
+    -- Multiple files found, show picker with enhanced formatting
     -- Pre-process items for picker to avoid doing it in format function
     for _, file_info in ipairs(possible_files) do
         file_info.text = file_info.description
@@ -153,19 +246,55 @@ M.goto_file_under_cursor = function()
     end
 
     snacks.picker.pick {
-        name = "Laravel Files for: " .. (quoted_content or ""),
+        name = "Laravel Files for: " .. (quoted_content or helpers.extract_component_from_cursor(line, col) or ""),
         layout = "vscode",
         items = possible_files,
         format = function(item)
+            local type_config = {
+                route = { icon = "󰑴", color = "SnacksPickerFile" },
+                ["api-route"] = { icon = "", color = "Function" },
+                component = { icon = "󰅴", color = "Function" },
+                ["component-class"] = { icon = "", color = "Structure" },
+                ["volt-layout"] = { icon = "󰃃", color = "Type" },
+                view = { icon = "󰈙", color = "String" },
+                livewire = { icon = "⚡", color = "Keyword" },
+                ["livewire-class"] = { icon = "⚡", color = "Structure" },
+                ["livewire-view"] = { icon = "⚡", color = "String" },
+                config = { icon = "", color = "Constant" },
+                env = { icon = "", color = "PreProc" },
+                asset = { icon = "󰈔", color = "Directory" },
+                model = { icon = "󰆼", color = "Type" },
+                translation = { icon = "󰗊", color = "String" },
+                storage = { icon = "󰉋", color = "Directory" },
+                storage_url = { icon = "󰉋", color = "Directory" },
+                controller = { icon = "", color = "Structure" },
+                ["controller-action"] = { icon = "", color = "Function" },
+                ["resource-controller"] = { icon = "", color = "Structure" },
+                ["api-resource-controller"] = { icon = "", color = "Structure" },
+                middleware = { icon = "󰫙", color = "Operator" },
+                ["middleware-alias"] = { icon = "󰫙", color = "Comment" },
+                policy = { icon = "", color = "Conditional" },
+                event = { icon = "󰐃", color = "Exception" },
+                listener = { icon = "", color = "Function" },
+                factory = { icon = "󰘦", color = "Number" },
+                seeder = { icon = "󰰮", color = "Number" },
+                job = { icon = "󰜎", color = "Keyword" },
+                inertia = { icon = "󰜈", color = "Function" },
+                volt = { icon = "⚡", color = "Type" },
+            }
+
+            local config = type_config[item.type] or { icon = "󰈔", color = "SnacksPickerFile" }
+
             return {
-                { item.description, "SnacksPickerFile" },
+                { config.icon .. " ", config.color },
+                { item.description, config.color },
                 { " [" .. item.type .. "]", "Comment" },
             }
         end,
         confirm = function(picker, item)
             if item then
                 picker:close()
-                vim.cmd("edit " .. item.file)
+                vim.cmd("edit " .. vim.fn.fnameescape(item.file))
                 if item.line then
                     vim.api.nvim_win_set_cursor(0, { item.line, 0 })
                 end

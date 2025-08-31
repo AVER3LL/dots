@@ -45,7 +45,7 @@ return {
                     lua_ls = {
                         settings = {
                             Lua = {
-                                completion = { callSnippet = "Replace" },
+                                -- completion = { callSnippet = "Replace" },
                                 format = { enable = false },
                                 hint = {
                                     enable = true,
@@ -154,6 +154,7 @@ return {
                     emmet_language_server = {
                         filetypes = {
                             "django",
+                            "blade",
                             "astro",
                             "css",
                             "eruby",

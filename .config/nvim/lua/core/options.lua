@@ -14,7 +14,7 @@ vim.o.termguicolors = true
 vim.o.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,a:Cursor/Cursor"
 
 vim.o.cursorline = true
-vim.o.cursorlineopt = "both"
+vim.o.cursorlineopt = "number"
 
 vim.wo.signcolumn = "yes"
 vim.o.numberwidth = 2

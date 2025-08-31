@@ -76,10 +76,22 @@ autocmd("ColorScheme", {
         sethl(0, "NvimTreeEndOfBuffer", { bg = gethl("NvimTreeNormal").bg })
         sethl(0, "NvimTreeSignColumn", { bg = "NONE" })
 
+        sethl(0, "MiniPickMatchCurrent", { bg = colors.cursorline })
         local effective_style = (vim.g.colors_name == "vercel") and "clear" or tools.style
 
         -- Style-specific completion highlights
         if effective_style == "flat" then
+            sethl(0, "MiniPickNormal", { bg = colors.pmenu, fg = colors.foreground })
+            sethl(0, "MiniPickBorder", { bg = colors.pmenu, fg = colors.pmenu })
+            sethl(0, "MiniPickBorderBusy", { bg = colors.pmenu, fg = colors.pmenu })
+            sethl(0, "MiniPickBorderText", { link = "DiagnosticVirtualTextInfo" })
+            sethl(0, "MiniPickPromptPrefix", { bg = colors.pmenu, fg = gethl("Special").fg, default = true })
+            sethl(0, "MiniPickIconFile", { bg = colors.pmenu, fg = colors.comment })
+            sethl(0, "MiniPickMatchRanges", { fg = gethl("Special").fg, bold = true })
+            sethl(0, "MiniPickPrompt", { bg = colors.pmenu, fg = colors.foreground })
+
+            sethl(0, "SnacksPickerTitle", { link = "DiagnosticVirtualTextInfo" })
+
             sethl(0, "SnacksInputNormal", { bg = colors.pmenu, fg = colors.foreground })
             sethl(0, "SnacksInputBorder", { bg = colors.pmenu, fg = colors.pmenu })
             sethl(0, "BlinkCmpSignatureHelp", { bg = colors.pmenu })
