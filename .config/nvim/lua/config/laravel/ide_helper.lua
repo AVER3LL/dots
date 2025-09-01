@@ -18,9 +18,8 @@ end
 local function install_ide_helper(laravel_root)
     vim.notify("Installing laravel-ide-helper package...", vim.log.levels.INFO)
 
-    local install_cmd = "cd " .. laravel_root .. " && composer require --dev barryvdh/laravel-ide-helper"
-
-    vim.fn.jobstart(install_cmd, {
+    vim.fn.jobstart({ "composer", "require", "--dev", "barryvdh/laravel-ide-helper" }, {
+        cwd = laravel_root,
         on_exit = function(_, exit_code)
             if exit_code == 0 then
                 local git_ignore_file = laravel_root .. "/.gitignore"
@@ -61,19 +60,28 @@ end
 
 -- Run a single artisan command with output handling
 local function run_artisan_command(cmd, laravel_root, callback)
-    local full_cmd = "cd " .. laravel_root .. " && php artisan " .. cmd
+    local command = { "php", "artisan" }
 
-    vim.notify("Running: php artisan " .. cmd, vim.log.levels.INFO)
+    if type(cmd) == "table" then
+        vim.list_extend(command, cmd)
+    else
+        table.insert(command, cmd)
+    end
 
-    vim.fn.jobstart(full_cmd, {
+    local display_cmd = table.concat(command, " ")
+
+    vim.notify("Running: " .. display_cmd, vim.log.levels.INFO)
+
+    vim.fn.jobstart(command, {
+        cwd = laravel_root,
         on_exit = function(_, exit_code)
             if exit_code == 0 then
-                vim.notify("✓ Completed: php artisan " .. cmd, vim.log.levels.INFO)
+                vim.notify("✓ Completed: " .. display_cmd, vim.log.levels.INFO)
                 if callback then
                     callback()
                 end
             else
-                vim.notify("✗ Failed: php artisan " .. cmd, vim.log.levels.ERROR)
+                vim.notify("✗ Failed: " .. display_cmd, vim.log.levels.ERROR)
             end
         end,
         on_stdout = function(_, data)
@@ -121,7 +129,7 @@ M.generate_ide_helpers = function()
     -- Run commands sequentially
     local commands = {
         "ide-helper:generate",
-        "ide-helper:models --write",
+        { "ide-helper:models", "-RW" },
         "ide-helper:meta",
     }
 

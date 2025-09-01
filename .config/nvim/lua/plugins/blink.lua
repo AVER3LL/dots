@@ -77,7 +77,7 @@ return {
                                     return icon .. ctx.icon_gap .. " "
                                 end,
                                 highlight = function(ctx)
-                                    local hl = is_laravel_source(ctx.source_name) and "LaravelLogo" or ctx.kind_hl
+                                    local hl = is_laravel_source(ctx.source_name) and "Laravel" or ctx.kind_hl
 
                                     return { { group = hl, priority = 20000 } }
                                 end,
@@ -136,7 +136,7 @@ return {
                     laravel = {
                         name = "laravel",
                         module = "blink.compat.source",
-                        score_offset = 1,
+                        score_offset = 95,
                     },
                 },
             },

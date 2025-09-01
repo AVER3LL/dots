@@ -1,7 +1,7 @@
 ---@diagnostic disable: undefined-field, missing-fields, assign-type-mismatch
 return {
     "nvim-neo-tree/neo-tree.nvim",
-    enabled = true,
+    enabled = false,
     branch = "v3.x",
     cmd = "Neotree",
     keys = {
@@ -79,7 +79,7 @@ return {
             },
             window = {
                 position = "right",
-                width = 32,
+                width = 35,
                 mappings = {
                     ["l"] = "open",
                     ["e"] = "rename_basename",

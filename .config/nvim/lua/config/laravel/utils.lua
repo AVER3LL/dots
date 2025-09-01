@@ -17,7 +17,7 @@ M.icons = {
 
     -- 🔥 New ones
     lang = { icon = "󰂖 ", hl = "String" }, -- language files (JSON/PHP)
-    view = { icon = " ", hl = "LaravelLogo" }, -- Blade templates
+    view = { icon = " ", hl = "Laravel" }, -- Blade templates
     config = { icon = "󰒓 ", hl = "Constant" }, -- config/*.php
     provider = { icon = "󰗚 ", hl = "Type" }, -- service providers
     command = { icon = "󰘳 ", hl = "Function" }, -- artisan commands

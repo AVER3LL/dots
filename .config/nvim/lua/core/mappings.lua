@@ -17,7 +17,7 @@ map("n", "<leader><leader>c", function()
     local uri = "file://" .. vim.fn.fnamemodify(filepath, ":p")
 
     -- copy to clipboard using wl-copy
-    vim.fn.system({ "wl-copy", "--type", "text/uri-list" }, uri .. "\n")
+    vim.system { "wl-copy", "--type", "text/uri-list", uri .. "\n" }
 
     vim.notify(filename .. " copied to system clipboard", vim.log.levels.INFO)
 end, { desc = "Copy current file to clipboard" })

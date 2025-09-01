@@ -39,7 +39,7 @@ autocmd("ColorScheme", {
         sethl(0, "Cursor", { bg = colors.foreground })
         sethl(0, "HighlightUrl", { underline = true })
         sethl(0, "AlphaButton", { bg = colors.constant, bold = true, fg = colors.background })
-        sethl(0, "LaravelLogo", { fg = "#F53003" })
+        sethl(0, "Laravel", { fg = "#F53003" })
         sethl(0, "MatchParen", { bg = "NONE", fg = colors.parenthesis })
 
         -- Diagnostics in gutter (no background)
@@ -70,11 +70,7 @@ autocmd("ColorScheme", {
         sethl(0, "HlSearchLensNear", { bg = "NONE", fg = colors.hint })
 
         -- Tree explorer cleanup
-        sethl(0, "NvimTreeLineNr", { bg = gethl("NvimTreeNormal").bg })
-        sethl(0, "NvimTreeWinSeparator", { bg = gethl("NvimTreeNormal").bg, fg = gethl("NvimTreeNormal").bg })
-        sethl(0, "NeoTreeWinSeparator", { bg = gethl("NeoTreeNormal").bg, fg = gethl("NeoTreeNormal").bg })
-        sethl(0, "NvimTreeEndOfBuffer", { bg = gethl("NvimTreeNormal").bg })
-        sethl(0, "NvimTreeSignColumn", { bg = "NONE" })
+        sethl(0, "NvimTreeNormal", { bg = colors.background })
 
         sethl(0, "MiniPickMatchCurrent", { bg = colors.cursorline })
         local effective_style = (vim.g.colors_name == "vercel") and "clear" or tools.style
@@ -94,6 +90,10 @@ autocmd("ColorScheme", {
 
             sethl(0, "SnacksInputNormal", { bg = colors.pmenu, fg = colors.foreground })
             sethl(0, "SnacksInputBorder", { bg = colors.pmenu, fg = colors.pmenu })
+
+            -- TODO: Investigate onedark's shenanigans
+            -- sethl(0, "SnacksPickerBorder", { bg = colors.pmenu, fg = colors.pmenu })
+
             sethl(0, "BlinkCmpSignatureHelp", { bg = colors.pmenu })
             sethl(0, "BlinkCmpSignatureHelpBorder", { bg = colors.pmenu, fg = colors.pmenu })
 
@@ -123,6 +123,7 @@ autocmd("ColorScheme", {
             sethl(0, "BlinkCmpDoc", { bg = colors.background })
             sethl(0, "BlinkCmpSignatureHelp", { bg = colors.background })
             sethl(0, "BlinkCmpLabelDescription", { bg = colors.background, fg = border_fg })
+            sethl(0, "BlinkCmpLabel", { bg = colors.background, fg = border_fg })
             sethl(0, "BlinkCmpSource", { bg = "NONE", fg = colors.comment })
             sethl(0, "LspInfoBorder", { bg = colors.background })
             sethl(0, "NormalFloat", { bg = colors.background })
@@ -132,7 +133,11 @@ autocmd("ColorScheme", {
         end
 
         -- Common completion highlights
-        sethl(0, "BlinkCmpMenuSelection", { bg = colors.fun, fg = colors.background })
+        -- sethl(0, "BlinkCmpMenuSelection", { bg = colors.fun, fg = colors.background })
+        sethl(0, "BlinkCmpMenuSelection", {
+            bg = vim.o.background == "dark" and tools.adjust_brightness(colors.fun, 0.4)
+                or tools.adjust_brightness(colors.background, 0.87),
+        })
         sethl(0, "LspSignatureActiveParameter", { bg = colors.str, bold = true, fg = colors.background })
 
         -- Cursor line handling

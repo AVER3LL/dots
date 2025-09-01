@@ -15,44 +15,46 @@ return {
         "adalessa/laravel.nvim",
         dependencies = {
             "tpope/vim-dotenv",
-            -- "nvim-telescope/telescope.nvim",
             "MunifTanjim/nui.nvim",
-            "kevinhwang91/promise-async",
+            "nvim-lua/plenary.nvim",
+            "nvim-neotest/nvim-nio",
         },
         cmd = { "Laravel" },
         keys = {
-            { "<leader>la", "<cmd>Laravel artisan<cr>", desc = "Laravel artisan command" },
-            { "<leader>lrr", "<cmd>Laravel routes<cr>", desc = "Laravel list routes" },
-            { "<leader>lrt", "<cmd>Laravel route_info toggle<cr>", desc = "Laravel toggle route info" },
             {
-                "gf",
+                "<leader>lp",
                 function()
-                    if require("laravel").app("gf").cursor_on_resource() then
-                        return "<cmd>Laravel gf<CR>"
-                    else
-                        return "gf"
-                    end
+                    Laravel.pickers.laravel()
                 end,
-                noremap = false,
-                expr = true,
+                desc = "Laravel: Open Laravel Picker",
+            },
+            {
+                "<leader>la",
+                function()
+                    Laravel.pickers.artisan()
+                end,
+                desc = "Laravel: Open Artisan Picker",
+            },
+            {
+                "<leader>lrr",
+                function()
+                    Laravel.pickers.routes()
+                end,
+                desc = "Laravel: Open Routes Picker",
             },
         },
-        config = function()
-            require("laravel").setup {
-                lsp_server = "intelephense",
-                features = {
-                    route_info = {
-                        enable = false,
-                        view = "top",
-                    },
-                    pickers = {
-                        enable = true,
-                        provider = "snacks",
-                    },
+        event = { "VeryLazy" },
+        opts = {
+            lsp_server = "intelephense",
+            features = {
+                pickers = {
+                    provider = "snacks",
                 },
-            }
+            },
+        },
+        config = function(_, opts)
+            require("laravel").setup(opts)
 
-            -- Function to find and list Laravel controllers
             vim.keymap.set(
                 "n",
                 "<leader>lc",
