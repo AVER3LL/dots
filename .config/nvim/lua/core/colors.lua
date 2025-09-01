@@ -32,7 +32,8 @@ autocmd("ColorScheme", {
             parenthesis = vim.o.background == "dark" and "#39ff14" or "#ff007f",
         }
 
-        colors.cursorline = vim.g.colors_name == "vercel" and tools.adjust_brightness(gethl("Normal").bg, 2)
+        colors.cursorline = vim.list_contains({ "vercel", "moonfly" }, vim.g.colors_name)
+                and tools.adjust_brightness(gethl("Normal").bg, 2)
             or colors.cursorline
 
         -- Basic UI elements
@@ -73,7 +74,7 @@ autocmd("ColorScheme", {
         sethl(0, "NvimTreeNormal", { bg = colors.background })
 
         sethl(0, "MiniPickMatchCurrent", { bg = colors.cursorline })
-        local effective_style = (vim.g.colors_name == "vercel") and "clear" or tools.style
+        local effective_style = vim.list_contains({ "vercel", "moonfly" }, vim.g.colors_name) and "clear" or tools.style
 
         -- Style-specific completion highlights
         if effective_style == "flat" then

@@ -1,259 +1,346 @@
-local M = {}
+local statusline_augroup = vim.api.nvim_create_augroup("gmr_statusline", { clear = true })
 
-local api, fn, bo = vim.api, vim.fn, vim.bo
-local icons = require "icons"
+--- @param severity integer
+--- @return integer
+local function get_lsp_diagnostics_count(severity)
+    if not rawget(vim, "lsp") then
+        return 0
+    end
 
--- Define highlight groups and mode colors
-local MODE_COLORS = {
-    n = "%#StatuslineNormal#", -- Normal mode - green background
-    i = "%#StatuslineInsert#", -- Insert mode - red background
-    v = "%#StatuslineVisual#", -- Visual mode - yellow background
-    V = "%#StatuslineVisual#", -- Visual line mode
-    ["\22"] = "%#StatuslineVisual#", -- Visual block mode (Ctrl-V)
-    c = "%#StatuslineCommand#", -- Command mode - blue background
-    R = "%#StatuslineReplace#", -- Replace mode - orange background
-    r = "%#StatuslineReplace#", -- Replace mode
-    s = "%#StatuslineSelect#", -- Select mode - purple background
-    S = "%#StatuslineSelect#", -- Select line mode
-    ["\19"] = "%#StatuslineSelect#", -- Select block mode (Ctrl-S)
-    t = "%#StatuslineTerminal#", -- Terminal mode - cyan background
-    ["!"] = "%#StatuslineShell#", -- Shell mode - magenta background
-}
+    local count = vim.diagnostic.count(0, { serverity = severity })[severity]
+    if count == nil then
+        return 0
+    end
 
-local MODE_NAMES = {
-    n = "NORMAL",
-    i = "INSERT",
-    v = "VISUAL",
-    V = "V-LINE",
-    ["\22"] = "V-BLOCK",
-    c = "COMMAND",
-    s = "SELECT",
-    S = "S-LINE",
-    ["\19"] = "S-BLOCK",
-    R = "REPLACE",
-    r = "PROMPT",
-    ["!"] = "SHELL",
-    t = "TERMINAL",
-}
-
--- Setup highlight groups
-local function setup_highlights()
-    -- Mode highlight groups with background colors
-    vim.api.nvim_set_hl(0, "StatuslineNormal", { fg = "#000000", bg = "#98c379", bold = true })
-    vim.api.nvim_set_hl(0, "StatuslineInsert", { fg = "#000000", bg = "#e06c75", bold = true })
-    vim.api.nvim_set_hl(0, "StatuslineVisual", { fg = "#000000", bg = "#e5c07b", bold = true })
-    vim.api.nvim_set_hl(0, "StatuslineCommand", { fg = "#000000", bg = "#61afef", bold = true })
-    vim.api.nvim_set_hl(0, "StatuslineReplace", { fg = "#000000", bg = "#d19a66", bold = true })
-    vim.api.nvim_set_hl(0, "StatuslineSelect", { fg = "#000000", bg = "#c678dd", bold = true })
-    vim.api.nvim_set_hl(0, "StatuslineTerminal", { fg = "#000000", bg = "#56b6c2", bold = true })
-    vim.api.nvim_set_hl(0, "StatuslineShell", { fg = "#000000", bg = "#be5046", bold = true })
-
-    -- Other highlights
-    vim.api.nvim_set_hl(0, "StatuslineGit", { fg = "#98c379", bg = "NONE" })
-    vim.api.nvim_set_hl(0, "StatuslineFile", { fg = "#61afef", bg = "NONE" })
-    vim.api.nvim_set_hl(0, "StatuslineInfo", { fg = "#abb2bf", bg = "NONE" })
-    vim.api.nvim_set_hl(0, "StatuslineLSP", { fg = "#e5c07b", bg = "NONE" })
+    return count
 end
 
--- Icon provider detection
-local get_icon = nil
-
-local function init_icons()
-    if get_icon then
-        return
+--- @param type string
+--- @return integer
+local function get_git_diff(type)
+    local gsd = vim.b.gitsigns_status_dict
+    if gsd and gsd[type] then
+        return gsd[type]
     end
 
-    -- Try mini.icons first
-    local ok_mini, mini_icons = pcall(require, "mini.icons")
-    if ok_mini then
-        get_icon = function(filetype, filename)
-            return mini_icons.get("filetype", filetype)
-        end
-        return
-    end
-
-    -- Try nvim-web-devicons
-    local ok_web, web_devicons = pcall(require, "nvim-web-devicons")
-    if ok_web then
-        get_icon = function(filetype, filename)
-            return web_devicons.get_icon_by_filetype(filetype) or web_devicons.get_default_icon()
-        end
-        return
-    end
-
-    -- Fallback to simple text icons
-    local fallback_icons = {
-        lua = "",
-        python = "",
-        javascript = "",
-        typescript = "",
-        html = "",
-        css = "",
-        json = "",
-        markdown = "",
-        vim = "",
-        go = "",
-        rust = "",
-        c = "",
-        cpp = "",
-        java = "",
-        php = "",
-        ruby = "",
-        sh = "",
-        zsh = "",
-        bash = "",
-        yaml = "",
-        toml = "",
-        xml = "",
-        sql = "",
-        default = "",
-    }
-
-    get_icon = function(filetype, filename)
-        return fallback_icons[filetype] or fallback_icons.default, nil
-    end
+    return 0
 end
 
--- Git utilities
-local branch_cache = setmetatable({}, { __mode = "k" })
-
-local function get_path_root(path)
-    if path == "" then
-        return
-    end
-
-    local root = vim.b.path_root
-    if root then
-        return root
-    end
-
-    root = vim.fs.root(path, { ".git" })
-    if root then
-        vim.b.path_root = root
-    end
-    return root
+--- @return string
+local function mode()
+    return string.format("%%#StatusLineMode# %s %%*", vim.api.nvim_get_mode().mode)
 end
 
-local function git_cmd(root, ...)
-    local job = vim.system({ "git", "-C", root, ... }, { text = true }):wait()
-    if job.code ~= 0 then
-        return nil
+--- @return string
+local function python_env()
+    local virtual_env = os.getenv "VIRTUAL_ENV_PROMPT"
+    if virtual_env == nil then
+        return ""
     end
-    return vim.trim(job.stdout)
+
+    virtual_env = virtual_env:gsub("%s+", "") -- delete spaces
+    return string.format("%%#StatusLineMedium# %s%%*", virtual_env)
 end
 
-local function get_git_branch(root)
-    if not root then
-        return nil
-    end
-    if branch_cache[root] then
-        return branch_cache[root]
+--- @return string
+local function lsp_active()
+    if not rawget(vim, "lsp") then
+        return ""
     end
 
-    local branch = git_cmd(root, "rev-parse", "--abbrev-ref", "HEAD")
-    if branch == "HEAD" then
-        local commit = git_cmd(root, "rev-parse", "--short", "HEAD")
-        if commit then
-            branch = "(" .. commit .. ")"
-        end
+    local current_buf = vim.api.nvim_get_current_buf()
+    local clients = vim.lsp.get_clients { bufnr = current_buf }
+
+    local space = "%#StatusLineMedium# %*"
+
+    if #clients > 0 then
+        return space .. "%#StatusLineMedium#LSP%*"
     end
 
-    branch_cache[root] = branch
-    return branch
-end
-
--- Get mode with background color
-local function get_mode()
-    local mode = api.nvim_get_mode().mode
-    local mode_color = MODE_COLORS[mode] or "%#StatuslineNormal#"
-    local mode_name = MODE_NAMES[mode] or "UNKNOWN"
-
-    return mode_color .. " " .. mode_name .. " %*"
-end
-
--- Get git branch
-local function get_git_info()
-    local fname = api.nvim_buf_get_name(0)
-    local root = (bo.buftype == "" and get_path_root(fname)) or nil
-    local branch = get_git_branch(root)
-
-    if branch then
-        return "%#StatuslineGit# " .. icons.misc.git .. " " .. branch .. "%*"
-    end
     return ""
 end
 
--- Get filetype with icon
-local function get_filetype()
-    local ft = bo.filetype
-    if ft == "" then
-        ft = "no ft"
+--- @return string
+local function diagnostics_error()
+    local count = get_lsp_diagnostics_count(vim.diagnostic.severity.ERROR)
+    if count > 0 then
+        return string.format("%%#StatusLineLspError# %se%%*", count)
     end
 
-    local icon, _ = get_icon(ft, api.nvim_buf_get_name(0))
-    if not icon then
-        icon = ""
-    end
-
-    return "%#StatuslineFile#" .. icon .. " " .. ft .. "%*"
+    return ""
 end
 
--- Get current line and percentage
-local function get_line_info()
-    local line = api.nvim_win_get_cursor(0)[1]
-    local total = api.nvim_buf_line_count(0)
-    local percentage = math.floor((line / total) * 100)
-
-    return "%#StatuslineInfo#" .. line .. ":" .. total .. " " .. percentage .. "%%%*"
-end
-
--- Get active LSP clients
-local function get_lsp_info()
-    local clients = vim.lsp.get_clients { bufnr = 0 }
-    if #clients == 0 then
-        return "%#StatuslineLSP#No LSP%*"
+--- @return string
+local function diagnostics_warns()
+    local count = get_lsp_diagnostics_count(vim.diagnostic.severity.WARN)
+    if count > 0 then
+        return string.format("%%#StatusLineLspWarn# %sw%%*", count)
     end
 
-    local client_names = {}
-    for _, client in pairs(clients) do
-        table.insert(client_names, client.name)
-    end
-
-    return "%#StatuslineLSP#LSP: " .. table.concat(client_names, ", ") .. "%*"
+    return ""
 end
 
--- Main render function
-function M.render()
-    -- Initialize icons on first run
-    init_icons()
-    setup_highlights()
+--- @return string
+local function diagnostics_hint()
+    local count = get_lsp_diagnostics_count(vim.diagnostic.severity.HINT)
+    if count > 0 then
+        return string.format("%%#StatusLineLspHint# %sh%%*", count)
+    end
 
-    local left_parts = {
-        get_mode(),
-        get_git_info(),
-    }
+    return ""
+end
 
-    local right_parts = {
-        get_filetype(),
-        get_line_info(),
-        get_lsp_info(),
-    }
+--- @return string
+local function diagnostics_info()
+    local count = get_lsp_diagnostics_count(vim.diagnostic.severity.INFO)
+    if count > 0 then
+        return string.format("%%#StatusLineLspInfo# %si%%*", count)
+    end
 
-    -- Filter out empty parts
-    local left_filtered = {}
-    for _, part in ipairs(left_parts) do
-        if part ~= "" then
-            table.insert(left_filtered, part)
+    return ""
+end
+
+--- @class LspProgress
+--- @field client vim.lsp.Client?
+--- @field kind string?
+--- @field title string?
+--- @field percentage integer?
+--- @field message string?
+local lsp_progress = {
+    client = nil,
+    kind = nil,
+    title = nil,
+    percentage = nil,
+    message = nil,
+}
+
+vim.api.nvim_create_autocmd("LspProgress", {
+    group = statusline_augroup,
+    desc = "Update LSP progress in statusline",
+    pattern = { "begin", "report", "end" },
+    callback = function(args)
+        if not (args.data and args.data.client_id) then
+            return
         end
+
+        lsp_progress = {
+            client = vim.lsp.get_client_by_id(args.data.client_id),
+            kind = args.data.params.value.kind,
+            message = args.data.params.value.message,
+            percentage = args.data.params.value.percentage,
+            title = args.data.params.value.title,
+        }
+
+        if lsp_progress.kind == "end" then
+            lsp_progress.title = nil
+            vim.defer_fn(function()
+                vim.cmd.redrawstatus()
+            end, 500)
+        else
+            vim.cmd.redrawstatus()
+        end
+    end,
+})
+
+--- @return string
+local function lsp_status()
+    if not rawget(vim, "lsp") then
+        return ""
     end
 
-    local left = table.concat(left_filtered, "")
-    local right = table.concat(right_parts, "  ")
+    if vim.o.columns < 120 then
+        return ""
+    end
 
-    return left .. "%=" .. right
+    if not lsp_progress.client or not lsp_progress.title then
+        return ""
+    end
+
+    local title = lsp_progress.title or ""
+    local percentage = (lsp_progress.percentage and (lsp_progress.percentage .. "%%")) or ""
+    local message = lsp_progress.message or ""
+
+    local lsp_message = string.format("%s", title)
+
+    if message ~= "" then
+        lsp_message = string.format("%s %s", lsp_message, message)
+    end
+
+    if percentage ~= "" then
+        lsp_message = string.format("%s %s", lsp_message, percentage)
+    end
+
+    return string.format("%%#StatusLineLspMessages#%s%%* ", lsp_message)
 end
 
--- Set up the statusline
-vim.o.statusline = "%!v:lua.require('config.statusline').render()"
+--- @return string
+local function git_diff_added()
+    local added = get_git_diff "added"
+    if added > 0 then
+        return string.format("%%#StatusLineGitDiffAdded#+%s%%*", added)
+    end
 
-return M
+    return ""
+end
+
+--- @return string
+local function git_diff_changed()
+    local changed = get_git_diff "changed"
+    if changed > 0 then
+        return string.format("%%#StatusLineGitDiffChanged#~%s%%*", changed)
+    end
+
+    return ""
+end
+
+--- @return string
+local function git_diff_removed()
+    local removed = get_git_diff "removed"
+    if removed > 0 then
+        return string.format("%%#StatusLineGitDiffRemoved#-%s%%*", removed)
+    end
+
+    return ""
+end
+
+--- @return string
+local function git_branch_icon()
+    return "%#StatusLineGitBranchIcon#%*"
+end
+
+--- @return string
+local function git_branch()
+    local branch = vim.b.gitsigns_head
+
+    if branch == "" or branch == nil then
+        return ""
+    end
+
+    return string.format("%%#StatusLineMedium#%s%%*", branch)
+end
+
+--- @return string
+local function full_git()
+    local full = ""
+    local space = "%#StatusLineMedium# %*"
+
+    local branch = git_branch()
+    if branch ~= "" then
+        local icon = git_branch_icon()
+        full = full .. space .. icon .. space .. branch .. space
+    end
+
+    local added = git_diff_added()
+    if added ~= "" then
+        full = full .. added .. space
+    end
+
+    local changed = git_diff_changed()
+    if changed ~= "" then
+        full = full .. changed .. space
+    end
+
+    local removed = git_diff_removed()
+    if removed ~= "" then
+        full = full .. removed .. space
+    end
+
+    return full
+end
+
+--- @return string
+local function file_percentage()
+    local current_line = vim.api.nvim_win_get_cursor(0)[1]
+    local lines = vim.api.nvim_buf_line_count(0)
+
+    return string.format("%%#StatusLineMedium#  %d%%%% %%*", math.ceil(current_line / lines * 100))
+end
+
+--- @return string
+local function total_lines()
+    local lines = vim.fn.line "$"
+    return string.format("%%#StatusLineMedium#of %s %%*", lines)
+end
+
+--- @param hlgroup string
+local function formatted_filetype(hlgroup)
+    local filetype = vim.bo.filetype or vim.fn.expand("%:e", false)
+    return string.format("%%#%s# %s %%*", hlgroup, filetype)
+end
+
+StatusLine = {}
+
+StatusLine.inactive = function()
+    return table.concat {
+        formatted_filetype "StatusLineMode",
+    }
+end
+
+local redeable_filetypes = {
+    ["qf"] = true,
+    ["help"] = true,
+    ["tsplayground"] = true,
+}
+
+StatusLine.active = function()
+    local mode_str = vim.api.nvim_get_mode().mode
+    if mode_str == "t" or mode_str == "nt" then
+        return table.concat {
+            mode(),
+            "%=",
+            "%=",
+            file_percentage(),
+            total_lines(),
+        }
+    end
+
+    if redeable_filetypes[vim.bo.filetype] or vim.o.modifiable == false then
+        return table.concat {
+            formatted_filetype "StatusLineMode",
+            "%=",
+            "%=",
+            file_percentage(),
+            total_lines(),
+        }
+    end
+
+    local statusline = {
+        mode(),
+        full_git(),
+        "%=",
+        "%=",
+        "%S ",
+        lsp_status(),
+        diagnostics_error(),
+        diagnostics_warns(),
+        diagnostics_hint(),
+        diagnostics_info(),
+        lsp_active(),
+        python_env(),
+        file_percentage(),
+        total_lines(),
+    }
+
+    return table.concat(statusline)
+end
+
+vim.opt.statusline = "%!v:lua.StatusLine.active()"
+
+vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter", "FileType" }, {
+    group = statusline_augroup,
+    pattern = {
+        "NvimTree_1",
+        "NvimTree",
+        "TelescopePrompt",
+        "fzf",
+        "lspinfo",
+        "lazy",
+        "netrw",
+        "mason",
+        "noice",
+        "qf",
+    },
+    callback = function()
+        vim.opt_local.statusline = "%!v:lua.StatusLine.inactive()"
+    end,
+})

@@ -15,4 +15,6 @@ vim.cmd.colorscheme "bamboo-multiplex"
 
 require "config.system-theme"
 
+-- require "config.statusline"
+
 -- require("vim._extui").enable {}

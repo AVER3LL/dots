@@ -102,9 +102,10 @@ return {
                 options = {
                     icons_enabled = true,
                     disabled_filetypes = { "alpha", "TelescopePrompt", "snacks_picker_input" },
-                    section_separators = {},
-                    globalstatus = true,
+                    -- section_separators = {},
                     component_separators = {},
+                    section_separators = { left = "", right = "" },
+                    globalstatus = true,
                     always_divide_middle = true,
                 },
                 sections = {
