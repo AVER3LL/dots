@@ -58,10 +58,11 @@ tooltip label {
     border-radius: 5px;
     margin-right: 5px;
     transition: all 0.1s linear;
+    color: alpha(@primary, 0.9);
 }
 
 #workspaces button.urgent {
-    color: @error;
+    color: red;
 }
 
 #workspaces button.empty {
@@ -71,7 +72,7 @@ tooltip label {
 
 #workspaces button.visible {
     /* color: alpha(@yellow_value, 0.8); */
-    color: @red;
+    color: darker(@primary);
     border-radius: 5px;
     opacity: 1;
     transition: all 0.1s linear;

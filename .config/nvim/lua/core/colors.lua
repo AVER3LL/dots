@@ -1,5 +1,7 @@
 local autocmd = vim.api.nvim_create_autocmd
-local sethl = vim.api.nvim_set_hl
+local sethl = function(...)
+    vim.api.nvim_set_hl(0, ...)
+end
 
 local function gethl(name)
     return vim.api.nvim_get_hl(0, { name = name })
@@ -37,144 +39,147 @@ autocmd("ColorScheme", {
             or colors.cursorline
 
         -- Basic UI elements
-        sethl(0, "Cursor", { bg = colors.foreground })
-        sethl(0, "HighlightUrl", { underline = true })
-        sethl(0, "AlphaButton", { bg = colors.constant, bold = true, fg = colors.background })
-        sethl(0, "Laravel", { fg = "#F53003" })
-        sethl(0, "MatchParen", { bg = "NONE", fg = colors.parenthesis })
+        -- mysethl("Cursor", { bg = colors.foreground })
+        sethl("HighlightUrl", { underline = true })
+        sethl("AlphaButton", { bg = colors.constant, bold = true, fg = colors.background })
+        sethl("Laravel", { fg = "#F53003" })
+        sethl("MatchParen", { bg = "NONE", fg = colors.parenthesis })
 
         -- Diagnostics in gutter (no background)
-        sethl(0, "DiagnosticSignError", { bg = "NONE", fg = colors.error })
-        sethl(0, "DiagnosticSignWarn", { bg = "NONE", fg = colors.warn })
-        sethl(0, "DiagnosticSignInfo", { bg = "NONE", fg = colors.info })
-        sethl(0, "DiagnosticSignHint", { bg = "NONE", fg = colors.hint })
+        sethl("DiagnosticSignError", { bg = "NONE", fg = colors.error })
+        sethl("DiagnosticSignWarn", { bg = "NONE", fg = colors.warn })
+        sethl("DiagnosticSignInfo", { bg = "NONE", fg = colors.info })
+        sethl("DiagnosticSignHint", { bg = "NONE", fg = colors.hint })
+
+        local bg_base = colors.background or 0x000000
+        local fg_base = colors.foreground or 0xffffff
+
+        sethl("LspInlayHint", {
+            fg = tools.adjust_brightness(fg_base, vim.o.background == "dark" and 0.6 or 0.7),
+            bg = tools.adjust_brightness(bg_base, vim.o.background == "dark" and 1.15 or 0.92),
+        })
 
         -- Diagnostic underlines
-        sethl(0, "DiagnosticUnderlineError", { undercurl = true, sp = colors.error })
-        sethl(0, "DiagnosticUnderlineWarn", { undercurl = true, sp = colors.warn })
-        sethl(0, "DiagnosticUnderlineInfo", { undercurl = true, sp = colors.info })
-        sethl(0, "DiagnosticUnderlineHint", { undercurl = true, sp = colors.hint })
+        sethl("DiagnosticUnderlineError", { undercurl = true, sp = colors.error })
+        sethl("DiagnosticUnderlineWarn", { undercurl = true, sp = colors.warn })
+        sethl("DiagnosticUnderlineInfo", { undercurl = true, sp = colors.info })
+        sethl("DiagnosticUnderlineHint", { undercurl = true, sp = colors.hint })
 
         -- LSP line number highlights
-        sethl(0, "LspCursorLineNrError", { bg = colors.cursorline, fg = colors.error })
-        sethl(0, "LspCursorLineNrWarning", { bg = colors.cursorline, fg = colors.warn })
-        sethl(0, "LspCursorLineNrInformation", { bg = colors.cursorline, fg = colors.info })
-        sethl(0, "LspCursorLineNrHint", { bg = colors.cursorline, fg = colors.hint })
-        sethl(0, "LspDiagnosticsLineNrError", { fg = colors.error })
-        sethl(0, "LspDiagnosticsLineNrWarning", { fg = colors.warn })
-        sethl(0, "LspDiagnosticsLineNrInformation", { fg = colors.info })
-        sethl(0, "LspDiagnosticsLineNrHint", { fg = colors.hint })
+        sethl("LspDiagnosticsLineNrError", { fg = colors.error })
+        sethl("LspDiagnosticsLineNrWarning", { fg = colors.warn })
+        sethl("LspDiagnosticsLineNrInformation", { fg = colors.info })
+        sethl("LspDiagnosticsLineNrHint", { fg = colors.hint })
 
         -- Search highlights
-        sethl(0, "HlSearchNear", { bg = "NONE", fg = colors.hint })
-        sethl(0, "HlSearchLens", { bg = "NONE", fg = colors.hint })
-        sethl(0, "HlSearchLensNear", { bg = "NONE", fg = colors.hint })
+        sethl("HlSearchNear", { bg = "NONE", fg = colors.hint })
+        sethl("HlSearchLens", { bg = "NONE", fg = colors.hint })
+        sethl("HlSearchLensNear", { bg = "NONE", fg = colors.hint })
 
         -- Tree explorer cleanup
-        sethl(0, "NvimTreeNormal", { bg = colors.background })
+        sethl("NvimTreeNormal", { bg = colors.background })
 
-        sethl(0, "MiniPickMatchCurrent", { bg = colors.cursorline })
+        sethl("MiniPickMatchCurrent", { bg = colors.cursorline })
         local effective_style = vim.list_contains({ "vercel", "moonfly" }, vim.g.colors_name) and "clear" or tools.style
 
         -- Style-specific completion highlights
         if effective_style == "flat" then
-            sethl(0, "MiniPickNormal", { bg = colors.pmenu, fg = colors.foreground })
-            sethl(0, "MiniPickBorder", { bg = colors.pmenu, fg = colors.pmenu })
-            sethl(0, "MiniPickBorderBusy", { bg = colors.pmenu, fg = colors.pmenu })
-            sethl(0, "MiniPickBorderText", { link = "DiagnosticVirtualTextInfo" })
-            sethl(0, "MiniPickPromptPrefix", { bg = colors.pmenu, fg = gethl("Special").fg, default = true })
-            sethl(0, "MiniPickIconFile", { bg = colors.pmenu, fg = colors.comment })
-            sethl(0, "MiniPickMatchRanges", { fg = gethl("Special").fg, bold = true })
-            sethl(0, "MiniPickPrompt", { bg = colors.pmenu, fg = colors.foreground })
+            sethl("MiniPickNormal", { bg = colors.pmenu, fg = colors.foreground })
+            sethl("MiniPickBorder", { bg = colors.pmenu, fg = colors.pmenu })
+            sethl("MiniPickBorderBusy", { bg = colors.pmenu, fg = colors.pmenu })
+            sethl("MiniPickBorderText", { link = "DiagnosticVirtualTextInfo" })
+            sethl("MiniPickPromptPrefix", { bg = colors.pmenu, fg = gethl("Special").fg, default = true })
+            sethl("MiniPickIconFile", { bg = colors.pmenu, fg = colors.comment })
+            sethl("MiniPickMatchRanges", { fg = gethl("Special").fg, bold = true })
+            sethl("MiniPickPrompt", { bg = colors.pmenu, fg = colors.foreground })
 
-            sethl(0, "SnacksPickerTitle", { link = "DiagnosticVirtualTextInfo" })
+            sethl("SnacksPickerTitle", { link = "DiagnosticVirtualTextInfo" })
 
-            sethl(0, "SnacksInputNormal", { bg = colors.pmenu, fg = colors.foreground })
-            sethl(0, "SnacksInputBorder", { bg = colors.pmenu, fg = colors.pmenu })
+            sethl("SnacksInputNormal", { bg = colors.pmenu, fg = colors.foreground })
+            sethl("SnacksInputBorder", { bg = colors.pmenu, fg = colors.pmenu })
 
             -- TODO: Investigate onedark's shenanigans
-            -- sethl(0, "SnacksPickerBorder", { bg = colors.pmenu, fg = colors.pmenu })
+            -- mysethl("SnacksPickerBorder", { bg = colors.pmenu, fg = colors.pmenu })
 
-            sethl(0, "BlinkCmpSignatureHelp", { bg = colors.pmenu })
-            sethl(0, "BlinkCmpSignatureHelpBorder", { bg = colors.pmenu, fg = colors.pmenu })
+            sethl("BlinkCmpSignatureHelp", { bg = colors.pmenu })
+            sethl("BlinkCmpSignatureHelpBorder", { bg = colors.pmenu, fg = colors.pmenu })
 
             -- local menu_bg = tools.adjust_brightness(colors.background, 0.75)
-            sethl(0, "BlinkCmpMenu", { bg = colors.pmenu })
-            sethl(0, "BlinkCmpMenuBorder", { bg = colors.pmenu, fg = colors.pmenu })
+            sethl("BlinkCmpMenu", { bg = colors.pmenu })
+            sethl("BlinkCmpMenuBorder", { bg = colors.pmenu, fg = colors.pmenu })
             sethl(
-                0,
                 "BlinkCmpLabelDescription",
                 { bg = colors.pmenu, fg = tools.adjust_brightness(colors.foreground, 0.4), italic = true }
             )
 
             local doc_bg = tools.adjust_brightness(colors.background, 0.87)
-            sethl(0, "BlinkCmpDocBorder", { bg = doc_bg, fg = doc_bg })
-            sethl(0, "BlinkCmpDoc", { bg = doc_bg })
-            sethl(0, "BlinkCmpDocSeparator", { bg = doc_bg, fg = tools.adjust_brightness(colors.foreground, 0.7) })
+            sethl("BlinkCmpDocBorder", { bg = doc_bg, fg = doc_bg })
+            sethl("BlinkCmpDoc", { bg = doc_bg })
+            sethl("BlinkCmpDocSeparator", { bg = doc_bg, fg = tools.adjust_brightness(colors.foreground, 0.7) })
 
-            sethl(0, "LspInfoBorder", { bg = colors.pmenu })
-            sethl(0, "NormalFloat", { bg = colors.pmenu })
-            sethl(0, "FloatBorder", { fg = colors.pmenu, bg = colors.pmenu })
+            sethl("LspInfoBorder", { bg = colors.pmenu })
+            sethl("NormalFloat", { bg = colors.pmenu })
+            sethl("FloatBorder", { fg = colors.pmenu, bg = colors.pmenu })
         elseif effective_style == "clear" then
             local border_fg = tools.adjust_brightness(colors.foreground, 0.6)
-            sethl(0, "BlinkCmpMenuBorder", { bg = colors.background, fg = border_fg })
-            sethl(0, "BlinkCmpDocBorder", { bg = colors.background, fg = border_fg })
-            sethl(0, "BlinkCmpSignatureHelpBorder", { bg = colors.background, fg = border_fg })
-            sethl(0, "BlinkCmpMenu", { bg = colors.background })
-            sethl(0, "BlinkCmpDoc", { bg = colors.background })
-            sethl(0, "BlinkCmpSignatureHelp", { bg = colors.background })
-            sethl(0, "BlinkCmpLabelDescription", { bg = colors.background, fg = border_fg })
-            sethl(0, "BlinkCmpLabel", { bg = colors.background, fg = border_fg })
-            sethl(0, "BlinkCmpSource", { bg = "NONE", fg = colors.comment })
-            sethl(0, "LspInfoBorder", { bg = colors.background })
-            sethl(0, "NormalFloat", { bg = colors.background })
-            sethl(0, "FloatBorder", { fg = border_fg, bg = colors.background })
-            sethl(0, "WhichKeyNormal", { bg = colors.background })
-            sethl(0, "SnacksPickerInputBorder", { bg = colors.background, fg = gethl("SnacksPickerInputTitle").fg })
+            sethl("BlinkCmpMenuBorder", { bg = colors.background, fg = border_fg })
+            sethl("BlinkCmpDocBorder", { bg = colors.background, fg = border_fg })
+            sethl("BlinkCmpSignatureHelpBorder", { bg = colors.background, fg = border_fg })
+            sethl("BlinkCmpMenu", { bg = colors.background })
+            sethl("BlinkCmpDoc", { bg = colors.background })
+            sethl("BlinkCmpSignatureHelp", { bg = colors.background })
+            sethl("BlinkCmpLabelDescription", { bg = colors.background, fg = border_fg })
+            sethl("BlinkCmpLabel", { bg = colors.background, fg = border_fg })
+            sethl("BlinkCmpSource", { bg = "NONE", fg = colors.comment })
+            sethl("LspInfoBorder", { bg = colors.background })
+            sethl("NormalFloat", { bg = colors.background })
+            sethl("FloatBorder", { fg = border_fg, bg = colors.background })
+            sethl("WhichKeyNormal", { bg = colors.background })
+            sethl("SnacksPickerInputBorder", { bg = colors.background, fg = gethl("SnacksPickerInputTitle").fg })
         end
 
         -- Common completion highlights
-        -- sethl(0, "BlinkCmpMenuSelection", { bg = colors.fun, fg = colors.background })
-        sethl(0, "BlinkCmpMenuSelection", {
+        -- mysethl("BlinkCmpMenuSelection", { bg = colors.fun, fg = colors.background })
+        sethl("BlinkCmpMenuSelection", {
             bg = vim.o.background == "dark" and tools.adjust_brightness(colors.fun, 0.4)
                 or tools.adjust_brightness(colors.background, 0.87),
         })
-        sethl(0, "LspSignatureActiveParameter", { bg = colors.str, bold = true, fg = colors.background })
+        sethl("LspSignatureActiveParameter", { bg = colors.str, bold = true, fg = colors.background })
 
         -- Cursor line handling
         if vim.o.cursorlineopt == "number" then
-            sethl(0, "CursorLine", { bg = "NONE" })
-            sethl(0, "CursorLineNr", { bg = "NONE" })
-            sethl(0, "CursorLineSign", { bg = "NONE" })
-            sethl(0, "CursorLineFold", { bg = "NONE" })
-            sethl(0, "FoldColumn", { bg = "NONE", fg = colors.comment })
-            sethl(0, "SignColumn", { bg = "NONE" })
-            sethl(0, "ColorColumn", { bg = "NONE" })
-            sethl(0, "CursorColumn", { bg = "NONE" })
+            sethl("CursorLine", { bg = "NONE" })
+            sethl("CursorLineNr", { bg = "NONE" })
+            sethl("CursorLineSign", { bg = "NONE" })
+            sethl("CursorLineFold", { bg = "NONE" })
+            sethl("FoldColumn", { bg = "NONE", fg = colors.comment })
+            sethl("SignColumn", { bg = "NONE" })
+            sethl("ColorColumn", { bg = "NONE" })
+            sethl("CursorColumn", { bg = "NONE" })
         else
-            sethl(0, "CursorLineNr", { bg = colors.cursorline, fg = colors.constant })
-            sethl(0, "CursorLine", { bg = colors.cursorline })
+            sethl("CursorLineNr", { bg = colors.cursorline, fg = colors.constant })
+            sethl("CursorLine", { bg = colors.cursorline })
         end
 
         -- Window bars and misc
-        sethl(0, "WinBar", { bg = tools.adjust_brightness(colors.background, 0.75) })
-        sethl(0, "WinBarNC", { bg = tools.adjust_brightness(colors.background, 0.90) })
-        sethl(0, "@markup.raw.block.markdown", { bg = "NONE" })
-        sethl(0, "TinyInlineDiagnosticVirtualTextArrow", { bg = "NONE" })
-        sethl(0, "FloatTitle", { bg = colors.background })
+        sethl("WinBar", { bg = tools.adjust_brightness(colors.background, 0.75) })
+        sethl("WinBarNC", { bg = tools.adjust_brightness(colors.background, 0.90) })
+        sethl("@markup.raw.block.markdown", { bg = "NONE" })
+        -- mysethl("TinyInlineDiagnosticVirtualTextArrow", { bg = "NONE" })
+        sethl("FloatTitle", { bg = colors.background })
 
         -- Multi-cursor
-        sethl(0, "MultiCursorCursor", { reverse = true })
-        sethl(0, "MultiCursorVisual", { link = "Visual" })
-        sethl(0, "MultiCursorSign", { link = "SignColumn" })
-        sethl(0, "MultiCursorMatchPreview", { link = "Search" })
-        sethl(0, "MultiCursorDisabledCursor", { reverse = true })
-        sethl(0, "MultiCursorDisabledVisual", { link = "Visual" })
-        sethl(0, "MultiCursorDisabledSign", { link = "SignColumn" })
+        sethl("MultiCursorCursor", { reverse = true })
+        sethl("MultiCursorVisual", { link = "Visual" })
+        sethl("MultiCursorSign", { link = "SignColumn" })
+        sethl("MultiCursorMatchPreview", { link = "Search" })
+        sethl("MultiCursorDisabledCursor", { reverse = true })
+        sethl("MultiCursorDisabledVisual", { link = "Visual" })
+        sethl("MultiCursorDisabledSign", { link = "SignColumn" })
 
         -- Git and usage
-        sethl(0, "GitSignsCurrentLineBlame", { fg = tools.adjust_brightness(colors.foreground, 0.8), italic = true })
-        sethl(0, "Usage", { link = "Comment" })
-        sethl(0, "SnacksPickerDir", { fg = tools.adjust_brightness(colors.foreground, 0.6) })
+        sethl("GitSignsCurrentLineBlame", { fg = tools.adjust_brightness(colors.foreground, 0.8), italic = true })
+        sethl("Usage", { link = "Comment" })
+        sethl("SnacksPickerDir", { fg = tools.adjust_brightness(colors.foreground, 0.6) })
     end,
 })

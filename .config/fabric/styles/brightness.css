@@ -1,6 +1,6 @@
 /* An example of how you could style the new container */
 .brightness-container {
-    margin: 13px 8px;
+    margin: 10px 8px;
     padding: 1px;
     border-radius: 10px;
     transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);

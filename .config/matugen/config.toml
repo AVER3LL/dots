@@ -34,6 +34,11 @@ input_path = '~/.config/matugen/templates/kitty-colors.conf'
 output_path = '~/.config/kitty/theme/colors-matugen.conf'
 post_hook = 'killall -SIGUSR1 kitty >/dev/null 2>&1 & '
 
+[templates.ghostty]
+input_path = '~/.config/matugen/templates/ghostty-colors'
+output_path = '~/.config/ghostty/themes/matugen'
+post_hook = 'sleep 1 && systemctl reload --user app-com.mitchellh.ghostty.service >/dev/null 2>&1 & '
+
 [templates.quickshell]
 input_path = '~/.config/matugen/templates/quickshell-colors.qml'
 output_path = '~/.config/quickshell/shared/Colors.qml'

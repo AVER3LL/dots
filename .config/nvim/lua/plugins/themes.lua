@@ -7,8 +7,22 @@ return {
         config = function()
             vim.g.everforest_better_performance = 1
             vim.g.everforest_transparent_background = 0
-            vim.g.everforest_background = "dark"
         end,
+    },
+
+    {
+        "darianmorat/gruvdark.nvim",
+        enabled = false,
+        lazy = false,
+        priority = 1000,
+        opts = {},
+    },
+
+    {
+        "wnkz/monoglow.nvim",
+        lazy = false,
+        priority = 1000,
+        opts = {},
     },
 
     {
@@ -20,6 +34,7 @@ return {
 
     {
         "kyza0d/xeno.nvim",
+        enabled = false,
         lazy = false,
         priority = 1000,
         config = function()
@@ -35,6 +50,7 @@ return {
 
     {
         "nyoom-engineering/oxocarbon.nvim",
+        enabled = false,
         lazy = false,
         priority = 1000,
     },
@@ -80,13 +96,6 @@ return {
                 toggle_style_list = { "light", "darker" },
             }
         end,
-    },
-
-    {
-        "marko-cerovac/material.nvim",
-        enabled = false,
-        priority = 1000,
-        opts = {},
     },
 
     -- Jetbrains theme

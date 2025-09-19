@@ -1,12 +1,6 @@
 return {
     {
         "rmagatti/auto-session",
-        event = "VimEnter",
-        keys = {
-            "<leader>wr",
-            "<cmd>AutoSession restore<CR>",
-            desc = "Session search",
-        },
         ---@module "auto-session"
         ---@type AutoSession.Config
         opts = {
@@ -22,5 +16,10 @@ return {
                 end,
             },
         },
+        config = function(_, opts)
+            require("auto-session").setup(opts)
+
+            vim.keymap.set("n", "<leader>wr", "<cmd>AutoSession restore<cr>")
+        end,
     },
 }

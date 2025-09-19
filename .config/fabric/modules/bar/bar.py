@@ -51,7 +51,7 @@ class StatusBar(Window):
                 center_children=[self.date_time],
                 spacing=5,
                 v_align="center",
-                size=40,
+                # size=40,
             )
         ]
 

@@ -13,8 +13,8 @@
 # font-family = "GeistMono NF"
 
 # font-family = JetBrainsMono NF
-font-family = JetBrainsMono Nerd Font
-# font-family = Maple Mono
+# font-family = JetBrainsMono Nerd Font
+font-family = Maple Mono NF
 font-size = 15
 
 # Mouse
@@ -23,12 +23,11 @@ mouse-scroll-multiplier = 2
 cursor-style = block
 
 # Terminal look
-gtk-adwaita = true
 adw-toolbar-style = flat
 window-theme = ghostty
 gtk-titlebar = false
 
-gtk-single-instance = true
+gtk-single-instance = detect
 clipboard-trim-trailing-spaces = true
 
 # background-opacity = 0.95
@@ -44,15 +43,15 @@ clipboard-trim-trailing-spaces = true
 # background-blur = 30
 # theme = tokyonight_night
 # theme = "Kanagawa Wave"
-theme = kanagawabones
-background = 181823
+# theme = kanagawabones
+# background = 181823
 
 window-padding-balance = true
 window-padding-x = 0
 window-padding-y = 0
 # window-decoration = none
 
-adjust-cell-height = 25%
+adjust-cell-height = 40%
 adjust-cursor-height = 45%
 
 adjust-underline-position = 5
@@ -66,7 +65,13 @@ cursor-style-blink = false
 # adjust-cell-height = 80%
 # adjust-cursor-height = 90%
 
-shell-integration-features = no-cursor,sudo,no-title
+shell-integration = fish
+shell-integration-features = no-cursor
 confirm-close-surface = false
+
+theme = matugen
+
+quit-after-last-window-closed = false
+quit-after-last-window-closed-delay = 5m
 
 config-file = binding

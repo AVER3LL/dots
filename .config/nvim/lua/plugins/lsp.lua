@@ -123,6 +123,8 @@ return {
 
                     html = {},
 
+                    -- phpactor = {},
+
                     intelephense = {
                         filetypes = {
                             "php",
@@ -200,7 +202,14 @@ return {
 
             require("mason-lspconfig").setup {
                 ensure_installed = ensure_installed,
-                automatic_enable = true,
+                automatic_enable = {
+                    exclude = {
+                        "phpactor",
+                        "jdtls",
+                        "emmylua_ls",
+                        -- "lua_ls",
+                    },
+                },
             }
 
             -- Manually run vim.lsp.enable for all language servers that are *not* installed via Mason

@@ -13,6 +13,11 @@ vim.o.termguicolors = true
 
 vim.o.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,a:Cursor/Cursor"
 
+-- vim.o.guicursor = "n-v-c-sm:block,"
+--     .. "i-ci-ve:block-blinkwait300-blinkon400-blinkoff250,"
+--     .. "r-cr-o:hor20,"
+--     .. "a:Cursor/Cursor"
+
 vim.o.cursorline = true
 vim.o.cursorlineopt = "number"
 
@@ -73,7 +78,7 @@ vim.o.sidescrolloff = 8
 vim.o.backspace = "indent,eol,start"
 
 vim.o.updatetime = 250
-vim.o.timeoutlen = 300
+vim.o.timeoutlen = 800
 vim.o.ttimeoutlen = 10
 
 -- History and Persistence

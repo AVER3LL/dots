@@ -10,3 +10,5 @@ set -U fish_greeting
 # Man page formatting
 set -x MANROFFOPT "-c"
 set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
+
+set -x JAVA_HOME "$HOME/.sdkman/candidates/java/current"

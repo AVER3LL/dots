@@ -16,21 +16,28 @@ set hlsearch
 nmap <Tab> gt
 " Map Shift-Tab to go to the previous tab
 nmap <S-Tab> gT
+nnoremap <C-,> :action ShowSettings<CR>
 
 " Map <leader>k to Shift + K
 nmap <leader>k <S-k>
 
 " Toggle search highlighting off
-nmap <leader>n :nohlsearch<CR>
+nmap <esc> :nohlsearch<CR>
 nmap <leader>x :action CloseContent<CR>
-nmap <C-n> :action ActivateProjectToolWindow<CR>
+nmap <leader>e :action ActivateProjectToolWindow<CR>
+nmap <leader>e :action ActivateProjectToolWindow<CR>
+nmap <leader><leader>l :action EditorGutterToggleGlobalLineNumbers<CR>
 
 nmap <leader>fm :action ReformatCode<CR>
 nmap <leader>rn :action RenameElement<CR>
+
 nmap gd :action GotoDeclaration<CR>
+nmap gr :action FindUsages<CR>
 " nmap <leader>ff :action SearchEverywhere<CR>
 nmap <leader>ff :action GotoFile<CR>
 nmap <leader>fw :action FindInPath<CR>
+nmap <leader>fb :action Switcher<CR>
+
 
 
 " Normal mode mapping for redo

@@ -55,6 +55,10 @@ return {
         config = function(_, opts)
             require("laravel").setup(opts)
 
+            if not require("config.laravel.utils").is_laravel_project() then
+                return
+            end
+
             vim.keymap.set(
                 "n",
                 "<leader>lc",

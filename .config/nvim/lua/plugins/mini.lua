@@ -84,14 +84,17 @@ return {
         config = function()
             require("mini.misc").setup()
             require("mini.misc").setup_termbg_sync()
-            require("mini.misc").setup_restore_cursor { center = false }
+            -- require("mini.misc").setup_restore_cursor { center = false }
         end,
     },
 
     {
         "nvim-mini/mini.ai",
         event = "BufReadPre",
-        dependencies = "nvim-treesitter/nvim-treesitter-textobjects",
+        dependencies = {
+            "nvim-treesitter/nvim-treesitter-textobjects",
+            branch = "main",
+        },
         opts = function()
             local miniai = require "mini.ai"
             return {

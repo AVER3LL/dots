@@ -1,7 +1,7 @@
 local diagnostic_icons = require("icons").diagnostics
 local methods = vim.lsp.protocol.Methods
 
-vim.g.inlay_hints = false
+vim.g.inlay_hints = true
 
 local M = {}
 

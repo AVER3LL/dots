@@ -22,6 +22,7 @@ M.run_commands = {
     sh = "bash $filepath",
     dart = "dart $filepath",
     html = "xdg-open $filepath",
+    haskell = "cd $dir && ghc -o $fileNameWithoutExt $fileName && $dir$fileNameWithoutExt",
 }
 
 function M.format_command(command)

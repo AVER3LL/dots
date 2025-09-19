@@ -111,21 +111,6 @@ return {
             },
             renderer = {
                 root_folder_label = false,
-                -- root_folder_label = function(path)
-                --     --- Truncates the path if possible ans center it
-                --     path = path:gsub(os.getenv "HOME", "~", 1)
-                --
-                --     if #path > TREE_WIDTH then
-                --         -- Show only the project folder name
-                --         path = vim.fn.fnamemodify(path, ":t")
-                --     end
-                --
-                --     local padding = TREE_WIDTH - #path
-                --     local left = math.floor(padding / 2)
-                --     local right = padding - left
-                --
-                --     return string.rep(" ", left) .. path .. string.rep(" ", right)
-                -- end,
                 highlight_git = true,
                 indent_markers = { enable = false },
                 icons = {
@@ -143,5 +128,20 @@ return {
                 },
             },
         }
+
+        ---Inform the lsp when we move or rename files
+        local prev = { new_name = "", old_name = "" }
+        vim.api.nvim_create_autocmd("User", {
+            pattern = "NvimTreeSetup",
+            callback = function()
+                local events = require("nvim-tree.api").events
+                events.subscribe(events.Event.NodeRenamed, function(data)
+                    if prev.new_name ~= data.new_name or prev.old_name ~= data.old_name then
+                        data = data
+                        Snacks.rename.on_rename_file(data.old_name, data.new_name)
+                    end
+                end)
+            end,
+        })
     end,
 }

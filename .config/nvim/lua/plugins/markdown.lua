@@ -12,15 +12,7 @@ return {
     opts = {
         -- Disable the plugin in unfocusable windows (hover)
         ignore = function(buf)
-            -- Find the window(s) showing this buffer
-            for _, win in ipairs(vim.fn.win_findbuf(buf)) do
-                local cfg = vim.api.nvim_win_get_config(win)
-                if cfg.focusable then
-                    return false
-                end
-            end
-
-            return true
+            return vim.api.nvim_get_option_value("buftype", { buf = buf }) == "nofile"
         end,
         win_options = {
             conceallevel = {

@@ -40,9 +40,9 @@
 }
 
 tooltip {
-    border: solid 1px;
-    border-color: var(--surface);
-    background-color: var(--shadow);
+    border: 1px solid var(--shadow);
+    background-color: var(--background);
+    color: var(--foreground);
     animation: tooltipShow 0.25s cubic-bezier(0.5, 0.25, 0, 1);
 }
 

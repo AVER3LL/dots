@@ -28,7 +28,7 @@ return {
                     javascript = { "biome" },
                     javascriptreact = { "biome" },
                     typescript = { "biome" },
-                    vue = { "biome" },
+                    vue = { "prettierd" },
                     typescriptreact = { "biome" },
                     markdown = { "doctoc", "prettierd" },
                     json = { "prettierd" },
@@ -51,6 +51,7 @@ return {
                     latex = { "latexindent" },
                     go = { "goimports-reviser", "gofumpt" },
                     rust = { name = "rust_analyzer", timeout_ms = 500, lsp_format = "prefer" },
+                    haskell = { "ormolu" },
                     ["_"] = { "trim_whitespace", "trim_newlines" },
                 },
 

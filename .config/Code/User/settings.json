@@ -7,7 +7,7 @@
     "editor.suggestFontSize": 16,
     "editor.suggestLineHeight": 30,
     "editor.stickyScroll.enabled": false,
-    "workbench.sideBar.location": "left",
+    "workbench.sideBar.location": "right",
     "editor.minimap.enabled": false,
     "breadcrumbs.enabled": false,
     "editor.matchBrackets": "never",
@@ -125,7 +125,7 @@
     },
     "vim.foldfix": true,
     "errorLens.scrollbarHackEnabled": true,
-    "workbench.colorTheme": "Ayu Mirage",
+    "workbench.colorTheme": "Astro Kanagawa Dark",
     "redhat.telemetry.enabled": false,
     "code-runner.executorMapByFileExtension": {
         ".vb": "cd $dir && vbc /nologo $fileName && $dir$fileNameWithoutExt",
@@ -234,7 +234,7 @@
     "[css]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
-    "editor.cursorBlinking": "solid",
+    "editor.cursorBlinking": "smooth",
     "tailwind-fold.autoFold": true,
     "files.autoSave": "afterDelay",
     "editor.smoothScrolling": true,
@@ -245,5 +245,8 @@
     "workbench.productIconTheme": "fluent-icons",
     "chat.commandCenter.enabled": false,
     "window.customTitleBarVisibility": "never",
-    "workbench.secondarySideBar.defaultVisibility": "hidden"
+    "workbench.secondarySideBar.defaultVisibility": "hidden",
+    "workbench.statusBar.visible": false,
+    "editor.cursorSmoothCaretAnimation": "on",
+    "haskell.manageHLS": "PATH"
 }

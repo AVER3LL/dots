@@ -6,6 +6,12 @@ return {
     },
 
     {
+        "mskelton/termicons.nvim",
+        requires = { "nvim-tree/nvim-web-devicons" },
+        build = false,
+    },
+
+    {
         "nvim-mini/mini.icons",
         enabled = false,
         lazy = true,
@@ -42,21 +48,25 @@ return {
         opts = {
             overwrite = {
                 yank = { enabled = false },
+                paste = { enabled = false },
                 undo = { enabled = true },
-                redo = { enabled = true },
+                redo = {
+                    enabled = true,
+                    redo_mapping = "U",
+                },
             },
         },
     },
 
     {
         "rachartier/tiny-inline-diagnostic.nvim",
-        event = "LspAttach",
+        event = "VeryLazy",
         priority = 1000,
         opts = {
-            preset = "simple",
-            hi = {
-                background = "NONE",
-            },
+            preset = "powerline",
+            -- hi = {
+            --     background = "NONE",
+            -- },
             options = {
                 multilines = {
                     enabled = false,
