@@ -75,6 +75,8 @@ local function on_attach(client, bufnr)
 
         local inlay_hints_group = vim.api.nvim_create_augroup("mariasolos/toggle_inlay_hints", { clear = false })
 
+        vim.lsp.inlay_hint.enable(vim.g.inlay_hints)
+
         vim.api.nvim_create_autocmd("InsertEnter", {
             group = inlay_hints_group,
             desc = "Enable inlay hints",
@@ -254,6 +256,31 @@ vim.diagnostic.handlers.virtual_text = {
     end,
     hide = hide_handler,
 }
+
+-- Override inlay hints handler to add padding
+local inlay_hint_handler = vim.lsp.handlers["textDocument/inlayHint"]
+vim.lsp.handlers["textDocument/inlayHint"] = function(err, result, ctx, config)
+    if err or not result then
+        return inlay_hint_handler(err, result, ctx, config)
+    end
+
+    -- Add spaces around inlay hints
+    for _, hint in ipairs(result) do
+        if hint.label then
+            if type(hint.label) == "string" then
+                hint.label = " " .. hint.label .. " "
+            elseif type(hint.label) == "table" then
+                -- Handle InlayHintLabelPart[] format
+                if #hint.label > 0 then
+                    hint.label[1].value = " " .. hint.label[1].value
+                    hint.label[#hint.label].value = hint.label[#hint.label].value .. " "
+                end
+            end
+        end
+    end
+
+    return inlay_hint_handler(err, result, ctx, config)
+end
 
 M.capabilities = vim.lsp.protocol.make_client_capabilities()
 

@@ -15,6 +15,7 @@
 # font-family = JetBrainsMono NF
 # font-family = JetBrainsMono Nerd Font
 font-family = Maple Mono NF
+font-feature = cv01
 font-size = 15
 
 # Mouse

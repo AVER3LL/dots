@@ -121,7 +121,9 @@ return {
                         },
                     },
 
-                    html = {},
+                    html = {
+                        filetypes = { "html", "templ", "blade" },
+                    },
 
                     -- phpactor = {},
 

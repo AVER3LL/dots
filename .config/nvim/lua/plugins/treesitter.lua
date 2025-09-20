@@ -2,16 +2,20 @@
 return {
     {
         "nvim-treesitter/nvim-treesitter",
-        event = "BufRead",
-        lazy = true,
         branch = "main",
         version = false,
         build = ":TSUpdate",
         ---@class TSConfig
         opts = {
+            indent = { enable = true },
+            highlight = { enable = true },
+            folds = { enable = true },
             ensure_installed = {
                 "bash",
                 "c",
+                "php",
+                "phpdoc",
+                "blade",
                 "cpp",
                 "fish",
                 "gitcommit",
@@ -107,6 +111,8 @@ return {
                     end
                 end,
             })
+
+            require("nvim-treesitter").setup(opts)
         end,
     },
 }

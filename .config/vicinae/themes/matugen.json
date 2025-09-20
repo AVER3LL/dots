@@ -5,9 +5,9 @@
   "name": "Matugen theme",
   "description": "Trying something with matugen I guess",
   "palette": {
-    "background": "#10131a",
-    "foreground": "#e1e2eb",
-    "blue": "#b5c4ff",
+    "background": "#131314",
+    "foreground": "#e4e2e2",
+    "blue": "#afc6ff",
     "green": "#e8ffea",
     "magenta": "#eab2ff",
     "orange": "#FAB387",

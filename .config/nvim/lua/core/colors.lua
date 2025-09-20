@@ -78,6 +78,7 @@ autocmd("ColorScheme", {
 
         -- Tree explorer cleanup
         sethl("NvimTreeNormal", { bg = colors.background })
+        sethl("NvimTreeEndOfBuffer", { bg = colors.background })
 
         sethl("MiniPickMatchCurrent", { bg = colors.cursorline })
         local effective_style = vim.list_contains({ "vercel", "moonfly" }, vim.g.colors_name) and "clear" or tools.style
@@ -162,8 +163,9 @@ autocmd("ColorScheme", {
         end
 
         -- Window bars and misc
-        sethl("WinBar", { bg = tools.adjust_brightness(colors.background, 0.75) })
-        sethl("WinBarNC", { bg = tools.adjust_brightness(colors.background, 0.90) })
+        sethl("WinBar", { bg = tools.adjust_brightness(colors.background, 0.89) })
+        sethl("WinBarNC", { bg = tools.adjust_brightness(colors.background, 0.95) })
+
         sethl("@markup.raw.block.markdown", { bg = "NONE" })
         -- mysethl("TinyInlineDiagnosticVirtualTextArrow", { bg = "NONE" })
         sethl("FloatTitle", { bg = colors.background })
@@ -176,6 +178,11 @@ autocmd("ColorScheme", {
         sethl("MultiCursorDisabledCursor", { reverse = true })
         sethl("MultiCursorDisabledVisual", { link = "Visual" })
         sethl("MultiCursorDisabledSign", { link = "SignColumn" })
+
+        sethl("Visual", {
+            bg = vim.o.background == "dark" and "#1e3a5f" or "#ADCBEF",
+            fg = "NONE",
+        })
 
         -- Git and usage
         sethl("GitSignsCurrentLineBlame", { fg = tools.adjust_brightness(colors.foreground, 0.8), italic = true })

@@ -1,7 +1,7 @@
 _G.tools = {}
 
 --- @type "rounded" | "single" | "solid" | "none" | "bold" | "double" | "shadow"
-tools.border = "single"
+tools.border = "rounded"
 
 --- @type "flat" | "clear"
 tools.style = "clear"

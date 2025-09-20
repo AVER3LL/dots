@@ -33,6 +33,7 @@ return {
     -- Manages template strings in js
     {
         "rxtsel/template-string.nvim",
+        enabled = false,
         ft = {
             "typescript",
             "javascript",

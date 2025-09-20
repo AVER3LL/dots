@@ -63,10 +63,7 @@ return {
         event = "VeryLazy",
         priority = 1000,
         opts = {
-            preset = "powerline",
-            -- hi = {
-            --     background = "NONE",
-            -- },
+            preset = "simple",
             options = {
                 multilines = {
                     enabled = false,

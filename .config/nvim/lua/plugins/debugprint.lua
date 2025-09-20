@@ -1,5 +1,6 @@
 return {
     "andrewferrier/debugprint.nvim",
+    enabled = false,
 
     dependencies = {
         "nvim-mini/mini.hipatterns",
