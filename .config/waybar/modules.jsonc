@@ -231,7 +231,7 @@
     "clock#no-icon": {
         "format": "{:%B %d  %R}",
         "format-alt": "󰥔  {:%a, %d. %b  %R}",
-        "tooltip-format": "Date: {:%Y-%m-%d}",
+        "tooltip": false,
     },
 
     "network": {

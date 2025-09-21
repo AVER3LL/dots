@@ -9,7 +9,7 @@
 
     "modules-left": ["custom/separator#blank_1", "custom/launcher", "custom/separator#blank_2", "hyprland/workspaces"],
 
-    "modules-center": ["clock"],
+    "modules-center": ["clock#no-icon"],
 
     "modules-right": [
         "custom/rec_status",
@@ -35,12 +35,6 @@
             "click-to-reveal": true,
         },
         "modules": ["custom/expand", "pulseaudio", "backlight", "pulseaudio#microphone"],
-    },
-
-    "clock": {
-        "format": "{:%B %d  %R}",
-        "format-alt": "󰥔  {:%a, %d. %b  %R}",
-        "tooltip-format": "Date: {:%Y-%m-%d}",
     },
 
     "pulseaudio": {
