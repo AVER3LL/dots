@@ -72,7 +72,9 @@ tooltip label {
 
 #workspaces button.visible {
     /* color: alpha(@yellow_value, 0.8); */
-    color: darker(@primary);
+    /* color: darker(@primary); */
+    color: @background;
+    background-color: @primary;
     border-radius: 5px;
     opacity: 1;
     transition: all 0.1s linear;
@@ -91,19 +93,6 @@ tooltip label {
         background-color: @background;
         color: @foreground;
     }
-}
-
-#battery {
-    color: @foreground;
-}
-
-#battery.critical:not(.charging):not(.plugged) {
-    animation: blink 0.5s linear infinite alternate;
-    color: @battery-critical-color;
-}
-
-#battery.warning:not(.charging) {
-    color: @battery-warning-color;
 }
 
 /* Module Styling */
@@ -131,6 +120,26 @@ tooltip label {
     padding: 10px 5px 10px 5px;
     margin: 0 0 0 12px;
 }
+
+#battery {
+    color: @background;
+    background-color: @green_container;
+    border-radius: 5px;
+    padding: 5px 12px;
+    margin: 7px 6px;
+}
+
+#battery.critical:not(.charging):not(.plugged) {
+    background-color: @red_container;
+    /* animation: blink 0.5s linear infinite alternate; */
+    /* color: @battery-critical-color; */
+}
+
+#battery.warning:not(.charging) {
+    background-color: @tertiary_container;
+    /* color: @battery-warning-color; */
+}
+
 
 #custom-notification:hover,
 #custom-wallpaper_change:hover,
