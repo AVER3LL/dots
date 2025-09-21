@@ -163,7 +163,7 @@ autocmd("ColorScheme", {
         end
 
         -- Window bars and misc
-        sethl("WinBar", { bg = tools.adjust_brightness(colors.background, 0.89) })
+        sethl("WinBar", { bg = tools.adjust_brightness(colors.background, 0.85) })
         sethl("WinBarNC", { bg = tools.adjust_brightness(colors.background, 0.95) })
 
         sethl("@markup.raw.block.markdown", { bg = "NONE" })

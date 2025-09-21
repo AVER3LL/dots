@@ -12,7 +12,7 @@ return {
                         timeout_ms = 1000,
                     }
                 end,
-                mode = { "n", "v" },
+                mode = { "n", "x" },
                 desc = "Format buffer",
             },
         },

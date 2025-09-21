@@ -16,6 +16,7 @@
 /.config/waybar/colors.css
 /.config/wlogout/colors.css
 /.config/fabric/styles/colors.css
+/.config/ghostty/themes/matugen
 
 __pycache__/
 *.py[cod]
