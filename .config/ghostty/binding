@@ -3,6 +3,8 @@ keybind = ctrl+enter=unbind
 keybind = ctrl+d=unbind
 keybind = ctrl+,=unbind
 keybind = ctrl+shift+q=unbind
+keybind = alt+3=unbind
+keybind = alt+digit_3=unbind
 
 keybind = ctrl+alt+l=goto_split:right
 keybind = ctrl+alt+h=goto_split:left

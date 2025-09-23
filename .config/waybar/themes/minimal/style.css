@@ -122,22 +122,21 @@ tooltip label {
 }
 
 #battery {
-    color: @background;
+    color: black;
     background-color: @green_container;
     border-radius: 5px;
     padding: 5px 12px;
-    margin: 7px 6px;
+    margin: 7px 0px;
 }
 
 #battery.critical:not(.charging):not(.plugged) {
     background-color: @red_container;
-    /* animation: blink 0.5s linear infinite alternate; */
-    /* color: @battery-critical-color; */
+    color: white;
 }
 
 #battery.warning:not(.charging) {
     background-color: @tertiary_container;
-    /* color: @battery-warning-color; */
+    color: white;
 }
 
 

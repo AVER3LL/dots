@@ -21,7 +21,10 @@ return {
 
             keymap = {
                 preset = "none",
-                ["<C-space>"] = { "show" },
+
+                ["<C-i>"] = { "show" },
+                ["<C-o>"] = { "select_accept_and_enter" },
+
                 ["<C-k>"] = { "select_prev", "fallback" },
                 ["<C-j>"] = { "select_next", "fallback" },
                 ["<CR>"] = { "accept", "fallback" },
@@ -62,6 +65,7 @@ return {
                     selection = { preselect = true, auto_insert = false },
                 },
                 menu = {
+                    auto_show = false,
                     draw = {
                         -- left and right padding
                         padding = { 1, 1 },

@@ -20,7 +20,7 @@ autocmd("ColorScheme", {
             warn = gethl("DiagnosticWarn").fg or "#E0AF68",
             info = gethl("DiagnosticInfo").fg or "#56B6C2",
             hint = gethl("DiagnosticHint").fg or "#9A9AA1",
-            folded = gethl "Folded",
+            -- folded = gethl "Folded",
             background = gethl("Normal").bg,
             foreground = gethl("Normal").fg,
             comment = gethl("Comment").fg,
@@ -51,12 +51,15 @@ autocmd("ColorScheme", {
         sethl("DiagnosticSignInfo", { bg = "NONE", fg = colors.info })
         sethl("DiagnosticSignHint", { bg = "NONE", fg = colors.hint })
 
-        local bg_base = colors.background or 0x000000
-        local fg_base = colors.foreground or 0xffffff
-
         sethl("LspInlayHint", {
-            fg = tools.adjust_brightness(fg_base, vim.o.background == "dark" and 0.6 or 0.7),
-            bg = tools.adjust_brightness(bg_base, vim.o.background == "dark" and 1.15 or 0.92),
+            fg = tools.blend(colors.background, colors.foreground, 0.7),
+            bg = tools.blend(colors.background, colors.foreground, 0.05),
+            italic = true,
+        })
+
+        sethl("Folded", {
+            bg = tools.adjust_brightness(colors.background, vim.o.background == "light" and 0.95 or 1.2),
+            fg = tools.blend(colors.background, colors.foreground, 0.6),
         })
 
         -- Diagnostic underlines
@@ -122,7 +125,9 @@ autocmd("ColorScheme", {
             sethl("NormalFloat", { bg = colors.pmenu })
             sethl("FloatBorder", { fg = colors.pmenu, bg = colors.pmenu })
         elseif effective_style == "clear" then
-            local border_fg = tools.adjust_brightness(colors.foreground, 0.6)
+            -- local border_fg = tools.adjust_brightness(colors.foreground, 0.6)
+            local border_fg = tools.blend(colors.background, colors.foreground, 0.4)
+
             sethl("BlinkCmpMenuBorder", { bg = colors.background, fg = border_fg })
             sethl("BlinkCmpDocBorder", { bg = colors.background, fg = border_fg })
             sethl("BlinkCmpSignatureHelpBorder", { bg = colors.background, fg = border_fg })

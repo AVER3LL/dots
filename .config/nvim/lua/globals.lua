@@ -1,7 +1,7 @@
 _G.tools = {}
 
 --- @type "rounded" | "single" | "solid" | "none" | "bold" | "double" | "shadow"
-tools.border = "rounded"
+tools.border = "single"
 
 --- @type "flat" | "clear"
 tools.style = "clear"
@@ -19,6 +19,50 @@ tools.change_background = function()
             onedark.toggle()
         end
     end
+end
+
+--- Blend two colors together
+--- @param bg number|string Background color (hex number or string)
+--- @param fg number|string Foreground color (hex number or string)
+--- @param amount? number Blend amount (0.0 = bg only, 1.0 = fg only, default: 0.5)
+--- @return number Blended color as hex number
+tools.blend = function(bg, fg, amount)
+    amount = amount or 0.5
+    amount = math.max(0, math.min(1, amount))
+
+    -- Convert colors to numbers if they're strings
+    if type(bg) == "string" then
+        bg = tonumber(bg:gsub("#", ""), 16) or 0
+    elseif type(bg) ~= "number" then
+        bg = 0
+    end
+
+    if type(fg) == "string" then
+        fg = tonumber(fg:gsub("#", ""), 16) or 0
+    elseif type(fg) ~= "number" then
+        fg = 0
+    end
+
+    -- Clamp to valid color range
+    bg = math.max(0, math.min(0xFFFFFF, bg))
+    fg = math.max(0, math.min(0xFFFFFF, fg))
+
+    -- Extract RGB components
+    local bg_r = math.floor(bg / 65536) % 256
+    local bg_g = math.floor(bg / 256) % 256
+    local bg_b = bg % 256
+
+    local fg_r = math.floor(fg / 65536) % 256
+    local fg_g = math.floor(fg / 256) % 256
+    local fg_b = fg % 256
+
+    -- Blend components
+    local r = math.floor(bg_r + (fg_r - bg_r) * amount)
+    local g = math.floor(bg_g + (fg_g - bg_g) * amount)
+    local b = math.floor(bg_b + (fg_b - bg_b) * amount)
+
+    -- Combine back to hex
+    return r * 65536 + g * 256 + b
 end
 
 --- @param mode string | table
