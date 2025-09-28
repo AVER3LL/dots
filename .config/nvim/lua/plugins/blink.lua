@@ -65,7 +65,8 @@ return {
                     selection = { preselect = true, auto_insert = false },
                 },
                 menu = {
-                    auto_show = false,
+                    -- auto_show = false,
+                    -- auto_show_delay_ms = 750,
                     draw = {
                         -- left and right padding
                         padding = { 1, 1 },

@@ -1,4 +1,5 @@
 {
+    "closeOnFocusLoss": false,
     "faviconService": "twenty",
     "font": {
         "normal": "JetBrainsMono Nerd Font Propo",

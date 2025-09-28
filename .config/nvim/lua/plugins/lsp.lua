@@ -182,7 +182,7 @@ return {
             }
 
             local ensure_installed = vim.tbl_filter(function(server)
-                local ensure_ignored = { "clangd" }
+                local ensure_ignored = {}
                 return not vim.tbl_contains(ensure_ignored, server)
             end, vim.tbl_keys(servers.mason or {}))
 

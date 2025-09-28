@@ -11,7 +11,7 @@ require "lsp"
 
 require("config.winbar").setup()
 
-vim.cmd.colorscheme "catppuccin"
+vim.cmd.colorscheme "gruvbox"
 
 require "config.system-theme"
 

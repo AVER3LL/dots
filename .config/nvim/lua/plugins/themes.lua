@@ -10,50 +10,13 @@ return {
         end,
     },
 
-    {
-        "darianmorat/gruvdark.nvim",
-        enabled = false,
-        lazy = false,
-        priority = 1000,
-        opts = {},
-    },
+    { "ellisonleao/gruvbox.nvim", priority = 1000, config = true },
 
     {
         "wnkz/monoglow.nvim",
         lazy = false,
         priority = 1000,
         opts = {},
-    },
-
-    {
-        "bluz71/vim-moonfly-colors",
-        enabled = false,
-        name = "moonfly",
-        lazy = false,
-        priority = 1000,
-    },
-
-    {
-        "kyza0d/xeno.nvim",
-        enabled = false,
-        lazy = false,
-        priority = 1000,
-        config = function()
-            local xeno = require "xeno"
-            xeno.new_theme("xeno-lillypad", {
-                base = "#1E1E1E",
-                accent = "#8CBE8C",
-                contrast = 0.1,
-                transparent = false,
-            })
-        end,
-    },
-
-    {
-        "nyoom-engineering/oxocarbon.nvim",
-        enabled = false,
-        lazy = false,
-        priority = 1000,
     },
 
     {
@@ -76,6 +39,12 @@ return {
                     light = "latte",
                     dark = "mocha",
                 },
+                color_overrides = {
+                    mocha = {
+                        base = "#0E0E0E",
+                        mantle = "#0E0E0E",
+                    },
+                },
             }
         end,
     },
@@ -97,14 +66,6 @@ return {
                 toggle_style_list = { "light", "darker" },
             }
         end,
-    },
-
-    -- Jetbrains theme
-    {
-        "nickkadutskyi/jb.nvim",
-        enabled = false,
-        priority = 1000,
-        opts = {},
     },
 
     { -- kanagawa

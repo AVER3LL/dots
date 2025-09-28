@@ -123,6 +123,7 @@ vim.api.nvim_create_autocmd("TermOpen", {
     group = vim.api.nvim_create_augroup("custom-termopen", { clear = true }),
     callback = function(event)
         vim.opt.number = false
+        vim.o.cmdheight = 0
         vim.opt.relativenumber = false
         local opts = { buffer = event.buf }
         map("t", "<esc>", [[<C-\><C-n>]], opts)

@@ -58,7 +58,7 @@ autocmd("ColorScheme", {
         })
 
         sethl("Folded", {
-            bg = tools.adjust_brightness(colors.background, vim.o.background == "light" and 0.95 or 1.2),
+            bg = tools.adjust_brightness(colors.background, vim.o.background == "light" and 0.95 or 1.3),
             fg = tools.blend(colors.background, colors.foreground, 0.6),
         })
 
@@ -85,6 +85,9 @@ autocmd("ColorScheme", {
 
         sethl("MiniPickMatchCurrent", { bg = colors.cursorline })
         local effective_style = vim.list_contains({ "vercel", "moonfly" }, vim.g.colors_name) and "clear" or tools.style
+
+        sethl("SnacksPickerListCursorLine", { link = "SnacksPickerPreviewCursorLine" })
+        sethl("SnacksPickerCursorLine", { link = "SnacksPickerPreviewCursorLine" })
 
         -- Style-specific completion highlights
         if effective_style == "flat" then
@@ -143,13 +146,6 @@ autocmd("ColorScheme", {
             sethl("WhichKeyNormal", { bg = colors.background })
             sethl("SnacksPickerInputBorder", { bg = colors.background, fg = gethl("SnacksPickerInputTitle").fg })
         end
-
-        -- Common completion highlights
-        -- mysethl("BlinkCmpMenuSelection", { bg = colors.fun, fg = colors.background })
-        sethl("BlinkCmpMenuSelection", {
-            bg = vim.o.background == "dark" and tools.adjust_brightness(colors.fun, 0.4)
-                or tools.adjust_brightness(colors.background, 0.87),
-        })
         sethl("LspSignatureActiveParameter", { bg = colors.str, bold = true, fg = colors.background })
 
         -- Cursor line handling
@@ -183,10 +179,22 @@ autocmd("ColorScheme", {
         sethl("MultiCursorDisabledCursor", { reverse = true })
         sethl("MultiCursorDisabledVisual", { link = "Visual" })
         sethl("MultiCursorDisabledSign", { link = "SignColumn" })
+        sethl("FloaTerminalBorder", {
+            bg = colors.background,
+            fg = colors.background
+        })
 
         sethl("Visual", {
             bg = vim.o.background == "dark" and "#1e3a5f" or "#ADCBEF",
             fg = "NONE",
+        })
+
+        -- Common completion highlights
+        -- mysethl("BlinkCmpMenuSelection", { bg = colors.fun, fg = colors.background })
+        sethl("BlinkCmpMenuSelection", {
+            -- bg = vim.o.background == "dark" and tools.adjust_brightness(colors.fun, 0.4)
+            --     or tools.adjust_brightness(colors.background, 0.87),
+            bg = gethl("Visual").bg,
         })
 
         -- Git and usage

@@ -19,6 +19,7 @@ return {
                 "NvimTree",
                 "neo-tree",
                 "alpha",
+                "Fyler",
                 "oil",
             },
             segments = {
