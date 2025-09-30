@@ -1,19 +1,19 @@
 {
     "closeOnFocusLoss": false,
-    "faviconService": "twenty",
+    "faviconService": "google",
     "font": {
-        "normal": "JetBrainsMono Nerd Font Propo",
         "size": 10
     },
-    "popToRootOnClose": false,
+    "keybinding": "default",
+    "popToRootOnClose": true,
     "rootSearch": {
-        "searchFiles": false
+        "searchFiles": true
     },
     "theme": {
         "name": "matugen.json"
     },
     "window": {
-        "csd": true,
+        "csd": false,
         "opacity": 1,
         "rounding": 10
     }

@@ -38,6 +38,7 @@ return {
                 "rasi",
                 "regex",
                 "rust",
+                "kitty",
                 "scss",
                 "toml",
                 "tsx",

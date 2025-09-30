@@ -14,16 +14,16 @@ return {
         ignore = function(buf)
             return vim.api.nvim_get_option_value("buftype", { buf = buf }) == "nofile"
         end,
-        win_options = {
-            conceallevel = {
-                default = vim.o.conceallevel,
-                rendered = 3,
-            },
-            concealcursor = {
-                default = vim.o.concealcursor,
-                rendered = "nvic",
-            },
-        },
+        -- win_options = {
+        --     conceallevel = {
+        --         default = vim.o.conceallevel,
+        --         rendered = 3,
+        --     },
+        --     concealcursor = {
+        --         default = vim.o.concealcursor,
+        --         rendered = "nvic",
+        --     },
+        -- },
         heading = {
             sign = false,
             icons = { "󰎤 ", "󰎧 ", "󰎪 ", "󰎭 ", "󰎱 ", "󰎳 " },
