@@ -5,15 +5,15 @@
   "name": "Matugen theme",
   "description": "Trying something with matugen I guess",
   "palette": {
-    "background": "#f9ebe5",
-    "foreground": "#211a17",
-    "blue": "#3e00a1",
-    "green": "#4a6700",
-    "magenta": "#b4007f",
+    "background": "#251e1b",
+    "foreground": "#eee0da",
+    "blue": "#cebdff",
+    "green": "#f0ffcc",
+    "magenta": "#ffafd6",
     "orange": "#FAB387",
     "purple": "#CBA6F7",
-    "red": "#a63500",
-    "yellow": "#635e4f",
-    "cyan": "#006b5d"
+    "red": "#ffb59c",
+    "yellow": "#ffffff",
+    "cyan": "#ffffff"
   }
 }

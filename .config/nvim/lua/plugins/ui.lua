@@ -6,6 +6,67 @@ return {
     },
 
     {
+        "ahkohd/buffer-sticks.nvim",
+        event = "VeryLazy",
+        keys = {
+            {
+                "<leader>j",
+                function()
+                    BufferSticks.jump()
+                end,
+                desc = "Buffer jump mode",
+            },
+        },
+        config = function()
+            local sticks = require "buffer-sticks"
+            sticks.setup {
+                filter = { buftypes = { "terminal" } },
+                highlights = {
+                    active = { link = "Statement" },
+                    inactive = { link = "Whitespace" },
+                    active_modified = { link = "Constant" },
+                    inactive_modified = { link = "Constant" },
+                    label = { link = "Comment" },
+                },
+            }
+            sticks.show()
+        end,
+    },
+
+    {
+        -- Calls `require('slimline').setup({})`
+        "sschleemilch/slimline.nvim",
+        opts = {
+            sep = {
+                hide = {
+                    first = not tools.border == "rounded", -- hides the first separator of the line
+                    last = not tools.border == "rounded", -- hides the last separator of the line
+                },
+                left = tools.border == "rounded" and "" or " ",
+                right = tools.border == "rounded" and "" or " ",
+            },
+            spaces = {
+                components = tools.border == "rounded" and " " or "",
+                left = tools.border == "rounded" and " " or "",
+                right = tools.border == "rounded" and " " or "",
+            },
+            components = {
+                left = {
+                    "mode",
+                    "path",
+                    "git",
+                },
+                center = {},
+                right = {
+                    "diagnostics",
+                    "filetype_lsp",
+                    "progress",
+                },
+            },
+        },
+    },
+
+    {
         "mskelton/termicons.nvim",
         requires = { "nvim-tree/nvim-web-devicons" },
         build = false,

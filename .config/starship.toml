@@ -9,14 +9,14 @@ mustard = '#af8700'                                  # example
 error = '#E06C75'
 success = '#00CF3A'
 color1 = '#ffb68e'
-color2 = '#ffffff'
-color3 = '#53443c'
-color4 = '#f9ebe5'
-color5 = '#ffffff'
-color6 = '#e5d7d1'
-color7 = '#fff8f6'
-color8 = '#8d4e26'
-color9 = '#00696d'
+color2 = '#532200'
+color3 = '#d8c2b7'
+color4 = '#251e1b'
+color5 = '#532200'
+color6 = '#18120f'
+color7 = '#18120f'
+color8 = '#ffb68e'
+color9 = '#7bd5d9'
 
 # add_newline = true
 

@@ -39,7 +39,7 @@ autocmd("ColorScheme", {
             or colors.cursorline
 
         -- Basic UI elements
-        -- mysethl("Cursor", { bg = colors.foreground })
+        sethl("Cursor", { bg = tools.blend(colors.background, colors.foreground, 0.80) })
         sethl("HighlightUrl", { underline = true })
         sethl("AlphaButton", { bg = colors.constant, bold = true, fg = colors.background })
         sethl("Laravel", { fg = "#F53003" })
@@ -128,8 +128,9 @@ autocmd("ColorScheme", {
             sethl("NormalFloat", { bg = colors.pmenu })
             sethl("FloatBorder", { fg = colors.pmenu, bg = colors.pmenu })
         elseif effective_style == "clear" then
-            -- local border_fg = tools.adjust_brightness(colors.foreground, 0.6)
-            local border_fg = tools.blend(colors.background, colors.foreground, 0.4)
+            local border_fg = tools.blend(colors.background, colors.foreground, 0.5)
+
+            sethl("WinSeparator", { bg = colors.background, fg = border_fg })
 
             sethl("BlinkCmpMenuBorder", { bg = colors.background, fg = border_fg })
             sethl("BlinkCmpDocBorder", { bg = colors.background, fg = border_fg })
@@ -143,8 +144,9 @@ autocmd("ColorScheme", {
             sethl("LspInfoBorder", { bg = colors.background })
             sethl("NormalFloat", { bg = colors.background })
             sethl("FloatBorder", { fg = border_fg, bg = colors.background })
+            sethl("SnacksPickerBorder", { fg = border_fg, bg = colors.background })
             sethl("WhichKeyNormal", { bg = colors.background })
-            sethl("SnacksPickerInputBorder", { bg = colors.background, fg = gethl("SnacksPickerInputTitle").fg })
+            sethl("SnacksPickerInputBorder", { bg = colors.background, fg = border_fg })
         end
         sethl("LspSignatureActiveParameter", { bg = colors.str, bold = true, fg = colors.background })
 
@@ -181,7 +183,7 @@ autocmd("ColorScheme", {
         sethl("MultiCursorDisabledSign", { link = "SignColumn" })
         sethl("FloaTerminalBorder", {
             bg = colors.background,
-            fg = colors.background
+            fg = colors.background,
         })
 
         sethl("Visual", {

@@ -8,7 +8,7 @@ return {
         opts = {
             -- classic, modern, helix
             preset = "helix",
-            delay = 10,
+            delay = 160,
             win = {
                 border = tools.border,
             },

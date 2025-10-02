@@ -52,6 +52,7 @@ M.defaults = {
         "TelescopePrompt",
         "TelescopeResults",
         "telescope",
+        "Fyler",
     },
     ignore_buftypes = {
         "nofile",

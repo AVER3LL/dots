@@ -18,7 +18,6 @@ alias tree="eza --tree --icons"
 
 # Neovim
 alias v='nvim'
-alias nv='neovide'
 alias vim='nvim'
 
 alias nf='neofetch'
