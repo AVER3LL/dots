@@ -12,7 +12,7 @@ return {
                     fyler.toggle()
                 end,
                 mode = "n",
-                desc = "Nvimtree toggle window",
+                desc = "Fyler toggle window",
             },
             {
                 "<leader>e",
@@ -20,7 +20,7 @@ return {
                     fyler.open()
                 end,
                 mode = "n",
-                desc = "Nvimtree focus window",
+                desc = "Fyler focus window",
             },
         }
     end,

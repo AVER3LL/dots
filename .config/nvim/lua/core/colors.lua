@@ -3,9 +3,7 @@ local sethl = function(...)
     vim.api.nvim_set_hl(0, ...)
 end
 
-local function gethl(name)
-    return vim.api.nvim_get_hl(0, { name = name })
-end
+local gethl = tools.resolve_hl
 
 local function augroup(name)
     return vim.api.nvim_create_augroup(name, { clear = true })
@@ -25,12 +23,11 @@ autocmd("ColorScheme", {
             foreground = gethl("Normal").fg,
             comment = gethl("Comment").fg,
             -- cursorline = gethl("CursorLine").bg,
-            cursorline = vim.o.background == "dark" and tools.adjust_brightness(gethl("Normal").bg, 1.25)
-                or tools.adjust_brightness(gethl("Normal").bg, 0.95),
+            cursorline = tools.adjust_brightness(gethl("Normal").bg, vim.o.background == "dark" and 1.25 or 0.95),
             pmenu = tools.style == "clear" and gethl("Pmenu").bg or tools.adjust_brightness(gethl("Normal").bg, 0.75),
             fun = gethl("Function").fg or "#375FAD",
             str = gethl("String").fg or "#7CA855",
-            constant = gethl("Constant").fg,
+            constant = tools.resolve_hl("Constant").fg,
             parenthesis = vim.o.background == "dark" and "#39ff14" or "#ff007f",
         }
 
@@ -192,12 +189,9 @@ autocmd("ColorScheme", {
         })
 
         -- Common completion highlights
-        -- mysethl("BlinkCmpMenuSelection", { bg = colors.fun, fg = colors.background })
-        sethl("BlinkCmpMenuSelection", {
-            -- bg = vim.o.background == "dark" and tools.adjust_brightness(colors.fun, 0.4)
-            --     or tools.adjust_brightness(colors.background, 0.87),
-            bg = gethl("Visual").bg,
-        })
+        -- sethl("BlinkCmpMenuSelection", { bg = colors.fun, fg = colors.background })
+
+        sethl("BlinkCmpMenuSelection", { bg = gethl("Visual").bg })
 
         -- Git and usage
         sethl("GitSignsCurrentLineBlame", { fg = tools.adjust_brightness(colors.foreground, 0.8), italic = true })

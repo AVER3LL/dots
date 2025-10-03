@@ -47,6 +47,12 @@ return {
             enabled = true,
             prompt = search,
             layout = "custom",
+            icons = {
+                ui = {
+                    hidden = "",
+                    ignored = "",
+                },
+            },
             matcher = {
                 frecency = true,
                 cwd_bonus = true,

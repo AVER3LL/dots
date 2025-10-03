@@ -70,6 +70,7 @@ return {
                         cmd = { "qmlls", "-E" },
                     },
                     texlab = {},
+                    copilot = {},
                     vtsls = {},
 
                     basedpyright = {
