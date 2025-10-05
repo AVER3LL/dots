@@ -27,13 +27,13 @@ charge_flag="/tmp/hypr_battery_high"
 if [ "$level" -lt 40 ] && [ "$status" = "Discharging" ]; then
     # Get current settings
     blur=$(hyprctl -j getoption decoration:blur:enabled | jq -r '.int')
-    shadow=$(hyprctl -j getoption decoration:shadow:enabled | jq -r '.int')
+    # shadow=$(hyprctl -j getoption decoration:shadow:enabled | jq -r '.int')
     animation=$(hyprctl -j getoption animations:enabled | jq -r '.int')
 
     # Build command to disable features
     CMD=""
     [ "$blur" -eq 1 ] && CMD="${CMD}keyword decoration:blur:enabled 0;"
-    [ "$shadow" -eq 1 ] && CMD="${CMD}keyword decoration:shadow:enabled 0;"
+    # [ "$shadow" -eq 1 ] && CMD="${CMD}keyword decoration:shadow:enabled 0;"
     [ "$animation" -eq 1 ] && CMD="${CMD}keyword animations:enabled 0;"
 
     # Apply changes if any

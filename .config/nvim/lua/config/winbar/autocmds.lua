@@ -190,7 +190,6 @@ function M.setup_autocmds(config)
         "BufWinEnter",
         "BufWritePost",
         "ColorScheme",
-        "VimResized",
         "WinEnter",
         "WinResized",
     }, {
@@ -208,6 +207,13 @@ function M.setup_autocmds(config)
             else
                 vim.wo.winbar = ""
             end
+        end,
+    })
+
+    autocmd("VimResized", {
+        group = group,
+        callback = function()
+            updater.update_all_visible_windows(config)
         end,
     })
 

@@ -1,0 +1,51 @@
+set window-title-basename "true"
+set selection-clipboard "clipboard"
+
+set font "Maple Mono NF 12"
+
+" Search
+set incremental-search true
+set search-hadjust true
+
+" Autoadjust
+set adjust-open width
+
+set render-loading              true
+
+set adjust-open width
+
+map i recolor
+
+" Colors
+set default-bg              "{{colors.background.default.hex}}"
+set default-fg              "{{colors.on_surface.default.hex}}"
+
+set statusbar-bg            "{{colors.background.default.hex}}"
+set statusbar-fg            "{{colors.on_surface.default.hex}}"
+
+set inputbar-bg             "{{colors.background.default.hex}}"
+set inputbar-fg             "{{colors.on_surface.default.hex}}"
+
+set notification-error-bg   "{{colors.on_error.default.hex}}"
+set notification-error-fg   "{{colors.error.default.hex}}"
+
+set notification-warning-bg "{{colors.primary_fixed.default.hex}}"
+set notification-warning-fg "{{colors.error_container.default.hex}}"
+
+set highlight-color         "{{colors.primary_fixed.default.hex}}"
+set highlight-active-color  "{{colors.primary_fixed_dim.default.hex}}"
+
+set completion-highlight-fg "{{colors.background.default.hex}}"
+set completion-highlight-bg {{colors.on_surface.default.hex}}""
+
+set completion-bg           "{{colors.background.default.hex}}"
+set completion-fg           "{{colors.on_surface.default.hex}}"
+
+set notification-bg         "{{colors.background.default.hex}}"
+set notification-fg         "{{colors.on_surface.default.hex}}"
+
+set recolor                 "true"
+set recolor-lightcolor      "{{colors.background.default.hex}}"
+set recolor-darkcolor       "{{colors.on_surface.default.hex}}"
+set recolor-reverse-video   "true"
+set recolor-keephue         "true"

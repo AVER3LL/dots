@@ -21,7 +21,7 @@ window#waybar {
     background-color: @background;
     border-radius: 0px;
     color: @foreground;
-    border-bottom: 1px solid alpha(@outline, 0.6);
+    border-bottom: 2px solid alpha(@outline, 0.6);
     transition-property: background-color;
     transition-duration: 0.5s;
 }

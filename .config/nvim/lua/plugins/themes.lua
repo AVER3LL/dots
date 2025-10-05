@@ -6,11 +6,17 @@ return {
         priority = 1000,
         config = function()
             vim.g.everforest_better_performance = 1
-            vim.g.everforest_transparent_background = 0
+            vim.g.everforest_transparent_background = tools.transparent_background "numeric"
         end,
     },
 
-    { "ellisonleao/gruvbox.nvim", priority = 1000, config = true },
+    {
+        "ellisonleao/gruvbox.nvim",
+        priority = 1000,
+        opts = {
+            transparent_mode = tools.transparent_background "boolean",
+        },
+    },
 
     {
         "wnkz/monoglow.nvim",
@@ -25,6 +31,7 @@ return {
         priority = 1000,
         opts = {
             theme = "dark",
+            transparent = tools.transparent_background "boolean",
         },
     },
 
@@ -39,6 +46,7 @@ return {
                     light = "latte",
                     dark = "mocha",
                 },
+                transparent_background = tools.transparent_background "boolean",
                 color_overrides = {
                     mocha = {
                         base = "#0E0E0E",
@@ -54,6 +62,7 @@ return {
         priority = 1000,
         opts = {
             style = "multiplex",
+            transparent = tools.transparent_background "boolean",
         },
     },
 
@@ -63,6 +72,7 @@ return {
         config = function()
             require("onedark").setup {
                 style = "darker",
+                transparent = tools.transparent_background "boolean",
                 toggle_style_list = { "light", "darker" },
             }
         end,
@@ -73,7 +83,7 @@ return {
         name = "kanagawa",
         priority = 1000,
         opts = {
-            transparent = false,
+            transparent = tools.transparent_background "boolean",
             undercurl = true,
 
             commentStyle = { italic = true },
@@ -156,7 +166,7 @@ return {
         lazy = false,
         priority = 1000,
         config = function()
-            vim.g.gruvbox_material_transparent_background = 0
+            vim.g.gruvbox_material_transparent_background = tools.transparent_background "numeric"
             vim.g.gruvbox_material_foreground = "mix"
             vim.g.gruvbox_material_background = "medium"
             vim.g.gruvbox_material_ui_contrast = "high"
@@ -178,6 +188,7 @@ return {
         "folke/tokyonight.nvim",
         priority = 1000,
         opts = {
+            transparent = tools.transparent_background "boolean",
             -- on_colors = function(colors)
             --     colors.comment = "#8c98b3"
             -- end,

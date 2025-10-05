@@ -1,6 +1,7 @@
 return {
     "luukvbaal/statuscol.nvim",
     config = function()
+        local builtin = require "statuscol.builtin"
         require("statuscol").setup {
             relculright = true,
             thousands = ",",
@@ -134,9 +135,12 @@ return {
                     condition = { true },
                 },
 
-                {
-                    text = { " " },
-                },
+                -- {
+                --     text = { builtin.foldfunc },
+                --     click = "v:lua.ScFa",
+                -- },
+
+                { text = { " " } },
             },
         }
     end,

@@ -1,6 +1,6 @@
 return {
     "A7Lavinraj/fyler.nvim",
-    enabled = true,
+    enabled = false,
     branch = "stable",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     keys = function()
@@ -32,6 +32,9 @@ return {
             on_rename = function(src_path, dst_path)
                 Snacks.rename.on_rename_file(src_path, dst_path)
             end,
+            on_move = function(src_path, dst_path)
+                Snacks.rename.on_rename_file(src_path, dst_path)
+            end,
         },
         popups = {
             permission = {
@@ -51,7 +54,7 @@ return {
                 Ignored = "#",
             },
         },
-        indentscope = { enabled = false },
+        indentscope = { enabled = true },
         mappings = {
             ["l"] = "Select",
             ["s"] = "SelectVSplit",

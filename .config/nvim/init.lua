@@ -15,6 +15,8 @@ vim.cmd.colorscheme "gruvbox"
 
 require "config.system-theme"
 
+require "config.bg"
+
 -- require "config.statusline"
 
 -- require("vim._extui").enable {}

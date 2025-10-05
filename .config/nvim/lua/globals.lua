@@ -6,6 +6,8 @@ tools.border = "single"
 --- @type "flat" | "clear"
 tools.style = "flat"
 
+tools.transparent = true
+
 tools.change_background = function()
     if vim.o.background == "dark" then
         vim.o.background = "light"
@@ -135,6 +137,15 @@ tools.diagnostics_available = function()
     end
 
     return false
+end
+
+---@param kind "numeric"|"boolean"
+tools.transparent_background = function(kind)
+    if kind == "boolean" then
+        return tools.transparent and 1 or 0
+    end
+
+    return tools.transparent
 end
 
 tools.hl_str = function(hl, str)
