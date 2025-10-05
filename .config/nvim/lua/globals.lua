@@ -141,7 +141,7 @@ end
 
 ---@param kind "numeric"|"boolean"
 tools.transparent_background = function(kind)
-    if kind == "boolean" then
+    if kind == "numeric" then
         return tools.transparent and 1 or 0
     end
 

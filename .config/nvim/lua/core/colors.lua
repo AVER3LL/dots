@@ -105,6 +105,9 @@ autocmd({ "ColorScheme", "VimEnter" }, {
             sethl("MiniPickPrompt", { bg = colors.pmenu, fg = colors.foreground })
 
             sethl("SnacksPickerTitle", { link = "DiagnosticVirtualTextInfo" })
+            sethl("SnacksPicker", { bg = colors.pmenu, fg = colors.foreground })
+            sethl("SnacksPickerBorder", { bg = colors.pmenu, fg = colors.pmenu })
+            sethl("SnacksPickerInputBorder", { bg = colors.pmenu, fg = colors.pmenu })
 
             sethl("SnacksInputNormal", { bg = colors.pmenu, fg = colors.foreground })
             sethl("SnacksInputBorder", { bg = colors.pmenu, fg = colors.pmenu })
