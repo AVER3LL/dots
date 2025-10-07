@@ -1,0 +1,9 @@
+[[shades]]
+name = "blues"
+start_time = 18:30:00
+end_time = 21:29:40
+
+[[shades]]
+name = "greyscale"
+start_time = 21:30:00
+end_time = 06:00:00

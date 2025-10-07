@@ -4,9 +4,9 @@ _G.tools = {}
 tools.border = "single"
 
 --- @type "flat" | "clear"
-tools.style = "flat"
+tools.style = "clear"
 
-tools.transparent = true
+tools.transparent = false
 
 tools.change_background = function()
     if vim.o.background == "dark" then

@@ -165,7 +165,15 @@ autocmd({ "ColorScheme", "VimEnter" }, {
                 fg = colors.background,
             })
         end
+
         sethl("LspSignatureActiveParameter", { bg = colors.str, bold = true, fg = colors.background })
+
+        if tools.transparent then
+            sethl(
+                "WinSeparator",
+                { bg = colors.background, fg = tools.blend(colors.background, colors.foreground, 0.3) }
+            )
+        end
 
         -- Cursor line handling
         if vim.o.cursorlineopt == "number" then

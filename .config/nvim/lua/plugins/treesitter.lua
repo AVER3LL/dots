@@ -114,6 +114,8 @@ return {
             })
 
             require("nvim-treesitter").setup(opts)
+
+            -- require('nvim-treesitter.config').setup(opts)
         end,
     },
 }
