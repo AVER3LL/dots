@@ -17,6 +17,7 @@
 /.config/wlogout/colors.css
 /.config/fabric/styles/colors.css
 /.config/ghostty/themes/matugen
+secrets.fish
 
 __pycache__/
 *.py[cod]

@@ -5,14 +5,14 @@
   "name": "Matugen theme",
   "description": "Trying something with matugen I guess",
   "palette": {
-    "background": "#241f19",
-    "foreground": "#ece0d7",
+    "background": "#251e1b",
+    "foreground": "#eee0da",
     "blue": "#cebdff",
     "green": "#f0ffcc",
     "magenta": "#ffafd6",
     "orange": "#FAB387",
     "purple": "#CBA6F7",
-    "red": "#ffb595",
+    "red": "#ffb59c",
     "yellow": "#ffffff",
     "cyan": "#ffffff"
   }

@@ -248,5 +248,6 @@
     "workbench.secondarySideBar.defaultVisibility": "hidden",
     "workbench.statusBar.visible": false,
     "editor.cursorSmoothCaretAnimation": "on",
-    "haskell.manageHLS": "PATH"
+    "haskell.manageHLS": "PATH",
+    "AMPL.Runtime.pathToJRE": null
 }
