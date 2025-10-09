@@ -1,0 +1,15 @@
+#!/bin/bash
+CONFIG_FILE="/home/averell/.config/hypr/shadders.conf"
+SHADER_PATH="~/.config/hypr/shaders"
+SHADER_NAME="blues"
+
+# Check if bluess shader is currently active
+if grep -q "^\s*screen_shader\s*=.*$SHADER_NAME\.glsl" "$CONFIG_FILE"; then
+    # Remove the shader path, leaving it empty
+    sed -i -E 's/(^\s*screen_shader\s*=\s*).*/\1/' "$CONFIG_FILE"
+    notify-send "Blue light filter Disabled"
+else
+    # Set the bluess shader (regardless of current value)
+    sed -i -E "s|(^\s*screen_shader\s*=\s*).*|\1 $SHADER_PATH/$SHADER_NAME.glsl|" "$CONFIG_FILE"
+    notify-send "Blue light filter Enabled"
+fi

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ROFI_THEME=~/.config/rofi/system.rasi
-AVERELL_BIN=~/.local/bin
+AVERELL_BIN=~/.local/bin/control-menu
 CONFIG=~/.config
 
 menu() {
@@ -69,17 +69,18 @@ show_config_menu() {
     *Waybar*) edit_in_nvim ~/dotfiles/.config/waybar ;;
     *Fabric*) edit_in_nvim ~/.config/fabric && killall averell-shell && ~/.config/fabric/launch.sh ;;
     *Rofi*) edit_in_nvim ~/dotfiles/.config/rofi ;;
-    *Swaync*) edit_in_nvim ~/dotfiles/.config/swaync && $AVERELL_BIN/averell-refresh-swaync ;;
+    *Swaync*) edit_in_nvim ~/dotfiles/.config/swaync && $AVERELL_BIN/refresh-swaync ;;
     *Matugen*) edit_in_nvim ~/dotfiles/.config/matugen ;;
     *) show_main_menu ;;
     esac
 }
 
 show_toggle_menu() {
-    case $(menu "Toggle" "󰔎  Nightlight\n󱫖  Idle\n󰔎  Dark mode") in
+    case $(menu "Toggle" "󰔎  Nightlight\n󰔎  Greyscale\n󱫖  Idle\n󰔎  Dark mode") in
     *"Dark mode"*) $AVERELL_BIN/toggle-mode ;;
-    *"Nightlight"*) $AVERELL_BIN/averell-toggle-hyprsunset ;;
-    *"Idle"*) $AVERELL_BIN/averell-toggle-idle ;;
+    *"Nightlight"*) $AVERELL_BIN/toggle-nightlight ;;
+    *"Greyscale"*) $AVERELL_BIN/toggle-greyscale ;;
+    *"Idle"*) $AVERELL_BIN/toggle-idle ;;
     *) show_main_menu ;;
     esac
 }

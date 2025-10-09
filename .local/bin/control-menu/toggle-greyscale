@@ -1,0 +1,15 @@
+#!/bin/bash
+CONFIG_FILE="/home/averell/.config/hypr/shadders.conf"
+SHADER_PATH="~/.config/hypr/shaders"
+SHADER_NAME="greyscale"
+
+# Check if greyscale shader is currently active
+if grep -q "^\s*screen_shader\s*=.*$SHADER_NAME\.glsl" "$CONFIG_FILE"; then
+    # Remove the shader path, leaving it empty
+    sed -i -E 's/(^\s*screen_shader\s*=\s*).*/\1/' "$CONFIG_FILE"
+    notify-send "Greyscale Disabled"
+else
+    # Set the greyscale shader (regardless of current value)
+    sed -i -E "s|(^\s*screen_shader\s*=\s*).*|\1 $SHADER_PATH/$SHADER_NAME.glsl|" "$CONFIG_FILE"
+    notify-send "Greyscale Enabled"
+fi
