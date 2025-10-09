@@ -12,11 +12,6 @@ return {
     },
 
     {
-        "nvim-mini/mini.align",
-        opts = {},
-    },
-
-    {
         "nvim-mini/mini.pick",
         enabled = false,
         version = false,

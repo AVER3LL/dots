@@ -120,7 +120,31 @@ return {
     },
 
     {
+        "dgagn/diagflow.nvim",
+        enabled = false,
+        event = "LspAttach", -- This is what I use personnally and it works great
+        config = function()
+            local excluded_filetypes = {
+                "lazy",
+                "mason",
+            }
+            require("diagflow").setup {
+                scope = "cursor", -- or line
+                padding_top = 0,
+                padding_right = 2,
+                show_sign = true,
+                toggle_event = { "InsertEnter", "InsertLeave" },
+                show_borders = false,
+                enable = function()
+                    return not vim.tbl_contains(excluded_filetypes, vim.bo.filetype)
+                end,
+            }
+        end,
+    },
+
+    {
         "rachartier/tiny-inline-diagnostic.nvim",
+        enabled = true,
         event = "VeryLazy",
         priority = 1000,
         opts = {

@@ -119,6 +119,10 @@ map("n", "<leader><leader>e", function()
     terminal.put_current_file "start"
 end, { desc = "Put file path in terminal" })
 
+map("n", "<leader>rt", function()
+    terminal.create_runner_file()
+end, { desc = "Create runner file" })
+
 vim.api.nvim_create_autocmd("TermOpen", {
     group = vim.api.nvim_create_augroup("custom-termopen", { clear = true }),
     callback = function(event)

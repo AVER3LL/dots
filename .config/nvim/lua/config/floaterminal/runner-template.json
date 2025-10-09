@@ -1,0 +1,20 @@
+{
+  "_variables": [
+    "You can use the following variables in your commands:",
+    "  $filepath                - Full path to the file",
+    "  $dir                     - Directory of the file, with a trailing slash",
+    "  $dirWithoutTrailingSlash - Directory of the file, without a trailing slash",
+    "  $fileName                - Filename with extension",
+    "  $fileNameWithoutExt      - Filename without extension"
+  ],
+
+  "_python": "python -u $filepath",
+
+  "_c": [
+    "cd $dir",
+    "g++ $fileName -o $fileNameWithoutExt",
+    "$dir/$fileNameWithoutExt"
+  ],
+
+  "command": "echo 'fallback command'"
+}

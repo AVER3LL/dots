@@ -1,6 +1,6 @@
 return {
     "A7Lavinraj/fyler.nvim",
-    enabled = false,
+    enabled = true,
     branch = "stable",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     keys = function()
@@ -54,7 +54,7 @@ return {
                 Ignored = "#",
             },
         },
-        indentscope = { enabled = true },
+        indentscope = { enabled = false },
         mappings = {
             ["l"] = "Select",
             ["s"] = "SelectVSplit",

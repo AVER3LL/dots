@@ -135,10 +135,12 @@ return {
                     condition = { true },
                 },
 
-                -- {
-                --     text = { builtin.foldfunc },
-                --     click = "v:lua.ScFa",
-                -- },
+                -- Display folds if enabled (it's not)
+                {
+                    text = { builtin.foldfunc },
+                    condition = { vim.o.foldcolumn == "1" },
+                    click = "v:lua.ScFa",
+                },
 
                 { text = { " " } },
             },

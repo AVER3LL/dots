@@ -1,1 +1,1 @@
-vim.g.bg_color = "#17130d"
+vim.g.bg_color = "#18120f"
