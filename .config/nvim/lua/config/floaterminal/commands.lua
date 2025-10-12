@@ -46,7 +46,6 @@ M.filetype_commands = {
 }
 
 function M.interpolate_variables(command)
-    -- Note: Order of substitutions matters to avoid conflicts
     local substitutions = {
         filepath = vim.fn.expand "%:p",
         dirWithoutTrailingSlash = vim.fn.expand "%:h",
@@ -54,6 +53,7 @@ function M.interpolate_variables(command)
         fileName = vim.fn.expand "%:t",
     }
 
+    -- NOTE: Order of substitutions matters to avoid conflicts
     local key_order = {
         "dirWithoutTrailingSlash",
         "fileNameWithoutExt",
@@ -77,7 +77,8 @@ function M.interpolate_variables(command)
             table.insert(result, M.substitute_variables(value, substitutions, key_order))
         end
 
-        return table.concat(result, " && ")
+        -- return table.concat(result, " && ")
+        return result
     else
         error("Invalid command type: expected string or table, got " .. type(command))
     end

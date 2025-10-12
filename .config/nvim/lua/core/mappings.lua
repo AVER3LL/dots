@@ -6,6 +6,13 @@ local map = tools.map
 
 require("config.search-counter").setup { highlight = "Comment" }
 
+map("n", "<leader>oc", function()
+    local file = vim.fn.expand "%:p"
+    local line = vim.fn.line "."
+    local project = vim.fn.getcwd()
+    vim.system({ "code", project, "--goto", file .. ":" .. line }, { detach = true })
+end, { desc = "Open file in vscode" })
+
 map("n", "<leader><leader>c", function()
     local filepath = vim.api.nvim_buf_get_name(0)
     if filepath == "" then

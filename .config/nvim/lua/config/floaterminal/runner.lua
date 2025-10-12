@@ -12,7 +12,16 @@ function M.run()
         return
     end
 
-    terminal.send_command(command)
+    if type(command) == "string" then
+        terminal.send_command(command)
+        return
+    end
+
+    if type(command) == "table" then
+        for _, line in ipairs(command) do
+            terminal.send_command(line)
+        end
+    end
 end
 
 return M

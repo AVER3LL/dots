@@ -7,6 +7,7 @@ return {
 
     {
         "ahkohd/buffer-sticks.nvim",
+        enabled = false,
         event = "VeryLazy",
         keys = {
             {
