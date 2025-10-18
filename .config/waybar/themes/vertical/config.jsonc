@@ -1,12 +1,12 @@
 {
     "layer": "top",
     "position": "left",
-    "margin-top": 13,
-    "margin-bottom": 13,
-    "margin-left": 6,
+    "margin-top": 5,
+    "margin-bottom": 5,
+    "margin-left": 5,
     "margin-right": 0,
     "reload_style_on_change": true,
-    "width": 65,
+    "width": 50,
 
     "modules-left": ["hyprland/workspaces"],
     "modules-center": ["clock", "idle_inhibitor"],

@@ -10,13 +10,13 @@ window#waybar {
     background: @background;
     color: @on_background;
     border: 1px solid #3e4142;
-    border-radius: 8px;
+    border-radius: 5px;
     transition: background-color 0.3s ease;
 }
 
 tooltip {
     font-size: 125%;
-    border-radius: 8px;
+    border-radius: 5px;
     border: 1px solid #3e4142;
 }
 
@@ -25,12 +25,12 @@ tooltip {
 .modules-right {
     margin: 4px;
     padding: 4px 0px;
-    border-radius: 6px;
+    border-radius: 5px;
     background: @surface;
 }
 
 .modules-right {
-    background: darker(@background);
+    background: alpha(@background, 0.8);
 }
 
 #custom-launcher {
@@ -62,14 +62,14 @@ tooltip {
 #submap {
     margin: 3px 1px;
     padding: 6px 1px;
-    border-radius: 6px;
+    border-radius: 5px;
 }
 
 /* Workspaces */
 #workspaces {
     margin: 4px 5px;
     padding: 2px;
-    border-radius: 6px;
+    border-radius: 5px;
     /* background: @surface_container_low; */
 }
 
@@ -149,7 +149,7 @@ tooltip {
 #battery.discharging.warning,
 #battery.discharging.critical {
     padding: 6px 4px;
-    border-radius: 6px;
+    border-radius: 5px;
     margin: 2px 0;
     font-weight: bold;
 }
