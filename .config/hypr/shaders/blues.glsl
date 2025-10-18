@@ -5,7 +5,7 @@ in vec2 v_texcoord;
 uniform sampler2D tex;
 out vec4 fragColor;
 
-const float TEMPERATURE = 6000.0;
+const float TEMPERATURE = 4000.0;
 
 // Convert color temperature to RGB multiplier
 vec3 getTemperatureMultiplier(float temp) {
