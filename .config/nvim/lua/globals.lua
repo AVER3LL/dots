@@ -15,6 +15,8 @@ tools.change_background = function()
         vim.o.background = "dark"
     end
 
+    -- vim.cmd.colorscheme(vim.g.theme[vim.o.background])
+
     if vim.g.colors_name == "onedark" then
         local ok, onedark = pcall(require, "onedark")
         if ok then

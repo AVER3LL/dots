@@ -11,6 +11,17 @@ return {
     },
 
     {
+        "projekt0n/github-nvim-theme",
+        priority = 1000,
+        name = "github-theme",
+        opts = {
+            options = {
+                transparent = tools.transparent_background "boolean",
+            },
+        },
+    },
+
+    {
         "ellisonleao/gruvbox.nvim",
         priority = 1000,
         opts = {

@@ -1,6 +1,6 @@
 return {
     "A7Lavinraj/fyler.nvim",
-    enabled = true,
+    enabled = false,
     branch = "stable",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     keys = function()

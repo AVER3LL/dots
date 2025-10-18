@@ -109,27 +109,27 @@ local function on_attach(client, bufnr)
 
         -- PERF: Commented because my laptop is dying
 
-        -- vim.api.nvim_create_autocmd({ "CursorHold", "InsertLeave" }, {
-        --     group = highlight_augroup,
-        --     desc = "Highlight references under cursor",
-        --     buffer = bufnr,
-        --     callback = vim.lsp.buf.document_highlight,
-        -- })
-        --
-        -- vim.api.nvim_create_autocmd({ "CursorMoved", "InsertEnter", "BufLeave" }, {
-        --     group = highlight_augroup,
-        --     desc = "Clear highlight references",
-        --     buffer = bufnr,
-        --     callback = vim.lsp.buf.clear_references,
-        -- })
-        --
-        -- vim.api.nvim_create_autocmd("LspDetach", {
-        --     group = vim.api.nvim_create_augroup("kickstart-lsp-detach", { clear = true }),
-        --     callback = function(event)
-        --         vim.lsp.buf.clear_references()
-        --         vim.api.nvim_clear_autocmds { group = "kickstart-lsp-highlight", buffer = event.buf }
-        --     end,
-        -- })
+        vim.api.nvim_create_autocmd({ "CursorHold", "InsertLeave" }, {
+            group = highlight_augroup,
+            desc = "Highlight references under cursor",
+            buffer = bufnr,
+            callback = vim.lsp.buf.document_highlight,
+        })
+
+        vim.api.nvim_create_autocmd({ "CursorMoved", "InsertEnter", "BufLeave" }, {
+            group = highlight_augroup,
+            desc = "Clear highlight references",
+            buffer = bufnr,
+            callback = vim.lsp.buf.clear_references,
+        })
+
+        vim.api.nvim_create_autocmd("LspDetach", {
+            group = vim.api.nvim_create_augroup("kickstart-lsp-detach", { clear = true }),
+            callback = function(event)
+                vim.lsp.buf.clear_references()
+                vim.api.nvim_clear_autocmds { group = "kickstart-lsp-highlight", buffer = event.buf }
+            end,
+        })
     end
 end
 

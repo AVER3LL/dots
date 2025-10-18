@@ -5,7 +5,8 @@ local M = {}
 
 function M.run()
     local filetype = vim.bo.filetype
-    local command = commands.get_command(filetype)
+    local filename = vim.fn.expand "%:t"
+    local command = commands.get_command(filename, filetype)
 
     if not command then
         vim.notify("No run command defined for filetype: " .. filetype, vim.log.levels.WARN)

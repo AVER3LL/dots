@@ -1,44 +1,43 @@
 local M = {}
 
-M.CONFIG_FILE_NAME = "runner.json"
+M.CONFIG_FILE_NAME = "runner.lua"
 
 M.filetype_commands = {
     python = "python -u $filepath",
     lua = "lua $filepath",
     javascript = "node $filepath",
     php = "php $filepath",
-    typescript = "tsc $fileName && node $fileNameWithoutExt.js",
+    typescript = "tsc $filename && node $filenameWithoutExt.js",
     c = {
         "cd $dir",
-        "gcc $fileName -o $fileNameWithoutExt",
-        "$dir$fileNameWithoutExt",
+        "gcc $filename -o $filenameWithoutExt",
+        "$dir$filenameWithoutExt",
     },
     cpp = {
         "cd $dir",
-        "g++ $fileName -o $fileNameWithoutExt",
-        "$dir$fileNameWithoutExt",
+        "g++ $filename -o $filenameWithoutExt",
+        "$dir$filenameWithoutExt",
     },
     java = {
         "cd $dir",
-        "javac $fileName",
-        "java $fileNameWithoutExt",
+        "javac $filename",
+        "java $filenameWithoutExt",
     },
     kotlin = {
         "cd $dir",
-        "kotlinc $fileName -include-runtime -d $fileNameWithoutExt.jar",
-        "java -jar $fileNameWithoutExt.jar",
+        "kotlinc $filename -include-runtime -d $filenameWithoutExt.jar",
+        "java -jar $filenameWithoutExt.jar",
     },
     rust = {
         "cd $dir",
-        "rustc $fileName",
-        "$dir$fileNameWithoutExt",
+        "rustc $filename",
+        "$dir$filenameWithoutExt",
     },
     haskell = {
-        "cd $dir",
-        "ghc -o $fileNameWithoutExt $fileName",
-        "$dir$fileNameWithoutExt",
+        "ghci",
+        ":l $filepath",
     },
-    tex = "~/Documents/memoire-2025/Template-Licence-3-Latex/compile_latex.sh $fileName",
+    tex = "~/Documents/memoire-2025/Template-Licence-3-Latex/compile_latex.sh $filename",
     go = "go run $filepath",
     sh = "bash $filepath",
     dart = "dart $filepath",
@@ -49,16 +48,16 @@ function M.interpolate_variables(command)
     local substitutions = {
         filepath = vim.fn.expand "%:p",
         dirWithoutTrailingSlash = vim.fn.expand "%:h",
-        fileNameWithoutExt = vim.fn.expand "%:t:r",
-        fileName = vim.fn.expand "%:t",
+        filenameWithoutExt = vim.fn.expand "%:t:r",
+        filename = vim.fn.expand "%:t",
     }
 
     -- NOTE: Order of substitutions matters to avoid conflicts
     local key_order = {
         "dirWithoutTrailingSlash",
-        "fileNameWithoutExt",
+        "filenameWithoutExt",
         "filepath",
-        "fileName",
+        "filename",
         "dir",
     }
 
@@ -106,15 +105,26 @@ function M.config_file_exists()
     return vim.fn.filereadable(vim.fn.expand "./" .. M.CONFIG_FILE_NAME) ~= 0
 end
 
-function M.get_config_file_command(filetype)
-    local content = table.concat(vim.fn.readfile(vim.fn.expand("./" .. M.CONFIG_FILE_NAME)), "\n")
-
-    local ok, data = pcall(vim.json.decode, content)
-    if not ok then
-        error("Failed to decode JSON from config file: " .. data)
+function M.get_config_file_command(filename, filetype)
+    -- loadfile returns a function, which needs to be called to execute the code
+    local config_loader, load_err = loadfile(vim.fn.expand("./" .. M.CONFIG_FILE_NAME))
+    if not config_loader then
+        error("Failed to load runner config file: " .. load_err)
     end
 
-    local command = data[filetype]
+    -- Execute the loaded Lua code
+    local config = config_loader()
+
+    if not config or type(config) ~= "table" then
+        error "Invalid runner config: file must return a table"
+    end
+
+    local command = config[filetype]
+
+    if config.filename and config.filename[filename] then
+        command = config.filename[filename]
+    end
+
     if not command then
         return nil
     end
@@ -122,10 +132,10 @@ function M.get_config_file_command(filetype)
     return M.interpolate_variables(command)
 end
 
-function M.get_command(filetype)
+function M.get_command(filename, filetype)
     -- First priority: filetype-specific command from config file
     if M.config_file_exists() then
-        local command = M.get_config_file_command(filetype)
+        local command = M.get_config_file_command(filename, filetype)
         if command then
             return command
         end
@@ -137,22 +147,13 @@ function M.get_command(filetype)
         return hardcoded_command
     end
 
-    -- Third priority: generic "command" field from config file (fallback)
-    if M.config_file_exists() then
-        local content = table.concat(vim.fn.readfile(vim.fn.expand("./" .. M.CONFIG_FILE_NAME)), "\n")
-        local ok, data = pcall(vim.json.decode, content)
-        if ok and data.command then
-            return M.interpolate_variables(data.command)
-        end
-    end
-
     return nil
 end
 
 function M.create_runner_file()
     local config_dir = vim.fn.stdpath "config"
     -- TODO: There's probably a better way to do this
-    local template_path = config_dir .. "/lua/config/floaterminal/runner-template.json"
+    local template_path = config_dir .. "/lua/config/floaterminal/runner-template.lua"
     local dest_path = vim.fn.getcwd() .. "/" .. M.CONFIG_FILE_NAME
 
     if vim.fn.filereadable(template_path) == 0 then
@@ -171,21 +172,18 @@ function M.create_runner_file()
     end
 
     if vim.fn.filereadable(dest_path) == 1 then
-        vim.ui.select(
-            { "Overwrite it", "Cancel" },
-            { prompt = 'A "' .. M.CONFIG_FILE_NAME .. '" file already exists.' },
-            function(choice)
-                if choice == "Cancel" then
-                    vim.notify("Runner creation cancelled.", vim.log.levels.INFO)
-                    return
-                elseif choice == "Overwrite it" then
-                    copy_file()
-                end
-            end
-        )
-    else
-        copy_file()
+        vim.cmd("edit " .. dest_path)
+        return
     end
+
+    vim.ui.select({ "Create it", "Cancel" }, { prompt = M.CONFIG_FILE_NAME .. '" file not found.' }, function(choice)
+        if choice == "Cancel" then
+            vim.notify("Runner creation cancelled.", vim.log.levels.INFO)
+            return
+        elseif choice == "Create it" then
+            copy_file()
+        end
+    end)
 end
 
 return M

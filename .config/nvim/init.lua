@@ -11,11 +11,18 @@ require "lsp"
 
 require("config.winbar").setup()
 
-vim.cmd.colorscheme "gruvbox"
+vim.cmd.colorscheme "github_dark_dimmed"
 
 require "config.system-theme"
 
 require "config.bg"
+
+-- vim.g.theme = {
+--     dark = "github_dark_dimmed",
+--     light = "github_light_high_contrast",
+-- }
+
+-- vim.cmd.colorscheme(vim.g.theme[vim.o.background])
 
 -- require "config.statusline"
 

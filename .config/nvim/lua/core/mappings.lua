@@ -29,6 +29,8 @@ map("n", "<leader><leader>c", function()
     vim.notify(filename .. " copied to system clipboard", vim.log.levels.INFO)
 end, { desc = "Copy current file to clipboard" })
 
+map("n", "<leader><leader>g", "<cmd>%y+<CR>", { desc = "general copy whole file" })
+
 map("n", "<leader>tl", tools.change_background, { desc = "Light Dark Toggle" })
 map("n", "U", "<C-r>", { desc = "Redo" })
 
@@ -91,6 +93,8 @@ map("i", "<C-h>", "<Left>", { desc = "Move left" })
 map("i", "<C-l>", "<Right>", { desc = "Move right" })
 map("i", "<C-j>", "<Down>", { desc = "Move down" })
 map("i", "<C-k>", "<Up>", { desc = "Move up" })
+map("i", "<C-e>", "<End>", { desc = "Move end of line" })
+map("i", "<C-b>", "<ESC>^i", { desc = "move beginning of line" })
 
 -- Line Movement
 map("n", "<A-S-j>", ":m .+1<CR>==", { desc = "Move line down" })

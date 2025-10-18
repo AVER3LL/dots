@@ -1,6 +1,6 @@
 return {
     "nvim-tree/nvim-tree.lua",
-    enabled = false,
+    enabled = true,
     dependencies = {},
     cmd = { "NvimTreeToggle", "NvimTreeFocus" },
     keys = {
@@ -97,7 +97,7 @@ return {
             },
             view = {
                 width = TREE_WIDTH,
-                adaptive_size = true,
+                adaptive_size = false,
                 preserve_window_proportions = true,
                 signcolumn = "no",
                 side = "right",

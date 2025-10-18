@@ -4,6 +4,43 @@ local function is_laravel_source(source_name)
     return vim.list_contains({ "Blade-nav", "Laravel", "laravel" }, source_name)
 end
 
+---@type "vscode"|"normal"
+local blink_kind = "normal"
+
+local blink_style = {
+    vscode = {
+        columns = {
+            { "kind_icon", gap = 2 },
+            { "label", "label_description", gap = 1 },
+        },
+        kind_icon_formatter = function(ctx)
+            local icon = is_laravel_source(ctx.source_name) and "" or ctx.kind_icon
+
+            return icon .. ctx.icon_gap .. " "
+        end,
+    },
+    normal = {
+        columns = {
+            { "label", "label_description", gap = 1 },
+            { "kind_icon", "kind", gap = 2 },
+        },
+        kind_icon_formatter = function(ctx)
+            local icon = is_laravel_source(ctx.source_name) and "" or ctx.kind_icon
+
+            return "   " .. icon .. ctx.icon_gap
+        end,
+    },
+}
+
+local has_words_before = function()
+    local col = vim.api.nvim_win_get_cursor(0)[2]
+    if col == 0 then
+        return false
+    end
+    local line = vim.api.nvim_get_current_line()
+    return line:sub(col, col):match "%s" == nil
+end
+
 return {
     ---@module 'lazy'
     ---@type LazySpec
@@ -34,6 +71,19 @@ return {
                     "select_next",
                     "fallback",
                 },
+
+                -- TODO: work on this
+                -- ["<Tab>"] = {
+                --     function(cmp)
+                --         if cmp.is_visible() then
+                --             cmp.select_next()
+                --         elseif has_words_before() then
+                --             cmp.show()
+                --             cmp.accept()
+                --         end
+                --     end,
+                -- },
+
                 ["<S-Tab>"] = {
                     "snippet_backward",
                     "select_prev",
@@ -70,17 +120,10 @@ return {
                     draw = {
                         -- left and right padding
                         padding = { 1, 1 },
-                        columns = {
-                            { "kind_icon", gap = 2 },
-                            { "label", "label_description", gap = 1 },
-                        },
+                        columns = blink_style[blink_kind].columns,
                         components = {
                             kind_icon = {
-                                text = function(ctx)
-                                    local icon = is_laravel_source(ctx.source_name) and "" or ctx.kind_icon
-
-                                    return icon .. ctx.icon_gap .. " "
-                                end,
+                                text = blink_style[blink_kind].kind_icon_formatter,
                                 highlight = function(ctx)
                                     local hl = is_laravel_source(ctx.source_name) and "Laravel" or ctx.kind_hl
 
@@ -106,7 +149,7 @@ return {
             fuzzy = { implementation = "prefer_rust_with_warning" },
 
             sources = {
-                default = function(ctx)
+                default = function()
                     local success, node = pcall(vim.treesitter.get_node)
                     if not (success and node) then
                         return { "snippets", "lazydev", "lsp", "path", "buffer" }
