@@ -19,6 +19,7 @@ keybind = ctrl+alt+right=unbind
 keybind = ctrl+space>apostrophe=new_split:right
 
 keybind = ctrl+space>t=new_tab
+keybind = ctrl+space>x=close_tab
 
 keybind = ctrl+shift+h=previous_tab
 keybind = ctrl+shift+l=next_tab

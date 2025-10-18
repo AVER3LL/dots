@@ -5,6 +5,8 @@
         "size": 10
     },
     "keybinding": "default",
+    "keybinds": {
+    },
     "popToRootOnClose": true,
     "rootSearch": {
         "searchFiles": true

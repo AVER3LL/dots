@@ -106,9 +106,6 @@ output_path = '~/.config/vicinae/themes/matugen.json'
 input_path = '~/.config/matugen/templates/zathura-colors'
 output_path = '~/.config/zathura/zathurarc'
 
-pre_hook = "~/.local/bin/cache-wallpaper {{image}} >/dev/null 2>&1 & "
-post_hook = "~/.local/bin/post-wall"
-
 [templates.fish]
 input_path = '~/.config/matugen/templates/colors.fish'
 output_path = '~/.config/fish/themes/Matugen.theme'
