@@ -11,6 +11,18 @@ return {
     },
 
     {
+        "ficcdaf/ashen.nvim",
+        -- optional but recommended,
+        -- pin to the latest stable release:
+        lazy = false,
+        priority = 1000,
+        -- configuration is optional!
+        opts = {
+            -- your settings here
+        },
+    },
+
+    {
         "jpwol/thorn.nvim",
         lazy = false,
         priority = 1000,
@@ -67,8 +79,8 @@ return {
                 transparent_background = tools.transparent_background "boolean",
                 color_overrides = {
                     mocha = {
-                        base = "#0E0E0E",
-                        mantle = "#0E0E0E",
+                        base = "#121212",
+                        mantle = "#121212",
                     },
                 },
             }
