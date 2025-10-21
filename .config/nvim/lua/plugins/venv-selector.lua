@@ -63,7 +63,6 @@ return {
         { "mfussenegger/nvim-dap" },
         { "mfussenegger/nvim-dap-python" }, --optional
     },
-    branch = "regexp", -- This is the regexp branch, use this for the new version
     keys = {
         {
             "<leader>se",
