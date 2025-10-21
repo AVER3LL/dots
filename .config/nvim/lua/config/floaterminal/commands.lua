@@ -21,7 +21,7 @@ M.filetype_commands = {
     java = {
         "cd $dir",
         "javac $filename",
-        "java $filenameWithoutExt",
+        "java $dir$filenameWithoutExt",
     },
     kotlin = {
         "cd $dir",

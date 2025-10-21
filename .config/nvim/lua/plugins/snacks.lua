@@ -46,7 +46,7 @@ return {
         picker = {
             enabled = true,
             prompt = search,
-            layout = "custom",
+            layout = "vscode",
             icons = {
                 ui = {
                     hidden = "",

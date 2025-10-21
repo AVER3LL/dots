@@ -11,6 +11,13 @@ return {
     },
 
     {
+        "jpwol/thorn.nvim",
+        lazy = false,
+        priority = 1000,
+        opts = {},
+    },
+
+    {
         "projekt0n/github-nvim-theme",
         priority = 1000,
         name = "github-theme",

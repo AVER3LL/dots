@@ -204,7 +204,7 @@ autocmd({ "ColorScheme", "VimEnter" }, {
             sethl("BlinkCmpKind" .. kind, { fg = gethl(base_group).fg })
         end
 
-        sethl("BlinkCmpLabelMatch", { fg = gethl("Special").fg })
+        sethl("BlinkCmpLabelMatch", { fg = gethl("Special").fg, bold = true })
 
         sethl("LspSignatureActiveParameter", { bg = colors.str, bold = true, fg = colors.background })
 
@@ -253,9 +253,9 @@ autocmd({ "ColorScheme", "VimEnter" }, {
         })
 
         -- Common completion highlights
-        -- sethl("BlinkCmpMenuSelection", { bg = colors.fun, fg = colors.background })
+        sethl("BlinkCmpMenuSelection", { bg = colors.fun, fg = colors.background })
 
-        sethl("BlinkCmpMenuSelection", { bg = gethl("Visual").bg })
+        -- sethl("BlinkCmpMenuSelection", { bg = gethl("Visual").bg })
 
         -- Git and usage
         sethl("GitSignsCurrentLineBlame", { fg = tools.adjust_brightness(colors.foreground, 0.8), italic = true })

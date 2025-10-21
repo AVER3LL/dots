@@ -11,7 +11,7 @@ require "lsp"
 
 require("config.winbar").setup()
 
-vim.cmd.colorscheme "github_dark_dimmed"
+vim.cmd.colorscheme "kanagawa"
 
 require "config.system-theme"
 
