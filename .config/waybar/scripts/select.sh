@@ -14,6 +14,7 @@ declare -A THEME_MAP=(
     ["zen"]="zen"
     ["both"]="both"
     ["minimal"]="minimal"
+    ["test"]="test"
 )
 
 # Theme descriptions for better user experience
@@ -25,6 +26,7 @@ declare -A THEME_DESC=(
     ["zen"]="Minimal clean interface"
     ["both"]="Dual bar setup (top + bottom)"
     ["minimal"]="Top bar with no gap"
+    ["test"]="For testing purposes"
 )
 
 # Theme icons for visual appeal in rofi
@@ -36,6 +38,7 @@ declare -A THEME_ICONS=(
     ["zen"]="󱎴"
     ["both"]="󰍺"
     ["minimal"]="󰘴"
+    ["test"]="T"
 )
 
 # Display menu of available themes

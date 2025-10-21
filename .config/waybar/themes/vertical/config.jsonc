@@ -49,6 +49,7 @@
         "format": "{icon}",
         "on-click": "activate",
         "all-outputs": true,
+        "cursor": "pointer",
         // "format-icons": {
         //   "1": "一",
         //   "2": "二",
@@ -227,7 +228,7 @@
             "transition-duration": 500,
             "transition-left-to-right": false,
         },
-        "modules": ["battery", "power-profiles-daemon"],
+        "modules": ["battery"],
     },
     "tray": {
         "icon-size": 18,

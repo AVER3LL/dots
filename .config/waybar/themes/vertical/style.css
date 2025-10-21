@@ -11,6 +11,8 @@ window#waybar {
     color: @on_background;
     border: 1px solid #3e4142;
     border-radius: 5px;
+    /* border-right: 2px solid #3e4142; */
+    /* border-radius: 0px; */
     transition: background-color 0.3s ease;
 }
 

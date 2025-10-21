@@ -1,0 +1,80 @@
+// -*- mode: jsonc -*-
+{
+  "height": 24,
+  "spacing": 8,
+  "margin-top": 0,
+  "margin-left": 0,
+  "margin-right": 0,
+  "reload_style_on_change": true,
+
+  "modules-left": ["clock"],
+  "modules-center": ["hyprland/workspaces"],
+  "modules-right": ["pulseaudio", "network", "battery", "custom/power"],
+
+  "hyprland/workspaces": {
+    "format": "",
+    "on-click": "activate",
+    "all-outputs": false,
+    "persistent-workspaces": {
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": [],
+    },
+  },
+
+  "clock": {
+    "format": "{:%B %d  %I:%M %p}",
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+    "format-alt": "{:%I:%M %p}",
+  },
+
+  "battery": {
+    "interval": 1,
+    "full-at": 80,
+    "states": { "good": 80, "warning": 30, "critical": 15 },
+    "format": "{icon}",
+    "format-full": "{icon}",
+    "format-charging": "",
+    "format-plugged": "",
+    "format-icons": ["", "", "", "", ""],
+    "tooltip-format": "{capacity}% - {timeTo}",
+  },
+
+  "network": {
+    "format-wifi": "󰤨",
+    "format-ethernet": "󰈁",
+    "tooltip-format": "{essid}\n{ifname}: {ipaddr}/{cidr}",
+    "format-linked": " No IP",
+    "format-disconnected": "󰤭",
+    "on-click": "kitty --class gazelle -e gazelle",
+  },
+
+  "pulseaudio": {
+    "format": "{icon}",
+    "format-bluetooth": "󰂱",
+    "format-muted": "󰖁",
+    "scroll-step": 1,
+    "on-click": "~/.config/hypr/scripts/volume_hyprdots.sh -o m",
+    "on-click-middle": "pavucontrol",
+    "ignored-sinks": ["Easy Effects Sink"],
+    "format-icons": {
+      "headphone": "",
+      "hands-free": "",
+      "headset": "󰋎",
+      "phone": "",
+      "portable": "",
+      "car": "",
+      "default": ["󰖀", "󰕾"],
+    },
+    "tooltip-format": "Volume: {volume}%",
+  },
+
+  "custom/power": {
+    "format": "⏻",
+    "tooltip": false,
+    "on-click": "~/.config/wlogout/wlogout.sh",
+  },
+}
