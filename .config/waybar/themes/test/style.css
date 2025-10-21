@@ -1,6 +1,6 @@
 @import '../../colors.css';
 
-@define-color foreground @primary;
+@define-color foreground white;
 
 /* --- Global --- */
 * {
