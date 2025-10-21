@@ -11,7 +11,7 @@ require "lsp"
 
 require("config.winbar").setup()
 
-vim.cmd.colorscheme "kanagawa"
+vim.cmd.colorscheme "catppuccin-mocha"
 
 require "config.system-theme"
 

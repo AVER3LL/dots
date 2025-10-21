@@ -32,7 +32,7 @@ autocmd({ "ColorScheme", "VimEnter" }, {
             str = gethl("String").fg or "#7CA855",
             constant = tools.resolve_hl("Constant").fg,
             parenthesis = vim.o.background == "dark" and "#39ff14" or "#ff007f",
-            subtle = tools.blend(gethl("Normal").bg, gethl("Normal").fg, 0.35),
+            subtle = tools.blend(gethl("Normal").bg, gethl("Normal").fg, 0.15),
         }
 
         colors.cursorline = vim.list_contains({ "vercel", "moonfly" }, vim.g.colors_name)
@@ -140,7 +140,10 @@ autocmd({ "ColorScheme", "VimEnter" }, {
         elseif effective_style == "clear" then
             local dimmed_fg = tools.blend(colors.background, colors.foreground, 0.8)
 
-            sethl("WinSeparator", { bg = colors.background, fg = colors.subtle })
+            sethl(
+                "WinSeparator",
+                { bg = colors.background, fg = tools.blend(colors.background, colors.foreground, 0.1) }
+            )
 
             sethl("BlinkCmpMenuBorder", { bg = colors.background, fg = colors.subtle })
             sethl("BlinkCmpDocBorder", { bg = colors.background, fg = colors.subtle })
