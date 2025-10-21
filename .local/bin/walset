@@ -4,6 +4,8 @@ WALL_DIR="$HOME/wallpaper/"
 CACHE_DIR="$HOME/.cache/averell"
 BUILD_ROFI_INPUT_CMD="$HOME/.config/averell/bin/build-rofi-input"
 
+MATUGEN_SCRIPTS_DIR="$HOME/.config/matugen/scripts"
+
 WALL_CURRENT="$CACHE_DIR/wall.set"
 WALL_STATIC="$CACHE_DIR/wall.static"
 WALL_SQUARE="$CACHE_DIR/wall.sqre"
@@ -33,5 +35,15 @@ if [ -n "$SELECTED_WALL" ]; then
     ln -sf "$WALL_DIR$SELECTED_WALL" "$WALL_CURRENT"
 
     wait $!
+
+    pkill -f "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1" >/dev/null 2>&1 || true
+    /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 >/dev/null 2>&1 &
+
+    if command -v fish &>/dev/null; then
+        fish -c "yes | fish_config theme save Matugen" 2>/dev/null &
+    fi
+
+    wait $!
+
     notify-send -e -h string:x-canonical-private-synchronous:matugen_notif "MatugenMagick" "Matugen & ImageMagick has completed its job" -i $HOME/Pictures/face.png
 fi
