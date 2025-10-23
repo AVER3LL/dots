@@ -23,6 +23,12 @@ theme=$("$HOME/.local/bin/toggle-mode" --current)
 if [ -n "$SELECTED_WALL" ]; then
     matugen image --mode "$theme" "$WALL_DIR$SELECTED_WALL"
 
+    if command -v vicinae >/dev/null 2>&1; then
+        vicinae vicinae://theme/set/matugen
+    else
+        log_debug "vicinae command not found"
+    fi
+
     wait $!
 
     magick "$WALL_DIR$SELECTED_WALL" -strip -resize 1000 -gravity center -extent 1000 -blur "30x30" -quality 90 "$WALL_BLUR"

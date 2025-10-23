@@ -24,7 +24,7 @@ return {
         toggle = { notify = false },
         bigfile = { enabled = true },
         explorer = { enabled = false },
-        image = { enabled = true },
+        image = { enabled = false },
         notifier = {
             enabled = true,
             margin = { top = 1, right = 1, bottom = 0 },
@@ -239,7 +239,21 @@ return {
         vim.api.nvim_create_autocmd("User", {
             pattern = "VeryLazy",
             callback = function()
+                _G.dd = function(...)
+                    Snacks.debug.inspect(...)
+                end
+
+                _G.bt = function()
+                    Snacks.debug.backtrace()
+                end
+
+                vim._print = function(...)
+                    dd(...)
+                end
+
                 Snacks.toggle.line_number():map "<leader><leader>l"
+                Snacks.toggle.diagnostics():map "<leader>dd"
+                Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map "<leader><leader>o"
                 Snacks.toggle.option("laststatus", { off = 0, on = 3, name = "Statusline" }):map "<leader><leader>w"
                 -- Snacks.toggle.option("background", {
                 --     off = "light",

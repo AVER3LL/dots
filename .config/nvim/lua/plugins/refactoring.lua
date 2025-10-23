@@ -9,6 +9,7 @@ return {
                 require("refactoring").select_refactor { prefer_ex_cmd = true }
             end,
             mode = { "x", "n" },
+            desc = "Refactor",
         },
     },
     dependencies = {
