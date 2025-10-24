@@ -11,6 +11,16 @@ return {
     },
 
     {
+        "Everblush/nvim",
+        lazy = false,
+        priority = 1000,
+        name = "everblush",
+        opts = {
+            transparent_background = tools.transparent_background "boolean",
+        },
+    },
+
+    {
         "ficcdaf/ashen.nvim",
         -- optional but recommended,
         -- pin to the latest stable release:

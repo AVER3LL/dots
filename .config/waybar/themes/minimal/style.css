@@ -123,19 +123,19 @@ tooltip label {
 
 #battery {
     color: black;
-    background-color: @green_container;
+    background-color: @green;
     border-radius: 5px;
     padding: 5px 12px;
     margin: 7px 0px;
 }
 
 #battery.critical:not(.charging):not(.plugged) {
-    background-color: @red_container;
+    background-color: @red;
     color: black;
 }
 
 #battery.warning:not(.charging) {
-    background-color: @tertiary_container;
+    background-color: @tertiary;
     color: black;
 }
 

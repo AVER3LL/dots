@@ -1,7 +1,7 @@
 return {
     {
         "declancm/cinnamon.nvim",
-        enabled = true,
+        enabled = false,
         version = "*", -- use latest release
         config = function()
             local cinnamon = require "cinnamon"

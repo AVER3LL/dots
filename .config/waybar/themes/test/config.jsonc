@@ -7,7 +7,7 @@
   "margin-right": 0,
   "reload_style_on_change": true,
 
-  "modules-left": ["clock"],
+  "modules-left": ["clock", "idle_inhibitor"],
   "modules-center": ["hyprland/workspaces"],
   "modules-right": ["pulseaudio", "tray", "battery", "custom/power"],
 
@@ -34,6 +34,14 @@
     "format": "{:%B %d  %I:%M %p}",
     "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
     "format-alt": "{:%I:%M %p}",
+  },
+
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": {
+      "activated": "󰅶 ",
+      "deactivated": "󰛊 ",
+    },
   },
 
   "battery": {

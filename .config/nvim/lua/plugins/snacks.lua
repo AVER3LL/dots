@@ -152,6 +152,13 @@ return {
             desc = "Find diagnostics",
         },
         {
+            "<leader>fi",
+            function()
+                Snacks.picker.icons()
+            end,
+            desc = "Find icons",
+        },
+        {
             "<leader>fc",
             function()
                 Snacks.picker.files { cwd = vim.fn.stdpath "config", layout = "vscode" }

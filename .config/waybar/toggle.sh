@@ -1,7 +1,7 @@
 #!/bin/bash
 
-WAYBAR_CONFIG="$HOME/.config/waybar/themes/test/config.jsonc"
-WAYBAR_STYLE="$HOME/.config/waybar/themes/test/style.css"
+WAYBAR_CONFIG="$HOME/.config/waybar/themes/minimal/config.jsonc"
+WAYBAR_STYLE="$HOME/.config/waybar/themes/minimal/style.css"
 
 if pgrep -x waybar >/dev/null; then
     # Waybar is running, kill it
