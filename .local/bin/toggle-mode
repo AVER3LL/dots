@@ -48,10 +48,12 @@ set_mode() {
     wall=$(readlink ~/.cache/averell/wall.set 2>/dev/null || :)
     # [[ -x "$HOME/Projects/rust/walset-backend/target/release/wallpaper-theme-manager" && -n "$wall" ]] &&
     #     "$HOME/Projects/rust/walset-backend/target/release/wallpaper-theme-manager" --no-set --mode="$mode" "$wall" &
-    matugen image --type 'scheme-fidelity' --mode "$mode" "$wall" >/dev/null 2>&1 &
 
     # Hot reload nvim theme
     pkill -USR1 -x nvim || true
+
+    # matugen image --type 'scheme-fidelity' --mode "$mode" "$wall" >/dev/null 2>&1 &
+    $HOME/.local/bin/walset-backend --mode "$mode" "$wall" >/dev/null 2>&1 &
 
     sed -i \
         -e "s/^gtk-application-prefer-dark-theme\s*=.*/gtk-application-prefer-dark-theme=$prefer_dark/" \
@@ -61,7 +63,7 @@ set_mode() {
     # Persist nvim theme
     nvim_theme_file="$HOME/.config/nvim/lua/config/system-theme.lua"
     echo "-- File automatically modified by a script" >"$nvim_theme_file"
-    echo "" >> "$nvim_theme_file"
+    echo "" >>"$nvim_theme_file"
     echo "vim.o.background = \"$mode\"" >>"$nvim_theme_file"
 
     echo "Theme switched to $mode mode"

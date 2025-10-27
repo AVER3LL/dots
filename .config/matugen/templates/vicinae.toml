@@ -1,0 +1,23 @@
+[meta]
+version = 1
+name = "Matugen theme"
+description = "Cozy feeling with color-rich accents."
+variant = "{{ mode | to_lower }}"
+icon = "./icon.png"
+
+[colors.core]
+background = "{{colors.background.default.hex}}"
+foreground = "{{colors.on_background.default.hex}}"
+secondary_background = "{{colors.surface_container.default.hex}}"
+border = "{{colors.surface_container.default.hex}}"
+accent = "{{colors.primary.default.hex}}"
+
+[colors.accents]
+blue = "{{colors.blue.default.hex}}"
+green = "{{colors.green.default.hex}}"
+magenta = "{{colors.magenta.default.hex}}"
+orange = "#FAB387"
+purple = "#CBA6F7"
+red = "{{colors.red.default.hex}}"
+yellow = "{{colors.yellow.default.hex}}"
+cyan = "{{colors.cyan.default.hex}}"

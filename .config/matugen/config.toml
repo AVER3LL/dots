@@ -99,8 +99,8 @@ output_path = '~/.cache/wal/colors.json'
 post_hook = 'pywalfox update'
 
 [templates.vicinae]
-input_path = '~/.config/matugen/templates/vicinae.json'
-output_path = '~/.config/vicinae/themes/matugen.json'
+input_path = '~/.config/matugen/templates/vicinae.toml'
+output_path = '~/.local/share/vicinae/themes/matugen.toml'
 
 [templates.zathura]
 input_path = '~/.config/matugen/templates/zathura-colors'

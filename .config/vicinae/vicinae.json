@@ -2,7 +2,8 @@
     "closeOnFocusLoss": false,
     "faviconService": "google",
     "font": {
-        "size": 10
+        "normal": "JetBrainsMono NF",
+        "size": 10.5
     },
     "keybinding": "default",
     "keybinds": {
@@ -12,10 +13,10 @@
         "searchFiles": true
     },
     "theme": {
-        "name": "matugen.json"
+        "name": "matugen"
     },
     "window": {
-        "csd": false,
+        "csd": true,
         "opacity": 1,
         "rounding": 10
     }

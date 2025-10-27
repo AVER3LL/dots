@@ -1,0 +1,23 @@
+[meta]
+version = 1
+name = "Matugen theme"
+description = "Cozy feeling with color-rich accents."
+variant = "light"
+icon = "./icon.png"
+
+[colors.core]
+background = "#fff8f4"
+foreground = "#211b13"
+secondary_background = "#f9ecdf"
+border = "#53643e"
+accent = "#815512"
+
+[colors.accents]
+blue = "#64558f"
+green = "#516527"
+magenta = "#884b6b"
+orange = "#FAB387"
+purple = "#CBA6F7"
+red = "#8e4d2e"
+yellow = "#705d0d"
+cyan = "#036b5d"

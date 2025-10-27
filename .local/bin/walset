@@ -4,52 +4,10 @@ WALL_DIR="$HOME/wallpaper/"
 CACHE_DIR="$HOME/.cache/averell"
 BUILD_ROFI_INPUT_CMD="$HOME/.config/averell/bin/build-rofi-input"
 
-MATUGEN_SCRIPTS_DIR="$HOME/.config/matugen/scripts"
-
-WALL_CURRENT="$CACHE_DIR/wall.set"
-WALL_STATIC="$CACHE_DIR/wall.static"
-WALL_SQUARE="$CACHE_DIR/wall.sqre"
-WALL_QUAD="$CACHE_DIR/wall.quad"
-WALL_THUMB="$CACHE_DIR/wall.thmb"
-WALL_BLUR="$CACHE_DIR/wall.blur"
-WALL_RECT="$CACHE_DIR/wall.rect"
-
 [[ "$WALL_DIR" != */ ]] && WALL_DIR="${WALL_DIR}/"
 
 SELECTED_WALL=$("$BUILD_ROFI_INPUT_CMD" | rofi -dmenu -theme ~/.config/rofi/wallpaper.rasi -p "" -i)
 
-theme=$("$HOME/.local/bin/toggle-mode" --current)
-
 if [ -n "$SELECTED_WALL" ]; then
-    matugen image --mode "$theme" "$WALL_DIR$SELECTED_WALL"
-
-    if command -v vicinae >/dev/null 2>&1; then
-        vicinae vicinae://theme/set/matugen
-    else
-        log_debug "vicinae command not found"
-    fi
-
-    wait $!
-
-    magick "$WALL_DIR$SELECTED_WALL" -strip -resize 1000 -gravity center -extent 1000 -blur "30x30" -quality 90 "$WALL_BLUR"
-    magick "$WALL_DIR$SELECTED_WALL" -strip -resize 1000 -gravity center -extent 1000 -quality 90 "$WALL_THUMB"
-    magick "$WALL_DIR$SELECTED_WALL" -strip -thumbnail 500x500^ -gravity center -extent 500x500 "$WALL_SQUARE"
-    magick "$WALL_SQUARE" \( -size 500x500 xc:white -fill "rgba(0,0,0,0.7)" -draw "polygon 400,500 500,500 500,0 450,0" -fill black -draw "polygon 500,500 500,0 450,500" \) -alpha Off -compose CopyOpacity -composite $HOME/.cache/averell/currentWalQuad.png && mv $HOME/.cache/averell/currentWalQuad.png $WALL_QUAD
-
-    wait $!
-
-    ln -sf "$WALL_DIR$SELECTED_WALL" "$WALL_CURRENT"
-
-    wait $!
-
-    pkill -f "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1" >/dev/null 2>&1 || true
-    /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 >/dev/null 2>&1 &
-
-    if command -v fish &>/dev/null; then
-        fish -c "yes | fish_config theme save Matugen" 2>/dev/null &
-    fi
-
-    wait $!
-
-    notify-send -e -h string:x-canonical-private-synchronous:matugen_notif "MatugenMagick" "Matugen & ImageMagick has completed its job" -i $HOME/Pictures/face.png
+    $HOME/.local/bin/walset-backend "$WALL_DIR$SELECTED_WALL"
 fi

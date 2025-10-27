@@ -1,422 +1,106 @@
-#!/usr/bin/env bash
-# Fast Wallpaper Manager - Streamlined for speed and maintainability
-# Version: 2.0
-
+#!/bin/bash
 set -euo pipefail
 
-# Trap to show where script failed
-trap 'echo "[ERROR] Script failed at line $LINENO. Command: $BASH_COMMAND" >&2' ERR
+# ─── Directories ─────────────────────────────────────────────
+WALL_DIR="$HOME/wallpaper/"
+CACHE_DIR="$HOME/.cache/averell"
+MATUGEN_SCRIPTS_DIR="$HOME/.config/matugen/scripts"
 
-#==============================================================================
-# CONFIGURATION & CONSTANTS
-#==============================================================================
+WALL_CURRENT="$CACHE_DIR/wall.set"
+WALL_STATIC="$CACHE_DIR/wall.static"
+WALL_SQUARE="$CACHE_DIR/wall.sqre"
+WALL_QUAD="$CACHE_DIR/wall.quad"
+WALL_THUMB="$CACHE_DIR/wall.thmb"
+WALL_BLUR="$CACHE_DIR/wall.blur"
+WALL_RECT="$CACHE_DIR/wall.rect"
 
-readonly SCRIPT_NAME="$(basename "$0")"
-readonly CACHE_DIR="$HOME/.cache/averell"
-readonly MATUGEN_SCRIPTS_DIR="$HOME/.config/matugen/scripts"
-readonly GTK_CONFIG="$HOME/.config/gtk-3.0/settings.ini"
+[[ "$WALL_DIR" != */ ]] && WALL_DIR="${WALL_DIR}/"
 
-# Default settings
-declare -g WALLPAPER_ENGINE="swww"
-declare -g SET_WALLPAPER=true
-declare -g MODE=""
-declare -g IMAGE=""
-declare -g VERBOSE=true
+# ─── Parse arguments ─────────────────────────────────────────
+MODE_OVERRIDE=""
+IMG=""
 
-#==============================================================================
-# LOGGING & UTILITY FUNCTIONS
-#==============================================================================
-
-log_info() {
-    echo "[INFO] $*" >&2
-}
-
-log_warn() {
-    echo "[WARN] $*" >&2
-}
-
-log_error() {
-    echo "[ERROR] $*" >&2
-}
-
-log_debug() {
-    [[ "$VERBOSE" == true ]] && echo "[DEBUG] $*" >&2
-}
-
-die() {
-    log_error "$1"
-    exit "${2:-1}"
-}
-
-show_help() {
-    cat <<EOF
-Usage: $SCRIPT_NAME [OPTIONS] <image_file>
-
-Fast wallpaper manager with theme generation support.
-
-OPTIONS:
-    --no-set           Don't set the wallpaper, only generate cache/theme
-    --gif              Use swww for animated wallpapers (GIFs)
-    --mode=MODE        Force theme mode (light/dark)
-    --verbose, -v      Enable verbose logging
-    --help, -h         Show this help message
-
-EXAMPLES:
-    $SCRIPT_NAME ~/Pictures/wallpaper.jpg
-    $SCRIPT_NAME --gif --mode=dark ~/Pictures/animated.gif
-    $SCRIPT_NAME --no-set ~/Pictures/test.png
-
-EOF
-}
-
-command_exists() {
-    command -v "$1" >/dev/null 2>&1
-}
-
-ensure_directory() {
-    local dir="$1"
-    [[ -d "$dir" ]] || mkdir -p "$dir"
-}
-
-#==============================================================================
-# THEME & MODE DETECTION
-#==============================================================================
-
-detect_theme_mode() {
-    if [[ -n "$MODE" ]]; then
-        log_debug "Using forced mode: $MODE"
-        return 0
-    fi
-
-    if [[ -f "$GTK_CONFIG" ]]; then
-        local current_theme
-        # Use || true to prevent exit on grep failure
-        current_theme=$(grep 'gtk-application-prefer-dark-theme' "$GTK_CONFIG" 2>/dev/null |
-            sed 's/.*=\s*//' | tr -d ' ' || true)
-
-        # Default to dark if grep found nothing
-        [[ -z "$current_theme" ]] && current_theme="1"
-
-        if [[ "$current_theme" == "0" ]]; then
-            MODE="light"
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+    --mode)
+        if [[ -n "${2-}" ]]; then
+            MODE_OVERRIDE="$2"
+            shift 2
         else
-            MODE="dark"
+            echo "Error: --mode requires an argument (light or dark)" >&2
+            exit 1
         fi
-    else
-        log_warn "GTK config not found, defaulting to dark mode"
-        MODE="dark"
-    fi
-
-    log_debug "Detected theme mode: $MODE"
-}
-
-#==============================================================================
-# ARGUMENT PARSING
-#==============================================================================
-
-parse_arguments() {
-    while [[ $# -gt 0 ]]; do
-        case $1 in
-        --no-set)
-            SET_WALLPAPER=false
-            shift
-            ;;
-        --gif)
-            WALLPAPER_ENGINE="swww"
-            shift
-            ;;
-        --mode=*)
-            MODE="${1#*=}"
-            if [[ "$MODE" != "light" && "$MODE" != "dark" ]]; then
-                die "Invalid mode: $MODE. Use 'light' or 'dark'"
-            fi
-            shift
-            ;;
-        --verbose | -v)
-            VERBOSE=true
-            shift
-            ;;
-        --help | -h)
-            show_help
-            exit 0
-            ;;
-        -*)
-            die "Unknown option: $1. Use --help for usage information"
-            ;;
-        *)
-            if [[ -z "$IMAGE" ]]; then
-                IMAGE="$1"
-            else
-                die "Multiple image files specified. Please provide only one"
-            fi
-            shift
-            ;;
-        esac
-    done
-}
-
-validate_arguments() {
-    [[ -n "$IMAGE" ]] || die "No image file specified. Use --help for usage information"
-    [[ -f "$IMAGE" ]] || die "Image file not found: $IMAGE"
-
-    # Convert to absolute path
-    IMAGE="$(realpath "$IMAGE")"
-    log_debug "Using image: $IMAGE"
-}
-
-#==============================================================================
-# CACHE FILE MANAGEMENT
-#==============================================================================
-
-setup_cache_files() {
-    ensure_directory "$CACHE_DIR"
-
-    # Define cache file paths
-    readonly WALL_CURRENT="$CACHE_DIR/wall.set"
-    readonly WALL_STATIC="$CACHE_DIR/wall.static"
-    readonly WALL_SQUARE="$CACHE_DIR/wall.sqre"
-    readonly WALL_THUMB="$CACHE_DIR/wall.thmb"
-    readonly WALL_BLUR="$CACHE_DIR/wall.blur"
-    readonly WALL_RECT="$CACHE_DIR/wall.rect"
-
-    # Link current wallpaper
-    ln -sf "$IMAGE" "$WALL_CURRENT"
-    log_debug "Created symlink: $WALL_CURRENT -> $IMAGE"
-}
-
-prepare_static_version() {
-    if [[ "$WALLPAPER_ENGINE" == "swww" ]] && command_exists magick; then
-        log_debug "Creating static version for GIF analysis"
-        if ! magick "$IMAGE[0]" -strip -quality 85 "$WALL_STATIC" 2>/dev/null; then
-            log_warn "Failed to create static version, using original"
-            ln -sf "$IMAGE" "$WALL_STATIC"
-        fi
-    else
-        ln -sf "$IMAGE" "$WALL_STATIC"
-    fi
-}
-
-#==============================================================================
-# IMAGE ANALYSIS
-#==============================================================================
-
-calculate_brightness() {
-    if command_exists magick; then
-        local brightness
-        brightness=$(magick "$WALL_STATIC" -resize 1x1! \
-            -format "%[fx:int(255*r*0.299+255*g*0.587+255*b*0.114)]" \
-            info: 2>/dev/null || echo 128)
-        echo "$brightness"
-    else
-        log_warn "ImageMagick not available, using default brightness"
-        echo 128
-    fi
-}
-
-auto_pick_scheme() {
-    local image="$1"
-    local scheme_script="$MATUGEN_SCRIPTS_DIR/pick_monet_scheme.py"
-
-    if command_exists python3 && [[ -x "$scheme_script" ]]; then
-        local scheme
-        if scheme=$("$scheme_script" "$image" 2>/dev/null) && [[ -n "$scheme" ]]; then
-            log_debug "Auto-picked scheme: $scheme"
-            echo "$scheme"
-            return 0
-        fi
-    fi
-
-    log_debug "Using default scheme: scheme-fidelity"
-    echo "scheme-fidelity"
-}
-
-#==============================================================================
-# WALLPAPER ENGINE MANAGEMENT
-#==============================================================================
-
-kill_wallpaper_engines() {
-    if [[ "$WALLPAPER_ENGINE" == "swww" ]]; then
-        pkill -x hyprpaper 2>/dev/null || true
-        log_debug "Killed hyprpaper processes (if any)"
-    else
-        swww kill 2>/dev/null || true
-        log_debug "Killed swww processes (if any)"
-    fi
-}
-
-set_wallpaper_swww() {
-    # Start swww-daemon if not running
-    if ! pgrep -x swww-daemon >/dev/null; then
-        log_debug "Starting swww-daemon"
-        swww-daemon --format xrgb &
-        sleep 0.5
-    fi
-
-    log_debug "Setting wallpaper with swww: $IMAGE"
-    swww img "$IMAGE" --transition-type fade --transition-duration 0.5 2>/dev/null
-}
-
-set_wallpaper_hyprpaper() {
-    # Start hyprpaper if not running
-    if ! pgrep -x hyprpaper >/dev/null; then
-        log_debug "Starting hyprpaper"
-        hyprpaper &
-        sleep 0.3
-    fi
-
-    log_debug "Setting wallpaper with hyprpaper: $WALL_STATIC"
-    hyprctl hyprpaper reload ,"$WALL_STATIC" 2>/dev/null
-}
-
-set_wallpaper() {
-    kill_wallpaper_engines
-
-    case "$WALLPAPER_ENGINE" in
-    swww)
-        set_wallpaper_swww
         ;;
-    hyprpaper)
-        set_wallpaper_hyprpaper
+    -h | --help)
+        echo "Usage: $0 [--mode light|dark] <image>"
+        exit 0
         ;;
     *)
-        die "Unknown wallpaper engine: $WALLPAPER_ENGINE"
+        IMG="$1"
+        shift
         ;;
     esac
+done
 
-    log_info "Wallpaper set with $WALLPAPER_ENGINE"
-}
+if [[ -z "$IMG" ]]; then
+    echo "Error: No image specified."
+    echo "Usage: $0 [--mode light|dark] <image>"
+    exit 1
+fi
 
-#==============================================================================
-# CACHE GENERATION
-#==============================================================================
+if [[ ! -f "$IMG" ]]; then
+    echo "Error: File not found — $IMG"
+    exit 1
+fi
 
-generate_image_caches() {
-    if ! command_exists magick; then
-        log_warn "ImageMagick not found, skipping cache generation"
-        return 0
-    fi
-    log_debug "Generating image caches"
-    # Generate all caches in one ImageMagick call for efficiency
-    magick "$WALL_STATIC" -strip -quality 80 \
-        \( +clone -thumbnail 500x500^ -gravity center -extent 500x500 +write "$WALL_SQUARE" +delete \) \
-        \( +clone -thumbnail 320x180^ -gravity center -extent 320x180 +write "$WALL_THUMB" +delete \) \
-        \( +clone -thumbnail 1280x720^ -gravity center -extent 1280x720 +write "$WALL_RECT" +delete \) \
-        \( +clone -resize 1920x1080^ -gravity center -extent 1920x1080 -blur 0x8 +write "$WALL_BLUR" +delete \) \
-        null: 2>/dev/null &
-    log_debug "Cache generation started in background"
-}
+# ─── Determine theme mode ────────────────────────────────────
+if [[ -n "$MODE_OVERRIDE" ]]; then
+    theme="$MODE_OVERRIDE"
+else
+    theme=$("$HOME/.local/bin/toggle-mode" --current)
+fi
 
-#==============================================================================
-# THEME APPLICATION
-#==============================================================================
+# ─── Generate scheme and theme ───────────────────────────────
+detected=$("$MATUGEN_SCRIPTS_DIR/pick_monet_scheme.py" "$IMG" 2>/dev/null | tr -d '\n')
+detected="${detected:-scheme-tonal-spot}"
 
-update_folder_colors() {
-    local script="$MATUGEN_SCRIPTS_DIR/update_papirus_folders.sh"
-    if [[ -x "$script" ]]; then
-        log_debug "Updating Papirus folder colors"
-        "$script" &
-    else
-        log_debug "Papirus folders update script not found: $script"
-    fi
-}
+echo "Matugen mode: $theme"
+echo "Detected scheme: $detected"
 
-update_border_colors() {
-    local brightness=$1
-    local threshold=130
+matugen image --mode "$theme" --type "$detected" "$IMG"
 
-    if ((brightness > threshold)); then
-        # Light background - use primary color for border
-        sed -i 's/^\$hyprborder = .*/\$hyprborder = rgba({{colors.primary.default.hex_stripped}}ff)/' ~/.config/matugen/templates/hyprland-colors.conf
-        # sed -i 's/\(@define-color background rgba(21, 18, 27, \)0)/\10.7)/'  ~/.config/waybar/themes/both/colors.css
-        sed -i 's/@define-color fg #f6f7fc;/@define-color fg #000000;/' ~/.config/waybar/themes/both/colors.css
+# ─── Optional Vicinae integration ────────────────────────────
+if command -v vicinae >/dev/null 2>&1; then
+    vicinae vicinae://theme/set/matugen
+else
+    echo "vicinae command not found"
+fi
 
-        sed -i 's/@define-color tray_background rgba(21, 18, 27, 0);/@define-color tray_background rgba(21, 18, 27, 0.7);/' ~/.config/waybar/themes/both/colors.css
+# ─── ImageMagick processing ──────────────────────────────────
+magick "$IMG" -strip -resize 1000 -gravity center -extent 1000 -blur "30x30" -quality 90 "$WALL_BLUR"
+magick "$IMG" -strip -resize 1000 -gravity center -extent 1000 -quality 90 "$WALL_THUMB"
+magick "$IMG" -strip -thumbnail 500x500^ -gravity center -extent 500x500 "$WALL_SQUARE"
 
-    else
-        # Dark background - use fixed dark color for border
-        sed -i 's/^\$hyprborder = .*/\$hyprborder = rgba(3e4142ff)/' ~/.config/matugen/templates/hyprland-colors.conf
-        # sed -i 's/\(@define-color background rgba(21, 18, 27, \)0\.7)/\10)/' ~/.config/waybar/themes/both/colors.css
-        sed -i 's/@define-color fg #000000;/@define-color fg #f6f7fc;/' ~/.config/waybar/themes/both/colors.css
+magick "$WALL_SQUARE" \
+    \( -size 500x500 xc:white -fill "rgba(0,0,0,0.7)" -draw "polygon 400,500 500,500 500,0 450,0" \
+    -fill black -draw "polygon 500,500 500,0 450,500" \) \
+    -alpha Off -compose CopyOpacity -composite "$CACHE_DIR/currentWalQuad.png"
 
-        sed -i 's/@define-color tray_background rgba(21, 18, 27, 0.7);/@define-color tray_background rgba(21, 18, 27, 0);/' ~/.config/waybar/themes/both/colors.css
-    fi
+mv "$CACHE_DIR/currentWalQuad.png" "$WALL_QUAD"
 
-}
+ln -sf "$IMG" "$WALL_CURRENT"
 
-restart_desktop_services() {
-    # Restart xdg-desktop-portal-gtk if active
-    if systemctl --user is-active --quiet "xdg-desktop-portal-gtk" 2>/dev/null; then
-        log_debug "Restarting xdg-desktop-portal-gtk"
-        systemctl --user restart "xdg-desktop-portal-gtk" >/dev/null 2>&1 &
-    fi
+# ─── Restart polkit agent ────────────────────────────────────
+pkill -f "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1" >/dev/null 2>&1 || true
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 >/dev/null 2>&1 &
 
-    # Restart polkit authentication agent
-    pkill -f "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1" >/dev/null 2>&1 || true
-    /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 >/dev/null 2>&1 &
-    log_debug "Restarted polkit authentication agent"
-}
+# ─── Update Fish theme (if available) ────────────────────────
+if command -v fish &>/dev/null; then
+    fish -c "yes | fish_config theme save Matugen" 2>/dev/null &
+fi
 
-apply_theme() {
-    local scheme="$1"
-
-    if command_exists matugen; then
-        log_debug "Applying theme with matugen (scheme: $scheme, mode: $MODE)"
-        matugen image --type "$scheme" --mode "$MODE" "$IMAGE" >/dev/null 2>&1 &
-    else
-        log_warn "matugen not found, skipping theme generation"
-    fi
-
-    if command -v fish &>/dev/null; then
-        fish -c "yes | fish_config theme save Matugen" 2>/dev/null &
-    fi
-
-    restart_desktop_services
-
-    if [[ "$SET_WALLPAPER" == true ]]; then
-        update_folder_colors
-    fi
-}
-
-#==============================================================================
-# MAIN EXECUTION
-#==============================================================================
-
-main() {
-    local brightness scheme
-
-    # Parse and validate arguments
-    parse_arguments "$@"
-    validate_arguments
-
-    # Setup
-    detect_theme_mode
-
-    # Set wallpaper if requested
-    if [[ "$SET_WALLPAPER" == true ]]; then
-        setup_cache_files
-        prepare_static_version
-        set_wallpaper
-    else
-        log_info "Skipping wallpaper setting (--no-set specified)"
-    fi
-
-    {
-        # Analysis
-        brightness=$(calculate_brightness)
-        scheme=$(auto_pick_scheme "$IMAGE")
-
-        log_info "Brightness: $brightness, Scheme: $scheme"
-
-        # Generate caches and apply theme in background
-        update_border_colors "$brightness"
-        if [[ "$SET_WALLPAPER" == true ]]; then
-            generate_image_caches
-        fi
-        apply_theme "$scheme"
-    } &
-
-    log_info "Done! Cache generation and theme application running in background."
-}
-
-# Execute main function with all arguments
-main "$@"
+# ─── Notify completion ───────────────────────────────────────
+notify-send \
+    -h string:x-canonical-private-synchronous:matugen_notif \
+    "MatugenMagick" "Matugen & ImageMagick have completed their job" \
+    -i "$HOME/Pictures/face.png"
