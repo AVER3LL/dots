@@ -4,6 +4,28 @@ local function augroup(name)
     return vim.api.nvim_create_augroup(name, { clear = true })
 end
 
+local kitty_socket = os.getenv "KITTY_LISTEN_ON" or "unix:/tmp/mykitty"
+local kitty_group = augroup("KityGroup")
+
+local function kitty_command(args)
+    local cmd = vim.list_extend({ "kitty", "@", "--to", kitty_socket }, args)
+    vim.system(cmd)
+end
+
+autocmd("VimEnter", {
+    group = kitty_group,
+    callback = function()
+        kitty_command { "set-spacing", "margin=0" }
+    end,
+})
+
+autocmd("VimLeavePre", {
+    group = kitty_group,
+    callback = function()
+        kitty_command { "set-spacing", "margin=default" }
+    end
+})
+
 -- Autocommand to temporarily change 'blade' filetype to 'php' when opening for LSP server activation
 autocmd({ "BufRead", "BufNewFile" }, {
     group = augroup "lsp_blade_workaround",

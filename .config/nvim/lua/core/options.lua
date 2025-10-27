@@ -38,7 +38,7 @@ vim.opt.listchars = {
     extends = "»",
     precedes = "«",
     trail = "·",
-    -- eol = "↴", -- ⏎, ¬, ↴
+    -- eol = "⏎", -- ⏎, ¬, ↴
 }
 vim.o.showbreak = "↳ " -- Cool character on line wrap
 vim.opt.fillchars = {

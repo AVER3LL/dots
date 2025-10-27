@@ -1,8 +1,6 @@
 local diagnostic_icons = require("icons").diagnostics
 local methods = vim.lsp.protocol.Methods
 
-vim.g.inlay_hints = true
-
 local M = {}
 
 --- Sets up LSP keymaps and autocommands for the given buffer.
@@ -104,7 +102,7 @@ local function on_attach(client, bufnr)
         keymap("n", "<leader>rn", vim.lsp.buf.rename, "Smart rename")
     end
 
-    if client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
+    if vim.g.highlight_words and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
         local highlight_augroup = vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
 
         -- PERF: Commented because my laptop is dying

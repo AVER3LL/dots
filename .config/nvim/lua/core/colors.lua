@@ -40,8 +40,8 @@ autocmd({ "ColorScheme", "VimEnter" }, {
             or colors.cursorline
 
         -- Basic UI elements
-        sethl("NonText", { fg = tools.blend(colors.background, colors.foreground, 0.6) })
-        sethl("Cursor", { bg = tools.blend(colors.background, colors.foreground, 0.80) })
+        sethl("NonText", { fg = tools.blend(colors.background, colors.foreground, 0.3) })
+        sethl("Cursor", { bg = tools.blend(colors.background, colors.foreground, 0.85) })
         sethl("HighlightUrl", { underline = true })
         sethl("AlphaButton", { bg = colors.constant, bold = true, fg = colors.background })
         sethl("Laravel", { fg = "#F53003" })

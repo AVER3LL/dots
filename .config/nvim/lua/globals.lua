@@ -8,6 +8,10 @@ tools.style = "clear"
 
 tools.transparent = false
 
+vim.g.inlay_hints = false
+
+vim.g.highlight_words = false
+
 tools.change_background = function()
     if vim.o.background == "dark" then
         vim.o.background = "light"

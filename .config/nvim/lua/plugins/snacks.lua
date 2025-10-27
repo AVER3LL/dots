@@ -259,7 +259,7 @@ return {
                 end
 
                 Snacks.toggle.line_number():map "<leader><leader>l"
-                Snacks.toggle.diagnostics():map "<leader>dd"
+                Snacks.toggle.diagnostics():map "<leader><leader>d"
                 Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map "<leader><leader>o"
                 Snacks.toggle.option("laststatus", { off = 0, on = 3, name = "Statusline" }):map "<leader><leader>w"
                 -- Snacks.toggle.option("background", {

@@ -122,7 +122,7 @@ return {
 
     {
         "dgagn/diagflow.nvim",
-        enabled = false,
+        enabled = true,
         event = "LspAttach", -- This is what I use personnally and it works great
         config = function()
             local excluded_filetypes = {
@@ -133,9 +133,14 @@ return {
                 scope = "cursor", -- or line
                 padding_top = 0,
                 padding_right = 2,
-                show_sign = true,
+                show_sign = false,
                 toggle_event = { "InsertEnter", "InsertLeave" },
                 show_borders = false,
+                format = function(diagnostic)
+                    local icon = require("icons").diagnostics[diagnostic.severity]
+
+                    return icon and icon .. "   " .. diagnostic.message or diagnostic.message
+                end,
                 enable = function()
                     return not vim.tbl_contains(excluded_filetypes, vim.bo.filetype)
                 end,

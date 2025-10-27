@@ -45,7 +45,7 @@ return {
                     lua_ls = {
                         settings = {
                             Lua = {
-                                -- completion = { callSnippet = "Replace" },
+                                completion = { callSnippet = "Replace" },
                                 format = { enable = false },
                                 hint = {
                                     enable = true,

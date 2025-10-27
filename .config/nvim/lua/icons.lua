@@ -8,6 +8,11 @@ M.diagnostics = {
     INFO = "󰋽 ",
 }
 
+M.diagnostics[1] = M.diagnostics.ERROR
+M.diagnostics[2] = M.diagnostics.WARN
+M.diagnostics[3] = M.diagnostics.INFO
+M.diagnostics[4] = M.diagnostics.HINT
+
 --- For folding.
 M.arrows = {
     right = "",
