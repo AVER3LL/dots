@@ -11,6 +11,12 @@ return {
     },
 
     {
+        "maccoda/irises.nvim",
+        lazy = false,
+        priority = 1000,
+    },
+
+    {
         "Everblush/nvim",
         lazy = false,
         priority = 1000,

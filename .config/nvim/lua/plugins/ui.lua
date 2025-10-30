@@ -122,7 +122,7 @@ return {
 
     {
         "dgagn/diagflow.nvim",
-        enabled = true,
+        enabled = false,
         event = "LspAttach", -- This is what I use personnally and it works great
         config = function()
             local excluded_filetypes = {
@@ -150,11 +150,11 @@ return {
 
     {
         "rachartier/tiny-inline-diagnostic.nvim",
-        enabled = false,
+        enabled = true,
         event = "VeryLazy",
         priority = 1000,
         opts = {
-            preset = "simple",
+            preset = "modern",
             options = {
                 multilines = {
                     enabled = false,

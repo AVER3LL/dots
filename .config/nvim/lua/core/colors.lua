@@ -67,10 +67,10 @@ autocmd({ "ColorScheme", "VimEnter" }, {
         })
 
         -- Diagnostic underlines
-        sethl("DiagnosticUnderlineError", { undercurl = true, sp = colors.error })
-        sethl("DiagnosticUnderlineWarn", { undercurl = true, sp = colors.warn })
-        sethl("DiagnosticUnderlineInfo", { undercurl = true, sp = colors.info })
-        sethl("DiagnosticUnderlineHint", { undercurl = true, sp = colors.hint })
+        sethl("DiagnosticUnderlineError", { underdotted = true, sp = colors.error })
+        sethl("DiagnosticUnderlineWarn", { underdotted = true, sp = colors.warn })
+        sethl("DiagnosticUnderlineInfo", { underdotted = true, sp = colors.info })
+        sethl("DiagnosticUnderlineHint", { underdotted = true, sp = colors.hint })
 
         -- LSP line number highlights
         sethl("LspDiagnosticsLineNrError", { fg = colors.error })
