@@ -37,7 +37,7 @@ M.filetype_commands = {
         "ghci",
         ":l $filepath",
     },
-    tex = "~/Documents/memoire-2025/Template-Licence-3-Latex/compile_latex.sh $filename",
+    tex = "pdflatex $filepath",
     go = "go run $filepath",
     sh = "bash $filepath",
     dart = "dart $filepath",

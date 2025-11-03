@@ -2,7 +2,7 @@
 version = 1
 name = "Matugen theme"
 description = "Cozy feeling with color-rich accents."
-variant = "{{ mode | to_lower }}"
+variant = "{{ mode | lower_case }}"
 icon = "./icon.png"
 
 [colors.core]

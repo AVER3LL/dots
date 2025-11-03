@@ -67,7 +67,12 @@ detected="${detected:-scheme-tonal-spot}"
 echo "Matugen mode: $theme"
 echo "Detected scheme: $detected"
 
+killall -9 waybar || true
+
 matugen image --mode "$theme" --type "$detected" "$IMG"
+# wallust run "$IMG"
+
+~/.config/waybar/toggle.sh
 
 # ─── Optional Vicinae integration ────────────────────────────
 if command -v vicinae >/dev/null 2>&1; then

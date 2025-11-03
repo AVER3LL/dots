@@ -52,6 +52,10 @@ set_mode() {
     # Hot reload nvim theme
     pkill -USR1 -x nvim || true
 
+    sed -i \
+        -e "s/^palette\s*=.*/palette = \"${mode}\"/" \
+        "$HOME/.config/wallust/wallust.toml"
+
     # matugen image --type 'scheme-fidelity' --mode "$mode" "$wall" >/dev/null 2>&1 &
     $HOME/.local/bin/walset-backend --mode "$mode" "$wall" >/dev/null 2>&1 &
 
