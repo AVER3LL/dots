@@ -8,15 +8,15 @@ palette = 'colors'
 mustard = '#af8700'                                  # example
 error = '#E06C75'
 success = '#00CF3A'
-color1 = '#83d2e3'
+color1 = '#b9cbc2'
 color2 = '#ffffff'
-color3 = '#3f484a'
-color4 = '#e9eff0'
+color3 = '#464746'
+color4 = '#efeeec'
 color5 = '#ffffff'
-color6 = '#d5dbdc'
-color7 = '#f5fafc'
-color8 = '#006877'
-color9 = '#545d7e'
+color6 = '#dbdad8'
+color7 = '#faf9f7'
+color8 = '#52625b'
+color9 = '#4c635a'
 
 # add_newline = true
 

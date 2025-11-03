@@ -9,6 +9,9 @@ local sigusr1 = uv.new_signal()
 sigusr1:start("sigusr1", function()
     vim.schedule(function()
         tools.change_background()
+
+        dofile "lua/config/generated.lua"
+
         vim.notify("Background toggled to " .. vim.o.background, vim.log.levels.INFO)
     end)
 end)

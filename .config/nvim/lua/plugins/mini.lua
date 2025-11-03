@@ -75,6 +75,7 @@ return {
 
     {
         "nvim-mini/mini.misc",
+        enabled = false,
         version = "*",
         config = function()
             require("mini.misc").setup()

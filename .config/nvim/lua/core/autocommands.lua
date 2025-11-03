@@ -5,7 +5,7 @@ local function augroup(name)
 end
 
 local kitty_socket = os.getenv "KITTY_LISTEN_ON" or "unix:/tmp/mykitty"
-local kitty_group = augroup("KityGroup")
+local kitty_group = augroup "KityGroup"
 
 local function kitty_command(args)
     local cmd = vim.list_extend({ "kitty", "@", "--to", kitty_socket }, args)
@@ -14,6 +14,7 @@ end
 
 autocmd("VimEnter", {
     group = kitty_group,
+    desc = "Remove kitty's padding upon entering",
     callback = function()
         kitty_command { "set-spacing", "margin=0" }
     end,
@@ -21,9 +22,28 @@ autocmd("VimEnter", {
 
 autocmd("VimLeavePre", {
     group = kitty_group,
+    desc = "Reset kitty's padding before leaving",
     callback = function()
         kitty_command { "set-spacing", "margin=default" }
-    end
+    end,
+})
+
+autocmd({ "ColorScheme", "UIEnter" }, {
+    desc = "Corrects terminal background color according to colorscheme",
+    callback = function()
+        if tools.resolve_hl("Normal").bg then
+            io.write(string.format("\027]11;#%06x\027\\", tools.resolve_hl("Normal").bg))
+        end
+    end,
+})
+autocmd("UILeave", {
+    callback = function()
+        -- io.write "\027]111\027\\"
+
+        local hex = vim.g.bg_color:gsub("#", "")
+        local num = tonumber(hex, 16)
+        io.write(string.format("\027]11;#%06x\027\\", num))
+    end,
 })
 
 -- Autocommand to temporarily change 'blade' filetype to 'php' when opening for LSP server activation
@@ -90,8 +110,8 @@ autocmd("BufEnter", { command = [[set formatoptions-=cro]] })
 --     end,
 -- })
 
--- Auto-resize windows when Vim is resized
 autocmd("VimResized", {
+    desc = "Auto-resize windows when Vim is resized",
     callback = function()
         vim.cmd "tabdo wincmd ="
     end,
@@ -108,6 +128,7 @@ autocmd({ "FileType" }, {
 
 -- Notifications when a macro starts
 autocmd("RecordingEnter", {
+    desc = "Notify when we start recording a macro",
     callback = function()
         local reg = vim.fn.reg_recording()
         vim.notify("Recording macro @" .. reg, vim.log.levels.INFO, { title = "Macro" })

@@ -55,13 +55,17 @@ output_path = '~/.config/gtk-3.0/colors.css'
 input_path = '~/.config/matugen/templates/gtk-colors.css'
 output_path = '~/.config/gtk-4.0/colors.css'
 
-[templates.fabric]
-input_path = '~/.config/matugen/templates/fabric.css'
-output_path = '~/.config/fabric/styles/colors.css'
+[templates.color-scheme]
+input_path = '~/.config/matugen/templates/Matugen.colors'
+output_path = '~/.local/share/color-schemes/Matugen.colors'
 
-[templates.qt5ct]
-input_path = '~/.config/matugen/templates/qtct-colors.conf'
-output_path = '~/.config/qt5ct/colors/matugen.conf'
+# [templates.fabric]
+# input_path = '~/.config/matugen/templates/fabric.css'
+# output_path = '~/.config/fabric/styles/colors.css'
+#
+# [templates.qt5ct]
+# input_path = '~/.config/matugen/templates/qtct-colors.conf'
+# output_path = '~/.config/qt5ct/colors/matugen.conf'
 
 [templates.qt6ct]
 input_path = '~/.config/matugen/templates/qtct-colors.conf'
@@ -111,5 +115,5 @@ input_path = '~/.config/matugen/templates/colors.fish'
 output_path = '~/.config/fish/themes/Matugen.theme'
 
 [templates.nvim]
-input_path = '~/.config/matugen/templates/nvim-bg.lua'
-output_path = '~/.config/nvim/lua/config/bg.lua'
+input_path = '~/.config/matugen/templates/nvim.lua'
+output_path = '~/.config/nvim/lua/config/generated.lua'

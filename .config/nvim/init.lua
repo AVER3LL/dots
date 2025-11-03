@@ -13,9 +13,7 @@ require("config.winbar").setup()
 
 vim.cmd.colorscheme "thorn"
 
-require "config.system-theme"
-
-require "config.bg"
+require "config.generated"
 
 -- vim.g.theme = {
 --     dark = "github_dark_dimmed",
