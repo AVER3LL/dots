@@ -11,6 +11,20 @@ return {
     },
 
     {
+        "dapovich/anysphere.nvim",
+        lazy = false,
+        priority = 1000,
+        opts = {
+            transparent = tools.transparent_background "boolean",
+            colors = {},
+            themes = function(colors)
+                return {}
+            end,
+            italics = true,
+        },
+    },
+
+    {
         "maccoda/irises.nvim",
         lazy = false,
         priority = 1000,
@@ -94,10 +108,7 @@ return {
                 },
                 transparent_background = tools.transparent_background "boolean",
                 color_overrides = {
-                    mocha = {
-                        base = "#121212",
-                        mantle = "#121212",
-                    },
+                    mocha = {},
                 },
             }
         end,

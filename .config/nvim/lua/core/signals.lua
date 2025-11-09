@@ -8,10 +8,8 @@ local sigusr1 = uv.new_signal()
 ---@diagnostic disable-next-line: need-check-nil
 sigusr1:start("sigusr1", function()
     vim.schedule(function()
-        tools.change_background()
+        -- tools.change_background()
 
-        dofile "lua/config/generated.lua"
-
-        vim.notify("Background toggled to " .. vim.o.background, vim.log.levels.INFO)
+        dofile(vim.fn.stdpath "config" .. "/lua/config/generated.lua")
     end)
 end)

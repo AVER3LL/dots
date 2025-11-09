@@ -1,3 +1,5 @@
+--- This was mostly vibe-coded and later on modified and broken into multiple files
+
 --- @class CustomWinBar
 --- @field config Config
 --- @field update_winbar fun(is_active: boolean)
@@ -27,6 +29,7 @@ function M.refresh_all_windows()
         vim.notify("CustomWinBar not initialized. Call setup() first.", vim.log.levels.ERROR)
         return
     end
+
     vim.schedule(function()
         updater.update_all_visible_windows(M.config)
     end)

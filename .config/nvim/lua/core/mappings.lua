@@ -6,6 +6,8 @@ local map = tools.map
 
 require("config.search-counter").setup { highlight = "Comment" }
 
+map("i", "<Tab>", tools.tabout, { expr = true, noremap = true })
+
 map("n", "<leader>oc", function()
     local file = vim.fn.expand "%:p"
     local line = vim.fn.line "."

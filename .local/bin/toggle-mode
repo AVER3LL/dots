@@ -49,15 +49,21 @@ set_mode() {
     # [[ -x "$HOME/Projects/rust/walset-backend/target/release/wallpaper-theme-manager" && -n "$wall" ]] &&
     #     "$HOME/Projects/rust/walset-backend/target/release/wallpaper-theme-manager" --no-set --mode="$mode" "$wall" &
 
-    # Hot reload nvim theme
-    pkill -USR1 -x nvim || true
-
     sed -i \
         -e "s/^palette\s*=.*/palette = \"${mode}\"/" \
         "$HOME/.config/wallust/wallust.toml"
 
+    sed -i \
+        -e "s/^vim.o.background\s*=.*/vim.o.background = \"${mode}\"/" \
+        "$HOME/.config/nvim/lua/config/generated.lua"
+
+    # Hot reload nvim theme
+    pkill -USR1 -x nvim || true
+
     # matugen image --type 'scheme-fidelity' --mode "$mode" "$wall" >/dev/null 2>&1 &
-    $HOME/.local/bin/walset-backend --mode "$mode" "$wall" >/dev/null 2>&1 &
+    $HOME/.local/bin/walset-backend --mode "$mode" "$wall" >/dev/null 2>&1
+
+    pkill -USR1 -x nvim || true
 
     sed -i \
         -e "s/^gtk-application-prefer-dark-theme\s*=.*/gtk-application-prefer-dark-theme=$prefer_dark/" \

@@ -11,17 +11,6 @@ require "lsp"
 
 require("config.winbar").setup()
 
-vim.cmd.colorscheme "thorn"
+vim.cmd.colorscheme "gruvbox-material"
 
 require "config.generated"
-
--- vim.g.theme = {
---     dark = "github_dark_dimmed",
---     light = "github_light_high_contrast",
--- }
-
--- vim.cmd.colorscheme(vim.g.theme[vim.o.background])
-
--- require "config.statusline"
-
--- require("vim._extui").enable {}

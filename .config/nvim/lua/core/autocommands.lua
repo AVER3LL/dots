@@ -1,4 +1,7 @@
 local autocmd = vim.api.nvim_create_autocmd
+local fn = vim.fn
+local api = vim.api
+local o = vim.o
 
 local function augroup(name)
     return vim.api.nvim_create_augroup(name, { clear = true })
@@ -20,11 +23,52 @@ autocmd("VimEnter", {
     end,
 })
 
+autocmd("BufWritePre", {
+    desc = "Autocreate a dir when saving a file",
+    group = augroup "auto_create_dir",
+    callback = function(event)
+        if event.match:match "^%w%w+:[\\/][\\/]" then
+            return
+        end
+        local file = vim.uv.fs_realpath(event.match) or event.match
+        fn.mkdir(fn.fnamemodify(file, ":p:h"), "p")
+    end,
+})
+
+autocmd({ "CursorMoved", "CursorMovedI", "WinScrolled" }, {
+    desc = "Fix scrolloff when you are at the EOF",
+    group = augroup "ScrollEOF",
+    callback = function()
+        if api.nvim_win_get_config(0).relative ~= "" then
+            return -- Ignore floating windows
+        end
+
+        local win_height = fn.winheight(0)
+        local scrolloff = math.min(o.scrolloff, math.floor(win_height / 2))
+        local visual_distance_to_eof = win_height - fn.winline()
+
+        if visual_distance_to_eof < scrolloff then
+            local win_view = fn.winsaveview()
+            fn.winrestview { topline = win_view.topline + scrolloff - visual_distance_to_eof }
+        end
+    end,
+})
+
 autocmd("VimLeavePre", {
     group = kitty_group,
     desc = "Reset kitty's padding before leaving",
     callback = function()
         kitty_command { "set-spacing", "margin=default" }
+    end,
+})
+
+autocmd("BufReadPre", {
+    desc = "Auto jump to last position",
+    group = augroup "auto-last-position",
+    callback = function(args)
+        local position = api.nvim_buf_get_mark(args.buf, [["]])
+        local winid = fn.bufwinid(args.buf)
+        pcall(api.nvim_win_set_cursor, winid, position)
     end,
 })
 
@@ -46,18 +90,18 @@ autocmd("UILeave", {
     end,
 })
 
--- Autocommand to temporarily change 'blade' filetype to 'php' when opening for LSP server activation
 autocmd({ "BufRead", "BufNewFile" }, {
     group = augroup "lsp_blade_workaround",
+    desc = "Autocommand to temporarily change 'blade' filetype to 'php' when opening for LSP server activation",
     pattern = "*.blade.php",
     callback = function()
         vim.bo.filetype = "php"
     end,
 })
 
--- Additional autocommand to switch back to 'blade' after LSP has attached
 autocmd("LspAttach", {
     group = augroup "lsp_blade_workaround",
+    desc = "Additional autocommand to switch back to 'blade' after LSP has attached",
     pattern = "*.blade.php",
     callback = function(args)
         vim.schedule(function()
@@ -74,7 +118,6 @@ autocmd("LspAttach", {
     end,
 })
 
---Highlight when yanking (copying) text
 autocmd("TextYankPost", {
     desc = "Highlight when yanking (copying) text",
     group = augroup "kickstart-highlight-yank",

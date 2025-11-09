@@ -1,5 +1,16 @@
 return {
 
+    {
+        "saghen/blink.indent",
+        enabled = false,
+        --- @module 'blink.indent'
+        --- @type blink.indent.Config
+        opts = {
+            scope = { enabled = false, highlights = { "BlinkIndent" } },
+            static = { enabled = true },
+        },
+    },
+
     -- indentation marks
     {
         "lukas-reineke/indent-blankline.nvim",
@@ -45,7 +56,7 @@ return {
             -- Toggling it with a keybinding if need be
             enabled = false,
             indent = { char = "│", smart_indent_cap = true },
-            scope = { enabled = false, char = "│", show_start = false, show_end = false },
+            scope = { enabled = true, char = "│", show_start = true, show_end = true },
         },
     },
 }

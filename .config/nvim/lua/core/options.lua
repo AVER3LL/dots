@@ -26,8 +26,8 @@ vim.o.cursorlineopt = "number"
 vim.wo.signcolumn = "yes"
 vim.o.numberwidth = 2
 
-vim.o.number = false
-vim.o.relativenumber = false
+vim.o.number = true
+vim.o.relativenumber = true
 
 vim.o.ruler = true
 

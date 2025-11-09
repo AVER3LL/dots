@@ -28,6 +28,7 @@ alias cd='z'
 # Fixing my brain
 alias cls='clear'
 alias clera='clear'
+alias clea='clear'
 alias celar='clear'
 alias lear='clear'
 alias lera='clear'

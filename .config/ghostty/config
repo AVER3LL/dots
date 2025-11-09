@@ -48,8 +48,8 @@ clipboard-trim-trailing-spaces = true
 # background = 181823
 
 window-padding-balance = true
-window-padding-x = 20
-window-padding-y = 20
+window-padding-x = 0
+window-padding-y = 0
 # window-decoration = none
 
 adjust-cell-height = 40%

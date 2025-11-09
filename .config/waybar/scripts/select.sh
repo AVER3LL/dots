@@ -109,6 +109,26 @@ reload_waybar() {
         echo "Killed waybar"
     fi
 
+    value_kitty=140
+    ghostty_value=40
+    if [ "$theme_name" = "test" ] || [ "$theme_name" = "vertical" ]; then
+        value_kitty=145
+        ghostty_value=45
+    fi
+
+    # Update kitty config
+    sed -i "s/\(cell_height[[:space:]]*\)[0-9]\+%/\1${value_kitty}%/" "$HOME/.config/kitty/kitty.conf"
+
+    if pgrep -x kitty >/dev/null; then
+        # This does not work no matter how I try it
+        kitty @ --to $KITTY_LISTEN_ON load-config kitty.conf
+        echo "ran the command"
+    fi
+
+    sed -i \
+        -e "s/^adjust-cell-height\s*=.*/adjust-cell-height = ${ghostty_value}%/" \
+        "$HOME/.config/ghostty/config"
+
     # Start waybar with new theme
     if [[ -x "$LAUNCHER" ]]; then
         "$LAUNCHER" &

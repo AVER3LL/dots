@@ -28,9 +28,10 @@ return {
                 {
                     text = { " " },
                     condition = {
-                        function()
-                            return not (vim.wo.number or vim.wo.relativenumber)
-                        end,
+                        -- function()
+                        --     return not (vim.wo.number or vim.wo.relativenumber)
+                        -- end,
+                        true,
                     },
                 },
 
@@ -115,7 +116,8 @@ return {
                 -- Space between line numbers and gitsigns
                 {
                     -- text = { " │" },
-                    text = { " " },
+                    text = { tools.hl_str(tools.style == "clear" and "FloatBorder" or "LineNr", " ┊") },
+                    -- text = { " " },
                     condition = {
                         function()
                             return vim.wo.number or vim.wo.relativenumber

@@ -2,7 +2,7 @@
 ---@type LazyPluginSpec
 return {
     "Aasim-A/scrollEOF.nvim",
-    enabled = true,
+    enabled = false,
     event = { "CursorMoved", "WinScrolled" },
     config = function()
         require("scrollEOF").setup {

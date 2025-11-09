@@ -12,6 +12,23 @@ vim.g.inlay_hints = false
 
 vim.g.highlight_words = false
 
+tools.set_background = function(mode)
+    if mode ~= "light" and mode ~= "dark" then
+        vim.notify("Invalid background mode: " .. tostring(mode), vim.log.levels.ERROR)
+        return
+    end
+
+    vim.o.background = mode
+
+    if vim.g.colors_name == "onedark" then
+        local ok, onedark = pcall(require, "onedark")
+        if ok then
+            onedark.setup { style = mode == "dark" and "dark" or "light" }
+            onedark.load()
+        end
+    end
+end
+
 tools.change_background = function()
     if vim.o.background == "dark" then
         vim.o.background = "light"
@@ -156,4 +173,20 @@ end
 
 tools.hl_str = function(hl, str)
     return "%#" .. hl .. "#" .. str .. "%*"
+end
+
+tools.tabout = function()
+    local next_char = vim.fn.getline("."):sub(vim.fn.col ".", vim.fn.col ".")
+
+    local closers = {
+        [")"] = true,
+        ["]"] = true,
+        ["}"] = true,
+        ['"'] = true,
+        ["'"] = true,
+        [">"] = true,
+        ["`"] = true,
+    }
+
+    return closers[next_char] and "<Right>" or "<Tab>"
 end

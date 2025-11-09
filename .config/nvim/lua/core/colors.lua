@@ -85,6 +85,7 @@ autocmd({ "ColorScheme", "VimEnter" }, {
 
         -- Tree explorer cleanup
         sethl("NvimTreeNormal", { bg = colors.background })
+        sethl("NvimTreeNormalNC", { bg = colors.background })
         sethl("NvimTreeEndOfBuffer", { bg = colors.background })
 
         sethl("MiniPickMatchCurrent", { bg = colors.cursorline })

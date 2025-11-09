@@ -2,6 +2,7 @@ local M = {}
 
 local file_icon_cache = {} -- bufnr -> {icon, color}
 local diagnostics_cache = {} -- bufnr -> {counts table}
+local modified_cache = {} -- bufnr -> boolean
 
 --- Get file icon from cache or compute and cache it
 --- @param bufnr integer
@@ -42,11 +43,43 @@ function M.invalidate_all_for_buf(bufnr)
     file_icon_cache[bufnr] = nil
 end
 
+--- Get modified state from cache
+--- @param bufnr integer
+--- @return boolean
+function M.get_modified(bufnr)
+    return modified_cache[bufnr] or false
+end
+
+--- Set modified state in cache
+--- @param bufnr integer
+--- @param modified boolean
+function M.set_modified(bufnr, modified)
+    modified_cache[bufnr] = modified
+end
+
+--- Check if modified state changed and update cache
+--- @param bufnr integer
+--- @return boolean changed
+function M.modified_changed(bufnr)
+    local current = vim.bo[bufnr].modified
+    local previous = modified_cache[bufnr]
+    if previous == nil then
+        -- Initialize
+        modified_cache[bufnr] = current
+        return false
+    elseif current ~= previous then
+        modified_cache[bufnr] = current
+        return true
+    end
+    return false
+end
+
 --- Cleanup caches for a buffer
 --- @param bufnr integer
 function M.cleanup_buf_cache(bufnr)
     file_icon_cache[bufnr] = nil
     diagnostics_cache[bufnr] = nil
+    modified_cache[bufnr] = nil
 end
 
 return M

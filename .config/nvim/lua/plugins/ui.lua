@@ -22,6 +22,15 @@ return {
             local sticks = require "buffer-sticks"
             sticks.setup {
                 filter = { buftypes = { "terminal" } },
+                preview = { enabled = false },
+                list = {
+                    filter = {
+                        title = "➜ ",
+                        title_empty = "Filter",
+                        active_indicator = "•",
+                        fuzzy_cutoff = 100,
+                    },
+                },
                 highlights = {
                     active = { link = "Statement" },
                     inactive = { link = "Whitespace" },
@@ -122,7 +131,7 @@ return {
 
     {
         "dgagn/diagflow.nvim",
-        enabled = false,
+        enabled = true,
         event = "LspAttach", -- This is what I use personnally and it works great
         config = function()
             local excluded_filetypes = {
@@ -135,11 +144,12 @@ return {
                 padding_right = 2,
                 show_sign = false,
                 toggle_event = { "InsertEnter", "InsertLeave" },
-                show_borders = false,
+                show_borders = true,
                 format = function(diagnostic)
                     local icon = require("icons").diagnostics[diagnostic.severity]
 
-                    return icon and icon .. "   " .. diagnostic.message or diagnostic.message
+                    -- the space is somehow not taking effect
+                    return (icon and icon .. "   " .. diagnostic.message) or diagnostic.message
                 end,
                 enable = function()
                     return not vim.tbl_contains(excluded_filetypes, vim.bo.filetype)
@@ -150,11 +160,11 @@ return {
 
     {
         "rachartier/tiny-inline-diagnostic.nvim",
-        enabled = true,
+        enabled = false,
         event = "VeryLazy",
         priority = 1000,
         opts = {
-            preset = "modern",
+            preset = "simple",
             options = {
                 multilines = {
                     enabled = false,

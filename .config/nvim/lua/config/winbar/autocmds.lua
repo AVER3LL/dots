@@ -50,6 +50,7 @@ local function set_highlights()
     sethl(0, "WinBarDiagInfo", { fg = colors.info, bold = true })
     sethl(0, "WinBarDiagHint", { fg = colors.hint })
     sethl(0, "WinBarPath", { fg = colors.path, italic = true })
+    sethl(0, "WinBarReadonly", { fg = colors.path, bold = true })
     -- sethl(0, "WinBarModified", { fg = colors.path, bold = true })
 end
 
@@ -130,6 +131,13 @@ function M.setup_autocmds(config)
                 local win_id = api.nvim_get_current_win()
                 state_manager.update_state(win_id, { insert_mode_modified = true })
                 debounced_update(config, true)
+                -- Check if buffer modified state changed and update all windows if so
+                local bufnr = api.nvim_get_current_buf()
+                if cache.modified_changed(bufnr) then
+                    vim.schedule(function()
+                        updater.update_all_windows_for_buffer(config, bufnr)
+                    end)
+                end
             end
         end,
     })
@@ -177,6 +185,13 @@ function M.setup_autocmds(config)
                 and not window_utils.is_popup_or_floating_window()
             then
                 debounced_update(config, true)
+                -- Check if buffer modified state changed and update all windows if so
+                local bufnr = api.nvim_get_current_buf()
+                if cache.modified_changed(bufnr) then
+                    vim.schedule(function()
+                        updater.update_all_windows_for_buffer(config, bufnr)
+                    end)
+                end
             else
                 vim.wo.winbar = ""
             end
@@ -197,6 +212,9 @@ function M.setup_autocmds(config)
         callback = function(args)
             if args.event == "BufWritePost" then
                 cache.invalidate_all_for_buf(args.buf)
+                -- Update all windows showing this buffer since modified state changed
+                updater.update_all_windows_for_buffer(config, args.buf)
+                return
             end
             if
                 not buffer_utils.should_ignore_buffer(config)

@@ -14,9 +14,11 @@ M.CONSTANTS = {
 --- @class Config
 --- @field show_diagnostics boolean
 --- @field show_modified boolean
+--- @field show_readonly boolean
 --- @field show_path_when_inactive boolean
 --- @field min_padding integer
 --- @field modified_icon string
+--- @field readonly_icon string
 --- @field ignore_filetypes string[]
 --- @field ignore_buftypes string[]
 --- @field min_window_width integer
@@ -26,13 +28,16 @@ M.CONSTANTS = {
 M.defaults = {
     show_diagnostics = true,
     show_modified = true,
+    show_readonly = true,
     show_path_when_inactive = false,
     modified_icon = require("icons").misc.dot,
+    readonly_icon = require("icons").misc.lock,
     min_padding = M.CONSTANTS.DEFAULT_PADDING,
     min_window_width = M.CONSTANTS.MIN_WINDOW_WIDTH,
     component_order = {
         { name = "filename", priority = 1 },
         { name = "modified", priority = 2 },
+        { name = "readonly", priority = 2 },
         { name = "path", priority = 3 },
         { name = "diagnostics", priority = 2 },
     },
