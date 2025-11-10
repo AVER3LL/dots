@@ -144,7 +144,7 @@ return {
                 padding_right = 2,
                 show_sign = false,
                 toggle_event = { "InsertEnter", "InsertLeave" },
-                show_borders = true,
+                show_borders = false,
                 format = function(diagnostic)
                     local icon = require("icons").diagnostics[diagnostic.severity]
 

@@ -1,5 +1,50 @@
 local search = require("icons").misc.search
 
+local vscode = {
+    flat = {
+        hidden = { "preview" },
+        layout = {
+            backdrop = 60,
+            row = 5,
+            width = 0.4,
+            min_width = 80,
+            height = 0.6,
+            border = "none",
+            box = "vertical",
+            {
+                win = "input",
+                height = 1,
+                border = true,
+                title = "{title} {live}",
+                title_pos = "center",
+            },
+            { win = "list", border = "single" },
+            { win = "preview", title = "{preview}", border = true },
+        },
+    },
+
+    clear = {
+        preview = false,
+        layout = {
+            backdrop = false,
+            row = 5,
+            width = 0.4,
+            min_width = 80,
+            height = 0.7,
+            border = "none",
+            box = "vertical",
+            {
+                win = "input",
+                height = 1,
+                border = "single",
+                title = "{title} {live}",
+                title_pos = "center",
+            },
+            { win = "list", border = "single" },
+        },
+    },
+}
+
 return {
     "folke/snacks.nvim",
     priority = 1002,
@@ -53,6 +98,10 @@ return {
                     ignored = "",
                 },
             },
+            toggles = {
+                hidden = "",
+                ignored = "",
+            },
             matcher = {
                 frecency = true,
                 cwd_bonus = true,
@@ -70,26 +119,7 @@ return {
                 },
             },
             layouts = {
-                vscode = {
-                    preview = false,
-                    layout = {
-                        backdrop = false,
-                        row = 5,
-                        width = 0.4,
-                        min_width = 80,
-                        height = 0.7,
-                        border = tools.style == "clear" and "none" or tools.border,
-                        box = "vertical",
-                        {
-                            win = "input",
-                            height = 1,
-                            border = tools.style == "clear" and "single" or "solid",
-                            title = "{title} {live} {flags}",
-                            title_pos = "center",
-                        },
-                        { win = "list", border = tools.style == "clear" and "single" or "none" },
-                    },
-                },
+                vscode = vscode[tools.style],
                 custom = {
                     layout = {
                         box = "horizontal",

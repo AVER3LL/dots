@@ -96,6 +96,10 @@ autocmd({ "ColorScheme", "VimEnter" }, {
 
         -- Style-specific completion highlights
         if effective_style == "flat" then
+            -- local lighter_pmenu = tools.adjust_brightness(colors.pmenu, 0.9)
+            local lighter_pmenu = tools.blend(colors.background, colors.pmenu, 0.9)
+            local lighter_pmenu2 = tools.blend(colors.background, colors.pmenu, 0.25)
+
             sethl("MiniPickNormal", { bg = colors.pmenu, fg = colors.foreground })
             sethl("MiniPickBorder", { bg = colors.pmenu, fg = colors.pmenu })
             sethl("MiniPickBorderBusy", { bg = colors.pmenu, fg = colors.pmenu })
@@ -105,10 +109,21 @@ autocmd({ "ColorScheme", "VimEnter" }, {
             sethl("MiniPickMatchRanges", { fg = gethl("Special").fg, bold = true })
             sethl("MiniPickPrompt", { bg = colors.pmenu, fg = colors.foreground })
 
-            sethl("SnacksPickerTitle", { link = "DiagnosticVirtualTextInfo" })
+            -- TODO: update the colors here for the preview, input and result
+            -- see => https://github.com/gisketch/dotfyles/blob/main/lua/plugins/colorscheme.lua
+            -- sethl("SnacksPickerTitle", { link = "DiagnosticVirtualTextInfo" })
+            sethl("SnacksPickerInput", { bg = lighter_pmenu, fg = colors.foreground })
+            sethl("SnacksPickerInputBorder", { bg = lighter_pmenu, fg = lighter_pmenu })
+            sethl("SnacksPickerInputTitle", { fg = colors.pmenu, bg = colors.fun, bold = true })
+
+            sethl("SnacksPickerList", { bg = lighter_pmenu2 })
+            sethl("SnacksPickerListBorder", { bg = lighter_pmenu2, fg = lighter_pmenu2 })
+            sethl("SnacksPickerListTitle", { fg = gethl("Special").fg, bg = lighter_pmenu2 })
+
+            sethl("SnacksPickerPreviewTitle", { fg = colors.pmenu, bg = gethl("Identifier").fg })
             sethl("SnacksPicker", { bg = colors.pmenu, fg = colors.foreground })
             sethl("SnacksPickerBorder", { bg = colors.pmenu, fg = colors.pmenu })
-            sethl("SnacksPickerInputBorder", { bg = colors.pmenu, fg = colors.pmenu })
+            -- sethl("SnacksPickerInputBorder", { bg = colors.pmenu, fg = colors.pmenu })
 
             sethl("SnacksInputNormal", { bg = colors.pmenu, fg = colors.foreground })
             sethl("SnacksInputBorder", { bg = colors.pmenu, fg = colors.pmenu })
@@ -116,7 +131,7 @@ autocmd({ "ColorScheme", "VimEnter" }, {
             -- TODO: Investigate onedark's shenanigans
             -- mysethl("SnacksPickerBorder", { bg = colors.pmenu, fg = colors.pmenu })
 
-            sethl("BlinkCmpSignatureHelp", { bg = colors.pmenu })
+            sethl("BlinkCmpSignatureHelp", { bg = lighter_pmenu2 })
             sethl("BlinkCmpSignatureHelpBorder", { bg = colors.pmenu, fg = colors.pmenu })
 
             -- local menu_bg = tools.adjust_brightness(colors.background, 0.75)
