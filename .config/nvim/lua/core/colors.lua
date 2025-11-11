@@ -99,6 +99,7 @@ autocmd({ "ColorScheme", "VimEnter" }, {
             -- local lighter_pmenu = tools.adjust_brightness(colors.pmenu, 0.9)
             local lighter_pmenu = tools.blend(colors.background, colors.pmenu, 0.9)
             local lighter_pmenu2 = tools.blend(colors.background, colors.pmenu, 0.25)
+            local black = "#17161C"
 
             sethl("MiniPickNormal", { bg = colors.pmenu, fg = colors.foreground })
             sethl("MiniPickBorder", { bg = colors.pmenu, fg = colors.pmenu })
@@ -114,13 +115,15 @@ autocmd({ "ColorScheme", "VimEnter" }, {
             -- sethl("SnacksPickerTitle", { link = "DiagnosticVirtualTextInfo" })
             sethl("SnacksPickerInput", { bg = lighter_pmenu, fg = colors.foreground })
             sethl("SnacksPickerInputBorder", { bg = lighter_pmenu, fg = lighter_pmenu })
-            sethl("SnacksPickerInputTitle", { fg = colors.pmenu, bg = colors.fun, bold = true })
+            -- sethl("SnacksPickerInputTitle", { fg = colors.pmenu, bg = colors.fun, bold = true })
+            sethl("SnacksPickerInputTitle", { fg = black, bg = colors.fun, bold = true })
 
             sethl("SnacksPickerList", { bg = lighter_pmenu2 })
             sethl("SnacksPickerListBorder", { bg = lighter_pmenu2, fg = lighter_pmenu2 })
             sethl("SnacksPickerListTitle", { fg = gethl("Special").fg, bg = lighter_pmenu2 })
 
-            sethl("SnacksPickerPreviewTitle", { fg = colors.pmenu, bg = gethl("Identifier").fg })
+            -- sethl("SnacksPickerPreviewTitle", { fg = colors.pmenu, bg = gethl("Identifier").fg })
+            sethl("SnacksPickerPreviewTitle", { fg = black, bg = gethl("Identifier").fg, bold = true })
             sethl("SnacksPicker", { bg = colors.pmenu, fg = colors.foreground })
             sethl("SnacksPickerBorder", { bg = colors.pmenu, fg = colors.pmenu })
             -- sethl("SnacksPickerInputBorder", { bg = colors.pmenu, fg = colors.pmenu })

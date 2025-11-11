@@ -210,6 +210,7 @@ return {
                         "phpactor",
                         "jdtls",
                         "emmylua_ls",
+                        "copilot",
                         -- "lua_ls",
                     },
                 },

@@ -36,10 +36,10 @@ show_screenshot_menu() {
 
 show_screenrecord_menu() {
     case $(menu "Screenrecord" "  Screen\n  Screen with Audio\n  Region\n  Region with Audio") in
-    *"Screen with Audio"*) $AVERELL_BIN/averell-screenrecord screen audio ;;
-    *Screen*) $AVERELL_BIN/averell-screenrecord screen ;;
-    *"Region with Audio"*) $AVERELL_BIN/averell-screenrecord region audio ;;
-    *Region*) $AVERELL_BIN/averell-screenrecord region ;;
+    *"Screen with Audio"*) $AVERELL_BIN/screenrecord screen audio ;;
+    *Screen*) $AVERELL_BIN/screenrecord screen ;;
+    *"Region with Audio"*) $AVERELL_BIN/screenrecord region audio ;;
+    *Region*) $AVERELL_BIN/screenrecord region ;;
     *) show_capture_menu ;;
     esac
 }

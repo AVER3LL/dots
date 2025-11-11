@@ -5,6 +5,7 @@ set -euo pipefail
 WALL_DIR="$HOME/wallpaper/"
 CACHE_DIR="$HOME/.cache/averell"
 MATUGEN_SCRIPTS_DIR="$HOME/.config/matugen/scripts"
+MATUGEN_LOCK="$HOME/.cache/averell/matugen.lock"
 
 WALL_CURRENT="$CACHE_DIR/wall.set"
 WALL_STATIC="$CACHE_DIR/wall.static"
@@ -69,7 +70,11 @@ echo "Detected scheme: $detected"
 
 killall -9 waybar || true
 
-matugen image --mode "$theme" --type "$detected" "$IMG"
+swww img --transition-type fade --transition-duration 0.5 "$IMG"
+
+if [[ ! -f "$MATUGEN_LOCK" ]]; then
+    matugen image --mode "$theme" --type "$detected" "$IMG"
+fi
 # wallust run "$IMG"
 
 ~/.config/waybar/toggle.sh
