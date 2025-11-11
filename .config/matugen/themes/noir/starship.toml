@@ -1,0 +1,66 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+command_timeout = 2000
+
+palette = 'colors'
+
+[palettes.colors]
+mustard = '#af8700' # example
+error = '#E06C75'
+success = '#00CF3A'
+color1 = '#cccccc'
+color2 = '#000000'
+color3 = '#cccccc'
+color4 = '#2a2a2a'
+color5 = '#000000'
+color6 = '#0f0f0f'
+color7 = '#1e1e1e'
+color8 = '#ffffff'
+color9 = '#aaaaaa'
+
+# add_newline = true
+
+[time]
+disabled = true
+format = '[$time]($style) '
+time_format = '%H:%M'
+
+[character]
+# success_symbol = "[0 ❯](bold green)"
+success_symbol = "[0 ➜](bold success)"
+error_symbol = "[➜](bold error)"
+
+[directory]
+truncation_symbol = '.../'
+
+[git_branch]
+truncation_length = 20
+symbol = ' '
+
+[gradle]
+symbol = ' '
+
+[kotlin]
+symbol = ' '
+
+[git_commit]
+tag_disabled = false
+commit_hash_length = 7
+disabled = true
+
+[git_state]
+disabled = true
+
+[memory_usage]
+format = 'using [$ram_pct RAM]($style) '
+disabled = false
+
+[package]
+disabled = true
+
+[status]
+format = '[$status](color1) '
+disabled = false
+
+[aws]
+disabled = true

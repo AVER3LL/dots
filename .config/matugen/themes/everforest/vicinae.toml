@@ -1,0 +1,126 @@
+[meta]
+version = 1
+name = "Everforest theme"
+description = "Everforest inspired theme"
+variant = "dark"
+icon = "./icon.png"
+
+# ============================================================================
+# Core Colors
+# ============================================================================
+
+[colors.core]
+accent = "#a7c080"
+accent_foreground = "#1e2326"
+background = "#2b3339"
+foreground = "#d3c6aa"
+secondary_background = "#374145"
+border = "#4a5d5a"
+
+# ============================================================================
+# Window Borders
+# ============================================================================
+
+[colors.main_window]
+border = "#4a5d5a"
+
+[colors.settings_window]
+border = "#859289"
+
+# ============================================================================
+# Accent Palette
+# ============================================================================
+
+[colors.accents]
+blue = "#a7c080"
+green = "#dbbc7f"
+magenta = "#83c092"
+orange = { name = "#e67e80", lighter = 40 }
+red = "#e67e80"
+yellow = { name = "#dbbc7f", lighter = 80 }
+cyan = { name = "#a7c080", lighter = 50 }
+purple = "#83c092"
+
+# ============================================================================
+# Text System
+# ============================================================================
+
+[colors.text]
+default = "#d3c6aa"
+muted = "#859289"
+danger = "#e67e80"
+success = "#dbbc7f"
+placeholder = { name = "#859289", opacity = 0.6 }
+
+[colors.text.selection]
+background = "#a7c080"
+foreground = "#1e2326"
+
+[colors.text.links]
+default = "#a7c080"
+visited = { name = "#dbbc7f", darker = 20 }
+
+# ============================================================================
+# Input Fields
+# ============================================================================
+
+[colors.input]
+border = "#859289"
+border_focus = "#a7c080"
+border_error = "#e67e80"
+
+# ============================================================================
+# Buttons
+# ============================================================================
+
+[colors.button.primary]
+background = "#424e52"
+foreground = "#d3c6aa"
+
+[colors.button.primary.hover]
+background = "#4d595d"
+
+[colors.button.primary.focus]
+outline = "#a7c080"
+
+# ============================================================================
+# Lists
+# ============================================================================
+
+[colors.list.item.hover]
+background = { name = "#4f5b58", opacity = 0.25 }
+foreground = "#d3c6aa"
+
+[colors.list.item.selection]
+background = { name = "#4f5b58", opacity = 0.50 }
+foreground = "#d3c6aa"
+secondary_background = "#4f5b58"
+secondary_foreground = "#d3c6aa"
+
+# ============================================================================
+# Grid Items
+# ============================================================================
+
+[colors.grid.item]
+background = "#374145"
+
+[colors.grid.item.hover]
+outline = { name = "#83c092", opacity = 0.8 }
+
+[colors.grid.item.selection]
+outline = "#a7c080"
+
+# ============================================================================
+# Scrollbars
+# ============================================================================
+
+[colors.scrollbars]
+background = { name = "#a7c080", opacity = 0.2 }
+
+# ============================================================================
+# Loading States
+# ============================================================================
+
+[colors.loading]
+bar = "#a7c080"
+spinner = "#a7c080"

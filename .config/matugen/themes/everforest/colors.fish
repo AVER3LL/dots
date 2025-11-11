@@ -1,0 +1,34 @@
+fish_color_normal d3c6aa
+# fish_color_command 006d3d --bold
+fish_color_command 00cf3a  --bold
+# fish_color_command a7c080 --bold
+# fish_color_command a7c080
+fish_color_param d3c6aa
+fish_color_keyword dbbc7f
+fish_color_quote 83c092
+fish_color_redirection dbbc7f
+fish_color_end 83c092
+fish_color_comment 859289
+fish_color_error e06c75 --underline --bold
+# fish_color_error e67e80
+fish_color_gray 5a6569
+fish_color_selection --background=374145
+fish_color_search_match --background=374145
+fish_color_option a7c080
+fish_color_operator d3c6aa
+fish_color_escape 1e2326
+fish_color_autosuggestion 859289
+fish_color_cancel e67e80
+fish_color_cwd 4f5b58
+fish_color_user 4a5d5a
+fish_color_host 5d4f4a
+fish_color_host_remote 83c092
+fish_color_status e67e80
+fish_pager_color_progress a7c080
+fish_pager_color_prefix dbbc7f
+fish_pager_color_selected_prefix 1e2326
+fish_pager_color_completion a7c080
+fish_pager_color_description 859289
+fish_pager_color_selected_description 1e2326
+fish_pager_color_selected_background --background=83c092
+fish_pager_color_selected_completion 1e2326

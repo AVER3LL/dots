@@ -1,0 +1,126 @@
+[meta]
+version = 1
+name = "Matugen theme"
+description = "Noir monochrome theme with greys"
+variant = "dark"
+icon = "./icon.png"
+
+# ============================================================================
+# Core Colors
+# ============================================================================
+
+[colors.core]
+accent = "#ffffff"
+accent_foreground = "#000000"
+background = "#1e1e1e"
+foreground = "#ffffff"
+secondary_background = "#2a2a2a"
+border = "#555555"
+
+# ============================================================================
+# Window Borders
+# ============================================================================
+
+[colors.main_window]
+border = "#555555"
+
+[colors.settings_window]
+border = "#777777"
+
+# ============================================================================
+# Accent Palette
+# ============================================================================
+
+[colors.accents]
+blue = "#ffffff"
+green = "#aaaaaa"
+magenta = "#cccccc"
+orange = { name = "#888888", lighter = 40 }
+red = "#888888"
+yellow = { name = "#aaaaaa", lighter = 80 }
+cyan = { name = "#ffffff", lighter = 50 }
+purple = "#cccccc"
+
+# ============================================================================
+# Text System
+# ============================================================================
+
+[colors.text]
+default = "#ffffff"
+muted = "#cccccc"
+danger = "#888888"
+success = "#aaaaaa"
+placeholder = { name = "#cccccc", opacity = 0.6 }
+
+[colors.text.selection]
+background = "#ffffff"
+foreground = "#000000"
+
+[colors.text.links]
+default = "#ffffff"
+visited = { name = "#aaaaaa", darker = 20 }
+
+# ============================================================================
+# Input Fields
+# ============================================================================
+
+[colors.input]
+border = "#777777"
+border_focus = "#ffffff"
+border_error = "#888888"
+
+# ============================================================================
+# Buttons
+# ============================================================================
+
+[colors.button.primary]
+background = "#2a2a2a"
+foreground = "#ffffff"
+
+[colors.button.primary.hover]
+background = "#353535"
+
+[colors.button.primary.focus]
+outline = "#ffffff"
+
+# ============================================================================
+# Lists
+# ============================================================================
+
+[colors.list.item.hover]
+background = { name = "#333333", opacity = 0.25 }
+foreground = "#ffffff"
+
+[colors.list.item.selection]
+background = { name = "#333333", opacity = 0.50 }
+foreground = "#ffffff"
+secondary_background = "#333333"
+secondary_foreground = "#ffffff"
+
+# ============================================================================
+# Grid Items
+# ============================================================================
+
+[colors.grid.item]
+background = "#2a2a2a"
+
+[colors.grid.item.hover]
+outline = { name = "#cccccc", opacity = 0.8 }
+
+[colors.grid.item.selection]
+outline = "#ffffff"
+
+# ============================================================================
+# Scrollbars
+# ============================================================================
+
+[colors.scrollbars]
+background = { name = "#ffffff", opacity = 0.2 }
+
+# ============================================================================
+# Loading States
+# ============================================================================
+
+[colors.loading]
+bar = "#ffffff"
+spinner = "#ffffff"

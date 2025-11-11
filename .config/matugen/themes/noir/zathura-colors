@@ -1,0 +1,51 @@
+set window-title-basename "true"
+set selection-clipboard "clipboard"
+
+set font "Maple Mono NF 12"
+
+" Search
+set incremental-search true
+set search-hadjust true
+
+" Autoadjust
+set adjust-open width
+
+set render-loading              true
+
+set adjust-open width
+
+map i recolor
+
+" Colors
+set default-bg              "#131313"
+set default-fg              "#ffffff"
+
+set statusbar-bg            "#131313"
+set statusbar-fg            "#ffffff"
+
+set inputbar-bg             "#131313"
+set inputbar-fg             "#ffffff"
+
+set notification-error-bg   "#000000"
+set notification-error-fg   "#888888"
+
+set notification-warning-bg "#ffffff"
+set notification-warning-fg "#666666"
+
+set highlight-color         "#ffffff"
+set highlight-active-color  "#cccccc"
+
+set completion-highlight-fg "#000000"
+set completion-highlight-bg "#ffffff"
+
+set completion-bg           "#000000"
+set completion-fg           "#ffffff"
+
+set notification-bg         "#000000"
+set notification-fg         "#ffffff"
+
+set recolor                 "true"
+set recolor-lightcolor      "#000000"
+set recolor-darkcolor       "#ffffff"
+set recolor-reverse-video   "true"
+set recolor-keephue         "true"

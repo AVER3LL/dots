@@ -4,7 +4,7 @@ reload_apps = true
 [config.wallpaper]
 command = "swww"
 arguments = ["img", "--transition-type", "fade", "--transition-duration", "0.5"]
-set = true
+set = false
 
 
 [config.reload_apps_list]
