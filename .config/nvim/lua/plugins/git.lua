@@ -16,6 +16,7 @@ return {
                         vim.keymap.set("n", lhs, rhs, { desc = desc, buffer = bufnr })
                     end
                     nmap("<leader>gb", ":Gitsigns blame_line<CR>", "Git blame the current line")
+                    nmap("<leader>gtb", ":Gitsigns toggle_current_line_blame<CR>", "Toggle current line blame")
                     nmap("<leader>gd", ":Gitsigns preview_hunk <CR>", "Git diff the current hunk")
                     nmap("<leader>gr", ":Gitsigns reset_hunk <CR>", "Rest the current hunk")
                     nmap(
@@ -51,18 +52,19 @@ return {
                 diff_opts = {
                     vertical = false,
                 },
-                -- signs = {
-                --     add = { text = "+" },
-                --     change = { text = "~" },
-                --     delete = { text = "_" },
-                --     topdelete = { text = "‾" },
-                --     changedelete = { text = "~" },
-                --     untracked = { text = "┆" },
-                -- },
                 signs = {
-                    delete = { text = "󰍵" },
-                    changedelete = { text = "󱕖" },
+                    add = { text = "+" },
+                    change = { text = "~" },
+                    delete = { text = "_" },
+                    topdelete = { text = "‾" },
+                    changedelete = { text = "~" },
+                    untracked = { text = "┆" },
                 },
+
+                -- signs = {
+                --     delete = { text = "󰍵" },
+                --     changedelete = { text = "󱕖" },
+                -- },
             }
         end,
     },

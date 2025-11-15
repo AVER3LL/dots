@@ -17,35 +17,35 @@ set adjust-open width
 map i recolor
 
 " Colors
-set default-bg              "#131313"
-set default-fg              "#ffffff"
+set default-bg              "#131314"
+set default-fg              "#e4e2e2"
 
-set statusbar-bg            "#131313"
-set statusbar-fg            "#ffffff"
+set statusbar-bg            "#131314"
+set statusbar-fg            "#e4e2e2"
 
-set inputbar-bg             "#131313"
-set inputbar-fg             "#ffffff"
+set inputbar-bg             "#131314"
+set inputbar-fg             "#e4e2e2"
 
-set notification-error-bg   "#000000"
-set notification-error-fg   "#888888"
+set notification-error-bg   "#690005"
+set notification-error-fg   "#ffb4ab"
 
-set notification-warning-bg "#ffffff"
-set notification-warning-fg "#666666"
+set notification-warning-bg "#dae4ec"
+set notification-warning-fg "#93000a"
 
-set highlight-color         "#ffffff"
-set highlight-active-color  "#cccccc"
+set highlight-color         "#dae4ec"
+set highlight-active-color  "#bec8d0"
 
-set completion-highlight-fg "#000000"
-set completion-highlight-bg "#ffffff"
+set completion-highlight-fg "#131314"
+set completion-highlight-bg #e4e2e2""
 
-set completion-bg           "#000000"
-set completion-fg           "#ffffff"
+set completion-bg           "#131314"
+set completion-fg           "#e4e2e2"
 
-set notification-bg         "#000000"
-set notification-fg         "#ffffff"
+set notification-bg         "#131314"
+set notification-fg         "#e4e2e2"
 
 set recolor                 "true"
-set recolor-lightcolor      "#000000"
-set recolor-darkcolor       "#ffffff"
+set recolor-lightcolor      "#131314"
+set recolor-darkcolor       "#e4e2e2"
 set recolor-reverse-video   "true"
 set recolor-keephue         "true"

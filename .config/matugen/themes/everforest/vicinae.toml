@@ -11,8 +11,8 @@ icon = "./icon.png"
 
 [colors.core]
 accent = "#a7c080"
-accent_foreground = "#1e2326"
-background = "#2b3339"
+accent_foreground = "#272e33"
+background = "#2e383c"
 foreground = "#d3c6aa"
 secondary_background = "#374145"
 border = "#4a5d5a"
@@ -54,7 +54,7 @@ placeholder = { name = "#859289", opacity = 0.6 }
 
 [colors.text.selection]
 background = "#a7c080"
-foreground = "#1e2326"
+foreground = "#272e33"
 
 [colors.text.links]
 default = "#a7c080"

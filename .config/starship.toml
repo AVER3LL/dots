@@ -5,18 +5,18 @@ command_timeout = 2000
 palette = 'colors'
 
 [palettes.colors]
-mustard = '#af8700' # example
+mustard = '#af8700'                                  # example
 error = '#E06C75'
 success = '#00CF3A'
-color1 = '#cccccc'
-color2 = '#000000'
-color3 = '#cccccc'
-color4 = '#2a2a2a'
-color5 = '#000000'
-color6 = '#0f0f0f'
-color7 = '#1e1e1e'
-color8 = '#ffffff'
-color9 = '#aaaaaa'
+color1 = '#bec8d0'
+color2 = '#293238'
+color3 = '#c4c7ca'
+color4 = '#1f2020'
+color5 = '#293238'
+color6 = '#131314'
+color7 = '#131314'
+color8 = '#bec8d0'
+color9 = '#d0c2d0'
 
 # add_newline = true
 

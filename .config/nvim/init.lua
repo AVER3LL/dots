@@ -11,6 +11,6 @@ require "lsp"
 
 require("config.winbar").setup()
 
-vim.cmd.colorscheme "gruvbox-material"
+vim.cmd.colorscheme "kanagawa"
 
 require "config.generated"

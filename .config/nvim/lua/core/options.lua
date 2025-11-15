@@ -13,7 +13,15 @@ vim.o.termguicolors = true
 
 vim.o.splitkeep = "screen"
 
-vim.o.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,a:Cursor/Cursor"
+-- vim.o.guicursor = "n-v-c-sm:block,i-ci-ve:ver50,r-cr-o:hor20,a:Cursor/Cursor"
+
+vim.opt.guicursor = {
+    "n-v-c:block",
+    "i:ver50",
+    "r-cr:hor20",
+    "o:hor50",
+    "a:Cursor/Cursor",
+}
 
 -- vim.o.guicursor = "n-v-c-sm:block,"
 --     .. "i-ci-ve:block-blinkwait300-blinkon400-blinkoff250,"
@@ -26,8 +34,8 @@ vim.o.cursorlineopt = "number"
 vim.wo.signcolumn = "yes"
 vim.o.numberwidth = 2
 
-vim.o.number = true
-vim.o.relativenumber = true
+vim.o.number = false
+vim.o.relativenumber = false
 
 vim.o.ruler = true
 

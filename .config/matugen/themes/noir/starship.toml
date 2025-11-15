@@ -7,16 +7,16 @@ palette = 'colors'
 [palettes.colors]
 mustard = '#af8700' # example
 error = '#E06C75'
-success = '#00CF3A'
-color1 = '#cccccc'
-color2 = '#000000'
-color3 = '#cccccc'
+success = '#66A979'
+color1 = '#d0d0d0'
+color2 = '#1a1a1a'
+color3 = '#d0d0d0'
 color4 = '#2a2a2a'
-color5 = '#000000'
+color5 = '#1a1a1a'
 color6 = '#0f0f0f'
 color7 = '#1e1e1e'
-color8 = '#ffffff'
-color9 = '#aaaaaa'
+color8 = '#f0f0f0'
+color9 = '#b0b0b0'
 
 # add_newline = true
 

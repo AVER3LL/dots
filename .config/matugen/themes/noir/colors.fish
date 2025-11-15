@@ -1,6 +1,6 @@
 fish_color_normal ffffff
 # fish_color_command 006d3d --bold
-fish_color_command 00cf3a  --bold
+fish_color_command 66a979  --bold
 # fish_color_command a6e3a1 --bold
 # fish_color_command ffffff
 fish_color_param ffffff

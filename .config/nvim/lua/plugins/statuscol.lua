@@ -116,7 +116,7 @@ return {
                 -- Space between line numbers and gitsigns
                 {
                     -- text = { " │" },
-                    text = { tools.hl_str(tools.style == "clear" and "FloatBorder" or "LineNr", " ┊") },
+                    text = { tools.hl_str(tools.style == "clear" and "FloatBorder" or "LineNr", " │") },
                     -- text = { " " },
                     condition = {
                         function()

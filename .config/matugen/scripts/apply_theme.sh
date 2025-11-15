@@ -19,6 +19,8 @@ if [ ! -d "$THEME_DIR" ]; then
     exit 1
 fi
 
+killall -9 waybar || true
+
 # Copy files
 cp "$THEME_DIR/colors.css" "$HOME/.config/waybar/colors.css"
 cp "$THEME_DIR/hyprland-colors.conf" "$HOME/.config/hypr/colors.conf"
@@ -44,6 +46,9 @@ cp "$THEME_DIR/nvim.lua" "$HOME/.config/nvim/lua/config/generated.lua"
 
 # Run post-hooks
 # TODO: Delete those once we harmonize it with ~/.local/bin/walset-backend
+
+~/.config/waybar/toggle.sh
+
 hyprctl reload
 
 ~/.config/hypr/scripts/checkbattery.sh >/dev/null 2>&1 &
@@ -57,5 +62,7 @@ swaync-client -rs >/dev/null 2>&1 &
 pywalfox update
 
 vicinae vicinae://theme/set/matugen
+
+fish -c "yes | fish_config theme save Matugen" 2>/dev/null &
 
 notify-send "Theme '$THEME_NAME' applied successfully."

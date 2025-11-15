@@ -41,7 +41,8 @@ autocmd({ "ColorScheme", "VimEnter" }, {
 
         -- Basic UI elements
         sethl("NonText", { fg = tools.blend(colors.background, colors.foreground, 0.3) })
-        sethl("Cursor", { bg = tools.blend(colors.background, colors.foreground, 0.85) })
+        -- sethl("Cursor", { bg = tools.blend(colors.background, colors.foreground, 0.85) })
+        sethl("Cursor", { bg = "#FF9E4A" })
         sethl("HighlightUrl", { underline = true })
         sethl("AlphaButton", { bg = colors.constant, bold = true, fg = colors.background })
         sethl("Laravel", { fg = "#F53003" })
@@ -121,6 +122,8 @@ autocmd({ "ColorScheme", "VimEnter" }, {
             sethl("SnacksPickerList", { bg = lighter_pmenu2 })
             sethl("SnacksPickerListBorder", { bg = lighter_pmenu2, fg = lighter_pmenu2 })
             sethl("SnacksPickerListTitle", { fg = gethl("Special").fg, bg = lighter_pmenu2 })
+
+            sethl("SnacksPickerPrompt", { bg = lighter_pmenu, fg = gethl("Special").fg })
 
             -- sethl("SnacksPickerPreviewTitle", { fg = colors.pmenu, bg = gethl("Identifier").fg })
             sethl("SnacksPickerPreviewTitle", { fg = black, bg = gethl("Identifier").fg, bold = true })

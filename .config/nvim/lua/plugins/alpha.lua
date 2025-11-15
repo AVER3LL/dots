@@ -57,7 +57,7 @@ return {
 
         local heading = {
             type = "text",
-            val = require("config.banners")["modern"],
+            val = require("config.banners")["pikachu"],
             opts = {
                 position = "center",
                 hl = "Type",

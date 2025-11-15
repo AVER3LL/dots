@@ -10,64 +10,64 @@ icon = "./icon.png"
 # ============================================================================
 
 [colors.core]
-accent = "#ffffff"
-accent_foreground = "#000000"
+accent = "#f0f0f0"
+accent_foreground = "#1a1a1a"
 background = "#1e1e1e"
-foreground = "#ffffff"
+foreground = "#f0f0f0"
 secondary_background = "#2a2a2a"
-border = "#555555"
+border = "#606060"
 
 # ============================================================================
 # Window Borders
 # ============================================================================
 
 [colors.main_window]
-border = "#555555"
+border = "#606060"
 
 [colors.settings_window]
-border = "#777777"
+border = "#808080"
 
 # ============================================================================
 # Accent Palette
 # ============================================================================
 
 [colors.accents]
-blue = "#ffffff"
-green = "#aaaaaa"
-magenta = "#cccccc"
-orange = { name = "#888888", lighter = 40 }
-red = "#888888"
-yellow = { name = "#aaaaaa", lighter = 80 }
-cyan = { name = "#ffffff", lighter = 50 }
-purple = "#cccccc"
+blue = "#f0f0f0"
+green = "#b0b0b0"
+magenta = "#d0d0d0"
+orange = { name = "#909090", lighter = 40 }
+red = "#909090"
+yellow = { name = "#b0b0b0", lighter = 80 }
+cyan = { name = "#f0f0f0", lighter = 50 }
+purple = "#d0d0d0"
 
 # ============================================================================
 # Text System
 # ============================================================================
 
 [colors.text]
-default = "#ffffff"
-muted = "#cccccc"
-danger = "#888888"
-success = "#aaaaaa"
-placeholder = { name = "#cccccc", opacity = 0.6 }
+default = "#f0f0f0"
+muted = "#d0d0d0"
+danger = "#909090"
+success = "#b0b0b0"
+placeholder = { name = "#d0d0d0", opacity = 0.6 }
 
 [colors.text.selection]
-background = "#ffffff"
-foreground = "#000000"
+background = "#f0f0f0"
+foreground = "#1a1a1a"
 
 [colors.text.links]
-default = "#ffffff"
-visited = { name = "#aaaaaa", darker = 20 }
+default = "#f0f0f0"
+visited = { name = "#b0b0b0", darker = 20 }
 
 # ============================================================================
 # Input Fields
 # ============================================================================
 
 [colors.input]
-border = "#777777"
-border_focus = "#ffffff"
-border_error = "#888888"
+border = "#808080"
+border_focus = "#f0f0f0"
+border_error = "#909090"
 
 # ============================================================================
 # Buttons
@@ -75,27 +75,27 @@ border_error = "#888888"
 
 [colors.button.primary]
 background = "#2a2a2a"
-foreground = "#ffffff"
+foreground = "#f0f0f0"
 
 [colors.button.primary.hover]
 background = "#353535"
 
 [colors.button.primary.focus]
-outline = "#ffffff"
+outline = "#f0f0f0"
 
 # ============================================================================
 # Lists
 # ============================================================================
 
 [colors.list.item.hover]
-background = { name = "#333333", opacity = 0.25 }
-foreground = "#ffffff"
+background = { name = "#3c3c3c", opacity = 0.25 }
+foreground = "#f0f0f0"
 
 [colors.list.item.selection]
-background = { name = "#333333", opacity = 0.50 }
-foreground = "#ffffff"
-secondary_background = "#333333"
-secondary_foreground = "#ffffff"
+background = { name = "#3c3c3c", opacity = 0.50 }
+foreground = "#f0f0f0"
+secondary_background = "#3c3c3c"
+secondary_foreground = "#f0f0f0"
 
 # ============================================================================
 # Grid Items
@@ -105,22 +105,22 @@ secondary_foreground = "#ffffff"
 background = "#2a2a2a"
 
 [colors.grid.item.hover]
-outline = { name = "#cccccc", opacity = 0.8 }
+outline = { name = "#d0d0d0", opacity = 0.8 }
 
 [colors.grid.item.selection]
-outline = "#ffffff"
+outline = "#f0f0f0"
 
 # ============================================================================
 # Scrollbars
 # ============================================================================
 
 [colors.scrollbars]
-background = { name = "#ffffff", opacity = 0.2 }
+background = { name = "#f0f0f0", opacity = 0.2 }
 
 # ============================================================================
 # Loading States
 # ============================================================================
 
 [colors.loading]
-bar = "#ffffff"
-spinner = "#ffffff"
+bar = "#f0f0f0"
+spinner = "#f0f0f0"

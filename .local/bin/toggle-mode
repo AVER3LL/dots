@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Script to toggle between dark and light mode system wide
 set -euo pipefail
+MATUGEN_LOCK="$HOME/.cache/averell/matugen.lock"
 
 config="$HOME/.config/gtk-3.0/settings.ini"
 gnome_schema="org.gnome.desktop.interface"
@@ -26,10 +27,17 @@ usage() {
 
 set_mode() {
     local mode="$1"
+
+    if [[ -f "$MATUGEN_LOCK" ]]; then
+        notify-send "Lock file present, skipping mode change"
+        exit 0
+    fi
+
     if [[ "$current_mode" == "$mode" ]]; then
         echo "Already in $mode mode"
         exit 0
     fi
+
     if [[ "$mode" == "dark" ]]; then
         prefer_dark="1"
         prefer="prefer-dark"

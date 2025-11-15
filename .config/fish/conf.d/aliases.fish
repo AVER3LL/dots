@@ -24,6 +24,7 @@ alias nf='neofetch'
 alias ff='fastfetch'
 alias fpc='php ~/Projects/php/flutter-project-creator/main.php'
 alias cd='z'
+alias dc='cd'
 
 # Fixing my brain
 alias cls='clear'

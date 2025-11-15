@@ -8,7 +8,7 @@ local vscode = {
             row = 5,
             width = 0.4,
             min_width = 80,
-            height = 0.6,
+            height = 0.65,
             border = "none",
             box = "vertical",
             {
