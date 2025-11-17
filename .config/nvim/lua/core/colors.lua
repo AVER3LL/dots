@@ -26,23 +26,26 @@ autocmd({ "ColorScheme", "VimEnter" }, {
             background = gethl("Normal").bg or vim.g.bg_color,
             foreground = gethl("Normal").fg,
             comment = gethl("Comment").fg,
-            cursorline = tools.adjust_brightness(gethl("Normal").bg, vim.o.background == "dark" and 1.25 or 0.95),
-            pmenu = tools.style == "clear" and gethl("Pmenu").bg or tools.adjust_brightness(gethl("Normal").bg, 0.75),
+            cursorline = tools.colors.adjust_brightness(
+                gethl("Normal").bg,
+                vim.o.background == "dark" and 1.25 or 0.95
+            ),
+            pmenu = tools.style == "clear" and gethl("Pmenu").bg or tools.colors.darken(gethl("Normal").bg, 0.25),
             fun = gethl("Function").fg or "#375FAD",
             str = gethl("String").fg or "#7CA855",
-            constant = tools.resolve_hl("Constant").fg,
+            constant = gethl("Constant").fg,
             parenthesis = vim.o.background == "dark" and "#39ff14" or "#ff007f",
-            subtle = tools.blend(gethl("Normal").bg, gethl("Normal").fg, 0.15),
+            subtle = tools.colors.blend(gethl("Normal").fg, gethl("Normal").gg, 0.15),
         }
 
         colors.cursorline = vim.list_contains({ "vercel", "moonfly" }, vim.g.colors_name)
-                and tools.adjust_brightness(gethl("Normal").bg, 2)
+                and tools.colors.lighten(gethl("Normal").bg, 1)
             or colors.cursorline
 
         -- Basic UI elements
-        sethl("NonText", { fg = tools.blend(colors.background, colors.foreground, 0.3) })
-        -- sethl("Cursor", { bg = tools.blend(colors.background, colors.foreground, 0.85) })
-        sethl("Cursor", { bg = "#FF9E4A" })
+        sethl("NonText", { fg = tools.colors.blend(colors.foreground, colors.background, 0.3) })
+        sethl("Cursor", { bg = tools.colors.blend(colors.foreground, colors.background, 0.85) })
+        -- sethl("Cursor", { bg = "#FF9E4A" })
         sethl("HighlightUrl", { underline = true })
         sethl("AlphaButton", { bg = colors.constant, bold = true, fg = colors.background })
         sethl("Laravel", { fg = "#F53003" })
@@ -56,15 +59,15 @@ autocmd({ "ColorScheme", "VimEnter" }, {
 
         -- Look of inlay hints
         sethl("LspInlayHint", {
-            fg = tools.blend(colors.background, colors.foreground, 0.7),
-            bg = tools.blend(colors.background, colors.foreground, 0.05),
+            fg = tools.colors.blend(colors.foeground, colors.background, 0.7),
+            bg = tools.colors.blend(colors.foeground, colors.background, 0.05),
             italic = true,
         })
 
         -- Fold markers
         sethl("Folded", {
-            bg = tools.adjust_brightness(colors.background, vim.o.background == "light" and 0.95 or 1.3),
-            fg = tools.blend(colors.background, colors.foreground, 0.6),
+            bg = tools.colors.adjust_brightness(colors.background, vim.o.background == "light" and 0.95 or 1.3),
+            fg = tools.colors.blend(colors.foreground, colors.background, 0.6),
         })
 
         -- Diagnostic underlines
@@ -97,9 +100,9 @@ autocmd({ "ColorScheme", "VimEnter" }, {
 
         -- Style-specific completion highlights
         if effective_style == "flat" then
-            -- local lighter_pmenu = tools.adjust_brightness(colors.pmenu, 0.9)
-            local lighter_pmenu = tools.blend(colors.background, colors.pmenu, 0.9)
-            local lighter_pmenu2 = tools.blend(colors.background, colors.pmenu, 0.25)
+            -- local lighter_pmenu = tools.colors.adjust_brightness(colors.pmenu, 0.9)
+            local lighter_pmenu = tools.colors.blend(colors.pmenu, colors.background, 0.9)
+            local lighter_pmenu2 = tools.colors.blend(colors.pmenu, colors.background, 0.25)
             local black = "#17161C"
 
             sethl("MiniPickNormal", { bg = colors.pmenu, fg = colors.foreground })
@@ -140,18 +143,18 @@ autocmd({ "ColorScheme", "VimEnter" }, {
             sethl("BlinkCmpSignatureHelp", { bg = lighter_pmenu2 })
             sethl("BlinkCmpSignatureHelpBorder", { bg = colors.pmenu, fg = colors.pmenu })
 
-            -- local menu_bg = tools.adjust_brightness(colors.background, 0.75)
+            -- local menu_bg = tools.colors.adjust_brightness(colors.background, 0.75)
             sethl("BlinkCmpMenu", { bg = colors.pmenu })
             sethl("BlinkCmpMenuBorder", { bg = colors.pmenu, fg = colors.pmenu })
             sethl(
                 "BlinkCmpLabelDescription",
-                { bg = colors.pmenu, fg = tools.adjust_brightness(colors.foreground, 0.4), italic = true }
+                { bg = colors.pmenu, fg = tools.colors.adjust_brightness(colors.foreground, 0.4), italic = true }
             )
 
-            local doc_bg = tools.adjust_brightness(colors.background, 0.87)
+            local doc_bg = tools.colors.adjust_brightness(colors.background, 0.87)
             sethl("BlinkCmpDocBorder", { bg = doc_bg, fg = doc_bg })
             sethl("BlinkCmpDoc", { bg = doc_bg })
-            sethl("BlinkCmpDocSeparator", { bg = doc_bg, fg = tools.adjust_brightness(colors.foreground, 0.7) })
+            sethl("BlinkCmpDocSeparator", { bg = doc_bg, fg = tools.colors.adjust_brightness(colors.foreground, 0.7) })
             sethl("FloaTerminalBorder", {
                 bg = colors.pmenu,
                 fg = colors.pmenu,
@@ -161,11 +164,11 @@ autocmd({ "ColorScheme", "VimEnter" }, {
             sethl("NormalFloat", { bg = colors.pmenu })
             sethl("FloatBorder", { fg = colors.pmenu, bg = colors.pmenu })
         elseif effective_style == "clear" then
-            local dimmed_fg = tools.blend(colors.background, colors.foreground, 0.8)
+            local dimmed_fg = tools.colors.blend(colors.foreground, colors.background, 0.8)
 
             sethl(
                 "WinSeparator",
-                { bg = colors.background, fg = tools.blend(colors.background, colors.foreground, 0.1) }
+                { bg = colors.background, fg = tools.colors.blend(colors.foreground, colors.background, 0.1) }
             )
 
             sethl("BlinkCmpMenuBorder", { bg = colors.background, fg = colors.subtle })
@@ -237,7 +240,7 @@ autocmd({ "ColorScheme", "VimEnter" }, {
         if tools.transparent then
             sethl(
                 "WinSeparator",
-                { bg = colors.background, fg = tools.blend(colors.background, colors.foreground, 0.3) }
+                { bg = colors.background, fg = tools.colors.blend(colors.foreground, colors.background, 0.3) }
             )
         end
 
@@ -257,8 +260,8 @@ autocmd({ "ColorScheme", "VimEnter" }, {
         end
 
         -- Window bars and misc
-        sethl("WinBar", { bg = tools.adjust_brightness(colors.background, 0.85) })
-        sethl("WinBarNC", { bg = tools.adjust_brightness(colors.background, 0.95) })
+        sethl("WinBar", { bg = tools.colors.darken(colors.background, 0.15) })
+        sethl("WinBarNC", { bg = tools.colors.darken(colors.background, 0.10) })
 
         sethl("@markup.raw.block.markdown", { bg = "NONE" })
         -- mysethl("TinyInlineDiagnosticVirtualTextArrow", { bg = "NONE" })
@@ -284,8 +287,11 @@ autocmd({ "ColorScheme", "VimEnter" }, {
         -- sethl("BlinkCmpMenuSelection", { bg = gethl("Visual").bg })
 
         -- Git and usage
-        sethl("GitSignsCurrentLineBlame", { fg = tools.adjust_brightness(colors.foreground, 0.8), italic = true })
+        sethl(
+            "GitSignsCurrentLineBlame",
+            { fg = tools.colors.adjust_brightness(colors.foreground, 0.8), italic = true }
+        )
         sethl("Usage", { link = "Comment" })
-        sethl("SnacksPickerDir", { fg = tools.adjust_brightness(colors.foreground, 0.6) })
+        sethl("SnacksPickerDir", { fg = tools.colors.adjust_brightness(colors.foreground, 0.6) })
     end,
 })

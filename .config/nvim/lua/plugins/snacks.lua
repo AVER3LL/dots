@@ -4,7 +4,7 @@ local vscode = {
     flat = {
         hidden = { "preview" },
         layout = {
-            backdrop = 60,
+            backdrop = false,
             row = 5,
             width = 0.4,
             min_width = 80,
@@ -115,7 +115,7 @@ return {
                 files = {
                     hidden = true,
                     ignored = true,
-                    exclude = { "node_modules", ".git", "__pycache__", ".mypy_cache", "venv", ".venv" },
+                    exclude = { "vendor", "node_modules", ".git", "__pycache__", ".mypy_cache", "venv", ".venv" },
                 },
             },
             layouts = {

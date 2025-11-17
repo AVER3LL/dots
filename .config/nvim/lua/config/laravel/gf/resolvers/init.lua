@@ -16,6 +16,8 @@ local M = {
     require "config.laravel.gf.resolvers.policy",
     require "config.laravel.gf.resolvers.event",
     require "config.laravel.gf.resolvers.factory",
+    require "config.laravel.gf.resolvers.middleware",
+    require "config.laravel.gf.resolvers.job",
 }
 
 return M

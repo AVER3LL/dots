@@ -9,7 +9,7 @@ M.resolve = function(line, laravel_root, quoted_content)
         return results
     end
 
-    if line:match "env%s*%(" then
+    if line:match "env%s*%(" or line:match "Env::get%s*%(" then
         local env_files = {
             laravel_root .. "/.env",
             laravel_root .. "/.env.local",

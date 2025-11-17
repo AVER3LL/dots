@@ -9,7 +9,7 @@ M.resolve = function(line, laravel_root, quoted_content)
         return results
     end
 
-    if line:match "view%s*%(" or line:match "@extends%s*%(" or line:match "@include%s*%(" then
+    if line:match "view%s*%(" or line:match "@extends%s*%(" or line:match "@include%s*%(" or line:match "->view%s*%(" then
         local view_path = quoted_content:gsub("%.", "/") .. ".blade.php"
         local view_file = laravel_root .. "/resources/views/" .. view_path
 

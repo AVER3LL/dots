@@ -9,7 +9,7 @@ M.resolve = function(line, laravel_root, quoted_content)
         return results
     end
 
-    if line:match "__%s*%(" or line:match "trans%s*%(" or line:match "@lang%s*%(" then
+    if line:match "__%s*%(" or line:match "trans%s*%(" or line:match "@lang%s*%(" or line:match "->trans%s*%(" then
         local trans_parts = vim.split(quoted_content, ".", { plain = true })
         if #trans_parts >= 2 then
             local lang_file = trans_parts[1] .. ".php"

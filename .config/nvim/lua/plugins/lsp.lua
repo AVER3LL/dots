@@ -211,6 +211,7 @@ return {
                         "jdtls",
                         "emmylua_ls",
                         "copilot",
+                        -- "vtsls",
                         -- "lua_ls",
                     },
                 },

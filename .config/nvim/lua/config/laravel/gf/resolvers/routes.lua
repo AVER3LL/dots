@@ -9,6 +9,7 @@ local function extract_route_name(line, cursor_pos)
         "route%s*%(%s*['\"]([^'\"]*)['\"]",
         "to_route%s*%(%s*['\"]([^'\"]*)['\"]",
         "->routeIs%s*%(%s*['\"]([^'\"]*)['\"]",
+        "->route%s*%(%s*['\"]([^'\"]*)['\"]",
     }
     for _, pattern in ipairs(route_patterns) do
         local start_pos = 1
@@ -97,7 +98,7 @@ local function scan_files_for_route(laravel_root, route_name_to_find)
 end
 
 M.resolve = function(line, laravel_root, _)
-    if not (line:match "route%s*%(" or line:match "to_route%s*%(" or line:match "->routeIs%s*%((") then
+    if not (line:match "route%s*%(" or line:match "to_route%s*%(" or line:match "->routeIs%s*%(" or line:match "->route%s*%(") then
         return {}
     end
 

@@ -18,6 +18,9 @@ return {
                     "vue",
                 },
                 settings = {
+                    separate_diagnostic_server = true,
+                    expose_as_code_action = "all",
+                    tsserver_max_memory = "auto",
                     tsserver_plugins = {
                         "@vue/typescript-plugin",
                     },

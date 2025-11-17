@@ -9,7 +9,7 @@ M.resolve = function(line, laravel_root, quoted_content)
         return results
     end
 
-    if line:match "storage_path%s*%(" then
+    if line:match "storage_path%s*%(" or line:match "Storage::path%s*%(" then
         local storage_file = laravel_root .. "/storage/" .. quoted_content
 
         if vim.fn.filereadable(storage_file) == 1 then

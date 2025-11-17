@@ -9,7 +9,7 @@ M.resolve = function(line, laravel_root, quoted_content)
         return results
     end
 
-    if line:match "config%s*%(" then
+    if line:match "config%s*%(" or line:match "Config::get%s*%(" then
         local config_parts = vim.split(quoted_content, ".", { plain = true })
         if #config_parts > 0 then
             local config_file = laravel_root .. "/config/" .. config_parts[1] .. ".php"
