@@ -5,11 +5,16 @@ This repository contains my personal dotfiles for various applications including
 ## Screenshots
 
 ![Screenshot 1](.art/1.png)
+
+<details><summary>View Other screenshots</summary>
+
 ![Screenshot 2](.art/2.png)
 ![Screenshot 3](.art/3.png)
 ![Screenshot 5](.art/5.png)
 ![Fabric Screenshot](.art/fabric.png)
 ![Old Screenshot](.art/old.png)
+
+</details>
 
 ## Applications Configured
 
