@@ -4,7 +4,7 @@ window {
   border-radius: 0;
   border: 2px solid @outline;
 
-  background-color: @surface-container;
+  background-color: @surface_container;
 }
 
 label {
