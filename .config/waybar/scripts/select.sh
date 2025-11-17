@@ -3,75 +3,46 @@
 # Configuration
 readonly WAYBAR_DIR="$HOME/.config/waybar"
 readonly LAUNCHER="$WAYBAR_DIR/toggle.sh"
-readonly THEMES="$WAYBAR_DIR/themes"
+readonly THEME_DIR="$WAYBAR_DIR/themes"
 
-# Theme definitions with descriptions
-declare -A THEME_MAP=(
-    ["main"]="main"
-    ["full"]="full"
-    ["vertical"]="vertical"
-    ["windows"]="windows"
-    ["zen"]="zen"
-    ["both"]="both"
-    ["minimal"]="minimal"
-    ["test"]="test"
-)
-
-# Theme descriptions for better user experience
-declare -A THEME_DESC=(
-    ["main"]="Default horizontal bar layout"
-    ["full"]="Complete top bar with all modules"
-    ["vertical"]="Side-mounted vertical bar"
-    ["windows"]="Bottom bar Windows-style layout"
-    ["zen"]="Minimal clean interface"
-    ["both"]="Dual bar setup (top + bottom)"
-    ["minimal"]="Top bar with no gap"
-    ["test"]="For testing purposes"
-)
-
-# Theme icons for visual appeal in rofi
-declare -A THEME_ICONS=(
-    ["main"]="󰕰"
-    ["full"]="󰍹"
-    ["vertical"]=""
-    ["windows"]="󰖟"
-    ["zen"]="󱎴"
-    ["both"]="󰍺"
-    ["minimal"]="󰘴"
-    ["test"]="T"
+# Theme definitions with icons and descriptions
+declare -A THEMES=(
+    ["main"]="󰕰|Default horizontal bar layout"
+    ["full"]="󰍹|Complete top bar with all modules"
+    ["vertical"]="|Side-mounted vertical bar"
+    ["windows"]="󰖟|Bottom bar Windows-style layout"
+    ["zen"]="󱎴|Minimal clean interface"
+    ["both"]="󰍺|Dual bar setup (top + bottom)"
+    ["minimal"]="󰘴|Top bar with no gap"
+    ["test"]="T|For testing purposes"
 )
 
 # Display menu of available themes
 show_menu() {
-    local menu_items=""
-    local themes=("${!THEME_MAP[@]}")
-    local last_index=$((${#themes[@]} - 1))
+    local menu_entries=()
     local current_theme
     current_theme=$(get_current_theme)
 
-    for i in "${!themes[@]}"; do
-        local theme="${themes[$i]}"
-        local icon="${THEME_ICONS[$theme]:-󰚀}"
-        local desc="${THEME_DESC[$theme]:-No description}"
+    for theme in "${!THEMES[@]}"; do
+        IFS='|' read -r icon desc <<<"${THEMES[$theme]}"
 
         # If it's the current theme, append [selected]
         if [[ "$theme" == "$current_theme" ]]; then
             desc+=" <span foreground='gold'><b><i>[selected]</i></b></span>"
         fi
 
-        menu_items+="$icon  $theme - $desc"
-        [[ $i -ne $last_index ]] && menu_items+="\n"
+        menu_entries+=("$icon  $theme - $desc")
     done
 
-    echo -e "$menu_items"
+    printf '%s\n' "${menu_entries[@]}"
 }
 
 # Get current active theme (optional - shows current selection)
 get_current_theme() {
     if [[ -f "$LAUNCHER" ]]; then
         # Try to determine current theme by checking which theme's toggle.sh matches
-        for theme in "${!THEME_MAP[@]}"; do
-            local theme_launcher="$THEMES/${THEME_MAP[$theme]}/toggle.sh"
+        for theme in "${!THEMES[@]}"; do
+            local theme_launcher="$THEME_DIR/${theme}/toggle.sh"
             if [[ -f "$theme_launcher" ]] && cmp -s "$LAUNCHER" "$theme_launcher"; then
                 echo "$theme"
                 return
@@ -145,8 +116,8 @@ reload_waybar() {
 validate_themes() {
     local missing_themes=()
 
-    for theme in "${!THEME_MAP[@]}"; do
-        local theme_dir="$THEMES/${THEME_MAP[$theme]}"
+    for theme in "${!THEMES[@]}"; do
+        local theme_dir="$THEME_DIR/${theme}"
         local theme_launcher="$theme_dir/toggle.sh"
 
         if [[ ! -d "$theme_dir" ]]; then
@@ -168,7 +139,7 @@ validate_themes() {
 # Main function
 main() {
     # Check if required directories exist
-    for dir in "$WAYBAR_DIR" "$THEMES"; do
+    for dir in "$WAYBAR_DIR" "$THEME_DIR"; do
         if [[ ! -d "$dir" ]]; then
             notify-send "Waybar Theme Error" "Directory not found: $dir" -u critical
             echo "Error: Directory not found: $dir" >&2
@@ -209,9 +180,9 @@ main() {
     echo "Selected theme: $selected_theme"
 
     # Find matching theme
-    if [[ -n "${THEME_MAP[$selected_theme]}" ]]; then
-        local theme_dir="${THEME_MAP[$selected_theme]}"
-        local theme_launcher="$THEMES/$theme_dir/toggle.sh"
+    if [[ -n "${THEMES[$selected_theme]}" ]]; then
+        local theme_dir="$selected_theme"
+        local theme_launcher="$THEME_DIR/$theme_dir/toggle.sh"
 
         echo "Loading theme: $theme_dir"
         reload_waybar "$theme_launcher" "$selected_theme"
