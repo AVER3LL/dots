@@ -18,12 +18,12 @@ This repository contains my personal dotfiles for various applications including
 
 ## Applications Configured
 
-- **Neovim**: Custom configuration in `nvim/`
-- **Hyprland**: Window manager setup in `hypr/`
-- **Waybar**: Status bar configuration in `waybar/`
-- **Swaync**: Notification center in `swaync/`
-- **Swayosd**: On-screen display in `swayosd/`
-- **Fabric**: Additional configurations in `fabric/`
+- **Neovim**: Custom configuration in `.config/nvim/`
+- **Hyprland**: Window manager setup in `.config/hypr/`
+- **Waybar**: Status bar configuration in `.config/waybar/`
+- **Swaync**: Notification center in `.config/swaync/`
+- **Swayosd**: On-screen display in `.config/swayosd/`
+- **Fabric**: Additional configurations in `.config/fabric/`
 
 ## Installation with Stow
 
