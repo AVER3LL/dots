@@ -11,7 +11,11 @@ This repository contains my personal dotfiles for various applications including
 ![Screenshot 2](.art/2.png)
 ![Screenshot 3](.art/3.png)
 ![Screenshot 5](.art/5.png)
+
+**Fabric**
 ![Fabric Screenshot](.art/fabric.png)
+
+**Old one**
 ![Old Screenshot](.art/old.png)
 
 </details>
