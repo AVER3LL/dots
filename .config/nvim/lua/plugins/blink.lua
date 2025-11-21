@@ -152,14 +152,14 @@ return {
                 default = function()
                     local success, node = pcall(vim.treesitter.get_node)
                     if not (success and node) then
-                        return { "snippets", "lazydev", "lsp", "path", "buffer" }
+                        return { "snippets", "lsp", "path", "buffer" }
                     end
 
                     local t = node:type()
                     if vim.tbl_contains({ "comment", "line_comment", "block_comment" }, t) then
                         return { "buffer" }
                     else
-                        return { "snippets", "lazydev", "lsp", "path", "buffer" }
+                        return { "snippets", "lsp", "path", "buffer" }
                     end
                 end,
 
@@ -167,11 +167,11 @@ return {
                     snippets = {
                         score_offset = 5,
                     },
-                    lazydev = {
-                        name = "LazyDev",
-                        module = "lazydev.integrations.blink",
-                        score_offset = 4,
-                    },
+                    -- lazydev = {
+                    --     name = "LazyDev",
+                    --     module = "lazydev.integrations.blink",
+                    --     score_offset = 4,
+                    -- },
                     lsp = {
                         score_offset = 3,
                     },

@@ -27,21 +27,23 @@ local function on_attach(client, bufnr)
 
     keymap("n", "<leader>ds", vim.diagnostic.setloclist, "Show diagnostic loclist")
 
-    keymap("n", "<leader>fs", Snacks.picker.lsp_symbols, "Show document symbols")
+    if client:supports_method "textDocument/documentSymbol" then
+        keymap("n", "<leader>fs", Snacks.picker.lsp_symbols, "Show document symbols")
+    end
 
-    if client:supports_method(methods.textDocument_definition) then
+    if client:supports_method "textDocument/definition" then
         keymap("n", "gd", Snacks.picker.lsp_definitions, "Go to definition")
     end
 
-    if client:supports_method(methods.textDocument_declaration) then
+    if client:supports_method "textDocument/declaration" then
         keymap("n", "gD", Snacks.picker.lsp_declarations, "Go to declaration")
     end
 
-    if client:supports_method(methods.textDocument_implementation) then
+    if client:supports_method "textDocument/implementation" then
         keymap("n", "gi", Snacks.picker.lsp_implementations, "Go to implementation")
     end
 
-    if client:supports_method(methods.textDocument_signatureHelp) then
+    if client:supports_method "textDocument/signatureHelp" then
         keymap("i", "<C-x>", function()
             -- Close the completion menu first (if open).
             if require("blink.cmp.completion.windows.menu").win:is_open() then
@@ -52,15 +54,15 @@ local function on_attach(client, bufnr)
         end, "Show signature help")
     end
 
-    if client:supports_method(methods.textDocument_references) then
+    if client:supports_method "textDocument/references" then
         keymap("n", "gr", Snacks.picker.lsp_references, "Go to references")
     end
 
-    if client:supports_method(methods.textDocument_hover) or client.name == "dartls" then
+    if client:supports_method "textDocument/hover" or client.name == "dartls" then
         keymap("n", "<leader>k", vim.lsp.buf.hover, "Show documentation")
     end
 
-    if client:supports_method(methods.textDocument_inlayHint) then
+    if client:supports_method "textDocument/inlayHint" then
         keymap("n", "<leader>dh", function()
             if vim.g.inlay_hints then
                 vim.lsp.inlay_hint.enable(false)
@@ -71,7 +73,7 @@ local function on_attach(client, bufnr)
             vim.g.inlay_hints = not vim.g.inlay_hints
         end, "Toggle inlay hints")
 
-        local inlay_hints_group = vim.api.nvim_create_augroup("mariasolos/toggle_inlay_hints", { clear = false })
+        local inlay_hints_group = vim.api.nvim_create_augroup("toggle_inlay_hints", { clear = false })
 
         vim.lsp.inlay_hint.enable(vim.g.inlay_hints)
 
@@ -102,7 +104,7 @@ local function on_attach(client, bufnr)
         keymap("n", "<leader>rn", vim.lsp.buf.rename, "Smart rename")
     end
 
-    if vim.g.highlight_words and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
+    if vim.g.highlight_words and client:supports_method "textDocument/documentHighlight" then
         local highlight_augroup = vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
 
         -- PERF: Commented because my laptop is dying
@@ -132,8 +134,8 @@ local function on_attach(client, bufnr)
 end
 
 -- Update mappings when registering dynamic capabilities.
-local register_capability = vim.lsp.handlers[methods.client_registerCapability]
-vim.lsp.handlers[methods.client_registerCapability] = function(err, res, ctx)
+local register_capability = vim.lsp.handlers["client/registerCapability"]
+vim.lsp.handlers["client/registerCapabilty"] = function(err, res, ctx)
     local client = vim.lsp.get_client_by_id(ctx.client_id)
     if not client then
         return
@@ -307,5 +309,21 @@ M.on_init = function(client, _)
         client.server_capabilities.semanticTokensProvider = nil
     end
 end
+
+-- Set up LSP servers.
+-- vim.api.nvim_create_autocmd({ "BufReadPre", "BufNewFile" }, {
+--     once = true,
+--     callback = function()
+--         -- Extend neovim's client capabilities with the completion ones.
+--         vim.lsp.config("*", { capabilities = require("blink.cmp").get_lsp_capabilities(nil, true) })
+--
+--         local servers = vim.iter(vim.api.nvim_get_runtime_file("lsp/*.lua", true))
+--             :map(function(file)
+--                 return vim.fn.fnamemodify(file, ":t:r")
+--             end)
+--             :totable()
+--         vim.lsp.enable(servers)
+--     end,
+-- })
 
 return M

@@ -2,32 +2,6 @@ return {
     ---@module 'lazy'
     ---@type LazySpec
     {
-        "folke/lazydev.nvim",
-        ft = "lua", -- only load on lua files
-        config = function()
-            local lsp = require "lazydev.lsp"
-
-            ---@diagnostic disable-next-line: duplicate-set-field
-            lsp.update = function(client)
-                client:notify("workspace/didChangeConfiguration", {
-                    settings = { Lua = {} },
-                })
-            end
-
-            require("lazydev").setup {
-                library = {
-
-                    { path = "${3rd}/luv/library", words = { "vim%.uv" } },
-                    { path = "luvit-meta/library", words = { "vim%.uv" } },
-                    { path = "snacks.nvim", words = { "Snacks" } },
-                },
-            }
-        end,
-    },
-
-    ---@module 'lazy'
-    ---@type LazySpec
-    {
         "neovim/nvim-lspconfig",
         event = { "BufReadPre", "BufNewFile" },
         dependencies = {
@@ -54,6 +28,13 @@ return {
                                 runtime = {
                                     version = "LuaJIT",
                                 },
+                                workspace = {
+                                    checkThirdParty = false,
+                                    library = {
+                                        vim.env.VIMRUNTIME,
+                                        "${3rd}/luv/library",
+                                    },
+                                },
                             },
                         },
                     },
@@ -77,7 +58,7 @@ return {
                         settings = {
                             basedpyright = {
                                 analysis = {
-                                    typeCheckingMode = "basic",
+                                    typeCheckingMode = "standard",
                                     autoSearchPaths = true,
                                     diagnosticMode = "workspace",
                                     useLibraryCodeForTypes = true,

@@ -71,7 +71,7 @@ function M.create_floating_window(opts)
 
     local win = vim.api.nvim_open_win(buf, true, win_config)
 
-    M.wo(win, "winhighlight", "FloatBorder:FloaTerminalBorder")
+    M.wo(win, "winhighlight", "Normal:FloaTerminal,FloatBorder:FloaTerminalBorder")
 
     -- Close function (like lazy.nvim's close method)
     local function close_windows()

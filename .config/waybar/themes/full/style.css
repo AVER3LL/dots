@@ -1,7 +1,7 @@
 @import '../../colors.css';
 
 /* Main Colors */
-@define-color background @surface_container;
+/* @define-color background @surface_container; */
 @define-color foreground @primary;
 @define-color battery-warning-color #ff875a;
 @define-color battery-critical-color #ff4545;
@@ -52,7 +52,8 @@ tooltip label {
 }
 
 #workspaces button.persistent {
-    color: @foreground;
+    /* color: @foreground; */
+    color: alpha(@foreground, 0.7);
     transition: all 0.1s linear;
 }
 
@@ -70,12 +71,12 @@ tooltip label {
 
 #workspaces button.active {
     /* color: #a6e3a1; */
-    background-color: alpha(@primary_fixed_dim, 0.8);
-    color: @on_primary_fixed;
+    /* background-color: alpha(@primary_fixed_dim, 0.8); */
+    color: @primary_fixed;
     border-radius: 5px;
     opacity: 1;
     transition: all 0.1s linear;
-    min-width: 30px;
+    /* min-width: 30px; */
     /* background-color: rgba(166, 227, 161, 0.1); */
 }
 

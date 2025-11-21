@@ -14,12 +14,12 @@ local vscode = {
             {
                 win = "input",
                 height = 1,
-                border = true,
+                border = tools.border,
                 title = "{title} {live}",
                 title_pos = "center",
             },
-            { win = "list", border = "single" },
-            { win = "preview", title = "{preview}", border = true },
+            { win = "list", border = tools.border },
+            { win = "preview", title = "{preview}", border = tools.border },
         },
     },
 
@@ -36,11 +36,11 @@ local vscode = {
             {
                 win = "input",
                 height = 1,
-                border = "single",
+                border = tools.border,
                 title = "{title} {live}",
                 title_pos = "center",
             },
-            { win = "list", border = "single" },
+            { win = "list", border = tools.border },
         },
     },
 }

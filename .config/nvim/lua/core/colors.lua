@@ -30,12 +30,13 @@ autocmd({ "ColorScheme", "VimEnter" }, {
                 gethl("Normal").bg,
                 vim.o.background == "dark" and 1.25 or 0.95
             ),
-            pmenu = tools.style == "clear" and gethl("Pmenu").bg or tools.colors.darken(gethl("Normal").bg, 0.25),
+            pmenu = tools.style == "clear" and gethl("Pmenu").bg
+                or tools.colors.darken(gethl("Normal").bg, vim.o.background == "dark" and 0.4 or 0.2),
             fun = gethl("Function").fg or "#375FAD",
             str = gethl("String").fg or "#7CA855",
             constant = gethl("Constant").fg,
             parenthesis = vim.o.background == "dark" and "#39ff14" or "#ff007f",
-            subtle = tools.colors.blend(gethl("Normal").fg, gethl("Normal").gg, 0.15),
+            subtle = tools.colors.blend(gethl("Normal").fg, gethl("Normal").bg, 0.15),
         }
 
         colors.cursorline = vim.list_contains({ "vercel", "moonfly" }, vim.g.colors_name)
@@ -59,8 +60,8 @@ autocmd({ "ColorScheme", "VimEnter" }, {
 
         -- Look of inlay hints
         sethl("LspInlayHint", {
-            fg = tools.colors.blend(colors.foeground, colors.background, 0.7),
-            bg = tools.colors.blend(colors.foeground, colors.background, 0.05),
+            fg = tools.colors.blend(colors.foreground, colors.background, 0.7),
+            bg = tools.colors.blend(colors.foreground, colors.background, 0.05),
             italic = true,
         })
 
@@ -155,12 +156,8 @@ autocmd({ "ColorScheme", "VimEnter" }, {
             sethl("BlinkCmpDocBorder", { bg = doc_bg, fg = doc_bg })
             sethl("BlinkCmpDoc", { bg = doc_bg })
             sethl("BlinkCmpDocSeparator", { bg = doc_bg, fg = tools.colors.adjust_brightness(colors.foreground, 0.7) })
-            sethl("FloaTerminalBorder", {
-                bg = colors.pmenu,
-                fg = colors.pmenu,
-            })
 
-            sethl("LspInfoBorder", { bg = colors.pmenu })
+            sethl("LspInfoBorder", { bg = colors.pmenu, fg = colors.pmenu })
             sethl("NormalFloat", { bg = colors.pmenu })
             sethl("FloatBorder", { fg = colors.pmenu, bg = colors.pmenu })
         elseif effective_style == "clear" then
@@ -188,11 +185,12 @@ autocmd({ "ColorScheme", "VimEnter" }, {
             sethl("SnacksPickerBorder", { fg = colors.subtle, bg = colors.background })
             sethl("WhichKeyNormal", { bg = colors.background })
             sethl("SnacksPickerInputBorder", { bg = colors.background, fg = colors.subtle })
-            sethl("FloaTerminalBorder", {
-                bg = colors.background,
-                fg = colors.background,
-            })
         end
+
+        sethl("FloaTerminalBorder", {
+            bg = colors.background,
+            fg = colors.background,
+        })
 
         local kinds = {
             Constant = "Constant",

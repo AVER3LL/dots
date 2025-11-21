@@ -87,6 +87,12 @@ reload_waybar() {
         ghostty_value=45
     fi
 
+    if [ "$theme_name" = "vertical" ]; then
+        sed -i '/layerrule = animation slide/s/\btop\b/left/' "$HOME/.config/hypr/config/windowrules.conf"
+    else
+        sed -i '/layerrule = animation slide/s/\bleft\b/top/' "$HOME/.config/hypr/config/windowrules.conf"
+    fi
+
     # Update kitty config
     sed -i "s/\(cell_height[[:space:]]*\)[0-9]\+%/\1${value_kitty}%/" "$HOME/.config/kitty/kitty.conf"
 

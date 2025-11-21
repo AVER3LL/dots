@@ -8,6 +8,25 @@ require("config.search-counter").setup { highlight = "Comment" }
 
 map("i", "<Tab>", tools.tabout, { expr = true, noremap = true })
 
+map("n", "<leader>of", function()
+    local bufname = vim.api.nvim_buf_get_name(0)
+    local folder
+
+    if bufname == "" then
+        folder = vim.loop.cwd()
+    else
+        folder = vim.fn.fnamemodify(bufname, ":p:h")
+    end
+
+    if folder == "" then
+        vim.notify("No folder to open", vim.log.levels.WARN)
+        return
+    end
+
+    vim.system({ "nautilus", folder }, { detach = true })
+    vim.notify("Opening folder: " .. folder)
+end, { desc = "Open in file manager" })
+
 map("n", "<leader>oc", function()
     local file = vim.fn.expand "%:p"
     local line = vim.fn.line "."

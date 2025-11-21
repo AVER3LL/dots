@@ -11,6 +11,8 @@ require "lsp"
 
 require("config.winbar").setup()
 
-vim.cmd.colorscheme "kanagawa"
+vim.cmd.colorscheme "vercel"
 
 require "config.generated"
+
+-- require("vim._extui").enable {}
