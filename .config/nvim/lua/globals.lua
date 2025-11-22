@@ -4,7 +4,7 @@ _G.tools = {}
 tools.border = "single"
 
 --- @type "flat" | "clear"
-tools.style = "flat"
+tools.style = "clear"
 
 tools.transparent = false
 

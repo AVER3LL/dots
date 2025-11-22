@@ -2,6 +2,32 @@ return {
     ---@module 'lazy'
     ---@type LazySpec
     {
+        "folke/lazydev.nvim",
+        ft = "lua", -- only load on lua files
+        config = function()
+            local lsp = require "lazydev.lsp"
+
+            ---@diagnostic disable-next-line: duplicate-set-field
+            lsp.update = function(client)
+                client:notify("workspace/didChangeConfiguration", {
+                    settings = { Lua = {} },
+                })
+            end
+
+            require("lazydev").setup {
+                library = {
+
+                    { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+                    { path = "luvit-meta/library", words = { "vim%.uv" } },
+                    { path = "snacks.nvim", words = { "Snacks" } },
+                },
+            }
+        end,
+    },
+
+    ---@module 'lazy'
+    ---@type LazySpec
+    {
         "neovim/nvim-lspconfig",
         event = { "BufReadPre", "BufNewFile" },
         dependencies = {
@@ -41,7 +67,16 @@ return {
 
                     bashls = {},
                     clangd = {},
-                    cssls = {},
+                    cssls = {
+                        settings = {
+                            css = {
+                                lint = {
+                                    -- TWEAK: Do not warn for tailwind's @apply rules
+                                    unknownAtRules = "ignore",
+                                },
+                            },
+                        },
+                    },
                     hyprls = {},
                     kotlin_language_server = {},
                     gopls = {},
@@ -86,17 +121,10 @@ return {
                             "vue",
                         },
                         settings = {
-                            vtsls = {
-                                tsserver = {
-                                    globalPlugins = {
-                                        {
-                                            configNamespace = "typescript",
-                                            enableForWorkspaceTypeScriptVersions = true,
-                                            languages = { "vue" },
-                                            location = vim.fn.stdpath "data"
-                                                .. "/mason/packages/vue-language-server/node_modules/@vue/language-server",
-                                            name = "@vue/typescript-plugin",
-                                        },
+                            vue = {
+                                complete = {
+                                    casing = {
+                                        props = "autoCamel",
                                     },
                                 },
                             },
@@ -192,6 +220,7 @@ return {
                         "jdtls",
                         "emmylua_ls",
                         "copilot",
+                        "basedpyright",
                         -- "vtsls",
                         -- "lua_ls",
                     },

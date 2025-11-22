@@ -100,7 +100,7 @@ local function on_attach(client, bufnr)
         })
     end
 
-    if client:supports_method(methods.textDocument_rename) or client.name == "dartls" then
+    if client:supports_method "textDocument/rename" or client.name == "dartls" then
         keymap("n", "<leader>rn", vim.lsp.buf.rename, "Smart rename")
     end
 
@@ -192,8 +192,8 @@ vim.diagnostic.config {
         numhl = {
             [vim.diagnostic.severity.WARN] = "LspDiagnosticsLineNrWarning",
             [vim.diagnostic.severity.ERROR] = "LspDiagnosticsLineNrError",
-            [vim.diagnostic.severity.INFO] = "LspDiagnosticsLineNrInfo",
-            [vim.diagnostic.severity.HINT] = "LspDiagnosticsLineNrHint",
+            -- [vim.diagnostic.severity.INFO] = "LspDiagnosticsLineNrInfo",
+            -- [vim.diagnostic.severity.HINT] = "LspDiagnosticsLineNrHint",
         },
     },
 
@@ -282,27 +282,59 @@ vim.lsp.handlers["textDocument/inlayHint"] = function(err, result, ctx, config)
     return inlay_hint_handler(err, result, ctx, config)
 end
 
-M.capabilities = vim.lsp.protocol.make_client_capabilities()
-
-M.capabilities.textDocument.completion.completionItem = {
-    documentationFormat = { "markdown", "plaintext" },
-    snippetSupport = true,
-    preselectSupport = true,
-    insertReplaceSupport = true,
-    labelDetailsSupport = true,
-    deprecatedSupport = true,
-    commitCharactersSupport = true,
-    tagSupport = { valueSet = { 1 } },
-    resolveSupport = {
-        properties = {
-            "documentation",
-            "detail",
-            "additionalTextEdits",
+-- M.capabilities = vim.lsp.protocol.make_client_capabilities()
+M.capabilities = vim.tbl_deep_extend(
+    "force",
+    vim.lsp.protocol.make_client_capabilities(),
+    require("blink.cmp").get_lsp_capabilities(),
+    {
+        workspace = {
+            didChangeWatchedFiles = { dynamicRegistration = false },
         },
-    },
-}
 
-M.capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = false
+        textDocument = {
+            completion = {
+                completionItem = {
+                    documentationFormat = { "markdown", "plaintext" },
+                    snippetSupport = true,
+                    preselectSupport = true,
+                    insertReplaceSupport = true,
+                    labelDetailsSupport = true,
+                    deprecatedSupport = true,
+                    commitCharactersSupport = true,
+                    tagSupport = { valueSet = { 1 } },
+                    resolveSupport = {
+                        properties = {
+                            "documentation",
+                            "detail",
+                            "additionalTextEdits",
+                        },
+                    },
+                },
+            },
+        },
+    }
+)
+
+-- M.capabilities.textDocument.completion.completionItem = {
+--     documentationFormat = { "markdown", "plaintext" },
+--     snippetSupport = true,
+--     preselectSupport = true,
+--     insertReplaceSupport = true,
+--     labelDetailsSupport = true,
+--     deprecatedSupport = true,
+--     commitCharactersSupport = true,
+--     tagSupport = { valueSet = { 1 } },
+--     resolveSupport = {
+--         properties = {
+--             "documentation",
+--             "detail",
+--             "additionalTextEdits",
+--         },
+--     },
+-- }
+
+-- M.capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = false
 
 M.on_init = function(client, _)
     if client:supports_method "textDocument/semanticTokens" then
