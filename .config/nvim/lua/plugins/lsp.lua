@@ -42,150 +42,37 @@ return {
 
                 mason = {
 
-                    lua_ls = {
-                        settings = {
-                            Lua = {
-                                completion = { callSnippet = "Replace" },
-                                format = { enable = false },
-                                hint = {
-                                    enable = true,
-                                    arrayIndex = "Disable",
-                                },
-                                runtime = {
-                                    version = "LuaJIT",
-                                },
-                                workspace = {
-                                    checkThirdParty = false,
-                                    library = {
-                                        vim.env.VIMRUNTIME,
-                                        "${3rd}/luv/library",
-                                    },
-                                },
-                            },
-                        },
-                    },
+                    lua_ls = require "lsp.lua_ls",
+
+                    cssls = require "lsp.cssls",
+
+                    basedpyright = require "lsp.basedpyright",
+
+                    vue_ls = require "lsp.vue_ls",
+
+                    intelephense = require "lsp.intelephense",
+
+                    emmet_language_server = require "lsp.emmet_language_server",
+
+                    qmlls = require "lsp.qmlls",
+
+                    html = require "lsp.html",
+
+                    jinja_lsp = require "lsp.jinja_lsp",
 
                     bashls = {},
                     clangd = {},
-                    cssls = {
-                        settings = {
-                            css = {
-                                lint = {
-                                    -- TWEAK: Do not warn for tailwind's @apply rules
-                                    unknownAtRules = "ignore",
-                                },
-                            },
-                        },
-                    },
                     hyprls = {},
                     kotlin_language_server = {},
                     gopls = {},
                     taplo = {},
                     tailwindcss = {},
-                    qmlls = {
-                        cmd = { "qmlls", "-E" },
-                    },
                     texlab = {},
                     copilot = {},
                     vtsls = {},
-
-                    basedpyright = {
-                        settings = {
-                            basedpyright = {
-                                analysis = {
-                                    typeCheckingMode = "standard",
-                                    autoSearchPaths = true,
-                                    diagnosticMode = "workspace",
-                                    useLibraryCodeForTypes = true,
-                                    inlayHints = {
-                                        callArgumentNames = true,
-                                    },
-                                    diagnosticSeverityOverrides = {
-                                        reportUnknownVariableType = "none",
-                                        reportUnknownMemberType = "none",
-                                        reportImplicitRelativeImport = "none",
-                                        reportMissingTypeStubs = "none",
-                                        reportAttributeAccessIssue = "none",
-                                    },
-                                },
-                            },
-                        },
-                    },
-
-                    vue_ls = {
-                        filetypes = {
-                            "javascript",
-                            "javascriptreact",
-                            "typescript",
-                            "typescriptreact",
-                            "vue",
-                        },
-                        settings = {
-                            vue = {
-                                complete = {
-                                    casing = {
-                                        props = "autoCamel",
-                                    },
-                                },
-                            },
-                        },
-                    },
-
-                    html = {
-                        filetypes = { "html", "templ", "blade" },
-                    },
+                    pyrefly = {},
 
                     -- phpactor = {},
-
-                    intelephense = {
-                        filetypes = {
-                            "php",
-                            "blade",
-                            "php_only",
-                        },
-                        settings = {
-                            intelephense = {
-                                filetypes = {
-                                    "php",
-                                    "blade",
-                                    "php_only",
-                                },
-                                files = {
-                                    associations = {
-                                        "*.php",
-                                        "*.blade.php",
-                                    },
-                                    maxSize = 5000000,
-                                },
-                            },
-                        },
-                    },
-
-                    jinja_lsp = {
-                        filetypes = { "jinja", "htmldjango" },
-                    },
-
-                    emmet_language_server = {
-                        filetypes = {
-                            "django",
-                            "blade",
-                            "astro",
-                            "css",
-                            "eruby",
-                            "html",
-                            "htmlangular",
-                            "htmldjango",
-                            "javascriptreact",
-                            "less",
-                            "pug",
-                            "sass",
-                            "scss",
-                            "svelte",
-                            "templ",
-                            "typescriptreact",
-                            "vue",
-                        },
-                    },
                 },
 
                 others = {},
@@ -221,8 +108,6 @@ return {
                         "emmylua_ls",
                         "copilot",
                         "basedpyright",
-                        -- "vtsls",
-                        -- "lua_ls",
                     },
                 },
             }

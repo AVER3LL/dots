@@ -5,7 +5,7 @@ local function is_laravel_source(source_name)
 end
 
 ---@type "vscode"|"normal"
-local blink_kind = "normal"
+local blink_kind = "vscode"
 
 local blink_style = {
     vscode = {
