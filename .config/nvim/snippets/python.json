@@ -11,5 +11,18 @@
       ""
     ],
     "description": "Build a main function"
-  }
+  },
+  "main(args) template": {
+    "prefix": "ifamain",
+    "body": [
+      "def main(args) -> None:",
+      "    ${1:pass}",
+      "",
+      "",
+      "if __name__ == \"__main__\":",
+      "    main(sys.argv)$0",
+      ""
+    ],
+    "description": "Build a main function with arguments"
+  },
 }

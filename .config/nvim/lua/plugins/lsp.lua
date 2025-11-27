@@ -48,6 +48,8 @@ return {
 
                     basedpyright = require "lsp.basedpyright",
 
+                    vtsls = require "lsp.vtsls",
+
                     vue_ls = require "lsp.vue_ls",
 
                     intelephense = require "lsp.intelephense",
@@ -69,7 +71,6 @@ return {
                     tailwindcss = {},
                     texlab = {},
                     copilot = {},
-                    vtsls = {},
                     pyrefly = {},
 
                     -- phpactor = {},
@@ -108,6 +109,7 @@ return {
                         "emmylua_ls",
                         "copilot",
                         "basedpyright",
+                        -- "pyrefly",
                     },
                 },
             }

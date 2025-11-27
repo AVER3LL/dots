@@ -45,7 +45,7 @@ autocmd({ "ColorScheme", "VimEnter" }, {
 
         -- Basic UI elements
         sethl("NonText", { fg = tools.colors.blend(colors.foreground, colors.background, 0.3) })
-        sethl("Cursor", { bg = tools.colors.blend(colors.foreground, colors.background, 0.85) })
+        sethl("Cursor", { bg = tools.colors.blend(colors.foreground, colors.background, 0.6) })
         -- sethl("Cursor", { bg = "#FF9E4A" })
         sethl("HighlightUrl", { underline = true })
         sethl("AlphaButton", { bg = colors.constant, bold = true, fg = colors.background })
@@ -268,8 +268,7 @@ autocmd({ "ColorScheme", "VimEnter" }, {
         -- Multi-cursor
         sethl("MultiCursorCursor", { reverse = true })
         sethl("MultiCursorVisual", { link = "Visual" })
-        sethl("MultiCursorSign", { link = "SignColumn" })
-        sethl("MultiCursorMatchPreview", { link = "Search" })
+        sethl("MultiCursorSign", { link = "SignColumn" }) sethl("MultiCursorMatchPreview", { link = "Search" })
         sethl("MultiCursorDisabledCursor", { reverse = true })
         sethl("MultiCursorDisabledVisual", { link = "Visual" })
         sethl("MultiCursorDisabledSign", { link = "SignColumn" })

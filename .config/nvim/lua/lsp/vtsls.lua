@@ -7,7 +7,8 @@ local vue_plugin = {
     configNamespace = "typescript",
 }
 
-return {
+---@class vim.lsp.Config
+local vtsls = {
     filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue" },
     settings = {
         vtsls = {
@@ -21,3 +22,5 @@ return {
         },
     },
 }
+
+return vtsls

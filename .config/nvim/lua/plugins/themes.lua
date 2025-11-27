@@ -216,6 +216,7 @@ return {
         priority = 1000,
         opts = {
             transparent = tools.transparent_background "boolean",
+            style = "night",
             -- on_colors = function(colors)
             --     colors.comment = "#8c98b3"
             -- end,
