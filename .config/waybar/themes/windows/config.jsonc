@@ -9,7 +9,7 @@
     "passthrough": false,
     "height": 48,
 
-    "modules-left": ["custom/os_button", "hyprland/workspaces", "wlr/taskbar"],
+    "modules-left": ["custom/os_button", "hyprland/workspaces", "niri/workspaces", "wlr/taskbar"],
     "modules-center": [],
     "modules-right": ["tray", "group/brightness", "group/audio", "battery", "idle_inhibitor", "clock"],
 

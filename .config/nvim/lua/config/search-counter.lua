@@ -1,221 +1,221 @@
--- Search counter with virtual text display
-local M = {}
 local api = vim.api
+local fn = vim.fn
+local M = {}
 
--- Namespace for virtual text
-local ns_id = api.nvim_create_namespace "search_counter"
+-- Configuration for the popup window
+local config = {
+    width_min = 20,
+    border = "solid",
+    highlight = "SCNormal",
+    title_color = "SCTitle",
+    border_color = "SCBorder",
+}
 
--- Function to get search pattern and count matches
-local function get_search_info()
-    local search_pattern = vim.fn.getreg "/"
-    if search_pattern == "" then
-        return nil
+local state = {
+    buf = -1,
+    win = -1,
+    closing_timer = nil,
+    augroup = api.nvim_create_augroup("SearchOverlay", { clear = true }),
+}
+
+-- --- Window Management ---
+
+local function close_window()
+    local win_id = state.win
+    state.win = -1
+
+    -- Wrap in schedule to avoid E565 (Not allowed to change text or change window)
+    if win_id ~= -1 then
+        vim.schedule(function()
+            if api.nvim_win_is_valid(win_id) then
+                api.nvim_win_close(win_id, true)
+            end
+        end)
+    end
+    -- Do not delete the buffer, reuse it to avoid allocation overhead
+end
+
+local function update_view(lines, title)
+    -- If no lines provided, do nothing
+    if not lines then
+        return
+    end
+    if type(lines) == "string" then
+        lines = { lines }
     end
 
-    -- Get total matches in current buffer
-    local total_matches = vim.fn.searchcount({ maxcount = 0 }).total
-    if total_matches == 0 then
-        return nil
+    -- Create buffer if invalid
+    if state.buf == -1 or not api.nvim_buf_is_valid(state.buf) then
+        state.buf = api.nvim_create_buf(false, true) -- Scratch buffer
     end
 
-    -- Get current match position
-    local current_match = vim.fn.searchcount().current
+    -- Set buffer content
+    api.nvim_buf_set_lines(state.buf, 0, -1, false, lines)
 
-    return {
-        pattern = search_pattern,
-        current = current_match,
-        total = total_matches,
+    -- Calculate width based on content (clamped to min width)
+    local content_width = 0
+    for _, line in ipairs(lines) do
+        content_width = math.max(content_width, #line)
+    end
+    local width = math.max(config.width_min, content_width + 2)
+
+    -- Window configuration
+    local win_opts = {
+        relative = "editor",
+        style = "minimal",
+        border = config.border,
+        row = 1, -- Top margin
+        col = vim.o.columns,
+        width = width,
+        height = #lines,
+        anchor = "NE", -- Anchor to North East (Top Right)
+        title = title or " Search ",
+        title_pos = "center",
+        focusable = false,
+        zindex = 200, -- Ensure it sits above other floats
     }
+
+    -- Create or Update Window
+    if state.win ~= -1 and api.nvim_win_is_valid(state.win) then
+        api.nvim_win_set_config(state.win, win_opts)
+    else
+        state.win = api.nvim_open_win(state.buf, false, win_opts)
+        -- Set highlighting for the popup
+        api.nvim_set_option_value(
+            "winhl",
+            "Normal:"
+                .. config.highlight
+                .. ",FloatTitle:"
+                .. config.title_color
+                .. ",FloatBorder:"
+                .. config.border_color,
+            { win = state.win }
+        )
+    end
 end
 
--- Track the last match position to avoid unnecessary updates
-local last_match_line = nil
-local last_match_count = nil
+-- --- Logic ---
 
--- Function to check if current line contains a match
-local function current_line_has_match()
-    local search_pattern = vim.fn.getreg "/"
-    if search_pattern == "" then
-        return false
-    end
+local function show_search_count()
+    -- Schedule this to run after the search executes (next event loop)
+    vim.schedule(function()
+        local ok, count = pcall(fn.searchcount, { recompute = 1, maxcount = 9999, timeout = 500 })
 
-    local current_line_text = vim.fn.getline "."
-    -- Use vim's search function to check if pattern matches on current line
-    return vim.fn.match(current_line_text, search_pattern) ~= -1
-end
+        -- Guard against errors (e.g. invalid regex) or no search pattern
+        if not ok or not count or count.total == nil then
+            return
+        end
 
--- Function to display search counter as virtual text
-local function show_search_counter()
-    -- Clear existing virtual text
-    api.nvim_buf_clear_namespace(0, ns_id, 0, -1)
+        -- 1. Get the last searched term
+        local search_pattern = fn.getreg "/"
+        if search_pattern == "" then
+            -- If the register is empty, try to get the current search term from hlsearch
+            search_pattern = vim.v.hlsearch
+        end
 
-    local search_info = get_search_info()
-    if not search_info then
-        return
-    end
+        local count_text = string.format(" (%d / %d) ", count.current, count.total)
 
-    local current_line = vim.fn.line "." - 1 -- Convert to 0-based indexing
-    local text = string.format("[%d/%d]", search_info.current, search_info.total)
+        -- If count is 0, show explicitly
+        if count.total == 0 then
+            count_text = " No Matches "
+        end
 
-    -- Only show if current line has a match
-    if current_line_has_match() then
-        -- Add virtual text at the end of current line
-        api.nvim_buf_set_extmark(0, ns_id, current_line, 0, {
-            virt_text = { { text, "Comment" } },
-            virt_text_pos = "eol",
-            priority = 100,
+        -- Combine pattern and count
+        local lines = {
+            "Pattern: " .. search_pattern .. count_text,
+        }
+
+        update_view(lines, " Search ")
+
+        -- Setup auto-close only when leaving normal mode (e.g., entering insert mode)
+        -- CursorMoved is removed here to allow n/N jumps to keep the window open.
+        local close_group = api.nvim_create_augroup("SearchOverlayClose", { clear = true })
+        api.nvim_create_autocmd({ "InsertEnter" }, {
+            group = close_group,
+            callback = function()
+                close_window()
+                api.nvim_del_augroup_by_id(close_group)
+            end,
         })
-
-        -- Update tracking variables
-        last_match_line = current_line
-        last_match_count = search_info.current
-    end
+    end)
 end
 
--- Function to update search counter only when we're on a match line
-local function update_search_counter()
-    local search_info = get_search_info()
-    if not search_info then
-        return
-    end
+-- --- Public API ---
 
-    local current_line = vim.fn.line "." - 1
-
-    -- Only update if:
-    -- 1. We're on a line with a match, AND
-    -- 2. Either the line changed OR the match count changed (meaning we moved to a different match)
-    if current_line_has_match() and (current_line ~= last_match_line or search_info.current ~= last_match_count) then
-        show_search_counter()
-    elseif not current_line_has_match() and last_match_line ~= nil then
-        -- Clear the counter if we moved away from a match line
-        api.nvim_buf_clear_namespace(0, ns_id, 0, -1)
-        last_match_line = nil
-        last_match_count = nil
-    end
+-- Manually close the window (useful for mapping to Esc or :nohlsearch)
+function M.clear()
+    close_window()
 end
 
--- Set up autocommands for search events
-local function setup_autocommands()
-    local group = api.nvim_create_augroup("SearchCounter", { clear = true })
+-- --- Setup ---
 
-    -- Show counter when search is performed
-    api.nvim_create_autocmd("CmdlineLeave", {
-        group = group,
-        pattern = "/,\\?",
+function M.setup()
+    -- 1. Handle live typing in Command Mode
+    api.nvim_create_autocmd("CmdlineChanged", {
+        group = state.augroup,
         callback = function()
-            vim.defer_fn(show_search_counter, 50) -- Small delay to ensure search is complete
-        end,
-    })
-
-    -- Update counter when using n/N
-
-    -- api.nvim_create_autocmd("CursorMoved", {
-    --     group = group,
-    --     callback = function()
-    --         -- Only update if we're in a search context
-    --         if vim.v.hlsearch == 1 and vim.fn.getreg "/" ~= "" then
-    --             update_search_counter()
-    --         end
-    --     end,
-    -- })
-
-    -- Clear counter when search highlighting is turned off
-    api.nvim_create_autocmd("OptionSet", {
-        group = group,
-        pattern = "hlsearch",
-        callback = function()
-            if vim.v.hlsearch == 0 then
-                api.nvim_buf_clear_namespace(0, ns_id, 0, -1)
-                last_match_line = nil
-                last_match_count = nil
+            local cmd_type = fn.getcmdtype()
+            -- Only trigger for search commands (/ or ?)
+            if cmd_type == "/" or cmd_type == "?" then
+                local cmd_line = "Pattern: " .. fn.getcmdline()
+                update_view(cmd_line, " Search ")
             end
         end,
     })
-end
 
--- Enhanced n and N mappings
-local function setup_mappings()
-    -- Enhanced 'n' - next match
-    vim.keymap.set("n", "n", function()
-        vim.cmd "normal! n"
-        show_search_counter()
-    end, { desc = "Next search match with counter" })
+    -- 2. Open window immediately upon entering search mode
+    api.nvim_create_autocmd("CmdlineEnter", {
+        group = state.augroup,
+        callback = function()
+            local cmd_type = fn.getcmdtype()
+            if cmd_type == "/" or cmd_type == "?" then
+                update_view("", " Search ")
+            end
+        end,
+    })
 
-    -- Enhanced 'N' - previous match
-    vim.keymap.set("n", "N", function()
-        vim.cmd "normal! N"
-        show_search_counter()
-    end, { desc = "Previous search match with counter" })
+    -- 3. Handle Leave (Pressing Enter) -> Show Count
+    api.nvim_create_autocmd("CmdlineLeave", {
+        group = state.augroup,
+        callback = function()
+            local cmd_type = fn.getcmdtype()
+            if cmd_type == "/" or cmd_type == "?" then
+                -- Check if we actually searched (Enter) or aborted (Esc)
+                if vim.v.event.abort == false then
+                    show_search_count()
+                else
+                    close_window()
+                end
+            end
+        end,
+    })
 
-    -- Optional: Show counter on * and #
+    -- 4. Handle star (*) search
     vim.keymap.set("n", "*", function()
+        -- Perform the normal star search
         vim.cmd "normal! *"
-        show_search_counter()
-    end, { desc = "Search word under cursor forward with counter" })
+        -- Show the count immediately
+        show_search_count()
+    end, { desc = "Search word under cursor and show count overlay" })
 
+    -- Handle hash (#) search similarly if desired
     vim.keymap.set("n", "#", function()
         vim.cmd "normal! #"
-        show_search_counter()
-    end, { desc = "Search word under cursor backward with counter" })
+        show_search_count()
+    end, { desc = "Search word backwards and show count overlay" })
 
-    -- Map Esc to clear search highlights and counter
-    -- vim.keymap.set("n", "<Esc>", function()
-    --     vim.cmd "nohlsearch"
-    --     api.nvim_buf_clear_namespace(0, ns_id, 0, -1)
-    --     last_match_line = nil
-    --     last_match_count = nil
-    -- end, { desc = "Clear search highlights and counter" })
-end
+    -- 5. Handle n/N jumps to UPDATE the count and KEEP the window open (New logic)
+    vim.keymap.set("n", "n", function()
+        vim.cmd "normal! n"
+        show_search_count()
+        return "zz"
+    end, { desc = "Next match and update search overlay count" })
 
--- Setup function to initialize everything
-function M.setup(opts)
-    opts = opts or {}
-
-    -- Allow customization of highlight group
-    local highlight = opts.highlight or "Comment"
-
-    -- Override the show function if custom highlight is provided
-    if opts.highlight then
-        show_search_counter = function()
-            api.nvim_buf_clear_namespace(0, ns_id, 0, -1)
-
-            local search_info = get_search_info()
-            if not search_info then
-                return
-            end
-
-            local current_line = vim.fn.line "." - 1
-            local text = string.format("[%d/%d]", search_info.current, search_info.total)
-
-            -- Only show if current line has a match
-            if current_line_has_match() then
-                api.nvim_buf_set_extmark(0, ns_id, current_line, 0, {
-                    virt_text = { { text, highlight } },
-                    virt_text_pos = "eol",
-                    priority = 100,
-                })
-
-                -- Update tracking variables
-                last_match_line = current_line
-                last_match_count = search_info.current
-            end
-        end
-    end
-
-    setup_autocommands()
-    setup_mappings()
-end
-
--- Manual trigger function (optional)
-function M.show_counter()
-    show_search_counter()
-end
-
--- Function to clear search counter
-function M.clear_counter()
-    api.nvim_buf_clear_namespace(0, ns_id, 0, -1)
-    last_match_line = nil
-    last_match_count = nil
+    vim.keymap.set("n", "N", function()
+        vim.cmd "normal! N"
+        show_search_count()
+        return "zz"
+    end, { desc = "Previous match and update search overlay count" })
 end
 
 return M

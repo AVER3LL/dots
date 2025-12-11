@@ -89,26 +89,26 @@ return {
                         },
                     },
 
-                    ruff_format = {
-                        inherit = false,
-                        command = "ruff",
-                        args = {
-                            "format",
-                            "--quiet",
-                            "--force-exclude",
-                            -- "--line-length",
-                            -- "79",
-                            "--stdin-filename",
-                            "$FILENAME",
-                            "-",
-                        },
-                        stdin = true,
-                        cwd = util.root_file {
-                            "pyproject.toml",
-                            "ruff.toml",
-                            ".ruff.toml",
-                        },
-                    },
+                    -- ruff_format = {
+                    --     inherit = false,
+                    --     command = "ruff",
+                    --     args = {
+                    --         "format",
+                    --         "--quiet",
+                    --         "--force-exclude",
+                    --         -- "--line-length",
+                    --         -- "79",
+                    --         "--stdin-filename",
+                    --         "$FILENAME",
+                    --         "-",
+                    --     },
+                    --     stdin = true,
+                    --     cwd = util.root_file {
+                    --         "pyproject.toml",
+                    --         "ruff.toml",
+                    --         ".ruff.toml",
+                    --     },
+                    -- },
 
                     shfmt = {
                         prepend_args = { "-i", "4" },

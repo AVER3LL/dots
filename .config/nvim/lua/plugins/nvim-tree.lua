@@ -37,6 +37,17 @@ return {
             -- vim.keymap.set("n", "<Tab>", api.node.open.preview, opts "Open Preview")
             vim.keymap.set("n", "d", api.fs.trash, opts "Trash")
             vim.keymap.set("n", "D", api.fs.remove, opts "Remove")
+            vim.keymap.set("n", "o", function()
+                local core = require "nvim-tree.core"
+                local file = core.get_explorer():get_node_at_cursor().absolute_path
+
+                if not file then
+                    return
+                end
+
+                vim.system({ "xdg-open", file }, { detach = true })
+                vim.notify("Opening file: " .. file)
+            end, opts "Open with system app")
 
             vim.keymap.set("n", ".", function()
                 local core = require "nvim-tree.core"

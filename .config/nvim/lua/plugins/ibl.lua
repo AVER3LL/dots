@@ -14,7 +14,7 @@ return {
     -- indentation marks
     {
         "lukas-reineke/indent-blankline.nvim",
-        enabled = true,
+        enabled = false,
         event = "VeryLazy",
         -- dependencies = "tpope/vim-sleuth",
         main = "ibl",

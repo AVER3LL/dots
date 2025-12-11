@@ -7,10 +7,24 @@
   "reload_style_on_change": true,
 
   "modules-left": ["clock", "idle_inhibitor"],
-  "modules-center": ["hyprland/workspaces"],
+  "modules-center": ["hyprland/workspaces", "niri/workspaces"],
   "modules-right": ["pulseaudio", "tray", "battery", "custom/power"],
 
   "hyprland/workspaces": {
+    "format": "",
+    "on-click": "activate",
+    "all-outputs": false,
+    "persistent-workspaces": {
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": [],
+    },
+  },
+
+  "niri/workspaces": {
     "format": "",
     "on-click": "activate",
     "all-outputs": false,

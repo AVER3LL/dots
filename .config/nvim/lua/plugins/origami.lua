@@ -1,6 +1,6 @@
 return {
     "chrisgrieser/nvim-origami",
-    enabled = true,
+    enabled = false,
     event = "BufReadPre",
     opts = {
         foldKeymaps = {

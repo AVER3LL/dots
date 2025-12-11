@@ -147,6 +147,7 @@ autocmd({ "ColorScheme", "VimEnter" }, {
             -- local menu_bg = tools.colors.adjust_brightness(colors.background, 0.75)
             sethl("BlinkCmpMenu", { bg = colors.pmenu })
             sethl("BlinkCmpMenuBorder", { bg = colors.pmenu, fg = colors.pmenu })
+            sethl("BlinkCmpLabelDetail", { bg = colors.pmenu, fg = colors.comment, italic = true, bold = true })
             sethl(
                 "BlinkCmpLabelDescription",
                 { bg = colors.pmenu, fg = tools.colors.adjust_brightness(colors.foreground, 0.4), italic = true }
@@ -176,8 +177,9 @@ autocmd({ "ColorScheme", "VimEnter" }, {
 
             sethl("BlinkCmpDoc", { bg = colors.background })
             sethl("BlinkCmpSignatureHelp", { bg = colors.background })
-            sethl("BlinkCmpLabelDescription", { bg = colors.background, fg = colors.subtle })
+            sethl("BlinkCmpLabelDescription", { bg = colors.background, fg = dimmed_fg })
             sethl("BlinkCmpLabel", { bg = colors.background, fg = dimmed_fg })
+            sethl("BlinkCmpLabelDetail", { bg = colors.background, fg = colors.comment, italic = true, bold = true })
             sethl("BlinkCmpSource", { bg = "NONE", fg = colors.comment })
             sethl("LspInfoBorder", { bg = colors.background })
             sethl("NormalFloat", { bg = colors.background })
@@ -260,6 +262,9 @@ autocmd({ "ColorScheme", "VimEnter" }, {
         -- Window bars and misc
         sethl("WinBar", { bg = tools.colors.darken(colors.background, 0.15) })
         sethl("WinBarNC", { bg = tools.colors.darken(colors.background, 0.10) })
+        sethl("SCBorder", { bg = tools.colors.darken(colors.background, 0.15) })
+        sethl("SCNormal", { bg = tools.colors.darken(colors.background, 0.15) })
+        sethl("SCTitle", { bg = colors.fun, fg = tools.colors.darken(colors.background, 0.15), bold = true })
 
         sethl("@markup.raw.block.markdown", { bg = "NONE" })
         -- mysethl("TinyInlineDiagnosticVirtualTextArrow", { bg = "NONE" })
@@ -268,7 +273,8 @@ autocmd({ "ColorScheme", "VimEnter" }, {
         -- Multi-cursor
         sethl("MultiCursorCursor", { reverse = true })
         sethl("MultiCursorVisual", { link = "Visual" })
-        sethl("MultiCursorSign", { link = "SignColumn" }) sethl("MultiCursorMatchPreview", { link = "Search" })
+        sethl("MultiCursorSign", { link = "SignColumn" })
+        sethl("MultiCursorMatchPreview", { link = "Search" })
         sethl("MultiCursorDisabledCursor", { reverse = true })
         sethl("MultiCursorDisabledVisual", { link = "Visual" })
         sethl("MultiCursorDisabledSign", { link = "SignColumn" })

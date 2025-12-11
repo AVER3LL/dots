@@ -4,7 +4,18 @@ vim.g.maplocalleader = " "
 
 local map = tools.map
 
-require("config.search-counter").setup { highlight = "Comment" }
+require("config.search-counter").setup()
+
+map("i", "jk", "<esc>")
+
+map({ "n", "i", "s" }, "<esc>", function()
+    if require("luasnip").expand_or_jumpable() then
+        require("luasnip").unlink_current()
+    end
+    vim.cmd "noh"
+    require("config.search-counter").clear()
+    return "<esc>"
+end, { desc = "Escape, clear hlsearch, and stop snippet session", expr = true })
 
 map("i", "<Tab>", tools.tabout, { expr = true, noremap = true })
 
@@ -53,6 +64,7 @@ end, { desc = "Copy current file to clipboard" })
 map("n", "<leader><leader>g", "<cmd>%y+<CR>", { desc = "general copy whole file" })
 
 map("n", "<leader>tl", tools.change_background, { desc = "Light Dark Toggle" })
+
 map("n", "U", "<C-r>", { desc = "Redo" })
 
 map("n", "<leader>nb", "<cmd>enew<CR>", { desc = "Buffer new" })
@@ -76,15 +88,6 @@ map("n", "<leader>tn", "<cmd>tabn<CR>", { desc = "Go to next tab" })
 map("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Go to previous tab" })
 
 -- Clear Highlights
-map({ "n", "i", "s" }, "<esc>", function()
-    if require("luasnip").expand_or_jumpable() then
-        require("luasnip").unlink_current()
-    end
-    vim.cmd "noh"
-    require("config.search-counter").clear_counter()
-    return "<esc>"
-end, { desc = "Escape, clear hlsearch, and stop snippet session", expr = true })
-
 map("n", "<leader>no", "<cmd>noh<CR>", { desc = "General clear highlights" })
 
 -- Split navigation

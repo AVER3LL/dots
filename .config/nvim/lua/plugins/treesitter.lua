@@ -5,117 +5,111 @@ return {
         branch = "main",
         version = false,
         build = ":TSUpdate",
-        ---@class TSConfig
-        opts = {
-            indent = { enable = true },
-            highlight = { enable = true },
-            folds = { enable = true },
-            ensure_installed = {
-                "bash",
+        init = function()
+            local ensure_installed = {
                 "c",
+                "lua",
+                "markdown",
+                "markdown_inline",
+                "query",
+                "vim",
+                "vimdoc",
+                -- NOTE: the above are natively installed since neovim 0.12
+                "bash",
+                "diff",
+                "dockerfile",
+                "gitignore",
+                "git_config",
+                "luadoc",
+                "regex",
+                "toml",
+                "yaml",
+                "csv",
+                "java",
+                "python",
+                "html",
+                "css",
+                "javascript",
+                "typescript",
+                "json",
                 "php",
                 "phpdoc",
                 "blade",
                 "cpp",
                 "fish",
                 "gitcommit",
-                "php",
                 "go",
                 "graphql",
-                "html",
                 "hyprlang",
-                "java",
                 "javadoc",
-                "javascript",
-                "json",
                 "json5",
                 "jsonc",
-                "lua",
-                "markdown",
-                "markdown_inline",
-                "python",
-                "query",
                 "rasi",
-                "regex",
                 "rust",
                 "kitty",
                 "scss",
-                "toml",
                 "tsx",
-                "typescript",
-                "vim",
-                "vimdoc",
-                "yaml",
-            },
-        },
-        config = function(_, opts)
-            -- install parsers from custom opts.ensure_installed
-            if opts.ensure_installed and #opts.ensure_installed > 0 then
-                require("nvim-treesitter").install(opts.ensure_installed)
-                -- register and start parsers for filetypes
-                for _, parser in ipairs(opts.ensure_installed) do
-                    local filetypes = parser -- In this case, parser is the filetype/language name
-                    vim.treesitter.language.register(parser, filetypes)
+            }
 
-                    vim.api.nvim_create_autocmd({ "FileType" }, {
-                        pattern = filetypes,
-                        callback = function(event)
-                            vim.treesitter.start(event.buf, parser)
-                        end,
-                    })
-                end
+            local isnt_installed = function(lang)
+                return #vim.api.nvim_get_runtime_file("parser/" .. lang .. ".*", false) == 0
+            end
+            local to_install = vim.tbl_filter(isnt_installed, ensure_installed)
+            if #to_install > 0 then
+                require("nvim-treesitter").install(to_install)
             end
 
-            -- Auto-install and start parsers for any buffer
-            vim.api.nvim_create_autocmd({ "BufRead" }, {
-                callback = function(event)
-                    local bufnr = event.buf
-                    local filetype = vim.api.nvim_get_option_value("filetype", { buf = bufnr })
+            -- Ensure tree-sitter enabled after opening a file for target language
+            local filetypes = {}
+            for _, lang in ipairs(ensure_installed) do
+                for _, ft in ipairs(vim.treesitter.language.get_filetypes(lang)) do
+                    table.insert(filetypes, ft)
+                end
+            end
+            local ts_start = function(ev)
+                vim.treesitter.start(ev.buf)
+            end
 
-                    -- Skip if no filetype
-                    if filetype == "" then
+            -- WARN: Do not use "*" here - snacks.nvim is buggy and vim.notify triggers FileType events internally causing infinite callback loops
+            -- vim.api.nvim_create_autocmd("FileType", {
+            --     desc = "Start treesitter",
+            --     group = vim.api.nvim_create_augroup("start_treesitter", { clear = true }),
+            --     pattern = filetypes,
+            --     callback = ts_start,
+            -- })
+
+            -- Copied this here https://github.com/MeanderingProgrammer/treesitter-modules.nvim
+            vim.api.nvim_create_autocmd("FileType", {
+                group = vim.api.nvim_create_augroup("treesitter.setup", {}),
+                callback = function(args)
+                    local buf = args.buf
+                    local filetype = args.match
+
+                    -- you need some mechanism to avoid running on buffers that do not
+                    -- correspond to a language (like oil.nvim buffers), this implementation
+                    -- checks if a parser exists for the current language
+                    local language = vim.treesitter.language.get_lang(filetype) or filetype
+                    if not vim.treesitter.language.add(language) then
                         return
                     end
 
-                    -- Check if this filetype is already handled by explicit opts.ensure_installed config
-                    for _, filetypes in pairs(opts.ensure_installed) do
-                        local ft_table = type(filetypes) == "table" and filetypes or { filetypes }
-                        if vim.tbl_contains(ft_table, filetype) then
-                            return -- Already handled above
-                        end
-                    end
+                    -- replicate `fold = { enable = true }`
+                    vim.wo.foldmethod = "expr"
+                    vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 
-                    -- Get parser name based on filetype
-                    local parser_name = vim.treesitter.language.get_lang(filetype) -- might return filetype (not helpful)
-                    if not parser_name then
-                        return
-                    end
-                    -- Try to get existing parser (helpful check if filetype was returned above)
-                    local parser_configs = require "nvim-treesitter.parsers"
-                    if not parser_configs[parser_name] then
-                        return -- Parser not available, skip silently
-                    end
+                    -- replicate `highlight = { enable = true }`
+                    vim.treesitter.start(buf, language)
 
-                    local parser_installed = pcall(vim.treesitter.get_parser, bufnr, parser_name)
+                    -- replicate `indent = { enable = true }`
+                    vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 
-                    if not parser_installed then
-                        -- If not installed, install parser synchronously
-                        require("nvim-treesitter").install({ parser_name }):wait(30000)
-                    end
-
-                    -- let's check again
-                    parser_installed = pcall(vim.treesitter.get_parser, bufnr, parser_name)
-
-                    if parser_installed then
-                        -- Start treesitter for this buffer
-                        vim.treesitter.start(bufnr, parser_name)
-                    end
+                    -- `incremental_selection = { enable = true }` cannot be easily replicated
                 end,
             })
-
-            require("nvim-treesitter").setup(opts)
-
-            -- require('nvim-treesitter.config').setup(opts)
+        end,
+        config = function()
+            require("nvim-treesitter").setup()
         end,
     },
 }
+

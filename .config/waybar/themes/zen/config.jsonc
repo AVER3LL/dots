@@ -9,7 +9,7 @@
     "include": ["${HOME}/.config/waybar/modules.jsonc"],
 
     "modules-left": ["custom/launcher", "clock", "custom/media"],
-    "modules-center": ["custom/notification", "hyprland/workspaces", "idle_inhibitor"],
+    "modules-center": ["custom/notification", "hyprland/workspaces", "niri/workspaces", "idle_inhibitor"],
     "modules-right": [
         "custom/pacman",
         "custom/rec_status",

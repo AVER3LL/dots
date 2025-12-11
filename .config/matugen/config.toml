@@ -27,7 +27,7 @@ post_hook = 'pidof waybar && pkill -SIGUSR2 waybar >/dev/null 2>&1 & '
 [templates.hyprland]
 input_path = '~/.config/matugen/templates/hyprland-colors.conf'
 output_path = '~/.config/hypr/colors.conf'
-post_hook = 'hyprctl reload ; ~/.config/hypr/scripts/checkbattery.sh >/dev/null 2>&1 & '
+# post_hook = 'hyprctl reload ; ~/.config/hypr/scripts/checkbattery.sh >/dev/null 2>&1 & '
 
 [templates.kitty]
 input_path = '~/.config/matugen/templates/kitty-colors.conf'
@@ -59,10 +59,10 @@ output_path = '~/.config/gtk-4.0/colors.css'
 input_path = '~/.config/matugen/templates/Matugen.colors'
 output_path = '~/.local/share/color-schemes/Matugen.colors'
 
-# [templates.fabric]
-# input_path = '~/.config/matugen/templates/fabric.css'
-# output_path = '~/.config/fabric/styles/colors.css'
-#
+[templates.fabric]
+input_path = '~/.config/matugen/templates/fabric.css'
+output_path = '~/.config/fabric/styles/colors.css'
+
 # [templates.qt5ct]
 # input_path = '~/.config/matugen/templates/qtct-colors.conf'
 # output_path = '~/.config/qt5ct/colors/matugen.conf'

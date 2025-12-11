@@ -9,10 +9,10 @@ return {
 
         -- stylua: ignore start
 
-        set({"n", "x"}, "<up>", function() mc.lineAddCursor(-1) end)
-        set({"n", "x"}, "<down>", function() mc.lineAddCursor(1) end)
-        set({"n", "x"}, "<leader><up>", function() mc.lineSkipCursor(-1) end)
-        set({"n", "x"}, "<leader><down>", function() mc.lineSkipCursor(1) end)
+        -- set({"n", "x"}, "<up>", function() mc.lineAddCursor(-1) end)
+        -- set({"n", "x"}, "<down>", function() mc.lineAddCursor(1) end)
+        -- set({"n", "x"}, "<leader><up>", function() mc.lineSkipCursor(-1) end)
+        -- set({"n", "x"}, "<leader><down>", function() mc.lineSkipCursor(1) end)
 
         -- Add or skip adding a new cursor by matching word/selection
         set({ "n", "x" }, "<A-j>", function() mc.matchAddCursor(1) end)

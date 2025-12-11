@@ -1,11 +1,12 @@
 return {
     "akinsho/bufferline.nvim",
-    event = { "TabEnter" },
+    enabled = false,
+    -- event = { "TabEnter" },
     version = "*",
     dependencies = "nvim-tree/nvim-web-devicons",
     opts = {
         options = {
-            mode = "tabs",
+            mode = "buffers",
             always_show_bufferline = false,
             indicator = { style = "none" },
             seperator_style = "thick",

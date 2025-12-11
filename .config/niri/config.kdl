@@ -1,0 +1,246 @@
+spawn-at-startup "kitty"
+spawn-at-startup "swww-daemon"
+spawn-at-startup "swaync"
+spawn-sh-at-startup "~/.config/waybar/toggle.sh"
+spawn-sh-at-startup "~/.config/hypr/xdg-script.sh"
+spawn-at-startup "nm-applet" "--indicator"
+spawn-at-startup "blueman-applet"
+spawn-at-startup "udiskie" "--smart-tray"
+spawn-at-startup "swayosd-server"
+
+spawn-at-startup "input-remapper-service"
+spawn-at-startup "input-remapper-control" "--command" "autoload"
+
+spawn-at-startup "vicinae" "server"
+
+input {
+    keyboard {
+        xkb {
+            layout "fr"
+            // variant "colemak_dh_ortho"
+            // options "compose:ralt,ctrl:nocaps"
+            // model ""
+            // rules ""
+            // file "~/.config/keymap.xkb"
+        }
+
+        repeat-delay 200
+        repeat-rate 50
+        // track-layout "global"
+        // numlock
+    }
+
+    touchpad {
+        // off
+        tap
+        // dwt
+        // dwtp
+        // drag false
+        // drag-lock
+        natural-scroll
+        // accel-speed 0.2
+        // accel-profile "flat"
+        // scroll-factor 1.0
+        // scroll-factor vertical=1.0 horizontal=-2.0
+        scroll-method "two-finger"
+        // scroll-button 273
+        // scroll-button-lock
+        // tap-button-map "left-middle-right"
+        // click-method "clickfinger"
+        // left-handed
+        // disabled-on-external-mouse
+        // middle-emulation
+    }
+
+    mouse {
+        // off
+        // natural-scroll
+        // accel-speed 0.2
+        // accel-profile "flat"
+        // scroll-factor 1.0
+        // scroll-factor vertical=1.0 horizontal=-2.0
+        // scroll-method "no-scroll"
+        // scroll-button 273
+        // scroll-button-lock
+        // left-handed
+        // middle-emulation
+    }
+
+    trackpoint {
+        // off
+        // natural-scroll
+        // accel-speed 0.2
+        // accel-profile "flat"
+        // scroll-method "on-button-down"
+        // scroll-button 273
+        // scroll-button-lock
+        // left-handed
+        // middle-emulation
+    }
+
+    trackball {
+        // off
+        // natural-scroll
+        // accel-speed 0.2
+        // accel-profile "flat"
+        // scroll-method "on-button-down"
+        // scroll-button 273
+        // scroll-button-lock
+        // left-handed
+        // middle-emulation
+    }
+
+    tablet {
+        // off
+        map-to-output "eDP-1"
+        // left-handed
+        // calibration-matrix 1.0 0.0 0.0 0.0 1.0 0.0
+    }
+
+    touch {
+        off
+        map-to-output "eDP-1"
+        // calibration-matrix 1.0 0.0 0.0 0.0 1.0 0.0
+    }
+
+    // disable-power-key-handling
+    // warp-mouse-to-focus
+    // focus-follows-mouse max-scroll-amount="0%"
+    // workspace-auto-back-and-forth
+
+    mod-key "Super"
+    // mod-key-nested "Alt"
+}
+
+layout {
+    gaps 10
+    always-center-single-column
+
+    focus-ring {
+        off
+    }
+
+    default-column-width {  }
+
+    shadow {
+        off
+    }
+
+    border {
+        on
+        width 2
+        active-color "#ffc87f"
+        inactive-color "#505050"
+        urgent-color "#9b0000"
+    }
+
+
+}
+
+output "eDP-1" {
+    // off
+    mode "1920x1080@60"
+    scale 2.0
+    variable-refresh-rate // on-demand=true
+    focus-at-startup
+    backdrop-color "#001100"
+
+    hot-corners {
+        // off
+        top-left
+        // top-right
+        // bottom-left
+        // bottom-right
+    }
+
+    layout {
+        // ...layout settings for eDP-1...
+    }
+}
+
+binds {
+    Mod+H  {  focus-column-left;   }
+    Mod+J  {  focus-window-down;   }
+    Mod+K  {  focus-window-up;     }
+    Mod+L  {  focus-column-right;  }
+
+    Mod+Ctrl+H  {  move-column-left;   }
+    Mod+Ctrl+J  {  move-window-down;   }
+    Mod+Ctrl+K  {  move-window-up;     }
+    Mod+Ctrl+L  {  move-column-right;  }
+
+    Mod+Up { set-column-width "+10%"; }
+    Mod+Down { set-column-width "-10%"; }
+
+    Mod+M { maximize-window-to-edges; }
+
+    Mod+Ampersand   {  focus-workspace  1;   }
+    Mod+Eacute      {  focus-workspace  2;   }
+    Mod+Quotedbl    {  focus-workspace  3;   }
+    Mod+Apostrophe  {  focus-workspace  4;   }
+    Mod+Parenleft   {  focus-workspace  5;   }
+    Mod+Minus       {  focus-workspace  6;   }
+    Mod+Egrave      {  focus-workspace  7;   }
+    Mod+Underscore  {  focus-workspace  8;   }
+    Mod+Ccedilla    {  focus-workspace  9;   }
+    Mod+Agrave      {  focus-workspace  10;  }
+
+    Mod+Shift+Ampersand   {  move-column-to-workspace  1;   }
+    Mod+Shift+Eacute      {  move-column-to-workspace  2;   }
+    Mod+Shift+Quotedbl    {  move-column-to-workspace  3;   }
+    Mod+Shift+Apostrophe  {  move-column-to-workspace  4;   }
+    Mod+Shift+Parenleft   {  move-column-to-workspace  5;   }
+    Mod+Shift+Minus       {  move-column-to-workspace  6;   }
+    Mod+Shift+Egrave      {  move-column-to-workspace  7;   }
+    Mod+Shift+Underscore  {  move-column-to-workspace  8;   }
+    Mod+Shift+Ccedilla    {  move-column-to-workspace  9;   }
+    Mod+Shift+Agrave      {  move-column-to-workspace  10;  }
+
+    Mod+Q repeat=false { close-window; }
+
+    Mod+T { spawn "kitty"; }
+    Mod+C { spawn "code"; }
+    Mod+B { spawn "floorp"; }
+    Mod+W { spawn-sh "~/.local/bin/walset"; }
+    Mod+P { spawn-sh "wlogout"; }
+
+    Mod+O { spawn "chromium" "--new-window" "--ozone-platform=wayland" "--app=https://chatgpt.com"; }
+    Mod+Shift+O { spawn "chromium" "--new-window" "--ozone-platform=wayland" "--app=https://claude.ai"; }
+
+    Mod+I { spawn-sh "~/.local/bin/control-menu/show-menu"; }
+    Mod+N { spawn-sh "~/.config/swaync/launch.sh"; }
+    Mod+Alt+W { spawn-sh "~/.config/waybar/toggle.sh"; }
+    Mod+A { spawn-sh "~/.config/waybar/scripts/select.sh"; }
+    Mod+Shift+A { spawn-sh "~/.config/matugen/scripts/choose_style.sh"; }
+    Mod+Shift+T hotkey-overlay-title="Toggle Dark/Light Style" { spawn-sh "~/.local/bin/toggle-mode"; }
+
+    Mod+V { spawn "vicinae" "vicinae://extensions/vicinae/clipboard/history"; }
+    Mod+comma { spawn "vicinae" "vicinae://extensions/vicinae/vicinae/search-emojis"; }
+
+    // Mod+P { quit; }
+    Mod+space { spawn "vicinae" "vicinae://toggle"; }
+    Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
+
+    XF86AudioRaiseVolume  allow-when-locked=true  {  spawn  "wpctl"  "set-volume"  "@DEFAULT_AUDIO_SINK@"  "5%+";     }
+    XF86AudioLowerVolume  allow-when-locked=true  {  spawn  "wpctl"  "set-volume"  "@DEFAULT_AUDIO_SINK@"  "5%-";     }
+    XF86AudioMute         allow-when-locked=true  {  spawn  "wpctl"  "set-mute"    "@DEFAULT_AUDIO_SINK@"  "toggle";  }
+
+    XF86MonBrightnessUp    allow-when-locked=true  {  spawn  "brightnessctl"  "--class=backlight"  "set"  "+10%";  }
+    XF86MonBrightnessDown  allow-when-locked=true  {  spawn  "brightnessctl"  "--class=backlight"  "set"  "10%-";  }
+
+    XF86AudioPlay  allow-when-locked=true  {  spawn  "playerctl"  "play-pause";  }
+    XF86AudioStop  allow-when-locked=true  {  spawn  "playerctl"  "stop";        }
+    XF86AudioPrev  allow-when-locked=true  {  spawn  "playerctl"  "previous";    }
+    XF86AudioNext  allow-when-locked=true  {  spawn  "playerctl"  "next";        }
+
+}
+
+prefer-no-csd
+
+cursor {
+    hide-when-typing
+}
+
+animations {
+    // off
+}

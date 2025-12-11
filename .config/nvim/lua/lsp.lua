@@ -23,7 +23,7 @@ local function on_attach(client, bufnr)
 
     keymap("n", "<leader>dl", vim.diagnostic.open_float, "Show inline diagnostics")
 
-    keymap("n", "<leader>da", "<cmd>Trouble diagnostics<CR>", "Show all diagnostics")
+    -- keymap("n", "<leader>da", "<cmd>Trouble diagnostics<CR>", "Show all diagnostics")
 
     keymap("n", "<leader>ds", vim.diagnostic.setloclist, "Show diagnostic loclist")
 

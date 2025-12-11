@@ -11,7 +11,7 @@ require "lsp"
 
 require("config.winbar").setup()
 
-vim.cmd.colorscheme "tokyonight"
+vim.cmd.colorscheme "bamboo"
 
 require "config.generated"
 

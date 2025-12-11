@@ -1,20 +1,5 @@
 # Font
-# font-family = "Geist Mono"
-# font-family = "Monaspace Neon"
-# font-family = "MonoLisa Nerd Font Mono"
-
-# font-family = "MonaspiceNe NF"
-# Ne looks good for now, Rn looks hypnotizing
-
-# font-family = "CaskaydiaCove Nerd Font"
-
-# Ar, Kr, Ne, Rn, Xe
-# font-family = "MonoLisa Nerd Font Mono"
-# font-family = "GeistMono NF"
-
-# font-family = JetBrainsMono NF
-# font-family = JetBrainsMono Nerd Font
-font-family = Maple Mono NF
+font-family = DMMono Nerd Font
 font-feature = cv01
 font-size = 15
 
@@ -48,7 +33,7 @@ clipboard-trim-trailing-spaces = true
 # background = 181823
 
 window-padding-balance = true
-window-padding-x = 0
+window-padding-x = 3
 window-padding-y = 0
 # window-decoration = none
 

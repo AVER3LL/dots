@@ -14,7 +14,6 @@ return {
     {
         "adalessa/laravel.nvim",
         dependencies = {
-            "tpope/vim-dotenv",
             "MunifTanjim/nui.nvim",
             "nvim-lua/plenary.nvim",
             "nvim-neotest/nvim-nio",

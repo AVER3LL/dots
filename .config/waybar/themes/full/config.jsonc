@@ -14,7 +14,8 @@
         "custom/separator#blank_1",
         "custom/launcher",
         "custom/separator#blank_2",
-        "hyprland/workspaces"
+        "hyprland/workspaces",
+        "niri/workspaces"
         // "group/sys_info",
     ],
 

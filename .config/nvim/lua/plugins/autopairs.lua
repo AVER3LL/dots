@@ -4,7 +4,7 @@ return {
     {
         "windwp/nvim-autopairs",
         enabled = false,
-        event = "InsertEnter",
+        event = "BufEnter",
         opts = {
             check_ts = true,
             ts_config = { java = false, lua = { "string" } },

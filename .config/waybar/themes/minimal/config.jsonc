@@ -7,7 +7,7 @@
 
     "include": ["${HOME}/.config/waybar/modules.jsonc"],
 
-    "modules-left": ["custom/separator#blank_1", "hyprland/workspaces"],
+    "modules-left": ["custom/separator#blank_1", "hyprland/workspaces", "niri/workspaces"],
 
     "modules-center": ["clock#no-icon"],
 

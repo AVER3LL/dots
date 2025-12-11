@@ -60,8 +60,6 @@ return {
     ft = "python",
     dependencies = {
         "neovim/nvim-lspconfig",
-        { "mfussenegger/nvim-dap" },
-        { "mfussenegger/nvim-dap-python" }, --optional
     },
     keys = {
         {

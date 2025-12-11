@@ -46,7 +46,7 @@ return {
     ---@type LazySpec
     {
         "saghen/blink.cmp",
-        event = "InsertEnter",
+        event = "BufEnter",
         dependencies = {
             -- "rafamadriz/friendly-snippets",
             "saghen/blink.compat",

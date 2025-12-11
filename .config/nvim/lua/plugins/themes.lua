@@ -2,6 +2,7 @@ return {
 
     { -- everforest
         "sainnhe/everforest",
+        enabled = false,
         name = "everforest",
         priority = 1000,
         config = function()
@@ -23,12 +24,14 @@ return {
 
     {
         "maccoda/irises.nvim",
+        enabled = false,
         lazy = false,
         priority = 1000,
     },
 
     {
         "ficcdaf/ashen.nvim",
+        enabled = false,
         -- optional but recommended,
         -- pin to the latest stable release:
         lazy = false,
@@ -48,6 +51,7 @@ return {
 
     {
         "projekt0n/github-nvim-theme",
+        enabled = false,
         priority = 1000,
         name = "github-theme",
         opts = {
@@ -67,6 +71,7 @@ return {
 
     {
         "wnkz/monoglow.nvim",
+        enabled = false,
         lazy = false,
         priority = 1000,
         opts = {},
@@ -84,6 +89,7 @@ return {
 
     {
         "catppuccin/nvim",
+        enabled = false,
         priority = 1000,
         name = "catppuccin",
         config = function()
@@ -105,7 +111,7 @@ return {
         "ribru17/bamboo.nvim",
         priority = 1000,
         opts = {
-            style = "multiplex",
+            style = "vulgaris",
             transparent = tools.transparent_background "boolean",
         },
     },
@@ -114,10 +120,11 @@ return {
         "navarasu/onedark.nvim",
         priority = 1000, -- make sure to load this before all the other start plugins
         config = function()
+            local main_theme = "darker"
             require("onedark").setup {
-                style = "darker",
+                style = main_theme,
                 transparent = tools.transparent_background "boolean",
-                toggle_style_list = { "light", "darker" },
+                toggle_style_list = { "light", main_theme },
             }
         end,
     },
@@ -128,6 +135,12 @@ return {
         priority = 1000,
         opts = {
             transparent = tools.transparent_background "boolean",
+            theme = "dragon",
+            background = {
+                dark = "dragon",
+                light = "lotus",
+            },
+            compile = true,
             undercurl = true,
 
             commentStyle = { italic = true },
@@ -196,10 +209,10 @@ return {
                     -- SnacksPickerToggle = { bg = theme.ui.bg_p1, fg = theme.ui.bg_p1 },
 
                     -- add `blend = vim.o.pumblend` to enable transparency
-                    Pmenu = { fg = theme.ui.shade0, bg = theme.ui.bg_p1 },
-                    PmenuSel = { fg = "NONE", bg = theme.ui.bg_p2 },
-                    PmenuSbar = { bg = theme.ui.bg_m1 },
-                    PmenuThumb = { bg = theme.ui.bg_p2 },
+                    -- Pmenu = { fg = theme.ui.shade0, bg = theme.ui.bg_p1 },
+                    -- PmenuSel = { fg = "NONE", bg = theme.ui.bg_p2 },
+                    -- PmenuSbar = { bg = theme.ui.bg_m1 },
+                    -- PmenuThumb = { bg = theme.ui.bg_p2 },
                 }
             end,
         },
@@ -208,11 +221,15 @@ return {
     {
         "Mofiqul/vscode.nvim",
         priority = 1000,
-        opts = {},
+        opts = {
+            transparent = tools.transparent_background "boolean",
+            disable_nvimtree_bg = true,
+        },
     },
 
     { -- tokyonight
         "folke/tokyonight.nvim",
+        enabled = false,
         priority = 1000,
         opts = {
             transparent = tools.transparent_background "boolean",

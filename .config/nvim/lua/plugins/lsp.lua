@@ -108,8 +108,8 @@ return {
                         "jdtls",
                         "emmylua_ls",
                         "copilot",
-                        "basedpyright",
-                        -- "pyrefly",
+                        -- "basedpyright",
+                        "pyrefly",
                     },
                 },
             }

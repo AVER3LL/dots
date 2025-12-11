@@ -81,7 +81,7 @@ fi
 
 # ─── Optional Vicinae integration ────────────────────────────
 if command -v vicinae >/dev/null 2>&1; then
-    vicinae vicinae://theme/set/matugen
+    vicinae vicinae://theme/set/matugen || true
 else
     echo "vicinae command not found"
 fi

@@ -23,26 +23,27 @@ tools.set_background = function(mode)
     if vim.g.colors_name == "onedark" then
         local ok, onedark = pcall(require, "onedark")
         if ok then
-            onedark.setup { style = mode == "dark" and "dark" or "light" }
+            onedark.setup { style = mode == "dark" and "darker" or "light" }
             onedark.load()
         end
     end
 end
 
 tools.change_background = function()
+    local ok, onedark = pcall(require, "onedark")
+
     if vim.o.background == "dark" then
         vim.o.background = "light"
     else
         vim.o.background = "dark"
     end
 
-    -- vim.cmd.colorscheme(vim.g.theme[vim.o.background])
+    if ok then
+        onedark.set_options("style", vim.o.background == "light" and "light" or "darker")
+    end
 
     if vim.g.colors_name == "onedark" then
-        local ok, onedark = pcall(require, "onedark")
-        if ok then
-            onedark.toggle()
-        end
+        vim.api.nvim_command "colorscheme onedark"
     end
 end
 
