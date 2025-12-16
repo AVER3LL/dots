@@ -51,11 +51,24 @@ return {
                     latex = { "latexindent" },
                     go = { "goimports-reviser", "gofumpt" },
                     rust = { name = "rust_analyzer", timeout_ms = 500, lsp_format = "prefer" },
-                    haskell = { "ormolu" },
+                    haskell = { "fourmolu" },
                     ["_"] = { "trim_whitespace", "trim_newlines" },
                 },
 
                 formatters = {
+
+                    fourmolu = {
+                        prepend_args = {
+                            "--comma-style",
+                            "leading",
+                            "--import-export-style",
+                            "leading",
+                            "--record-brace-space",
+                            "true",
+                            "--if-style",
+                            "hanging",
+                        },
+                    },
 
                     --python
                     black = {

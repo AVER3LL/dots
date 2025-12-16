@@ -14,8 +14,10 @@ vim.o.termguicolors = true
 vim.o.splitkeep = "screen"
 
 vim.opt.guicursor = {
-    "n-v-c:block",
-    "i:ver50",
+    "n-c:block",
+    -- "i:block",
+    "i:block-blinkon500-blinkoff500-blinkwait300",
+    "v:hor1",
     "r-cr:hor20",
     "o:hor50",
     "a:Cursor/Cursor",

@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+set -e
+trap 'gum style --foreground 244 "Aborted..."; exit 130' INT
+
+APPS_DIR="$HOME/.local/share/applications"
+ICON_DIR="$HOME/.local/share/icons/hicolor/256x256/apps"
+CLI_DIR="$HOME/.local/bin"
+
+prompt_input() {
+    local prompt="$1"
+    local placeholder="$2"
+
+    while true; do
+        local asked_info=$(gum input --prompt "$prompt> " --placeholder "$placeholder" --width 80) || return 130
+
+        if [[ -z "$asked_info" ]]; then
+            gum style --foreground 196 "❌ $prompt is required"
+            continue
+        fi
+
+        echo "$asked_info"
+        return 0
+    done
+
+}
+
+mkdir -p "$APPS_DIR" "$ICON_DIR" "$CLI_DIR"
+
+echo -e "\e[32mLet's create a new web app you can start with the app launcher.\n\e[0m"
+
+APP_URL=$(prompt_input "URL" "https://example.com") || exit 1
+
+APP_NAME=$(prompt_input "Name" "My favorite web app") || exit 1
+
+ICON_URL=$(prompt_input "Icon URL" "See https://dashboardicons.com (must use PNG!)") || exit 1
+
+ID=$(echo "$APP_NAME" | tr '[:upper:]' '[:lower:]' | tr -cd 'a-z0-9-')
+
+DESKTOP_FILE="$APPS_DIR/$ID.desktop"
+
+ICON_FILE="$ICON_DIR/$ID.png"
+
+gum confirm "Create web app \"$APP_NAME\"?" || exit 0
+
+gum spin --spinner dot --title "Downloading icon…" -- \
+    curl -fsSL "$ICON_URL" -o "$ICON_FILE"
+
+cat >"$DESKTOP_FILE" <<EOF
+[Desktop Entry]
+Name=$APP_NAME
+Comment=$APP_NAME Web App
+Exec=chromium --new-window --ozone-platform=wayland --app=$APP_URL
+Icon=$ID
+Terminal=false
+Type=Application
+Categories=Network;WebApp;
+StartupWMClass=$(echo "$APP_URL" | sed 's|https\?://||' | cut -d/ -f1)
+EOF
+
+CLI="$CLI_DIR/$ID"
+
+cat >"$CLI" <<EOF
+#!/usr/bin/env bash
+gtk-launch $ID
+EOF
+
+chmod +x "$CLI"
+
+chmod +x "$DESKTOP_FILE"
+
+gum spin --spinner dot --title "Updating icon cache…" -- \
+    gtk-update-icon-cache "$HOME/.local/share/icons/hicolor" >/dev/null 2>&1 || true
+
+gum style --foreground 42 "Web app created successfully!"
+gum style --foreground 245 "  Launcher name: $APP_NAME"
+gum style --foreground 245 "  Desktop file: $DESKTOP_FILE"
+gum style --foreground 245 "  Command: $ID"
+
+read -rp "Press Enter to exit..."
+exit 0

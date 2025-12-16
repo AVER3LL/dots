@@ -16,7 +16,6 @@ return {
 
             require("lazydev").setup {
                 library = {
-
                     { path = "${3rd}/luv/library", words = { "vim%.uv" } },
                     { path = "luvit-meta/library", words = { "vim%.uv" } },
                     { path = "snacks.nvim", words = { "Snacks" } },
@@ -72,6 +71,13 @@ return {
                     texlab = {},
                     copilot = {},
                     pyrefly = {},
+                    hls = {
+                        settings = {
+                            haskell = {
+                                formattingProvider = "fourmolu",
+                            },
+                        },
+                    },
 
                     -- phpactor = {},
                 },
@@ -109,6 +115,7 @@ return {
                         "emmylua_ls",
                         "copilot",
                         -- "basedpyright",
+                        "ts_ls",
                         "pyrefly",
                     },
                 },

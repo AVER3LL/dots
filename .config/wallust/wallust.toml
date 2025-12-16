@@ -1,6 +1,6 @@
 backend = "fastresize"
 color_space = "lch"
-palette = "dark"
+palette = "light"
 
 [templates]
 kitty = { template = 'kitty-colors.conf', target = '~/.config/kitty/theme/colors-wallust.conf' }

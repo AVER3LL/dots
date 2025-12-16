@@ -18,35 +18,35 @@ Singleton {
     signal sinkProtectionTriggered(string reason);
 
     PwObjectTracker {
-        objects: [sink, source]
+        objects: [root.sink, root.source]
     }
 
     Connections { // Protection against sudden volume changes
-        target: sink?.audio ?? null
+        target: root.sink?.audio ?? null
         property bool lastReady: false
         property real lastVolume: 0
         function onVolumeChanged() {
             // if (!Config.options.audio.protection.enable) return;
             if (!lastReady) {
-                lastVolume = sink.audio.volume;
+                lastVolume = root.sink.audio.volume;
                 lastReady = true;
                 return;
             }
-            const newVolume = sink.audio.volume;
+            const newVolume = root.sink.audio.volume;
             const maxAllowedIncrease = 10 / 100;
             const maxAllowed = 90 / 100;
 
             if (newVolume - lastVolume > maxAllowedIncrease) {
-                sink.audio.volume = lastVolume;
+                root.sink.audio.volume = lastVolume;
                 root.sinkProtectionTriggered("Illegal increment");
             } else if (newVolume > maxAllowed) {
                 root.sinkProtectionTriggered("Exceeded max allowed");
-                sink.audio.volume = Math.min(lastVolume, maxAllowed);
+                root.sink.audio.volume = Math.min(lastVolume, maxAllowed);
             }
-            if (sink.ready && (isNaN(sink.audio.volume) || sink.audio.volume === undefined || sink.audio.volume === null)) {
-                sink.audio.volume = 0;
+            if (root.sink.ready && (isNaN(root.sink.audio.volume) || root.sink.audio.volume === undefined || root.sink.audio.volume === null)) {
+                root.sink.audio.volume = 0;
             }
-            lastVolume = sink.audio.volume;
+            lastVolume = root.sink.audio.volume;
         }
 
     }

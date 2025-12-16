@@ -45,7 +45,7 @@ map("n", "<leader>oc", function()
     vim.system({ "code", project, "--goto", file .. ":" .. line }, { detach = true })
 end, { desc = "Open file in vscode" })
 
-map("n", "<leader><leader>c", function()
+map("n", "<leader><leader>y", function()
     local filepath = vim.api.nvim_buf_get_name(0)
     if filepath == "" then
         vim.notify("No file associated with this buffer", vim.log.levels.WARN)
@@ -153,6 +153,10 @@ end, { desc = "Run the current file" })
 map("n", "<leader><leader>e", function()
     terminal.put_current_file "start"
 end, { desc = "Put file path in terminal" })
+
+map("n", "<leader><leader>c", function()
+    terminal.compile_command "start"
+end)
 
 map("n", "<leader>rt", function()
     terminal.create_runner_file()

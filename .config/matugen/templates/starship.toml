@@ -1,6 +1,10 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
-command_timeout = 2000
+format = "$directory\n$character"
+
+right_format = """$all"""
+
+add_newline = true
 
 palette = 'colors'
 
@@ -27,8 +31,10 @@ time_format = '%H:%M'
 
 [character]
 # success_symbol = "[0 ❯](bold green)"
-success_symbol = "[0 ➜](bold success)"
-error_symbol = "[➜](bold error)"
+# success_symbol = "[0 ➜](bold success)"
+# error_symbol = "[➜](bold error)"
+success_symbol = "[▶](bold success)"
+error_symbol = "[▶](bold error)"
 
 [directory]
 truncation_symbol = '.../'
@@ -36,6 +42,7 @@ truncation_symbol = '.../'
 [git_branch]
 truncation_length = 20
 symbol = ' '
+format = '[$symbol$branch(:$remote_branch)]($style) '
 
 [gradle]
 symbol = ' '

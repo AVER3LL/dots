@@ -156,11 +156,13 @@ autocmd({ "ColorScheme", "VimEnter" }, {
             local doc_bg = tools.colors.adjust_brightness(colors.background, 0.87)
             sethl("BlinkCmpDocBorder", { bg = doc_bg, fg = doc_bg })
             sethl("BlinkCmpDoc", { bg = doc_bg })
+            sethl("BlinkCmpSource", { bg = "NONE", fg = tools.colors.blend(colors.foreground, colors.pmenu, 0.4) })
             sethl("BlinkCmpDocSeparator", { bg = doc_bg, fg = tools.colors.adjust_brightness(colors.foreground, 0.7) })
 
             sethl("LspInfoBorder", { bg = colors.pmenu, fg = colors.pmenu })
             sethl("NormalFloat", { bg = colors.pmenu })
             sethl("FloatBorder", { fg = colors.pmenu, bg = colors.pmenu })
+            sethl("WhichKeyBorder", { bg = colors.pmenu, fg = colors.pmenu })
         elseif effective_style == "clear" then
             local dimmed_fg = tools.colors.blend(colors.foreground, colors.background, 0.8)
 
@@ -285,9 +287,10 @@ autocmd({ "ColorScheme", "VimEnter" }, {
         })
 
         -- Common completion highlights
-        sethl("BlinkCmpMenuSelection", { bg = colors.fun, fg = colors.background })
+        -- sethl("BlinkCmpMenuSelection", { bg = colors.fun, fg = colors.background })
 
-        -- sethl("BlinkCmpMenuSelection", { bg = gethl("Visual").bg })
+        sethl("BlinkCmpMenuSelection", { bg = gethl("Visual").bg })
+        -- sethl("BlinkCmpMenuSelection", { bg = tools.colors.blend(colors.foreground, colors.pmenu, 0.3) })
 
         -- Git and usage
         sethl(
@@ -296,5 +299,31 @@ autocmd({ "ColorScheme", "VimEnter" }, {
         )
         sethl("Usage", { link = "Comment" })
         sethl("SnacksPickerDir", { fg = tools.colors.adjust_brightness(colors.foreground, 0.6) })
+    end,
+})
+
+autocmd("InsertEnter", {
+    desc = "Change cursor color on insert enter",
+    -- group = augroup "averell/cursor-thing",
+    callback = function()
+        local colors = {
+            background = gethl("Normal").bg,
+            cursor = gethl("Constant").fg or "#7CA855",
+        }
+
+        sethl("Cursor", { bg = tools.colors.blend(colors.cursor, colors.background, 0.9) })
+    end,
+})
+
+autocmd("InsertLeave", {
+    desc = "Change cursor color on insert leave",
+    -- group = augroup "averell/cursor-thing",
+    callback = function()
+        local colors = {
+            foreground = gethl("Normal").fg,
+            background = gethl("Normal").bg,
+        }
+
+        sethl("Cursor", { bg = tools.colors.blend(colors.foreground, colors.background, 0.6) })
     end,
 })

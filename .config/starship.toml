@@ -1,6 +1,10 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
-command_timeout = 2000
+format = "$directory\n$character"
+
+right_format = """$all"""
+
+add_newline = true
 
 palette = 'colors'
 
@@ -8,15 +12,15 @@ palette = 'colors'
 mustard = '#af8700'                                  # example
 error = '#E06C75'
 success = '#00CF3A'
-color1 = '#bdc7d4'
-color2 = '#28313b'
-color3 = '#c8c6c7'
-color4 = '#1f2021'
-color5 = '#28313b'
-color6 = '#131314'
-color7 = '#131314'
-color8 = '#bdc7d4'
-color9 = '#b8c8da'
+color1 = '#ffb4a9'
+color2 = '#ffffff'
+color3 = '#534341'
+color4 = '#fceae7'
+color5 = '#ffffff'
+color6 = '#e8d6d3'
+color7 = '#fff8f7'
+color8 = '#904a41'
+color9 = '#705c2e'
 
 # add_newline = true
 
@@ -27,8 +31,10 @@ time_format = '%H:%M'
 
 [character]
 # success_symbol = "[0 ❯](bold green)"
-success_symbol = "[0 ➜](bold success)"
-error_symbol = "[➜](bold error)"
+# success_symbol = "[0 ➜](bold success)"
+# error_symbol = "[➜](bold error)"
+success_symbol = "[▶](bold success)"
+error_symbol = "[▶](bold error)"
 
 [directory]
 truncation_symbol = '.../'
@@ -36,6 +42,7 @@ truncation_symbol = '.../'
 [git_branch]
 truncation_length = 20
 symbol = ' '
+format = '[$symbol$branch(:$remote_branch)]($style) '
 
 [gradle]
 symbol = ' '

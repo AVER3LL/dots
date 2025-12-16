@@ -1,3 +1,3 @@
-vim.o.background = "dark"
+vim.o.background = "light"
 
-vim.g.bg_color = "#131314"
+vim.g.bg_color = "#fff8f7"

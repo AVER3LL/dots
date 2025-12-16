@@ -59,25 +59,6 @@ return {
                 require("nvim-treesitter").install(to_install)
             end
 
-            -- Ensure tree-sitter enabled after opening a file for target language
-            local filetypes = {}
-            for _, lang in ipairs(ensure_installed) do
-                for _, ft in ipairs(vim.treesitter.language.get_filetypes(lang)) do
-                    table.insert(filetypes, ft)
-                end
-            end
-            local ts_start = function(ev)
-                vim.treesitter.start(ev.buf)
-            end
-
-            -- WARN: Do not use "*" here - snacks.nvim is buggy and vim.notify triggers FileType events internally causing infinite callback loops
-            -- vim.api.nvim_create_autocmd("FileType", {
-            --     desc = "Start treesitter",
-            --     group = vim.api.nvim_create_augroup("start_treesitter", { clear = true }),
-            --     pattern = filetypes,
-            --     callback = ts_start,
-            -- })
-
             -- Copied this here https://github.com/MeanderingProgrammer/treesitter-modules.nvim
             vim.api.nvim_create_autocmd("FileType", {
                 group = vim.api.nvim_create_augroup("treesitter.setup", {}),
@@ -102,8 +83,6 @@ return {
 
                     -- replicate `indent = { enable = true }`
                     vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-
-                    -- `incremental_selection = { enable = true }` cannot be easily replicated
                 end,
             })
         end,
@@ -112,4 +91,3 @@ return {
         end,
     },
 }
-

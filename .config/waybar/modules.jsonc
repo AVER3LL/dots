@@ -508,12 +508,14 @@
         "tooltip": false,
     },
     "custom/separator#dot-line": {
-        "format": "  ",
+        // "format": "  ",
+        "format": "┊",
         "interval": "once",
         "tooltip": false,
     },
     "custom/separator#line": {
-        "format": "|",
+        // "format": "|",
+        "format": "│",
         "interval": "once",
         "tooltip": false,
     },

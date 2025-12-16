@@ -14,7 +14,8 @@ M.put_current_file = terminal.put_current_file
 
 M.create_runner_file = commands.create_runner_file
 
+M.compile_command = runner.compile_command
+
 M.run = runner.run
 
 return M
-

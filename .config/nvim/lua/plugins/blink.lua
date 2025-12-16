@@ -1,5 +1,3 @@
-local symbol_map = require("icons").symbol_kinds
-
 local function is_laravel_source(source_name)
     return vim.list_contains({ "Blade-nav", "Laravel", "laravel" }, source_name)
 end
@@ -7,11 +5,13 @@ end
 ---@type "vscode"|"normal"
 local blink_kind = "vscode"
 
+local symbol_map = require("icons").kind_icons[blink_kind]
+
 local blink_style = {
     vscode = {
         columns = {
             { "kind_icon", gap = 2 },
-            { "label", "label_description", gap = 1 },
+            { "label", "label_description", "source_name", gap = 2 },
         },
         kind_icon_formatter = function(ctx)
             local icon = is_laravel_source(ctx.source_name) and "" or ctx.kind_icon

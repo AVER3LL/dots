@@ -12,6 +12,28 @@ return {
     },
 
     {
+        "loctvl842/monokai-pro.nvim",
+        lazy = false,
+        priority = 1000,
+        opts = {
+            transparent_background = tools.transparent_background "boolean",
+            terminal_colors = true,
+            devicons = true,
+            background_clear = {
+                -- "float_win",
+                "toggleterm",
+                "telescope",
+                -- "which-key",
+                "renamer",
+                "notify",
+                -- "nvim-tree",
+                -- "neo-tree",
+                -- "bufferline", -- better used if background of `neo-tree` or `nvim-tree` is cleared
+            },
+        },
+    },
+
+    {
         "dapovich/anysphere.nvim",
         lazy = false,
         priority = 1000,

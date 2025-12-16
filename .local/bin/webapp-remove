@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+set -e
+trap 'gum style --foreground 244 "Aborted."; exit 130' INT
+
+APPS_DIR="$HOME/.local/share/applications"
+ICON_DIR="$HOME/.local/share/icons/hicolor/256x256/apps"
+BIN_DIR="$HOME/.local/bin"
+
+echo -e "\e[32mLet's remove some web app from the app launcher.\n\e[0m"
+
+# Collect webapp desktop files (heuristic: WebApp category)
+mapfile -t WEBAPPS < <(
+    grep -l "Categories=.*WebApp" "$APPS_DIR"/*.desktop 2>/dev/null || true
+)
+
+if [[ ${#WEBAPPS[@]} -eq 0 ]]; then
+    gum style --foreground 244 "No web apps found."
+    read -rp "Press Enter to exit..."
+    exit 0
+fi
+
+# Build list of IDs
+OPTIONS=()
+for file in "${WEBAPPS[@]}"; do
+    OPTIONS+=("$(basename "$file" .desktop)")
+done
+
+ID=$(printf "%s\n" "${OPTIONS[@]}" | gum choose --header "Select a web app to remove")
+
+[[ -z "$ID" ]] && exit 0
+
+DESKTOP_FILE="$APPS_DIR/$ID.desktop"
+ICON_FILE="$ICON_DIR/$ID.png"
+CLI_FILE="$BIN_DIR/$ID"
+
+gum confirm "Remove web app \"$ID\"?" || exit 0
+
+gum spin --spinner dot --title "Removing files…" -- bash -c "
+    rm -f \"$DESKTOP_FILE\"
+    rm -f \"$ICON_FILE\"
+    rm -f \"$CLI_FILE\"
+"
+
+gum spin --spinner dot --title "Updating icon cache…" -- \
+    gtk-update-icon-cache \"$HOME/.local/share/icons/hicolor\" >/dev/null 2>&1 || true
+
+gum style --foreground 42 "Web app removed successfully!"
+gum style --foreground 245 "  Desktop file: $DESKTOP_FILE"
+gum style --foreground 245 "  Icon: $ICON_FILE"
+gum style --foreground 245 "  Command: $CLI_FILE"

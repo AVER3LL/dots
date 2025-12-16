@@ -24,9 +24,9 @@ function Terminal.send_command(cmd)
 
     local chan = vim.b[state.floating.buf].terminal_job_id
     if chan then
-        vim.defer_fn(function()
+        vim.schedule(function()
             vim.api.nvim_chan_send(chan, cmd .. "\n")
-        end, 235)
+        end)
     end
 end
 
@@ -42,7 +42,7 @@ function Terminal.put_command(cmd, cursor_position)
         -- Focus the terminal window first
         vim.api.nvim_set_current_win(state.floating.win)
 
-        vim.defer_fn(function()
+        vim.schedule(function()
             -- Enter insert mode in the terminal
             vim.api.nvim_feedkeys("i", "n", false)
 
@@ -54,7 +54,7 @@ function Terminal.put_command(cmd, cursor_position)
                 -- Move to the beginning of the line
                 vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Home>", true, false, true), "t", false)
             end
-        end, 100) -- Reduced delay for better responsiveness
+        end) -- Reduced delay for better responsiveness
     else
         vim.notify("Terminal channel not found", vim.log.levels.ERROR)
     end

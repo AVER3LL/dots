@@ -1,3 +1,3 @@
 -- File automatically modified by a script
 
-vim.o.background = "dark"
+vim.o.background = "light"

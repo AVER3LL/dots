@@ -9,7 +9,7 @@ menu() {
 }
 
 terminal() {
-    kitty --class Averell -e $1
+    kitty --class Averell -e "$@"
 }
 
 edit_in_nvim() {
@@ -91,8 +91,16 @@ show_fix_menu() {
     esac
 }
 
+create_web_app() {
+    terminal "$HOME/.local/bin/webapp-maker"
+}
+
+remove_web_app() {
+    terminal "$HOME/.local/bin/webapp-remove"
+}
+
 show_main_menu() {
-    case $(menu "Start" "󰀻  Apps\n  Notifications\n  Capture\n  Toggle\n  Style\n  Config\n󰁨  Fix") in
+    case $(menu "Start" "󰀻  Apps\n  Notifications\n  Capture\n  Toggle\n  Style\n  Config\n󰁨  Fix\ni Create webapp\ni Remove webapp") in
     *Apps*) rofi -show drun -theme ~/.config/rofi/main.rasi ;;
     *Notifications*) swaync-client -t -sw ;;
     *Capture*) show_capture_menu ;;
@@ -100,6 +108,8 @@ show_main_menu() {
     *Style*) show_style_menu ;;
     *Config*) show_config_menu ;;
     *Fix*) show_fix_menu ;;
+    *"Create webapp"*) create_web_app ;;
+    *"Remove webapp"*) remove_web_app ;;
     esac
 }
 
